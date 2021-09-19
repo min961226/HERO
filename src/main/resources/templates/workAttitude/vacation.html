@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+</head>
+<body>
+	<div id="wrapper">
+		<div th:include="common/sidebar.html"></div>
+		<div class="content-page">
+			<div class="content">
+				<div class="container-fluid">
+					<!-- start page title -->
+					<div class="row">
+						<div class="col-12">
+							<br>
+							<div class="page-title-box">
+								<h3 class="page-title">연자 휴가 조회 및 신청</h3>
+							</div>
+							<hr>
+							<!-- 여기서부터 본문 생성 -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:include="common/footer.html"></div>
+		</div>
+	</div>
+</body>
+</html>
