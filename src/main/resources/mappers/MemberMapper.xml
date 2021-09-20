@@ -3,20 +3,12 @@
 <mapper namespace="com.nextLevel.hero.member.model.dao.MemberMapper">
 	
 	<resultMap type="com.nextLevel.hero.member.model.dto.MemberDTO" id="loginMemberResultMap">
-		<id property="no" column="MEMBER_NO"/>
+		<id property="no" column="ID_NO"/>
 		<result property="id" column="MEMBER_ID"/>
-		<result property="pwd" column="MEMBER_PWD"/>
+		<result property="pwd" column="MEMBER_PASSWORD"/>
 		<result property="tempPwdYn" column="TEMP_PWD_YN"/>
-		<result property="pwdChangedDatetime" column="PWD_CHANGED_DATETIME"/>
-		<result property="pwdExpDate" column="PWD_EXP_DATE"/>
 		<result property="name" column="MEMBER_NAME"/>
-		<result property="registDatetime" column="REGIST_DATETIME"/>
-		<result property="accumLoginCount" column="ACCUM_LOGIN_COUNT"/>
-		<result property="loginFailedCount" column="LOGIN_FAILED_COUNT"/>
-		<result property="accLockYn" column="ACC_LOCK_YN"/>
-		<result property="accInactiveYn" column="ACC_INACTIVE_YN"/>
-		<result property="accExpDate" column="ACC_EXP_DATE"/>
-		<result property="accExpYn" column="ACC_EXP_YN"/>
+		<result property="registDatetime" column="HIRE_DATE"/>
 		<result property="accSecessionDatetime" column="ACC_SECESSION_DATETIME"/>
 		<result property="accSecessionYn" column="ACC_SECESSION_YN"/>
 		
@@ -24,45 +16,41 @@
 	</resultMap>
 	
 	<resultMap type="com.nextLevel.hero.member.model.dto.MemberRoleDTO" id="memberRoleResultMap">
-		<id property="memberNo" column="REF_MEMBER_NO"/>
-		<id property="authorityCode" column="REF_AUTHORITY_CODE"/>
+		<id property="idNo" column="ID_NO"/>
+		<id property="authorityCode" column="AUTHORITY_NO"/>
+		<result property="authorityCategory" column="AUTHORITY_CATEGORY"/>
+		<result property="createdAutorityStatus" column="CREATED_AUTHORITY_STATUS"/>
 		
 		<association property="authority" resultMap="authorityResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.nextLevel.hero.member.model.dto.AuthorityDTO" id="authorityResultMap">
-		<id property="code" column="REF_AUTHORITY_CODE2"/>
+		<id property="code" column="AUTHORITY_NO"/>
 		<result property="name" column="AUTHORITY_NAME"/>
-		<result property="desc" column="AUTHORITY_DESC"/>
+		<result property="desc" column="AUTHORITY_DESCRIPTION"/>
 	
 	</resultMap>
 	
 	<select id="findMemberById" resultMap="loginMemberResultMap">
         SELECT
-               A.MEMBER_NO
+               A.ID_NO
              , A.MEMBER_ID
-             , A.MEMBER_PWD
+             , A.MEMBER_PASSWORD
              , A.TEMP_PWD_YN
-             , A.PWD_CHANGED_DATETIME
-             , A.PWD_EXP_DATE
              , A.MEMBER_NAME
-             , A.MEMBER_REGIST_DATETIME
-             , A.ACCUM_LOGIN_COUNT
-             , A.LOGIN_FAILED_COUNT
-             , A.ACC_LOCK_YN
-             , A.ACC_INACTIVE_YN
-             , A.ACC_EXP_DATE
-             , A.ACC_EXP_YN
+             , A.HIRE_DATE
              , A.ACC_SECESSION_DATETIME
              , A.ACC_SECESSION_YN
-             , B.MEMBER_NO REF_MEMBER_NO
-             , B.AUTHORITY_CODE REF_AUTHORITY_CODE
-             , C.AUTHORITY_CODE REF_AUTHORITY_CODE2
+             , B.ID_NO
+             , B.AUTHORITY_NO
+             , B.AUTHORITY_CATEGORY
+             , B.CREATED_AUTHORITY_STATUS
+             , C.AUTHORITY_NO 
              , C.AUTHORITY_NAME
-             , C.AUTHORITY_DESC
+             , C.AUTHORITY_DESCRIPTION
           FROM TBL_MEMBER A
-          LEFT JOIN TBL_MEMBER_ROLE B ON (A.MEMBER_NO = B.MEMBER_NO)
-          LEFT JOIN TBL_AUTHORITY C ON (B.AUTHORITY_CODE = C.AUTHORITY_CODE)
+          LEFT JOIN TBL_USER_AUTH B ON (A.ID_NO = B.ID_NO)
+          LEFT JOIN TBL_AUTH C ON (B.AUTHORITY_NO = C.AUTHORITY_NO)
          WHERE A.MEMBER_ID = #{ username }
 	</select>
 
