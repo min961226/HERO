@@ -23,10 +23,8 @@ public class MemberController {
 	@GetMapping("/login")
 	public void memberLoginForm() {}
 	
-	@PostMapping("/findIdForm")
+	@GetMapping("/findIdForm")
 	public String memberFindIdForm() {
-		
-		String memberFindId = MemberService.memberFindId();
 		
 		return "member/findIdForm";
 	}
