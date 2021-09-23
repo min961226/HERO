@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+    <th:block sec:authorize="isAnonymous()">
+        <script>
+            window.location.href = "/member/login";
+        </script>
+    </th:block>
+    <th:block sec:authorize="isAuthenticated()">
+        <script>
+            window.location.href = "/main";
+        </script>
+    </th:block>
+</body>
+</html>

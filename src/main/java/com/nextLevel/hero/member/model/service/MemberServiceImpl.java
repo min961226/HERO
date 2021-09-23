@@ -3,6 +3,8 @@ package com.nextLevel.hero.member.model.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -56,8 +58,10 @@ public class MemberServiceImpl implements MemberService{
       //아이디 pwd 권한을 타입 객체로 만들어 반환
 //      return new User(member.getId(), member.getPwd(), authorities);      //유저 타입 반환
       
-      UserImpl user = new UserImpl(member.getId(), member.getPwd(), authorities);
-      user.setDetails(member);
+      int companyNo = memberMapper.findCompanyNoByUserNo(member.getNo());
+      UserImpl user = new UserImpl(member.getNo(), member.getId(), member.getPwd(), authorities);
+      user.setDetails(member,companyNo);
+      
       
       return user;
    }

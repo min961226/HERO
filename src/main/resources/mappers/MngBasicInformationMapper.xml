@@ -2,4 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nextLevel.hero.mngBasicInformation.model.dao.MngBasicInformationMapper">
 
+	<resultMap type="com.nextLevel.hero.member.model.dto.MemberDTO" id="loginMemberResultMap">
+		<id property="no" column="ID_NO"/>
+		<result property="id" column="MEMBER_ID"/>
+		<result property="pwd" column="MEMBER_PASSWORD"/>
+		<result property="tempPwdYn" column="TEMP_PWD_YN"/>
+		<result property="name" column="MEMBER_NAME"/>
+		<result property="registDatetime" column="HIRE_DATE"/>
+		<result property="accSecessionDatetime" column="ACC_SECESSION_DATETIME"/>
+		<result property="accSecessionYn" column="ACC_SECESSION_YN"/>
+	</resultMap>
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO" id="companyInformationResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="ceoName" column="CEO_NAME"/>
+		<result property="address" column="HEAD_QUARTER_ADDRESS"/>
+		<result property="phone" column="HEAD_QUARTER_PHONE"/>
+		<result property="fax" column="FAX"/>
+		<result property="employeeCount" column="TOTAL_EMPLOYEE_COUNT"/>
+		<result property="companyRegistrationNo" column="COMPANY_REGISTRATION_NO"/>
+		<result property="identificationNo" column="IDENTIFICATION_NO"/>
+		<result property="managerEmail" column="MANAGER_EMAIL"/>
+		<result property="website" column="WEBSITE"/>
+		<result property="foundingDate" column="FOUNDING_DATE"/>
+		<result property="businessCode" column="BUSINESS_CODE"/>
+	</resultMap>
+	
+	<select id="selectMember" resultMap="loginMemberResultMap">
+		select
+			   *
+		  from tbl_member
+	</select>
+	
+	<select id="selectCompanyInformationByCompanyNo" resultMap="companyInformationResultMap">
+		SELECT
+			   A.*
+		  FROM TBL_COMPANY A
+		 WHERE COMPANY_NO = #{ companyNo }
+	</select>
 </mapper>

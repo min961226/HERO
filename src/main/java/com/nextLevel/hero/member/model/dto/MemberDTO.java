@@ -4,113 +4,124 @@ import java.sql.Date;
 import java.util.List;
 
 public class MemberDTO {
-   
-   private int no;                              //회원번호
-   private String id;                           //회원아이디
-   private String pwd;                           //회원비밀번호
-   private String tempPwdYn;                     //임시비밀번호여부
-   private String name;                        //회원이름
-   private java.sql.Date registDatetime;            //회원가입일시
-   private java.sql.Date accSecessionDatetime;         //계정탈퇴일시
-   private String accSecessionYn;                  //계정탈퇴여부
-   
-   private List<MemberRoleDTO> memberRoleList;         //회원별권한리스트
-   
-   public MemberDTO() {}
 
-   public MemberDTO(int no, String id, String pwd, String tempPwdYn, String name, Date registDatetime,
-         Date accSecessionDatetime, String accSecessionYn, List<MemberRoleDTO> memberRoleList) {
-      super();
-      this.no = no;
-      this.id = id;
-      this.pwd = pwd;
-      this.tempPwdYn = tempPwdYn;
-      this.name = name;
-      this.registDatetime = registDatetime;
-      this.accSecessionDatetime = accSecessionDatetime;
-      this.accSecessionYn = accSecessionYn;
-      this.memberRoleList = memberRoleList;
-   }
+	
+	private int no;										//회원번호
+	private int companyNo;
+	private String id;									//회원아이디
+	private String pwd;									//회원비밀번호
+	private String tempPwdYn;							//임시비밀번호여부
+	private String name;								//회원이름
+	private java.sql.Date registDatetime;				//회원가입일시
+	private java.sql.Date accSecessionDatetime;			//계정탈퇴일시
+	private String accSecessionYn;						//계정탈퇴여부
+	
+	private List<MemberRoleDTO> memberRoleList;			//회원별권한리스트
+	
+	public MemberDTO() {}
 
-   public int getNo() {
-      return no;
-   }
+	public MemberDTO(int no,int companyNo, String id, String pwd, String tempPwdYn, String name, Date registDatetime,
+			Date accSecessionDatetime, String accSecessionYn, List<MemberRoleDTO> memberRoleList) {
+		super();
+		this.no = no;
+		this.companyNo = companyNo;
+		this.id = id;
+		this.pwd = pwd;
+		this.tempPwdYn = tempPwdYn;
+		this.name = name;
+		this.registDatetime = registDatetime;
+		this.accSecessionDatetime = accSecessionDatetime;
+		this.accSecessionYn = accSecessionYn;
+		this.memberRoleList = memberRoleList;
+	}
 
-   public void setNo(int no) {
-      this.no = no;
-   }
+	public int getNo() {
+		return no;
+	}
 
-   public String getId() {
-      return id;
-   }
+	public void setNo(int no) {
+		this.no = no;
+	}
+	
+	public int getCompanyNo() {
+		return companyNo;
+	}
 
-   public void setId(String id) {
-      this.id = id;
-   }
+	public void setCompanyNo(int companyNo) {
+		this.companyNo = companyNo;
+	}
 
-   public String getPwd() {
-      return pwd;
-   }
+	public String getId() {
+		return id;
+	}
 
-   public void setPwd(String pwd) {
-      this.pwd = pwd;
-   }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-   public String getTempPwdYn() {
-      return tempPwdYn;
-   }
+	public String getPwd() {
+		return pwd;
+	}
 
-   public void setTempPwdYn(String tempPwdYn) {
-      this.tempPwdYn = tempPwdYn;
-   }
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
 
-   public String getName() {
-      return name;
-   }
+	public String getTempPwdYn() {
+		return tempPwdYn;
+	}
 
-   public void setName(String name) {
-      this.name = name;
-   }
+	public void setTempPwdYn(String tempPwdYn) {
+		this.tempPwdYn = tempPwdYn;
+	}
 
-   public java.sql.Date getRegistDatetime() {
-      return registDatetime;
-   }
+	public String getName() {
+		return name;
+	}
 
-   public void setRegistDatetime(java.sql.Date registDatetime) {
-      this.registDatetime = registDatetime;
-   }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-   public java.sql.Date getAccSecessionDatetime() {
-      return accSecessionDatetime;
-   }
+	public java.sql.Date getRegistDatetime() {
+		return registDatetime;
+	}
 
-   public void setAccSecessionDatetime(java.sql.Date accSecessionDatetime) {
-      this.accSecessionDatetime = accSecessionDatetime;
-   }
+	public void setRegistDatetime(java.sql.Date registDatetime) {
+		this.registDatetime = registDatetime;
+	}
 
-   public String getAccSecessionYn() {
-      return accSecessionYn;
-   }
+	public java.sql.Date getAccSecessionDatetime() {
+		return accSecessionDatetime;
+	}
 
-   public void setAccSecessionYn(String accSecessionYn) {
-      this.accSecessionYn = accSecessionYn;
-   }
+	public void setAccSecessionDatetime(java.sql.Date accSecessionDatetime) {
+		this.accSecessionDatetime = accSecessionDatetime;
+	}
 
-   public List<MemberRoleDTO> getMemberRoleList() {
-      return memberRoleList;
-   }
+	public String getAccSecessionYn() {
+		return accSecessionYn;
+	}
 
-   public void setMemberRoleList(List<MemberRoleDTO> memberRoleList) {
-      this.memberRoleList = memberRoleList;
-   }
+	public void setAccSecessionYn(String accSecessionYn) {
+		this.accSecessionYn = accSecessionYn;
+	}
 
-   @Override
-   public String toString() {
-      return "MemberDTO [no=" + no + ", id=" + id + ", pwd=" + pwd + ", tempPwdYn=" + tempPwdYn + ", name=" + name
-            + ", registDatetime=" + registDatetime + ", accSecessionDatetime=" + accSecessionDatetime
-            + ", accSecessionYn=" + accSecessionYn + ", memberRoleList=" + memberRoleList + "]";
-   }
+	public List<MemberRoleDTO> getMemberRoleList() {
+		return memberRoleList;
+	}
+
+	public void setMemberRoleList(List<MemberRoleDTO> memberRoleList) {
+		this.memberRoleList = memberRoleList;
+	}
+
+	@Override
+	public String toString() {
+		return "MemberDTO [no=" + no + ", id=" + id + ", pwd=" + pwd + ", tempPwdYn=" + tempPwdYn + ", name=" + name
+				+ ", registDatetime=" + registDatetime + ", accSecessionDatetime=" + accSecessionDatetime
+				+ ", accSecessionYn=" + accSecessionYn + ", memberRoleList=" + memberRoleList + "]";
+	}
 
 
-   
+	
 }

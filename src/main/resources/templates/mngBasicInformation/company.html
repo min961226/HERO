@@ -20,6 +20,150 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div class="row">
+								<div class="col-12">
+									<div class="card">
+										<div class="card-body">
+											<h4 class="header-title mt-0">회사 기본정보</h4>
+											<p class="sub-header">
+												회사의 정보를 담고 있는 목록입니다. 수정 시 변경내용을 다시한번 확인 후 저장버튼을 눌러주시기 바랍니다.
+												<code>기업체명</code>
+												,
+												<code>대표자명</code>
+												,
+												<code>본사주소</code>
+												,
+												<code>본사연락처</code>
+												,
+												<code>업종</code>
+												,
+												<code>팩스</code>
+												,
+												<code>회사이메일</code>
+												,
+												<code>홈페이지 주소</code>
+												,
+												<code>150인 우선 기업 여부</code>
+												,
+												<code>설립일</code>
+												의 정보를 담고있습니다.
+											</p>
+
+											<form class="form-horizontal" method="post" action="/">
+												<div class="row">
+													<div class="col">
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">기업체명</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" name="companyName">
+															</div>
+														</div>
+
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">본사
+																주소</label>
+															<div class="col-lg-7">
+																<input type="text" class="form-control" id="simpleinput">
+															</div>
+															<div class="col-lg-3">
+																<button type="button" class="btn btn-info">우편번호
+																	찾기</button>
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput"></label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" id="simpleinput">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">본사 연락처</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-number"
+																	type="number" name="number">
+															</div>
+														</div>
+
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-email">회사 이메일</label>
+															<div class="col-lg-10">
+																<input type="email" id="example-email"
+																	name="example-email" class="form-control">
+															</div>
+														</div>
+
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" align="center">150인
+																우선 기업 여부</label>
+															<div class="col-lg-10">
+																<select class="form-select">
+																	<option>해당</option>
+																	<option>비해당</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="col">
+													<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput" style="height: 40px"></label>
+															<div class="col-lg-10">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">대표자명</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" name="ceoName">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">업종</label>
+															<div class="col-lg-7">
+																<input type="text" class="form-control" id="simpleinput">
+															</div>
+															<div class="col-lg-3">
+																<button type="button" class="btn btn-info">업종
+																	검색</button>
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">팩스 번호</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-number"
+																	type="number" name="number">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label">홈페이지 주소</label>
+															<div class="col-lg-10">
+																<input class="form-control" type="url" name="url">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="example-date">설립일</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-date"
+																	type="date" name="date">
+															</div>
+														</div>
+
+															<div align="right" >
+															<button type="submit" class="btn btn-info">저장</button>
+															<button type="reset" class="btn btn-success"style="margin-left: 10px">취소</button>
+														</div>
+													</div>
+												</div>
+											</form>
+
+										</div>
+										<!-- end card-body -->
+									</div>
+									<!-- end card-->
+								</div>
+								<!-- end col -->
+							</div>
 						</div>
 					</div>
 				</div>
