@@ -1,11 +1,22 @@
 package com.nextLevel.hero.mngBasicInformation.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.nextLevel.hero.main.model.service.MainService;
+import com.nextLevel.hero.member.model.dto.MemberDTO;
+import com.nextLevel.hero.member.model.dto.UserImpl;
+import com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO;
 import com.nextLevel.hero.mngBasicInformation.model.service.MngBasicInformationService;
 
 @Controller
@@ -21,7 +32,8 @@ public class MngBasicInformationController {
 
 	
 	@GetMapping("/company")
-	public String mngCompany() {
+	public String mngCompany(@AuthenticationPrincipal UserImpl user) {
+		MngBasicInformationDTO mngBasicInformationDTO = mngBasicInformationService.selectCompanyInformationByCompanyNo(user.getCompanyNo());
 		return "mngBasicInformation/company";
 	}
 	@GetMapping("/department")

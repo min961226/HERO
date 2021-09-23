@@ -3,6 +3,7 @@ package com.nextLevel.hero.configuration;
 
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,8 +11,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.nextLevel.hero.member.model.service.MemberService;
@@ -84,7 +88,22 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.and()
 				.exceptionHandling()
 				.accessDeniedPage("/error/403");
-				
+		
+			http.sessionManagement()
+		    .maximumSessions(1)
+		    .maxSessionsPreventsLogin(true)
+		    .expiredUrl("/duplicated-login")
+		    .sessionRegistry(sessionRegistry());
+	}
+	
+	@Bean
+	public SessionRegistry sessionRegistry() {
+		return new SessionRegistryImpl();
+	}// Register HttpSessionEventPublisher
+
+	@Bean
+	public static ServletListenerRegistrationBean httpSessionEventPublisher() {
+		return new ServletListenerRegistrationBean(new HttpSessionEventPublisher());
 	}
 	
 	@Override

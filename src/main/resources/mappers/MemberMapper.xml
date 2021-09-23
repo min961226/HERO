@@ -54,6 +54,12 @@
          WHERE A.MEMBER_ID = #{ username }
 	</select>
 
+	<select id="findCompanyNoByUserNo" resultType="_int">
+		SELECT
+			   COMPANY_NO
+		  FROM TBL_MEMBER_COMPANY
+		 WHERE ID_NO = #{ no }
+	</select>
 </mapper>
 
 

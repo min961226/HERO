@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>인사관리 프로그램 HERO</title>
+<link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+
+<!-- plugins -->
+<link th:href="@{/libs/flatpickr/flatpickr.min.css}" rel="stylesheet"
+	type="text/css" />
+
+<!-- App css -->
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"
+	type="text/css" id="bs-default-stylesheet" />
+<link th:href="@{/css/app.min.css}" rel="stylesheet" type="text/css"
+	id="app-default-stylesheet" />
+
+<link th:href="@{/css/bootstrap-dark.min.css}" rel="stylesheet"
+	type="text/css" id="bs-dark-stylesheet" disabled />
+<link th:href="@{/css/app-dark.min.css}" rel="stylesheet"
+	type="text/css" id="app-dark-stylesheet" disabled />
+
+
+<!-- icons -->
+<link th:href="@{/css/icons.min.css}" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div id="wrapper">
+		<div class="navbar-custom">
+			<div class="container-fluid">
+				<ul class="list-unstyled topnav-menu float-end mb-0">
+
+					<li class="d-none d-lg-block">
+						<form class="app-search">
+							<div class="app-search-box dropdown">
+
+								<div class="input-group">
+									<input type="search" class="form-control"
+										placeholder="Search..." id="top-search">
+									<button class="btn input-group-text" type="submit">
+										<i class="uil uil-search"></i>
+									</button>
+								</div>
+
+								<div class="dropdown-menu dropdown-lg" id="search-dropdown">
+									<!-- item-->
+									<div class="dropdown-header noti-title">
+										<h5 class="text-overflow mb-2">Found 05 results</h5>
+									</div>
+
+									<!-- item-->
+									<a href="javascript:void(0);" class="dropdown-item notify-item">
+										<i class="uil uil-sliders-v-alt me-1"></i> <span>User
+											profile settings</span>
+									</a>
+
+									<!-- item-->
+									<a href="javascript:void(0);" class="dropdown-item notify-item">
+										<i class="uil uil-home-alt me-1"></i> <span>Analytics
+											Report</span>
+									</a>
+
+									<!-- item-->
+									<a href="javascript:void(0);" class="dropdown-item notify-item">
+										<i class="uil uil-life-ring me-1"></i> <span>How can I
+											help you?</span>
+									</a>
+
+									<!-- item-->
+									<div class="dropdown-header noti-title">
+										<h6 class="text-overflow mb-2 text-uppercase">Users</h6>
+									</div>
+
+									<div class="notification-list">
+										<!-- item-->
+										<a href="javascript:void(0);"
+											class="dropdown-item notify-item">
+											<div class="d-flex text-align-start">
+												<img class="me-2 rounded-circle"
+													th:src="@{/images/users/avatar-2.jpg}"
+													alt="Generic placeholder image" height="32">
+												<div class="flex-grow-1">
+													<h5 class="m-0 fs-14">Shirley Miller</h5>
+													<span class="fs-12 mb-0">UI Designer</span>
+												</div>
+											</div>
+										</a>
+
+										<!-- item-->
+										<a href="javascript:void(0);"
+											class="dropdown-item notify-item">
+											<div class="d-flex text-align-start">
+												<img class="me-2 rounded-circle"
+													th:src="@{/images/users/avatar-5.jpg}"
+													alt="Generic placeholder image" height="32">
+												<div class="flex-grow-1">
+													<h5 class="m-0 fs-14">Timothy Moreno</h5>
+													<span class="fs-12 mb-0">Frontend Developer</span>
+												</div>
+											</div>
+										</a>
+									</div>
+
+								</div>
+							</div>
+						</form>
+					</li>
+
+					<li class="dropdown d-inline-block d-lg-none"><a
+						class="nav-link dropdown-toggle arrow-none"
+						data-bs-toggle="dropdown" href="#" role="button"
+						aria-haspopup="false" aria-expanded="false"> <i
+							data-feather="search"></i>
+					</a>
+						<div class="dropdown-menu dropdown-lg dropdown-menu-end p-0">
+							<form class="p-3">
+								<input type="text" class="form-control" placeholder="Search ..."
+									aria-label="search here">
+							</form>
+						</div></li>
+
+					<li class="dropdown d-none d-lg-inline-block"><a
+						class="nav-link dropdown-toggle arrow-none"
+						data-toggle="fullscreen" href="#"> <i data-feather="maximize"></i>
+					</a></li>
+
+					<li class="dropdown d-none d-lg-inline-block topbar-dropdown">
+						<a class="nav-link dropdown-toggle arrow-none"
+						data-bs-toggle="dropdown" href="#" role="button"
+						aria-haspopup="false" aria-expanded="false"> <i
+							data-feather="grid"></i>
+					</a>
+						<div class="dropdown-menu dropdown-lg dropdown-menu-end p-0">
+
+							<div class="p-1">
+								<div class="row g-0">
+									<div class="col">
+										<a class="dropdown-icon-item" href="#"> <img
+											th:src="@{/images/brands/slack.png}" alt="slack"> <span>Slack</span>
+										</a>
+									</div>
+									<div class="col">
+										<a class="dropdown-icon-item"
+											href="https://www.notion.so/hammang/4-NEXT-LEVEL-9accfc53f650408c84045a6192963a18">
+											<img th:src="@{/images/brands/github.png}" alt="Github">
+											<span>GitHub</span>
+										</a>
+									</div>
+									<div class="col">
+										<a class="dropdown-icon-item" href="#"> <img
+											th:src="@{/images/brands/dribbble.png}" alt="dribbble">
+											<span>Dribbble</span>
+										</a>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</li>
+
+
+					<li class="dropdown notification-list topbar-dropdown"><a
+						class="nav-link dropdown-toggle position-relative"
+						data-bs-toggle="dropdown" href="#" role="button"
+						aria-haspopup="false" aria-expanded="false"> <i
+							data-feather="bell"></i> <span
+							class="badge bg-danger rounded-circle noti-icon-badge">6</span>
+					</a>
+						<div class="dropdown-menu dropdown-menu-end dropdown-lg">
+
+							<!-- item-->
+							<div class="dropdown-item noti-title">
+								<h5 class="m-0">
+									<span class="float-end"> <a href="" class="text-dark"><small>Clear
+												All</small></a>
+									</span>Notification
+								</h5>
+							</div>
+
+							<div class="noti-scroll" data-simplebar>
+
+								<!-- item-->
+								<a href="javascript:void(0);"
+									class="dropdown-item notify-item border-bottom">
+									<div class="notify-icon bg-primary">
+										<i class="uil uil-user-plus"></i>
+									</div>
+									<p class="notify-details">
+										New user registered.<small class="text-muted">5 hours
+											ago</small>
+									</p>
+								</a>
+
+								<!-- item-->
+								<a href="javascript:void(0);"
+									class="dropdown-item notify-item border-bottom">
+									<div class="notify-icon">
+										<img th:src="@{/images/users/avatar-1.jpg}"
+											class="img-fluid rounded-circle" alt="" />
+									</div>
+									<p class="notify-details">Karen Robinson</p>
+									<p class="text-muted mb-0 user-msg">
+										<small>Wow ! this admin looks good and awesome design</small>
+									</p>
+								</a>
+
+								<!-- item-->
+								<a href="javascript:void(0);"
+									class="dropdown-item notify-item border-bottom">
+									<div class="notify-icon">
+										<img th:src="@{/images/users/avatar-2.jpg}"
+											class="img-fluid rounded-circle" alt="" />
+									</div>
+									<p class="notify-details">Cristina Pride</p>
+									<p class="text-muted mb-0 user-msg">
+										<small>Hi, How are you? What about our next meeting</small>
+									</p>
+								</a>
+
+								<!-- item-->
+								<a href="javascript:void(0);"
+									class="dropdown-item notify-item border-bottom active">
+									<div class="notify-icon bg-success">
+										<i class="uil uil-comment-message"></i>
+									</div>
+									<p class="notify-details">
+										Jaclyn Brunswick commented on Dashboard<small
+											class="text-muted">1 min ago</small>
+									</p>
+								</a>
+
+								<!-- item-->
+								<a href="javascript:void(0);"
+									class="dropdown-item notify-item border-bottom">
+									<div class="notify-icon bg-danger">
+										<i class="uil uil-comment-message"></i>
+									</div>
+									<p class="notify-details">
+										Caleb Flakelar commented on Admin<small class="text-muted">4
+											days ago</small>
+									</p>
+								</a>
+
+								<!-- item-->
+								<a href="javascript:void(0);" class="dropdown-item notify-item">
+									<div class="notify-icon bg-primary">
+										<i class="uil uil-heart"></i>
+									</div>
+									<p class="notify-details">
+										Carlos Crouch liked <b>Admin</b> <small class="text-muted">13
+											days ago</small>
+									</p>
+								</a>
+							</div>
+
+							<!-- All-->
+							<a href="javascript:void(0);"
+								class="dropdown-item text-center text-primary notify-item notify-all">
+								View all <i class="fe-arrow-right"></i>
+							</a>
+
+						</div></li>
+
+					<li class="dropdown notification-list topbar-dropdown"><a
+						class="nav-link dropdown-toggle nav-user me-0"
+						data-bs-toggle="dropdown" href="#" role="button"
+						aria-haspopup="false" aria-expanded="false"> <img
+							th:src="@{/images/users/avatar-1.jpg}" alt="user-image"
+							class="rounded-circle"> <span class="pro-user-name ms-1">
+								<span sec:authentication="principal.name"></span>님 환영합니다.<i
+								class="uil uil-angle-down"></i>
+						</span>
+					</a>
+						<div class="dropdown-menu dropdown-menu-end profile-dropdown ">
+							<!-- item-->
+							<div class="dropdown-header noti-title">
+								<h6 class="text-overflow m-0">Welcome !</h6>
+							</div>
+
+							<a href="pages-profile.html" class="dropdown-item notify-item">
+								<i data-feather="user" class="icon-dual icon-xs me-1"></i><span>My
+									Account</span>
+							</a> <a href="pages-lock-screen.html"
+								class="dropdown-item notify-item"> <i data-feather="lock"
+								class="icon-dual icon-xs me-1"></i><span>Lock Screen</span>
+							</a>
+
+							<div class="dropdown-divider"></div>
+
+							<a href="/member/logout" class="dropdown-item notify-item"> <i
+								data-feather="log-out" class="icon-dual icon-xs me-1"></i><span>Logout</span>
+							</a>
+
+						</div></li>
+
+				</ul>
+
+				<!-- LOGO -->
+				<div class="logo-box">
+					<a href="/" class="logo logo-dark"> <span class="logo-sm">
+							<img th:src="@{images/icon.png}" alt="" height="24"> <!-- <span class="logo-lg-text-light">Shreyu</span> -->
+					</span> <span class="logo-lg"> <img th:src="@{/images/icon.png}"
+							alt="" height="24"> <!-- <span class="logo-lg-text-light">S</span> -->
+					</span>
+					</a> <a href="/" class="logo logo-light"> <span class="logo-sm">
+							<img th:src="@{/images/icon.png}" alt="" height="24">
+					</span> <span class="logo-lg"> <img th:src="@{/images/icon.png}"
+							alt="" height="48" style="padding-left: 40px">
+					</span>
+					</a>
+				</div>
+
+				<ul class="list-unstyled topnav-menu topnav-menu-left m-0">
+					<li>
+						<button class="button-menu-mobile">
+							<i data-feather="menu"></i>
+						</button>
+					</li>
+
+					<li>
+						<!-- Mobile menu toggle (Horizontal Layout)--> <a
+						class="navbar-toggle nav-link" data-bs-toggle="collapse"
+						data-bs-target="#topnav-menu-content">
+							<div class="lines">
+								<span></span> <span></span> <span></span>
+							</div>
+					</a> <!-- End mobile menu toggle-->
+					</li>
+
+					<li class="dropdown d-none d-xl-block"><a
+						class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+						href="#" role="button" aria-haspopup="false" aria-expanded="false">
+							Create New <i class="uil uil-angle-down"></i>
+					</a>
+						<div class="dropdown-menu">
+							<!-- item-->
+							<a href="javascript:void(0);" class="dropdown-item"> <i
+								class="uil uil-bag me-1"></i><span>New Projects</span>
+							</a>
+
+							<!-- item-->
+							<a href="javascript:void(0);" class="dropdown-item"> <i
+								class="uil uil-user-plus me-1"></i><span>Create Users</span>
+							</a>
+
+							<!-- item-->
+							<a href="javascript:void(0);" class="dropdown-item"> <i
+								class="uil uil-chart-pie me-1"></i><span>Revenue Report</span>
+							</a>
+
+							<!-- item-->
+							<a href="javascript:void(0);" class="dropdown-item"> <i
+								class="uil uil-cog me-1"></i><span>Settings</span>
+							</a>
+
+							<div class="dropdown-divider"></div>
+
+							<!-- item-->
+							<a href="javascript:void(0);" class="dropdown-item"> <i
+								class="uil uil-question-circle me-1"></i><span>Help &
+									Support</span>
+							</a>
+
+						</div></li>
+
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<!-- end Topbar -->
+
+		<!-- ========== Left Sidebar Start ========== -->
+		<div class="left-side-menu">
+
+			<div class="h-100" data-simplebar>
+
+				<!-- User box -->
+				<div class="user-box text-center">
+					<img th:src="@{/images/users/avatar-1.jpg}" alt="user-img"
+						title="Mat Helme" class="rounded-circle avatar-md">
+					<div class="dropdown">
+						<a href="javascript: void(0);"
+							class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block"
+							data-bs-toggle="dropdown"></a>
+						<div class="dropdown-menu user-pro-dropdown">
+
+							<a href="pages-profile.html" class="dropdown-item notify-item">
+								<i data-feather="user" class="icon-dual icon-xs me-1"></i><span>My
+									Account</span>
+							</a> <a href="javascript:void(0);" class="dropdown-item notify-item">
+								<i data-feather="help-circle" class="icon-dual icon-xs me-1"></i><span>Support</span>
+							</a> <a href="pages-lock-screen.html"
+								class="dropdown-item notify-item"> <i data-feather="lock"
+								class="icon-dual icon-xs me-1"></i><span>Lock Screen</span>
+							</a>
+							<div class="dropdown-divider"></div>
+							<a href="javascript:void(0);" class="dropdown-item notify-item">
+								<i data-feather="log-out" class="icon-dual icon-xs me-1"></i><span>Logout</span>
+							</a>
+
+						</div>
+					</div>
+					<p class="text-muted">Admin Head</p>
+				</div>
+
+				<!--- Sidemenu -->
+				<div id="sidebar-menu">
+
+					<ul id="side-menu">
+						<th:block sec:authorize="hasRole('SYSTEM')">
+                             <li>
+                                <a href="/systemManager/userList">
+                                    <i data-feather="users"></i>
+                                    <span> 계정 생성 목록 </span>
+                                </a>
+                            </li>
+							 <li>
+                                <a href="/systemManager/createUser">
+                                    <i data-feather="user-plus"></i>
+                                    <span> 신규 계정 생성 </span>
+                                </a>
+                            </li>
+						</th:block>
+						<!-- <li class="menu-title">Navigation</li> -->
+						<th:block sec:authorize="hasRole('MEMBER')">
+
+							<li class="menu-title mt-2">임 · 직원</li>
+
+							<li><a href="#sidebarEmail" data-bs-toggle="collapse"> <i
+									data-feather="user"></i> <span> 인사 </span> <span
+									class="menu-arrow"></span>
+							</a>
+								<div class="collapse" id="sidebarEmail">
+									<ul class="nav-second-level">
+										<li><a href="/humanResource/organizationChart">조직도 조회</a></li>
+										<li><a href="/humanResource/myPage">개인정보 조회 및 수정</a></li>
+									</ul>
+								</div></li>
+
+
+							<li><a href="#sidebarProjects" data-bs-toggle="collapse">
+									<i data-feather="briefcase"></i> <span> 근태 </span> <span
+									class="menu-arrow"></span>
+							</a>
+								<div class="collapse" id="sidebarProjects">
+									<ul class="nav-second-level">
+										<li><a href="/workattitude/list">근태 기록 조회</a></li>
+										<li><a href="/workattitude/vacation">연차 휴가 조회 및 신청</a></li>
+									</ul>
+								</div></li>
+
+							<li><a href="#sidebarTasks" data-bs-toggle="collapse"> <i
+									data-feather="dollar-sign"></i> <span> 급여 </span> <span
+									class="menu-arrow"></span>
+							</a>
+								<div class="collapse" id="sidebarTasks">
+									<ul class="nav-second-level">
+										<li><a href="/salary/changeaccount">급여 계좌 수정</a></li>
+										<li><a href="/salary/list">급여 내역 조회</a></li>
+									</ul>
+								</div></li>
+							<li><a href="#sidebarExpages" data-bs-toggle="collapse">
+									<i data-feather="file-text"></i> <span> 증명서 </span> <span
+									class="menu-arrow"></span>
+							</a>
+								<div class="collapse" id="sidebarExpages">
+									<ul class="nav-second-level">
+										<li><a href="/certificate/employment">재직증명서 신청</a></li>
+										<li><a href="/certificate/list">증명서 신청 내역</a></li>
+									</ul>
+								</div></li>
+						</th:block>
+						<th:block
+							sec:authorize="hasRole('HR') || hasRole('ADMIN') || hasRole('ATTITUDE')
+											  || hasRole('HOLIDAY') || hasRole('APPROVAL') 
+											  || hasRole('SALARY') || hasRole('ROLE') || hasRole('PAY')">
+
+							<li class="menu-title mt-2">인사 관리자</li>
+
+
+
+							<li><a href="#sidebarLayouts" data-bs-toggle="collapse">
+									<i data-feather="clipboard"></i> <span> 기초자료 </span><span
+									class="menu-arrow"></span>
+							</a>
+								<div class="collapse" id="sidebarLayouts">
+									<ul class="nav-second-level">
+										<li><a href="/mngBasicInformation/company">업체 기본 정보</a></li>
+										<li><a href="/mngBasicInformation/department">부서 관리</a></li>
+										<li><a href="/mngBasicInformation/departmentHistory">부서
+												변경 이력</a></li>
+										<li><a href="/mngBasicInformation/premiumRate">보험 요율
+												관리</a></li>
+										<li><a href="/mngBasicInformation/premiumRateHistory">보험
+												요율 변경 이력</a></li>
+										<li><a href="/mngBasicInformation/vacationType">휴가 종류
+												관리</a></li>
+										<li><a href="/mngBasicInformation/salaryType">급 · 상여
+												종류 관리</a></li>
+									</ul>
+								</div></li>
+
+							<li><a href="#sidebarIcons" data-bs-toggle="collapse"> <i
+									data-feather="alert-triangle"></i> <span> 권한 관리 </span> <span
+									class="menu-arrow"></span>
+							</a>
+								<div class="collapse" id="sidebarIcons">
+									<ul class="nav-second-level">
+										<li><a href="/mngRole/roleDept">직급별 권한관리</a></li>
+										<li><a href="/mngRole/roleUser">사용자별 권한관리</a></li>
+									</ul>
+								</div></li>
+
+							<li><a href="#sidebarForms" data-bs-toggle="collapse"> <i
+									data-feather="users"></i> <span> 인사 관리 </span> <span
+									class="menu-arrow"></span>
+							</a>
+								<div class="collapse" id="sidebarForms">
+									<ul class="nav-second-level">
+										<li><a href="/mngHumanResource/organizationChart">조직도
+												조회</a></li>
+										<li><a href="/mngHumanResource/memberList">임직원 조회</a></li>
+										<li><a href="/mngHumanResource/memberInsert">임직원 등록</a></li>
+										<li><a href="/mngHumanResource/memberHistory">임직원 정보
+												수정 이력</a></li>
+									</ul>
+								</div></li>
+
+							<li><a href="#sidebarTables" data-bs-toggle="collapse">
+									<i data-feather="check-square"></i> <span> 근태 관리 </span> <span
+									class="menu-arrow"></span>
+							</a>
+								<div class="collapse" id="sidebarTables">
+									<ul class="nav-second-level">
+										<li><a href="/mngWorkAttitude/workAttitudeList">근태 기록
+												조회</a></li>
+										<li><a href="/mngWorkAttitude/workAttitudeUpdate">근태
+												기록 수정</a></li>
+										<li><a href="/mngWorkAttitude/workAttitudeHistory">근태
+												기록 수정 내역</a></li>
+									</ul>
+								</div></li>
+
+							<li><a href="#sidebarMaps" data-bs-toggle="collapse"> <i
+									data-feather="calendar"></i> <span> 휴가 관리 </span> <span
+									class="menu-arrow"></span>
+							</a>
+								<div class="collapse" id="sidebarMaps">
+									<ul class="nav-second-level">
+										<li><a href="/mngVacation/annualVacation">연차휴가</a></li>
+										<li><a href="/mngVacation/publicHoliday">휴일</a></li>
+										<li><a href="/mngVacation/vacationList">직원 휴가</a></li>
+									</ul>
+								</div></li>
+
+							<li><a href="#sidebarMultilevel" data-bs-toggle="collapse">
+									<i data-feather="dollar-sign"></i> <span> 급여 관리 </span> <span
+									class="menu-arrow"></span>
+							</a>
+								<div class="collapse" id="sidebarMultilevel">
+									<ul class="nav-second-level">
+										<li><a href="/mngSalary/annualSalary">연봉</a></li>
+										<li><a href="/mngSalary/deductFourMajorInsurances">4대
+												보험 공제 항목</a></li>
+										<li><a href="/mngSalary/nationalHealthInsurancePension">건강
+												보험, 국민 연금</a></li>
+										<li><a href="/mngSalary/payrollAccount">급여 계좌</a></li>
+										<li><a href="/mngSalary/salaryAndBonus">급 · 상여</a></li>
+										<li><a href="/mngSalary/paySalaryAndBonus">급 · 상여 이체
+												/ 승인</a></li>
+										<li><a href="/mngSalary/deposit">예수금</a></li>
+										<li><a href="/mngSalary/severancePay">퇴직금</a></li>
+									</ul>
+								</div></li>
+
+
+							<li><a href="#sidebarDashboard" data-bs-toggle="collapse">
+									<i data-feather="layers"></i> <span> 증명서 관리 </span> <span
+									class="menu-arrow"></span>
+							</a>
+								<div class="collapse" id="sidebarDashboard">
+									<ul class="nav-second-level">
+										<li><a href="/mngCertificate/printList">출력 대상 목록</a></li>
+										<li><a href="/mngCertificate/requestList">요청 목록</a></li>
+										<li><a href="/mngCertificate/certificateHistory">증명서
+												발급 내역</a></li>
+									</ul>
+								</div></li>
+
+						</th:block>
+					</ul>
+
+				</div>
+				<!-- End Sidebar -->
+
+				<div class="clearfix"></div>
+
+			</div>
+			<!-- Sidebar -left -->
+
+		</div>
+
+	</div>
+	<!-- Left Sidebar End -->
+	<script th:src="@{/js/vendor.min.js}"></script>
+
+	<!-- optional plugins -->
+	<script th:src="@{/libs/moment/min/moment.min.js}"></script>
+	<script th:src="@{/libs/apexcharts/apexcharts.min.js}"></script>
+	<script th:src="@{/libs/flatpickr/flatpickr.min.js}"></script>
+
+	<!-- page js -->
+	<script th:src="@{/js/pages/dashboard.init.js}"></script>
+	<script th:src="@{/js/app.min.js}"></script>
+</body>
+</html>

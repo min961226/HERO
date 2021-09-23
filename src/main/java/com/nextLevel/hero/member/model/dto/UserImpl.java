@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.User;
 public class UserImpl extends User {
 	
 	private int no;										//회원번호
+	private int companyNo;								//회사번호
 	private String id;									//회원아이디
 	private String pwd;									//회원비밀번호
 	private String tempPwdYn;							//임시비밀번호여부
@@ -19,13 +20,14 @@ public class UserImpl extends User {
 	
 	private List<MemberRoleDTO> memberRoleList;			//회원별권한리스트
 
-	public UserImpl(String username, String password, 
+	public UserImpl(int no, String username, String password, 
 			Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
 	}
 	
-	public void setDetails(MemberDTO member) {
+	public void setDetails(MemberDTO member, int companyNo) {
 		this.no = member.getNo();
+		this.companyNo = companyNo;
 		this.id = member.getId();
 		this.pwd = member.getPwd();
 		this.tempPwdYn = member.getTempPwdYn();
@@ -41,6 +43,10 @@ public class UserImpl extends User {
 	public int getNo() {
 		return no;
 	}
+	public int getCompanyNo() {
+		return companyNo;
+	}
+	
 
 	public String getId() {
 		return id;

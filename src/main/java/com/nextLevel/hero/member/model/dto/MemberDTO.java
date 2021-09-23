@@ -6,6 +6,7 @@ import java.util.List;
 public class MemberDTO {
 	
 	private int no;										//회원번호
+	private int companyNo;
 	private String id;									//회원아이디
 	private String pwd;									//회원비밀번호
 	private String tempPwdYn;							//임시비밀번호여부
@@ -18,10 +19,11 @@ public class MemberDTO {
 	
 	public MemberDTO() {}
 
-	public MemberDTO(int no, String id, String pwd, String tempPwdYn, String name, Date registDatetime,
+	public MemberDTO(int no,int companyNo, String id, String pwd, String tempPwdYn, String name, Date registDatetime,
 			Date accSecessionDatetime, String accSecessionYn, List<MemberRoleDTO> memberRoleList) {
 		super();
 		this.no = no;
+		this.companyNo = companyNo;
 		this.id = id;
 		this.pwd = pwd;
 		this.tempPwdYn = tempPwdYn;
@@ -38,6 +40,14 @@ public class MemberDTO {
 
 	public void setNo(int no) {
 		this.no = no;
+	}
+	
+	public int getCompanyNo() {
+		return companyNo;
+	}
+
+	public void setCompanyNo(int companyNo) {
+		this.companyNo = companyNo;
 	}
 
 	public String getId() {
