@@ -48,11 +48,11 @@
 													<td th:text="${fourIns.memberInfo.memberNo}"></td>
 													<td th:text="${fourIns.memberInfo.memberName}"></td>
 													<td th:text="${fourIns.departmentName}"></td>
-													<td><input type="text" id="validateEdit" th:text="${fourIns.validateDate}"></td>
-													<td><input type="checkbox" id="health" style="margin:5px;" th:checked="${fourIns.healthYn == Y}">건강보험</td>
-													<td><input type="checkbox" id="pension" style="margin:5px;" th:checked="${fourIns.pensionYn == Y}">국민연금</td>
-													<td><input type="checkbox" id="unemployee" style="margin:5px;" th:checked="${fourIns.unemployeeYn == Y}">고용보험</td>
-													<td><input type="checkbox" id="industry" style="margin:5px;" th:checked="${fourIns.industryYn == Y}">산재보험</td>
+													<td th:onchange="edit()"><input type="text" class="validateEdit" th:value="${fourIns.validateDate}"></td>
+													<td><input type="checkbox" class="health" style="margin:5px;" th:checked="${fourIns.healthYn == Y}">건강보험</td>
+													<td><input type="checkbox" class="pension" style="margin:5px;" th:checked="${fourIns.pensionYn == Y}">국민연금</td>
+													<td><input type="checkbox" class="unemployee" style="margin:5px;" th:checked="${fourIns.unemployeeYn == Y}">고용보험</td>
+													<td><input type="checkbox" class="industry" style="margin:5px;" th:checked="${fourIns.industryYn == Y}">산재보험</td>
 												</tr>
 											</tbody>
 										</table>
@@ -102,7 +102,9 @@
 		}
 	});
 	
-	
+	 function edit() {
+		
+	};
 	
 	
 	</script>
