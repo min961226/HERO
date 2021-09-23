@@ -7,45 +7,47 @@
 <style>
 	.Mng-role {
 		width: 1700px;
-		height: 1000px;
+		height: 800px;
 	}
 	
 	.head-role {
-		/* background-color : white; */
 /* 		width: 700px; */
-		width: 500px;
-		height: 1000px;
+		width: 30%;
+		height: 800px;
 		float:left;
 	}
 	
 	.body-role {
-		background-color : red; 
 		width: 70%;
-		height: 1000px;
+		height: 800px;
 		float:left;
 	}
 	.roleTable {
 		width: 150px;
-		height: 800px;
+		height: 550px;
 		font-size : 30px;
 	}
-	.body-role-down {
+	.role-down {
 			width: 300px;
-			height: 50px;
-			position: fixed; 
-			margin-top: 80px;
+			height: 150px;
+			/* position: fixed;   */
+			margin-top: 100px; 
             margin-left: 90px;
 	}
 	.role_radio {
-		width:28px;
-		height:28px;
+		width: 28px;
+		height: 28px;
 	}
 	.NoRoleImg {
-		width:600px;
+		width: 300px;
 	}
 	.NoRole {
 		margin-top: 150px;
 	}
+	.btn {
+		width: 800px;
+	}
+	
 		
 
 </style>
@@ -70,12 +72,11 @@
 							<div class="head-role">
 							
 							<h2 align="center">직급명</h2>
-							<table align="center" class="roleTable" border="1px">
+							<table align="center" class="roleTable">
 								
-
-								<tr>
+								<tr th:each="rank : ${ rankList }">
 									<td><input type="radio" class="role_radio" name="role_radio"></td>
-									<td>직급</td>
+									<td th:text="${ rank.rankName }"></td>
 								</tr>
 								<tr>
 									<td><input type="radio" class="role_radio" name="role_radio"></td>
@@ -116,7 +117,7 @@
 							</table>
 							
 										
-							<div class="body-role-down">
+							<div class="role-down">
 							<ul class="pagination pagination-rounded"><li class="paginate_button page-item previous disabled" id="basic-datatable_previous">
 							<a href="#" aria-controls="basic-datatable" data-dt-idx="0" tabindex="0" class="page-link">
 							<i class="uil uil-angle-left"></i></a></li><li class="paginate_button page-item active">
@@ -135,16 +136,17 @@
 							
 							<div class="body-role">
 							
-								<th:block sec:authorize="hasRole('')">
+								<!-- <th:block sec:authorize="hasRole('')"> -->
 								<div class="NoRole" align="center">
 								<img src="/images/mngRole/NoRole.jpg"  class="NoRoleImg">
 								<h2>생성된 권한이 없습니다. 권한을 부여하시겠습니까? </h2>
+								<input type="button" class="btn_create" value="생성"/>
 								</div>
 								</th:block>
 								
 								<form action="/mngRole/roleDept" method="post" id="roleDept">
 								
-								<input type="checkbox" name="optionNo2" value="5" id="cleb" class="checb" >g
+								<input type="checkbox" name="optionNo2" value="5" id="cleb" class="checb" >
 								
 								   
 								

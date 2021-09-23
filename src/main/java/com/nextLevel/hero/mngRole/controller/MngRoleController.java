@@ -21,6 +21,9 @@ public class MngRoleController {
 	@GetMapping("/roleDept")
 	public String mngRoleDept() {
 		
+		 
+		
+		
 		return "mngRole/roleDept";									//직급별 권한
 	}
 	
@@ -29,5 +32,7 @@ public class MngRoleController {
 		
 		return "mngRole/roleUser";									//사용자별 권한
 	}
+	
+	
 	
 }
