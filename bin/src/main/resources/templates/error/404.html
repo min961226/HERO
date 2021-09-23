@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta charset="utf-8" />
+        <title>Page Not Found | 404 Error Page | Shreyu - Responsive Admin Dashboard Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- App favicon -->
+  <!-- plugins -->
+       <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+		<link th:href="@{/libs/flatpickr/flatpickr.min.css}" rel="stylesheet" type="text/css" />
+
+<!-- App css -->
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"
+	type="text/css" id="bs-default-stylesheet" />
+<link th:href="@{/css/app.min.css}" rel="stylesheet" type="text/css"
+	id="app-default-stylesheet" />
+
+<link th:href="@{/css/bootstrap-dark.min.css}" rel="stylesheet"
+	type="text/css" id="bs-dark-stylesheet" disabled />
+<link th:href="@{/css/app-dark.min.css}" rel="stylesheet"
+	type="text/css" id="app-dark-stylesheet" disabled />
+
+
+<!-- icons -->
+<link th:href="@{/css/icons.min.css}" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body class="authentication-bg">
+
+        <div class="account-pages my-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-4 col-lg-5 col-8">
+                        <div class="text-center">
+                            <div>
+                                <img th:src="@{/images/not-found.png}" alt="" class="img-fluid" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                    	<h1 style="font-size:150px ;" align="center">404</h1>
+                        <h3 class="mt-3">페이지 연결에 실패하였습니다.</h3>
+                        <p class="text-muted mb-4">페이지를 찾지 못하였습니다. <br/> 경로가 이동되었거나 찾으시려는 페이지가 존재하지 않습니다.</p>
+
+                        <a href="/member/login" class="btn btn-lg btn-primary">로그인 페이지로 돌아가기</a>
+                    </div>
+                </div>
+            </div>
+            <!-- end container -->
+        </div>
+        <!-- end account-pages -->
+
+        <!-- Vendor js -->
+        <script th:src="@{/js/vendor.min.js}"></script>
+
+        <!-- App js -->
+        <script th:src="@{/js/app.min.js}"></script>
+        
+    </body>
+</html>
