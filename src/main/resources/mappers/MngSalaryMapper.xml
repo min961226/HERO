@@ -2,4 +2,65 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nextLevel.hero.mngSalary.model.dao.MngSalaryMapper">
 
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO" id="annualSalaryResultMap">
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
+		<result property="rank" column="RANK"/>
+		<result property="salaryStep" column="SALARY_STEP"/>
+		<result property="salaryStepUpdatedDate" column="UPDATED_DATE"/>
+		<result property="changeStartDate" column="CHANGE_START_DATE"/>
+	
+		<association property="memberInfo" resultMap="memberInfoResult"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MemberInfoDTO" id="memberInfoResult">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberName" column="MEMBER_NAME"/>		
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO" id="fourInsResultMap">
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="validateDate" column="START_DATE"/>
+		<result property="healthYn" column="HEALTH"/>
+		<result property="pensionYn" column="PENSION"/>
+		<result property="unemployeeYn" column="UNEMPLOYEE"/>
+		<result property="industryYn" column="INDUSTRY"/>
+				
+		<association property="memberInfo" resultMap="memberInfoResult"/>
+	</resultMap>
+	
+	<select id="listMngAnnualSalary" resultMap="annualSalaryResultMap">
+		SELECT
+		       A.COMPANY_NO
+		     , A.MEMBER_NO
+		     , A.KOREAN_NAME AS MEMBER_NAME
+		     , B.DEPARTMENT_NAME
+		     , C.SALARY_STEP_BY_RANK
+		     , D.UPDATED_DATE
+		     , E.CHANGE_START_DATE
+		  FROM TBL_EMPLOYEE A
+		  JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+		  JOIN TBL_EMP_SALARY_STEP C ON (A.MEMBER_NO = C.MEMBER_NO)
+		  JOIN TBL_EMP_SALARY_STEP_UPDATE D ON (C.SALARY_STEP_BY_RANK = D.SALARY_STEP_BY_RANK)
+		  JOIN TBL_EMP_MONTHLY_SALARY_LIST E ON (A.MEMBER_NO = E.MEMBER_NO)    	
+	</select>
+	
+	<select id="listMngFourInsuranceList" resultMap="fourInsResultMap">
+		SELECT
+		       A.COMPANY_NO
+		     , A.MEMBER_NO
+		     , A.KOREAN_NAME AS MEMBER_NAME
+		     , B.DEPARTMENT_NAME
+		     , C.START_DATE
+		     , C.HEALTH
+		     , C.PENSION
+		     , C.UNEMPLOYEE
+		     , C.INDUSTRY
+		  FROM TBL_EMPLOYEE A
+		  JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+		  JOIN TBL_FOUR_INSURANCE_DEDUCT C ON (A.MEMBER_NO = C.MEMBER_NO)			
+	</select>
+	
+	
 </mapper>

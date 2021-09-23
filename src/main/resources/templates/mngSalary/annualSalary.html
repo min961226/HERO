@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 	<div id="wrapper">
@@ -16,10 +17,56 @@
 						<div class="col-12">
 							<br>
 							<div class="page-title-box">
-								<h3 class="page-title">연봉</h3>
-							</div>
-							<hr>
+								<h3 class="page-title"><b>연봉 관리</b></h3>
+							</div>							
+								<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div>
+								<label style="padding:10px;">기준일 </label><input type="date"><br>
+								<label style="margin:15px;">검색</label>
+								<select>
+									<option value="deptName">부서명</option>
+									<option value="memberName">성 명</option>
+								</select>
+								<input type="text" style="margin:10px;"><button type="button" class="btn btn-outline-primary">검 색</button>
+							</div>
+							<br>
+							<div class="card">
+								<div class="card-body">
+								<button type="button" class="btn btn-warning" style="margin:5px;">호봉승급</button>
+								<table class="table table-striped dt-responsive nowrap w-100 text-center">
+									<thead>
+										<tr>
+											<th>구 분</th>											
+											<th>사원번호</th>											
+											<th>성명 </th>											
+											<th>소 속</th>											
+											<th>직 급</th>											
+											<th>호 봉</th>											
+											<th>설정시작일</th>											
+											<th>연 봉</th>											
+											<th>월 지급항목</th>											
+											<th>변경 이력</th>											
+										</tr>
+									</thead>
+										
+									<tbody>
+										<tr th:each="annual,num : ${salaryList}">
+											<td th:text="${num.count}"></td>
+											<td th:text="${annual.memberInfo.memberNo}"></td>
+											<td th:text="${annual.memberInfo.memberName}"></td>
+											<td th:text="${annual.departmentName}"></td>
+											<td th:text=""></td>
+											<td th:text="${annual.salaryStepUpdatedDate}"></td>
+											<td th:text=""></td>
+											<td th:text=""></td>
+											<td th:text=""><button type="button" class="btn btn-soft-warning">지급항목</button></td>
+											<td th:text=""><button type="button" class="btn btn-soft-warning">변경내역</button></td>
+										</tr>
+									</tbody>
+								</table>
+							   </div>
+							</div>
 						</div>
 					</div>
 				</div>
