@@ -1,4 +1,4 @@
-package com.nextLevel.hero.mngCertificate.model.service;
+ package com.nextLevel.hero.mngCertificate.model.service;
 
 import org.springframework.stereotype.Service;
 
