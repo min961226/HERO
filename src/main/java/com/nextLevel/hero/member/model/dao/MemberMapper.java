@@ -9,4 +9,6 @@ public interface MemberMapper {
 	
 	MemberDTO findMemberById(String userId);
 
+	int findCompanyNoByUserNo(int no);
+
 }

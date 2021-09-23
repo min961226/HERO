@@ -1,6 +1,7 @@
 package com.nextLevel.hero.mngBasicInformation.model.dto;
 
+import java.io.Serializable;
 
-public interface MngBasicInformationDTO {
+public class MngBasicInformationDTO implements Serializable{
 
 }
