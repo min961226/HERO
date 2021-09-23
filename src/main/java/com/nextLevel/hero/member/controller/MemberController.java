@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nextLevel.hero.member.model.service.MemberService;
+import com.nextLevel.hero.mngCertificate.model.service.CertificateMemberService;
 
 @Controller
 @RequestMapping("/member")
