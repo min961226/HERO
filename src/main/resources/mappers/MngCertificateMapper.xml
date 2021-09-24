@@ -26,9 +26,9 @@
 <!-- 	private int departmentNo;								//부서번호 -->
 	<select id="findAllMember" resultMap="MemberResultMap">
 	SELECT
-		C.REQUEST_NO
+        C.REQUEST_NO
 	  , C.MEMBER_NO
-	  ,	C.MEMBER_NAME
+      , C.MEMBER_NAME
 	  , D.DEPARTMENT_NAME 
 	  , R.RANK
 	  , C.REQUEST_DATE
@@ -40,7 +40,7 @@
 	  , C.DEPARTMENT_NO
 	FROM TBL_REQUEST_CERTIFICATION C
 	JOIN TBL_DEPARTMENT D ON(C.COMPANY_NO = D.COMPANY_NO)
-	JOIN TBL_RNAK_SALARY_STEP R ON(C.COMPANY_NO = R.COMPANY_NO)
+	JOIN TBL_RANK_SALARY_STEP R ON(C.COMPANY_NO = R.COMPANY_NO)
 		
 	</select>
 	

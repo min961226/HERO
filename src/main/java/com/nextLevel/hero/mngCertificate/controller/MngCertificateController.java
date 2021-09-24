@@ -1,14 +1,12 @@
 package com.nextLevel.hero.mngCertificate.controller;
 
-import java.util.List;
-
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
+import com.nextLevel.hero.member.model.dto.UserImpl;
 import com.nextLevel.hero.mngCertificate.model.dto.CertificateMemberDTO;
-import com.nextLevel.hero.mngCertificate.model.service.CertificateMemberService;
 import com.nextLevel.hero.mngCertificate.model.service.MngCertificateService;
 
 @Controller
@@ -22,14 +20,11 @@ public class MngCertificateController {
 	}
 	
 	@GetMapping("/printList")
-	public String mngPrintList(ModelAndView mv) {
+	public String mngPrintList(@AuthenticationPrincipal UserImpl user) {
 		
-		List<CertificateMemberDTO> memberList = CertificateMemberService.findAllMember();
+		CertificateMemberDTO memberList = mngCertificateService.findAllMember();
 		
-		mv.addObject("MemberList", memberList);
-		mv.setViewName("mngCertificate/printList");
-		
-		System.out.println("memberList" + memberList);
+		System.out.println("memberList : " + memberList);
 		
 		return "mngCertificate/printList";
 	}
