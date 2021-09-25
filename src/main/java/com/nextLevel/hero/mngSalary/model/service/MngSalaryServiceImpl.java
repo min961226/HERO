@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nextLevel.hero.mngSalary.model.dao.MngSalaryMapper;
+import com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO;
+import com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
 
@@ -22,7 +24,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 	/* 연봉 조회 */
 	@Override
 	public List<MngSalaryDTO> listMngAnnualSalary() {
-		
+
 		return mngSalaryMapper.listMngAnnualSalary();
 	}
 
@@ -32,6 +34,21 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 	public List<MngDeductFourInsDTO> listMngFourInsuranceList() {
 		
 		return mngSalaryMapper.listMngFourInsuranceList();
+	}
+
+	/* 건강, 국민연금 보수월액 및 공제금액 조회 */
+	@Override
+	public List<MemberInsFeeDTO> listMngNationalHealthInsurancePension() {
+		
+		return mngSalaryMapper.listMngNationalHealthInsurancePension();
+	}
+
+	
+	/* 급여 계좌 조회 */
+	@Override
+	public List<MngAccountDTO> listmngPayrollAccount() {
+		
+		return mngSalaryMapper.listmngPayrollAccount();
 	}
 
 	

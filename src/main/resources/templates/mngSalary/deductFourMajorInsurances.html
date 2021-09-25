@@ -29,7 +29,7 @@
 							<div class="col-10" style="margin:0 auto;">
 								<div class="card">
 									<div class="card-body">
-										<table class="table table-striped dt-responsive nowrap w-80 text-center">
+										<table class="table table-striped dt-responsive nowrap w-80 text-center" id="deducT">
 											<thead>
 												<tr>								
 													<th>사원번호</th>											
@@ -44,11 +44,11 @@
 											</thead>
 											
 											<tbody>
-												<tr th:each="fourIns : ${fourInsuranceList}">
-													<td th:text="${fourIns.memberInfo.memberNo}"></td>
-													<td th:text="${fourIns.memberInfo.memberName}"></td>
-													<td th:text="${fourIns.departmentName}"></td>
-													<td th:onchange="edit()"><input type="text" class="validateEdit" th:value="${fourIns.validateDate}"></td>
+												<tr th:each="fourIns,fourInsStat : ${fourInsuranceList}">
+													<td th:text="${fourIns.memberInfo.memberNo}" th:id="'memId' + {fourInsStat.index}" class="memNo"></td>
+													<td th:text="${fourIns.memberInfo.memberName}" class="memName"></td>
+													<td th:text="${fourIns.departmentName}" class="deptName"></td>
+													<td th:id="'memId' + {fourInsStat.index}"><input type="text" class="validateEdit" th:value="${fourIns.validateDate}"></td>
 													<td><input type="checkbox" class="health" style="margin:5px;" th:checked="${fourIns.healthYn == Y}">건강보험</td>
 													<td><input type="checkbox" class="pension" style="margin:5px;" th:checked="${fourIns.pensionYn == Y}">국민연금</td>
 													<td><input type="checkbox" class="unemployee" style="margin:5px;" th:checked="${fourIns.unemployeeYn == Y}">고용보험</td>
@@ -57,7 +57,7 @@
 											</tbody>
 										</table>
 										<br>
-										<button type="button" class="btn btn-success" style="float: right;">변경 적용</button>
+										<button type="button" class="btn btn-success" id="modi" style="float: right;">변경 적용</button>
 									</div>
 								</div>
 							</div>
@@ -102,10 +102,36 @@
 		}
 	});
 	
-	 function edit() {
+	$("[id^=name]").change(function(){
 		
-	};
+		const memId = $(this).siblings(".memId").text();
+		
+		console.log(memId);
+			
+	});
 	
+	$("#modi").click(function() {
+		
+		const tbody = $("#deducT > tbody");
+		const rows = tbody.children();
+		
+		const deductList = [];
+		
+		rows.each(function() {
+			const personal = {};
+			personal.memNo = $(this).find(".memNo").text();
+			personal.memName = $(this).find(".memName").text();
+			personal.deptDate = $(this).find(".deptDate").text();
+			personal.validate = $(this).find(".validateEdit").text();
+			personal.health = $(this).find(".health").text();
+			personal.pension = $(this).find(".pension").text();
+			personal.unemployee = $(this).find(".unemployee").text();
+			personal.industry = $(this).find(".industry").text();
+			
+			deductList.push(personal);
+		});
+		
+	});
 	
 	</script>
 </body>

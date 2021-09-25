@@ -16,10 +16,39 @@
 						<div class="col-12">
 							<br>
 							<div class="page-title-box">
-								<h3 class="page-title">급여 계좌 수정</h3>
+								<h3 class="page-title"><b>내 급여 계좌</b></h3>
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div class="col-10" style="margin:0 auto;">
+								<div class="card">
+									<div class="card-body">
+										<table class="table table-striped dt-responsive nowrap w-80 text-center" id="deducT">
+											<thead>
+												<tr>								
+													<th>구분</th>											
+													<th>은행명</th>											
+													<th>계좌번호</th>											
+													<th>통장사본</th>										
+													<th>등록일자</th>																												
+												</tr>
+											</thead>
+											
+											<tbody>
+												<tr th:each="account,num : ${accountList}">
+													<td th:text="${num.count}"></td>
+													<td th:text="${account.bankName}"></td>
+													<td th:text="${account.accountNo}"></td>
+													<td></td>
+													<td th:text="${account.enrollDate}"></td>
+												</tr>
+											</tbody>
+										</table>
+										<br>
+										<button type="button" class="btn btn-success" id="change" style="float: right;">등록</button>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

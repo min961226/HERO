@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nextLevel.hero.salary.model.dao.SalaryMapper">
+	<resultMap type="com.nextLevel.hero.salary.model.dto.MyAccountDTO" id="accountListResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<id property="bankCode" column="BANK_CODE"/>
+		<result property="bankName" column="BANK_NAME"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="enrollDate" column="ENROLL_DATE"/>
+	</resultMap>
 
+
+	<select id="selectAccountList" resultMap="accountListResultMap" parameterType="_int">
+		SELECT
+		        E.COMPANY_NO
+		      , E.BANK_CODE
+		      , E.BANK_NAME
+		      , E.ACCOUNT_NO
+		      , E.MEMBER_NO
+		      , E.MEMBER_NAME
+		      , E.DEPARTMENT_NAME
+		      , E.ENROLL_DATE
+		 FROM   (SELECT
+		               A.COMPANY_NO
+		             , A.BANK_CODE
+		             , A.ACCOUNT_NO
+		             , A.MEMBER_NO
+		             , B.KOREAN_NAME AS MEMBER_NAME
+		             , B.ID_NO
+		             , C.DEPARTMENT_NAME
+		             , A.ENROLL_DATE
+		             , D.BANK_NAME
+		          FROM TBL_EMP_ACCOUNT_UPDATE A
+		          JOIN TBL_EMPLOYEE B ON (A.MEMBER_NO = B.MEMBER_NO)
+		          JOIN TBL_DEPARTMENT C ON (B.DEPARTMENT_NO = C.DEPARTMENT_NO)
+		          JOIN TBL_BANK D ON (A.BANK_CODE = D.BANK_CODE)	
+		         )E
+	    WHERE E.COMPANY_NO = #{ companyNo }
+	      AND E.ID_NO = #{ idNo }
+	</select>
 </mapper>

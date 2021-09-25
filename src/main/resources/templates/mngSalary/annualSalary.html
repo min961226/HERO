@@ -5,6 +5,12 @@
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style>
+ #annualTBL {
+ 	vertical-align : middle;
+ 	text-align: center;
+ }
+</style>
 </head>
 <body>
 	<div id="wrapper">
@@ -24,7 +30,7 @@
 							<div>
 								<label style="padding:10px;">기준일 </label><input type="date"><br>
 								<label style="margin:15px;">검색</label>
-								<select>
+								<select style="width:155px">
 									<option value="deptName">부서명</option>
 									<option value="memberName">성 명</option>
 								</select>
@@ -34,7 +40,7 @@
 							<div class="card">
 								<div class="card-body">
 								<button type="button" class="btn btn-warning" style="margin:5px;">호봉승급</button>
-								<table class="table table-striped dt-responsive nowrap w-100 text-center">
+								<table class="table table-striped dt-responsive nowrap w-100" id="annualTBL">
 									<thead>
 										<tr>
 											<th>구 분</th>											
@@ -53,18 +59,138 @@
 									<tbody>
 										<tr th:each="annual,num : ${salaryList}">
 											<td th:text="${num.count}"></td>
-											<td th:text="${annual.memberInfo.memberNo}"></td>
-											<td th:text="${annual.memberInfo.memberName}"></td>
-											<td th:text="${annual.departmentName}"></td>
-											<td th:text=""></td>
-											<td th:text="${annual.salaryStepUpdatedDate}"></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td th:text=""><button type="button" class="btn btn-soft-warning">지급항목</button></td>
-											<td th:text=""><button type="button" class="btn btn-soft-warning">변경내역</button></td>
+											<td th:text="${annual.memberInfo.memberNo}" class="memberNo"></td>
+											<td th:text="${annual.memberInfo.memberName}" class="memberName"></td>
+											<td th:text="${annual.departmentName}" class="deptName"></td>
+											<td th:text="${annual.rank}" class="rank"></td>
+											<td th:text="${annual.salaryStep}" class="step"></td>
+											<td></td>
+											<td></td>
+											<td th:id="'monDetail' + ${num.count}"><button type="button" class="btn btn-soft-success width-xs" 
+												data-bs-toggle="modal" data-bs-target="#monthlyPay">지급항목</button></td>
+											<td th:id="'historyDetail' + ${num.count}"><button type="button" class="btn btn-soft-success width-xs"
+												data-bs-toggle="modal" data-bs-target="#updateHistory">변경내역</button></td>
 										</tr>
 									</tbody>
 								</table>
+								<!-- 월 지급항목 모달창 -->
+									<div class="modal fade" id="monthlyPay" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                             <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="monthlyPayModal">월 지급항목</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    	<div>
+	                                                        <label style="margin:5px; display: none;" id="memNo" ></label>
+	                                                        <label style="margin:10px;">소속 :</label><label id="deptName" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">직급 :</label><label id="rank" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">성명 :</label><label id="memName" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">호봉 :</label><label id="step" style="margin:5px;"></label><br>
+                                                    	</div>
+                                                    	<br>
+                                                    	<div style="margin:0 auto; padding:20px;">
+				                                            <table class="table mb-0 text-center" id="modalTBL">
+				                                                <thead class="table-light">
+				                                                    <tr>
+				                                                        <th>항목</th>
+				                                                        <th>지급액</th>
+				                                                        <th style="width:350px">비고</th>
+				                                                        <th>과세여부</th>
+				                                                    </tr>
+				                                                </thead>
+				                                                <tbody>
+				                                                    <tr>
+				                                                        <th scope="row">1</th>
+				                                                        <td>Mark</td>
+				                                                        <td>Otto</td>
+				                                                        <td>@mdo</td>
+				                                                    </tr>
+				                                                    <tr>
+				                                                        <th scope="row">2</th>
+				                                                        <td>Jacob</td>
+				                                                        <td>Thornton</td>
+				                                                        <td>@fat</td>
+				                                                    </tr>
+				                                                    <tr>
+				                                                        <th scope="row">3</th>
+				                                                        <td>Larry</td>
+				                                                        <td>the Bird</td>
+				                                                        <td>@twitter</td>
+				                                                    </tr>
+				                                                </tbody>
+				                                            </table>
+				                                        </div>
+                                                    </div>
+                                                   <div class="modal-footer">
+	                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
+	                   									<button type="button" class="btn btn-success width-xs">수정</button>
+                                                   </div> 
+                                              </div>
+                                        </div>
+                                     </div> <!-- 월 지급항목 모달창 종료 -->
+                                   
+                                    <!-- 변경이력 모달창 -->
+									<div class="modal fade" id="updateHistory" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                             <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="updateHistory">변경 이력</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    	<div>
+	                                                        <label style="margin:5px; display: none;" id="memNo2" ></label>
+	                                                        <label style="margin:10px;">소속 :</label><label id="deptName2" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">직급 :</label><label id="rank2" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">성명 :</label><label id="memName2" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">호봉 :</label><label id="step2" style="margin:5px;"></label><br>
+                                                    	</div>
+                                                    	<br>
+                                                    	<div style="margin:0 auto; padding:20px;">
+				                                            <table class="table mb-0 text-center" id="modalTBL2">
+				                                                <thead class="table-light">
+				                                                    <tr>
+				                                                        <th>설정시작일</th>
+				                                                        <th>연봉</th>
+				                                                        <th>변경사유</th>
+				                                                        <th>증감액(원, %)</th>
+				                                                        <th>월 지급항목</th>
+				                                                    </tr>
+				                                                </thead>
+				                                                <tbody>
+				                                                    <tr>
+				                                                        <th scope="row">1</th>
+				                                                        <td>Mark</td>
+				                                                        <td>Otto</td>
+				                                                        <td>@mdo</td>
+				                                                        <td>@mdo</td>
+				                                                    </tr>
+				                                                    <tr>
+				                                                        <th scope="row">2</th>
+				                                                        <td>Jacob</td>
+				                                                        <td>Thornton</td>
+				                                                        <td>@fat</td>
+				                                                        <td>@fat</td>
+				                                                    </tr>
+				                                                    <tr>
+				                                                        <th scope="row">3</th>
+				                                                        <td>Larry</td>
+				                                                        <td>the Bird</td>
+				                                                        <td>@twitter</td>
+				                                                        <td>@twitter</td>
+				                                                    </tr>
+				                                                </tbody>
+				                                            </table>
+				                                        </div>
+                                                    </div>
+                                                   <div class="modal-footer">
+	                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>	                   									
+                                                   </div> 
+                                              </div>
+                                        </div>
+                                     </div> <!-- 변경이력 모달창 종료 -->
 							   </div>
 							</div>
 						</div>
@@ -74,5 +200,41 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script type="text/javascript">
+
+	$("[id^=monDetail]").click(function(){
+		
+			const memberNo = $(this).siblings(".memberNo").text();
+			const memberName = $(this).siblings(".memberName").text();
+			const departmentName = $(this).siblings(".deptName").text();
+			const salRank = $(this).siblings(".rank").text();
+			const salStep = $(this).siblings(".step").text();
+			
+			const memNo = $("#memNo").text(memberNo);
+			const deptName = $("#deptName").text(departmentName);
+			const memName = $("#memName").text(memberName);
+			const rank = $("#rank").text(salRank);
+			const step = $("#step").text(salStep);
+	});
+	
+	$("[id^=historyDetail]").click(function(){
+		
+		const memberNo = $(this).siblings(".memberNo").text();
+		const memberName = $(this).siblings(".memberName").text();
+		const departmentName = $(this).siblings(".deptName").text();
+		const salRank = $(this).siblings(".rank").text();
+		const salStep = $(this).siblings(".step").text();
+		
+		const memNo = $("#memNo2").text(memberNo);
+		const deptName = $("#deptName2").text(departmentName);
+		const memName = $("#memName2").text(memberName);
+		const rank = $("#rank2").text(salRank);
+		const step = $("#step2").text(salStep);
+	});
+	
+	
+	
+	
+	</script>
 </body>
 </html>
