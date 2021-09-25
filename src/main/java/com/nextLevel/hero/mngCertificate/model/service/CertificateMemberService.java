@@ -17,11 +17,5 @@ public class CertificateMemberService {
 	public CertificateMemberService(MngCertificateMapper mngCertificateMapper) {
 		this.mngCertificateMapper = mngCertificateMapper;
 	}
-	
-	public static List<CertificateMemberDTO> findAllMember() {
-		
-		
-		return mngCertificateMapper.findAllMember();
-	}
 
 }
