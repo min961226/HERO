@@ -16,10 +16,44 @@
 						<div class="col-12">
 							<br>
 							<div class="page-title-box">
-								<h3 class="page-title">휴일</h3>
+								<h3 class="page-title">휴일 관리</h3>
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div>
+								<button type="button" class="btn btn-outline-primary">신규추가</button>
+							</div>
+							<br>
+							
+							<div class="card">
+								<div class="card-body">
+								<!-- 조회 테이블 -->
+								<table class="table table-striped dt-responsive nowrap w-100 text-center">
+									<thead>
+										<tr>
+											<th>번호</th>											
+											<th>달력</th>											
+											<th>날짜</th>											
+											<th>제목</th>											
+											<th>휴일여부</th>											
+											<th>상세보기</th>											
+										</tr>
+									</thead>
+										
+									<tbody>
+										<tr th:each="holiday:${holidayList}">
+											<td th:text="${holiday.holidayNo}"></td>
+											<td th:text="${holiday.calendar}"></td>
+											<td th:text="${holiday.holidayDate}"></td>
+											<td th:text="${holiday.title}"></td>
+											<td th:text="${holiday.holidayStatus}"></td>
+											<td><button type="button" class="btn btn-soft-warning">상세보기</button></td>
+										</tr>
+									</tbody>
+								</table>
+								
+								</div>
+							</div>
 							
 						</div>
 					</div>
