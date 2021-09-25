@@ -4,4 +4,12 @@ import java.io.Serializable;
 
 public class MngVacationDTO implements Serializable{
 
+	
+	
+	
+	
+
+	
+	
+	
 }

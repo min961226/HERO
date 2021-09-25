@@ -16,10 +16,52 @@
 						<div class="col-12">
 							<br>
 							<div class="page-title-box">
-								<h3 class="page-title">연차휴가</h3>
+								<h3 class="page-title">연차휴가 조회</h3>
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							
+							<div>
+								<input type="text" style="margin:10px;" placeholder="부서명">
+								<input type="text" style="margin:10px;" placeholder="이름">
+								<button type="button" class="btn btn-outline-primary">검 색</button>
+							</div>
+							<div>
+								<button type="button" class="btn btn-outline-primary">연차일괄조정</button>
+							</div>
+							<br>
+							
+							<div class="card">
+								<div class="card-body">
+								<!-- 조회 테이블 -->
+								<table class="table table-striped dt-responsive nowrap w-100 text-center">
+									<thead>
+										<tr>
+											<th>번호</th>											
+											<th>사번</th>											
+											<th>부서명</th>											
+											<th>발생월차</th>											
+											<th>총연차</th>											
+											<th>조정연차</th>											
+											<th>잔여연차</th>											
+											<th>연차조정(상세보기)</th>											
+										</tr>
+									</thead>
+										
+									<tbody>
+										<tr th:each="">
+											<td th:text=""></td>
+											<td th:text=""></td>
+											<td th:text=""></td>
+											<td th:text=""></td>
+											<td th:text=""></td>
+											<td th:text=""></td>
+											<td th:text=""></td>
+											<td><button type="button" class="btn btn-soft-warning">상세보기</button></td>
+										</tr>
+									</tbody>
+								</table>
+							
 						</div>
 					</div>
 				</div>
