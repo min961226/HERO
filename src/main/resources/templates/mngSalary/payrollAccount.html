@@ -4,6 +4,12 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+<style>
+	#accountList {
+		vertical-align : middle;
+ 		text-align: center;
+	}
+</style>
 </head>
 <body>
 	<div id="wrapper">
@@ -16,10 +22,86 @@
 						<div class="col-12">
 							<br>
 							<div class="page-title-box">
-								<h3 class="page-title">급여 계좌</h3>
+								<h3 class="page-title"><b>급여 계좌</b></h3>
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div>
+								<label style="margin:10px;">검색</label>
+								<select style="width:155px">
+									<option value="deptName">부서명</option>
+									<option value="memberName">성 명</option>
+								</select>
+								<input type="text" style="margin:10px;"><button type="button" class="btn btn-outline-primary">검 색</button>
+							</div>
+							<br>
+							<div class="row">
+								<div class="col-xl-7">
+		                            <div class="row">
+		                                <div class="col">
+											<div class="card">
+		                                        <div class="card-body">
+													<div class="row">				                                                
+		                                                <table class="table mb-0 text-center" id="accountList">
+															<thead>
+																<tr>
+																	<th>구 분</th>											
+																	<th>사원번호</th>											
+																	<th>성 명</th>											
+																	<th>소 속</th>											
+																	<th>직 급</th>											
+																	<th>은 행</th>											
+																	<th>계좌번호</th>																					
+																</tr>
+															</thead>
+																
+															<tbody>
+																<tr>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																</tr>
+															</tbody>
+														</table>
+		                                            </div>    
+		                                        </div>        
+				                            </div>
+				                        </div>
+				                    </div>
+			                    </div>
+	                            <div class="col-xl-5">
+		                            <div class="card">
+		                                <div class="card-body">
+		                                    <div class="row">
+		                                        <table class="table table-sm mb-0 text-center" id="accountList">
+															<thead class="table-light">
+																<tr>
+																	<th colspan="2">은 행</th>																					
+																	<th>계좌번호</th>											
+																	<th>설정일자</th>													
+																	<th>통장사본</th>													
+																</tr>
+															</thead>
+																
+															<tbody>
+																<tr>
+																	<td>88</td>
+																	<td>신한</td>
+																	<td>110-292-059380</td>
+																	<td>2021-09-25</td>
+																	<td>아이콘</td>																
+																</tr>
+															</tbody>
+														</table>
+		                                    </div>
+		                                </div>
+		                             </div>
+	                             </div>
+                         	</div>
 						</div>
 					</div>
 				</div>
