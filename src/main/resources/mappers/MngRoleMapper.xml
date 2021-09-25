@@ -2,4 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nextLevel.hero.mngRole.model.dao.MngRoleMapper">
 
+	<resultMap type="com.nextLevel.hero.mngRole.model.dto.MngRoleDTO" id="rankResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="rank" column="RANK"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO" id="rankAuthMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<id property="authorityNo" column="AUTHORITY_NO"/>
+		<result property="rank" column="RANK"/>
+		<result property="createdAuthorityStatus" column="CREATED_AUTHORITY_STATUS"/>
+	</resultMap>
+	
+	<select id="selectRank" resultMap="rankResultMap">
+		SELECT
+        	   DISTINCT RANK
+  		  FROM TBL_RANK_SALARY_STEP
+ 		 WHERE COMPANY_NO = #{ companyNo }
+	</select>
+	
+	<select id="selectRankAuth" resultMap="rankAuthMap">
+		SELECT
+			   AUTHORITY_NO
+			 , CREATED_AUTHORITY_STATUS
+		  FROM TBL_RANK_AUTH
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND RANK = #{ rank }
+	</select>
+
+
 </mapper>
