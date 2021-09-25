@@ -26,7 +26,9 @@
 										<div class="card-body">
 											<h4 class="header-title mt-0">회사 기본정보</h4>
 											<p class="sub-header">
-												회사의 정보를 담고 있는 목록입니다. 수정 시 변경내용을 다시한번 확인 후 저장버튼을 눌러주시기 바랍니다.
+												수정에 유의하며 수정 시 변경내용을 다시한번 확인 후 저장버튼을 눌러주시기 바랍니다.
+												<br>
+												업체 기본 정보는
 												<code>기업체명</code>
 												,
 												<code>대표자명</code>
@@ -34,6 +36,10 @@
 												<code>본사주소</code>
 												,
 												<code>본사연락처</code>
+												,
+												<code>법인(주민)등록 번호</code>
+												,
+												<code>사업자 등록 번호</code>
 												,
 												<code>업종</code>
 												,
@@ -49,13 +55,13 @@
 												의 정보를 담고있습니다.
 											</p>
 
-											<form class="form-horizontal" method="post" action="/">
+											<form class="form-horizontal" method="post" action="/mngBasicInformation/company">
 												<div class="row">
 													<div class="col">
 														<div class="mb-3 row">
 															<label class="col-lg-2 col-form-label" for="simpleinput">기업체명</label>
 															<div class="col-lg-10">
-																<input type="text" class="form-control" name="companyName">
+																<input  type="text" class="form-control" name="companyName" th:value="${companyInfo.companyName}">
 															</div>
 														</div>
 
@@ -63,7 +69,7 @@
 															<label class="col-lg-2 col-form-label" for="simpleinput">본사
 																주소</label>
 															<div class="col-lg-7">
-																<input type="text" class="form-control" id="simpleinput">
+																<input type="text" class="form-control" id="simpleinput" th:value="${companyInfo.address}">
 															</div>
 															<div class="col-lg-3">
 																<button type="button" class="btn btn-info">우편번호
@@ -73,15 +79,29 @@
 														<div class="mb-3 row">
 															<label class="col-lg-2 col-form-label" for="simpleinput"></label>
 															<div class="col-lg-10">
-																<input type="text" class="form-control" id="simpleinput">
+																<input type="text" class="form-control" id="simpleinput" name="address" th:value="${companyInfo.address}">
 															</div>
 														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">법인(주민)등록 번호</label>
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="identificationNo1" th:value="${companyInfo.identificationNo.substring(0,5)}">
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="identificationNo2" th:value="${companyInfo.identificationNo.substring(6,12)}">
+															</div>
+														</div>
+														
 														<div class="mb-3 row">
 															<label class="col-lg-2 col-form-label"
 																for="example-number">본사 연락처</label>
 															<div class="col-lg-10">
 																<input class="form-control" id="example-number"
-																	type="number" name="number">
+																	type="text" name="phone" th:value="${companyInfo.phone}">
 															</div>
 														</div>
 
@@ -90,17 +110,18 @@
 																for="example-email">회사 이메일</label>
 															<div class="col-lg-10">
 																<input type="email" id="example-email"
-																	name="example-email" class="form-control">
+																	class="form-control"  name="managerEmail" th:value="${companyInfo.managerEmail}">
 															</div>
 														</div>
+														
 
 														<div class="mb-3 row">
 															<label class="col-lg-2 col-form-label" align="center">150인
 																우선 기업 여부</label>
 															<div class="col-lg-10">
-																<select class="form-select">
-																	<option>해당</option>
-																	<option>비해당</option>
+																<select class="form-select" name="firstCompanyYn" >
+																	<option th:selected="${companyInfo.firstCompanyYn}=='Y'"  value='Y'>해당</option>
+																	<option th:selected="${companyInfo.firstCompanyYn}=='N'" value='N'>비해당</option>
 																</select>
 															</div>
 														</div>
@@ -114,13 +135,14 @@
 														<div class="mb-3 row">
 															<label class="col-lg-2 col-form-label" for="simpleinput">대표자명</label>
 															<div class="col-lg-10">
-																<input type="text" class="form-control" name="ceoName">
+																<input type="text" class="form-control" name="ceoName" th:value="${companyInfo.ceoName}">
 															</div>
 														</div>
 														<div class="mb-3 row">
-															<label class="col-lg-2 col-form-label" for="simpleinput">업종</label>
+															<label class="col-lg-2 col-form-label" for="simpleinput" th:value="${companyInfo.companyName}">업종</label>
 															<div class="col-lg-7">
-																<input type="text" class="form-control" id="simpleinput">
+																<input type="text" class="form-control" id="simpleinput" th:value="${companyInfo.businessName}" >
+																<input type="text" class="form-control" id="simpleinput" name="businessCode" th:value="${companyInfo.businessCode}" hidden="hidden">
 															</div>
 															<div class="col-lg-3">
 																<button type="button" class="btn btn-info">업종
@@ -129,29 +151,47 @@
 														</div>
 														<div class="mb-3 row">
 															<label class="col-lg-2 col-form-label"
+																for="example-number">사업자 등록 번호</label>
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="companyRegistrationNo1" th:value="${companyInfo.companyRegistrationNo.substring(0,3)}">
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="companyRegistrationNo2" th:value="${companyInfo.companyRegistrationNo.substring(4,6)}">
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="companyRegistrationNo3" th:value="${companyInfo.companyRegistrationNo.substring(7,12)}">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
 																for="example-number">팩스 번호</label>
 															<div class="col-lg-10">
 																<input class="form-control" id="example-number"
-																	type="number" name="number">
+																	type="text" name="fax"th:value="${companyInfo.fax}">
 															</div>
 														</div>
 														<div class="mb-3 row">
 															<label class="col-lg-2 col-form-label">홈페이지 주소</label>
 															<div class="col-lg-10">
-																<input class="form-control" type="url" name="url">
+																<input class="form-control" type="url" name="website" th:value="${companyInfo.website}">
 															</div>
 														</div>
 														<div class="mb-3 row">
 															<label class="col-lg-2 col-form-label" for="example-date">설립일</label>
 															<div class="col-lg-10">
 																<input class="form-control" id="example-date"
-																	type="date" name="date">
+																	type="date" name="foundingDate" th:value="${companyInfo.foundingDate}">
 															</div>
 														</div>
 
 															<div align="right" >
 															<button type="submit" class="btn btn-info">저장</button>
-															<button type="reset" class="btn btn-success"style="margin-left: 10px">취소</button>
+															<button type="reset" class="btn btn-success"style="margin-left: 10px"  id="cancel">취소</button>
 														</div>
 													</div>
 												</div>
@@ -171,5 +211,6 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+		
 </body>
 </html>

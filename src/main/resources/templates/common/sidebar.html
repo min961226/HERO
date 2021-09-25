@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <title>인사관리 프로그램 HERO</title>
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <!-- plugins -->
 <link th:href="@{/libs/flatpickr/flatpickr.min.css}" rel="stylesheet"
 	type="text/css" />
@@ -410,18 +410,12 @@
 
 					<ul id="side-menu">
 						<th:block sec:authorize="hasRole('SYSTEM')">
-                             <li>
-                                <a href="/systemManager/userList">
-                                    <i data-feather="users"></i>
-                                    <span> 계정 생성 목록 </span>
-                                </a>
-                            </li>
-							 <li>
-                                <a href="/systemManager/createUser">
-                                    <i data-feather="user-plus"></i>
-                                    <span> 신규 계정 생성 </span>
-                                </a>
-                            </li>
+							<li><a href="/systemManager/userList"> <i
+									data-feather="users"></i> <span> 계정 생성 목록 </span>
+							</a></li>
+							<li><a href="/systemManager/createUser"> <i
+									data-feather="user-plus"></i> <span> 신규 계정 생성 </span>
+							</a></li>
 						</th:block>
 						<!-- <li class="menu-title">Navigation</li> -->
 						<th:block sec:authorize="hasRole('MEMBER')">
@@ -601,8 +595,31 @@
 			<!-- Sidebar -left -->
 
 		</div>
+		<script>
+		const successMessage = '[[${ successMessage }]]';
+		if(successMessage){
+			
+    	Swal.fire({
+			  position: 'center',
+			  icon: 'success',
+			  title: successMessage,
+			  showConfirmButton: false,
+			  timer: 1500,
+			  width: 600
+		}).then((result) => {
+						location.replace("#");
+				
+				})
+		}
+		
+		const $cancel = document.getElementById("cancel");
+		$cancel.onclick = function() {
+				location.href = ""
 
+		}
+    </script>
 	</div>
+
 	<!-- Left Sidebar End -->
 	<script th:src="@{/js/vendor.min.js}"></script>
 

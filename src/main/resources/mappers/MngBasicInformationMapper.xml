@@ -19,13 +19,25 @@
 		<result property="address" column="HEAD_QUARTER_ADDRESS"/>
 		<result property="phone" column="HEAD_QUARTER_PHONE"/>
 		<result property="fax" column="FAX"/>
-		<result property="employeeCount" column="TOTAL_EMPLOYEE_COUNT"/>
 		<result property="companyRegistrationNo" column="COMPANY_REGISTRATION_NO"/>
 		<result property="identificationNo" column="IDENTIFICATION_NO"/>
 		<result property="managerEmail" column="MANAGER_EMAIL"/>
 		<result property="website" column="WEBSITE"/>
 		<result property="foundingDate" column="FOUNDING_DATE"/>
 		<result property="businessCode" column="BUSINESS_CODE"/>
+		<result property="businessName" column="TYPE_OF_BUSINESS"/>
+		<result property="firstCompanyYn" column="FIRST_COMPANY_YN"/>
+	</resultMap>
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO" id="departmentHistoryResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="updatedHistoryNo" column="UPDATED_HISTORY_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="departmentNo" column="DEPARTMENT_NO"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="departmentCreateDate" column="DEPARTMENT_CREATE_DATE"/>
+		<result property="departmentPhone" column="DEPARTMENT_PHONE"/>
+		<result property="departmentUpdatedDate" column="DEPARTMENT_UPDATED_DATE"/>
+		<result property="updatedCategory" column="UPDATED_CATEGORY"/>
 	</resultMap>
 	
 	<select id="selectMember" resultMap="loginMemberResultMap">
@@ -37,7 +49,34 @@
 	<select id="selectCompanyInformationByCompanyNo" resultMap="companyInformationResultMap">
 		SELECT
 			   A.*
-		  FROM TBL_COMPANY A
-		 WHERE COMPANY_NO = #{ companyNo }
+			 , B.TYPE_OF_BUSINESS
+		  FROM TBL_COMPANY A,TBL_BUSINESS B
+		 WHERE A.BUSINESS_CODE = B.BUSINESS_CODE
+		   AND COMPANY_NO = #{ companyNo }
 	</select>
+	
+	<update id="updateCompanyInformation" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO">
+		UPDATE TBL_COMPANY
+		   SET COMPANY_NAME = #{ companyName }
+		     , CEO_NAME = #{ ceoName }
+		     , HEAD_QUARTER_ADDRESS = #{ address }
+		     , HEAD_QUARTER_PHONE = #{ phone }
+		     , FAX = #{ fax }
+		     , COMPANY_REGISTRATION_NO = #{ companyRegistrationNo }
+		     , IDENTIFICATION_NO = #{ identificationNo }
+		     , MANAGER_EMAIL = #{ managerEmail }
+		     , WEBSITE = #{ website }
+		     , FOUNDING_DATE = #{ foundingDate }
+		     , BUSINESS_CODE = #{ businessCode }
+		     , FIRST_COMPANY_YN = #{ firstCompanyYn }
+		 WHERE COMPANY_NO = #{ companyNo }
+	</update>
+	
+	<select id="selectDepartmentHistory" resultMap="departmentHistoryResultMap">
+		SELECT
+			   A.*
+		  FROM TBL_DEPARTMENT_UPDATE A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+	</select>
+	
 </mapper>

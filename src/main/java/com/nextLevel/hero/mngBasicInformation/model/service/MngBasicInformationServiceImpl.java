@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nextLevel.hero.member.model.dto.MemberDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dao.MngBasicInformationMapper;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO;
+import com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO;
 
 @Service("mngBasicInformationService")
 public class MngBasicInformationServiceImpl implements MngBasicInformationService {
@@ -22,6 +24,17 @@ public class MngBasicInformationServiceImpl implements MngBasicInformationServic
 	@Override
 	public MngBasicInformationDTO selectCompanyInformationByCompanyNo(int companyNo) {
 		return mngBasicInformationMapper.selectCompanyInformationByCompanyNo(companyNo);
+	}
+
+	@Override
+	@Transactional
+	public int updateCompanyInformation(MngBasicInformationDTO basicInformation) {
+		return mngBasicInformationMapper.updateCompanyInformation(basicInformation);
+	}
+
+	@Override
+	public MngDepartmentHistoryDTO selectDepartmentHistory(int companyNo) {
+		return mngBasicInformationMapper.selectDepartmentHistory(companyNo);
 	}
 
 
