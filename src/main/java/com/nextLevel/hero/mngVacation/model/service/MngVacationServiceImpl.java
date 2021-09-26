@@ -17,6 +17,10 @@ public class MngVacationServiceImpl implements MngVacationService {
 	public MngVacationServiceImpl(MngVacationMapper mngVacationMapper) {
 		this.mngVacationMapper = mngVacationMapper;
 	}
+	
+	
+	
+	
 
 	/* 휴일 조회 */
 	@Override
