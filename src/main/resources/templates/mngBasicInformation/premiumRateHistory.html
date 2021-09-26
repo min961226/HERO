@@ -68,5 +68,18 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script>
+		var pensionRate = document.getElementById('pensionRate').innerHTML
+		var healthRate = document.getElementById('healthRate').innerHTML
+		var longTermRate = document.getElementById('longTermRate').innerHTML
+		var unempBenefitRate = document.getElementById('unempBenefitRate').innerHTML
+		var industrialInsuranceRate = document.getElementById('industrialInsuranceRate').innerHTML
+		
+		document.getElementById('pensionRate').innerHTML = (pensionRate*100).toFixed(2);
+		document.getElementById('healthRate').innerHTML = (healthRate*100).toFixed(2);
+		document.getElementById('longTermRate').innerHTML = (longTermRate*100).toFixed(2);
+		document.getElementById('unempBenefitRate').innerHTML = (unempBenefitRate*100).toFixed(2);
+		document.getElementById('industrialInsuranceRate').innerHTML = (industrialInsuranceRate*100).toFixed(2);
+		</script>
 </body>
 </html>

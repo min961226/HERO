@@ -16,7 +16,7 @@ public interface MngBasicInformationMapper {
 
 	int updateCompanyInformation(MngBasicInformationDTO basicInformation);
 
-	MngDepartmentHistoryDTO selectDepartmentHistory(int companyNo);
+	List<MngDepartmentHistoryDTO> selectDepartmentHistory(int companyNo);
 
 	MngInsuranceRateDTO selectInsuranceHistory(int companyNo);
 
