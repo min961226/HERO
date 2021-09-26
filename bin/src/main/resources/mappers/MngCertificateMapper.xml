@@ -2,4 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nextLevel.hero.mngCertificate.model.dao.MngCertificateMapper">
 
+	<resultMap type="com.nextLevel.hero.mngCertificate.model.dto.CertificateMemberDTO" id="MemberResultMap">
+		<id property="requestNo" column="REQUEST_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="rank" column="RANK"/>
+		<result property="requestDate" column="REQUEST_DATE"/>
+		<result property="successedDate" column="SUCCESSED_DATE"/>
+		<result property="companyNo" column="COMPANY_NO"/>
+	</resultMap>
+<!-- 	private int requestNo;									//요청 번호		 -->
+<!-- 	private int memberNo;									//사번			TBL_REQUEST_CERTIFICATION 조인 회사번호로 -->
+<!-- 	private String memberName;								//이름			TBL_REQUEST_CERTIFICATION 조인 회사번호로 -->
+<!-- 	private String departmentName;							//부서명			TBL_DEPARTMENT 조인 회사번호로 -->
+<!-- 	private String rank;									//직급 			TBL_RNAK_SALARY_STEP 조인 회사번호로 -->
+<!-- 	private java.util.Date requestDate;						//신청일자			TBL_REQUEST_CERTIFICATION 조인 회사번호로 -->
+<!-- 	private java.util.Date successedDate;					//처리일자			TBL_REQUEST_CERTIFICATION 조인 회사번호로 -->
+<!--  	private String issueStatus;								//발급상태 -->		
+<!--  	private String certificationPurpose;					//용도 -->			
+<!--  	private int certificationNo;							//증명서번호 -->	 
+<!--  	private int companyNo;									//회사번호 -->		
+<!-- 	private int departmentNo;								//부서번호 -->
+	<select id="findAllMember" resultMap="MemberResultMap">
+	SELECT
+        C.REQUEST_NO
+	  , C.MEMBER_NO
+      , C.MEMBER_NAME
+	  , D.DEPARTMENT_NAME 
+	  , R.RANK
+	  , C.REQUEST_DATE
+	  , C.SUCCESSED_DATE
+	  , C.ISSUE_STATUS
+	  , C.CERTIFICATION_PURPOSE
+	  , C.CERTIFICATION_NO
+	  , C.COMPANY_NO
+	  , C.DEPARTMENT_NO
+	FROM TBL_REQUEST_CERTIFICATION C
+	JOIN TBL_DEPARTMENT D ON(C.COMPANY_NO = D.COMPANY_NO)
+	JOIN TBL_RANK_SALARY_STEP R ON(C.COMPANY_NO = R.COMPANY_NO)
+		
+	</select>
+	
 </mapper>

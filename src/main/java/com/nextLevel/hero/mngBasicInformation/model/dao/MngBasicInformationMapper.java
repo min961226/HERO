@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO;
+import com.nextLevel.hero.mngBasicInformation.model.dto.MngInsuranceRateDTO;
 
 
 @Mapper
@@ -16,6 +17,8 @@ public interface MngBasicInformationMapper {
 	int updateCompanyInformation(MngBasicInformationDTO basicInformation);
 
 	MngDepartmentHistoryDTO selectDepartmentHistory(int companyNo);
+
+	MngInsuranceRateDTO selectInsuranceHistory(int companyNo);
 
 
 

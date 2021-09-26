@@ -39,6 +39,35 @@
 		<result property="departmentUpdatedDate" column="DEPARTMENT_UPDATED_DATE"/>
 		<result property="updatedCategory" column="UPDATED_CATEGORY"/>
 	</resultMap>
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngInsuranceRateDTO" id="insuranceResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="divNo" column="DIV_NO"/>
+		<result property="insuranceRateStartDate" column="INSURANCE_RATE_START_DATE"/>
+		<result property="nationalPensionRate" column="NATIONAL_PENSION_RATE"/>
+		<result property="workersPensionRate" column="WORKERS_PENSION_RATE"/>
+		<result property="employerPensionRate" column="EMPLOYER_PENSION_RATE"/>
+		<result property="healthRate" column="HEALTH_RATE"/>
+		<result property="workersHealthRate" column="WORKERS_HEALTH_RATE"/>
+		<result property="employerHealthRate" column="EMPLOYER_HEALTH_RATE"/>
+		<result property="longTermCareRate" column="LONG_TERM_CARE_RATE"/>
+		<result property="workersLongTermCareRate" column="WORKERS_LONG_TERM_CARE_RATE"/>
+		<result property="employerLongTermCareRate" column="EMPLOYER_LONG_TERM_CARE_RATE"/>
+		<result property="unempBenefitRate" column="UNEMP_BENEFIT_RATE"/>
+		<result property="workersUnempRate" column="WORKERS_UNEMP_RATE"/>
+		<result property="employerUnempRate" column="EMPLOYER_UNEMP_RATE"/>
+		<result property="under150EmpRate" column="UNDER150_EMP_INSURANCE"/>
+		<result property="over150PriorityEmpRate" column="OVER150_OR_PRIORITY_EMP"/>
+		<result property="under1000EmpRate" column="UNDER1000_EMP_INSURANCE"/>
+		<result property="over1000EmpRate" column="OVER1000_EMP_INSURANCE"/>
+		<result property="commuteAccidentRate" column="COMMUTE_ACCIDENT_RATE"/>
+		<result property="wageBondChargesYn" column="WAGE_BOND_CHARGES_YN"/>
+		<result property="wageBondChargesRate" column="WAGE_BOND_CHARGES_RATE"/>
+		<result property="asbestosDamagechargeYn" column="ASBESTOS_DAMAGE_CHARGE_YN"/>
+		<result property="asbestosDamagechargeRate" column="ASBESTOS_DAMAGE_CHARGE_RATE"/>
+		<result property="industrialInsuranceRate" column="INDUSTRIAL_INSURANCE_RATE"/>
+		<result property="businessCode" column="BUSINESS_CODE"/>
+		<result property="industryRate" column="INDUSTRY_RATE"/>
+	</resultMap>
 	
 	<select id="selectMember" resultMap="loginMemberResultMap">
 		select
@@ -79,4 +108,14 @@
 		 WHERE A.COMPANY_NO = #{ companyNo }
 	</select>
 	
+	
+	
+	<select id="selectInsuranceHistory" resultMap="insuranceResultMap">
+		SELECT
+			   A.*
+			 , B.INDUSTRY_RATE
+		  FROM TBL_INSURANCE_RATE A, TBL_BUSINESS B
+		 WHERE A.BUSINESS_CODE = B.BUSINESS_CODE
+		   AND A.COMPANY_NO = #{ companyNo }
+	</select>
 </mapper>

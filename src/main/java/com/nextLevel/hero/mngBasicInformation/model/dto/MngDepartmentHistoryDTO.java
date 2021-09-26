@@ -14,12 +14,13 @@ public class MngDepartmentHistoryDTO implements Serializable{
 	private String departmentPhone;
 	private Date departmentUpdatedDate;
 	private String updatedCategory;
+	private String departmentDetail;
 	
 	public MngDepartmentHistoryDTO() {}
 
 	public MngDepartmentHistoryDTO(int companyNo, int updatedHistoryNo, int memberNo, int departmentNo,
 			String departmentName, Date departmentCreateDate, String departmentPhone, Date departmentUpdatedDate,
-			String updatedCategory) {
+			String updatedCategory, String departmentDetail) {
 		super();
 		this.companyNo = companyNo;
 		this.updatedHistoryNo = updatedHistoryNo;
@@ -30,6 +31,7 @@ public class MngDepartmentHistoryDTO implements Serializable{
 		this.departmentPhone = departmentPhone;
 		this.departmentUpdatedDate = departmentUpdatedDate;
 		this.updatedCategory = updatedCategory;
+		this.departmentDetail = departmentDetail;
 	}
 
 	public int getCompanyNo() {
@@ -104,14 +106,23 @@ public class MngDepartmentHistoryDTO implements Serializable{
 		this.updatedCategory = updatedCategory;
 	}
 
+	public String getDepartmentDetail() {
+		return departmentDetail;
+	}
+
+	public void setDepartmentDetail(String departmentDetail) {
+		this.departmentDetail = departmentDetail;
+	}
+
 	@Override
 	public String toString() {
 		return "MngDepartmentHistoryDTO [companyNo=" + companyNo + ", updatedHistoryNo=" + updatedHistoryNo
 				+ ", memberNo=" + memberNo + ", departmentNo=" + departmentNo + ", departmentName=" + departmentName
 				+ ", departmentCreateDate=" + departmentCreateDate + ", departmentPhone=" + departmentPhone
-				+ ", departmentUpdatedDate=" + departmentUpdatedDate + ", updatedCategory=" + updatedCategory + "]";
+				+ ", departmentUpdatedDate=" + departmentUpdatedDate + ", updatedCategory=" + updatedCategory
+				+ ", departmentDetail=" + departmentDetail + "]";
 	}
-	
+
 	
 	
 	
