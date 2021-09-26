@@ -9,3 +9,5 @@ public interface MngVacationService {
 	List<MngHolidayDTO> listHoliday(int companyNo);
 
 }
+
+

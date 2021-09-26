@@ -88,7 +88,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.and()
 				.exceptionHandling()
 				.accessDeniedPage("/error/403");
-		
+	
 			http.sessionManagement()
 		    .maximumSessions(1)
 		    .maxSessionsPreventsLogin(true)

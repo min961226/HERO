@@ -10,6 +10,8 @@ public class MngHolidayDTO {
 	private java.sql.Date holidayDate;
 	private String title;
 	private String holidayStatus;
+	
+	
 		
 	public MngHolidayDTO() {}
 
