@@ -18,8 +18,6 @@
 	<resultMap type="com.nextLevel.hero.member.model.dto.MemberRoleDTO" id="memberRoleResultMap">
 		<id property="idNo" column="ID_NO"/>
 		<id property="authorityCode" column="AUTHORITY_NO"/>
-		<result property="authorityCategory" column="AUTHORITY_CATEGORY"/>
-		<result property="createdAutorityStatus" column="CREATED_AUTHORITY_STATUS"/>
 		
 		<association property="authority" resultMap="authorityResultMap"/>
 	</resultMap>
@@ -43,8 +41,6 @@
              , A.ACC_SECESSION_YN
              , B.ID_NO
              , B.AUTHORITY_NO
-             , B.AUTHORITY_CATEGORY
-             , B.CREATED_AUTHORITY_STATUS
              , C.AUTHORITY_NO 
              , C.AUTHORITY_NAME
              , C.AUTHORITY_DESCRIPTION
