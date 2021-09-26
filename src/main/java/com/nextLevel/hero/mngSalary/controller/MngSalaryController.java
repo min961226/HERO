@@ -3,13 +3,18 @@ package com.nextLevel.hero.mngSalary.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.nextLevel.hero.member.model.dto.UserImpl;
 import com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO;
+import com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
@@ -36,6 +41,19 @@ public class MngSalaryController {
 		mv.setViewName("/mngSalary/annualSalary");
 		
 		return mv;
+	}
+	
+	/* 월 지급금액 조회 */
+	@PostMapping(value ="annaulSalary", produces = "application/json; chartset=UTF-8")
+	@ResponseBody
+	public String listMonthlySalary(@AuthenticationPrincipal UserImpl user, int memberNo) {
+		
+		int companyNo = user.getCompanyNo();
+		List<MemberMonthlyPayDTO> memberMonthly = mngSalaryService.listMonthlySalary(memberNo, companyNo);
+		Gson gson = new Gson();
+		
+		
+		return gson.toJson(memberMonthly);
 	}
 	
 	/* 4대보험 개인별 공제항목 리스트*/

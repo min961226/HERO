@@ -20,6 +20,19 @@
 		<result property="hireDate" column="HIRE_DATE"/>		
 	</resultMap>
 	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO" id="latestMonthlyResult">
+		<result property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
+		<result property="rank" column="RANK"/>
+		<result property="salaryStep" column="SALARY_STEP"/>
+		<result property="salaryNo" column="SALARY_NO"/>
+		<result property="payCategory" column="MONTHLY_PAY_CATEGORY"/>
+		<result property="amount" column="AMOUNT"/>
+		<result property="note" column="DESCRIPTION"/>
+		<result property="deductionYn" column="DEDUCTION_YN"/>
+	
+		<association property="memberInfo" resultMap="memberInfoResult"/>
+	</resultMap>
+	
 	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO" id="fourInsResultMap">
 		<result property="departmentName" column="DEPARTMENT_NAME"/>
 		<result property="validateDate" column="START_DATE"/>
@@ -44,6 +57,20 @@
 		<association property="memberInfo" resultMap="memberInfoResult"/>
 	</resultMap> 
 	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO" id="memberAccountResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="rank" column="RANK"/>
+		<result property="bankCode" column="BANK_CODE"/>
+		<result property="bankName" column="BANK_NAME"/>
+		<result property="accountNo" column="ACCOUNT_NO"/>
+		<result property="enrollDate" column="ENROLL_DATE"/>
+		
+		
+		<association property="memberInfo" resultMap="memberInfoResult"/>
+	</resultMap>
+	
+	
 	<select id="listMngAnnualSalary" resultMap="annualSalaryResultMap">
 		SELECT
 		       G.COMPANY_NO
@@ -52,6 +79,7 @@
      		 , G.DEPARTMENT_NAME
      		 , G.RANK
      		 , G.SALARY_STEP
+     		 , G.START_DATE
 		  FROM (SELECT
 				       A.COMPANY_NO
 					 , A.MEMBER_NO
@@ -59,13 +87,26 @@
 					 , B.DEPARTMENT_NAME
 					 , F.RANK
 					 , F.SALARY_STEP
+					 , F.START_DATE
 				  FROM TBL_EMPLOYEE A
 				  JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
 				  JOIN TBL_EMP_SALARY_STEP C ON (A.MEMBER_NO = C.MEMBER_NO)
 			      JOIN TBL_RANK_SALARY_STEP F ON (C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK)
 			     WHERE C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK
-			     )G	   	
+			     )G  	
 	</select>
+	
+	<select id="listMonthlySalary" parameterType="_int" resultMap="latestMonthlyResult">
+		
+	
+	
+	
+	</select>
+	
+	
+	
+	
+	
 	
 	<select id="listMngFourInsuranceList" resultMap="fourInsResultMap">
 		SELECT
@@ -99,5 +140,36 @@
 		  FROM TBL_EMPLOYEE A
 		  JOIN TBL_PERSONAL_INSURANCE_FEE B ON (A.MEMBER_NO = B.MEMBER_NO)
 	</select>
+	
+	
+	<select id="listmngPayrollAccount" resultMap="memberAccountResultMap">
+	SELECT 
+           I.COMPANY_NO
+         , I.MEMBER_NO
+         , I.MEMBER_NAME
+         , I.DEPARTMENT_NAME
+         , I.RANK
+         , I.ACCOUNT_NO
+         , I.BANK_NAME	
+      FROM (SELECT
+                   A.COMPANY_NO
+                 , A.MEMBER_NO
+                 , A.KOREAN_NAME AS MEMBER_NAME
+                 , B.DEPARTMENT_NAME
+                 , F.RANK
+                 , G.ACCOUNT_NO
+                 , H.BANK_NAME
+              FROM TBL_EMPLOYEE A
+              JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+              JOIN TBL_EMP_SALARY_STEP C ON (A.MEMBER_NO = C.MEMBER_NO)
+              JOIN TBL_RANK_SALARY_STEP F ON (C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK)
+              JOIN TBL_EMP_ACCOUNT G ON (A.MEMBER_NO = G.MEMBER_NO)
+              LEFT JOIN TBL_BANK H ON (G.BANK_CODE = H.BANK_CODE)
+             WHERE C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK
+	        )I
+	</select>
+	
+	
+	
 	
 </mapper>
