@@ -45,13 +45,12 @@
 									</thead>
 										
 									<tbody>
-										<tr th:each="annual,num : ${salaryList}">
-											<td th:text="${annual.memberInfo.memberName}"></td>
-											<td th:text="${annual.departmentName}"></td>
-											<td th:text=""></td>
-											<td th:text="${annual.salaryStepUpdatedDate}"></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
+										<tr th:each="dept : ${departmentHistory}">
+											<td th:text="${dept.updatedHistoryNo}"></td>
+											<td th:text="${dept.updatedHistoryNo}"></td>
+											<td th:text="${dept.updatedHistoryNo}"></td>
+											<td th:text="${dept.updatedHistoryNo}"></td>
+											<td th:text="${dept.updatedHistoryNo}"></td>
 											<td th:text=""><button type="button" class="btn btn-soft-warning">지급항목</button></td>
 											<td th:text=""><button type="button" class="btn btn-soft-warning">변경내역</button></td>
 										</tr>

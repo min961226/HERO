@@ -72,7 +72,7 @@ public class MngBasicInformationController {
 		
 		MngDepartmentHistoryDTO departmentHistory = mngBasicInformationService.selectDepartmentHistory(user.getCompanyNo());
 		
-		mv.addObject(departmentHistory);
+		mv.addObject("departmentHistory",departmentHistory);
 		mv.setViewName("mngBasicInformation/departmentHistory");
 		
 		return mv;
