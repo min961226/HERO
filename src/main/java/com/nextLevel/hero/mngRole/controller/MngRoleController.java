@@ -34,7 +34,7 @@ public class MngRoleController {
 		 
 		List<MngRoleDTO> rankList = mngRoleService.selectRank(companyNo);
 		
-		System.out.println(rankList); 
+		System.out.println(rankList);  
 		mv.addObject("rankList", rankList);
 		mv.setViewName("/mngRole/roleDept");
 		
@@ -46,26 +46,10 @@ public class MngRoleController {
 	public List<MngRankAuthDTO> findCategoryList(@AuthenticationPrincipal UserImpl user,
 												 @RequestParam("rank") String rank) {
 		int companyNo = user.getCompanyNo();
-		List<MngRankAuthDTO> rankAuthList =  mngRoleService.selectRankAuth(companyNo, rank);
-
-		return rankAuthList;
+		List<MngRankAuthDTO> rankAuth = mngRoleService.selectRankAuth(companyNo, rank);
+	
+		return rankAuth;
 	}
-	
-	/*
-	 * @GetMapping(value="gson1") public ModelAndView
-	 * getMemberListModelAndView(ModelAndView mv, HttpServletResponse response,
-	 * 
-	 * @RequestParam("memNo") int memNo) {
-	 * 
-	 * response.setContentType("application/json; charset=UTF-8");
-	 * 
-	 * System.out.println(memNo);
-	 * 
-	 * Gson gson = new GsonBuilder() .setPrettyPrinting()
-	 * .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY) .serializeNulls()
-	 * .disableHtmlEscaping() .create(); }
-	 */
-	
 	
 	@GetMapping("/roleUser")
 	public String mngRoleUser() {
