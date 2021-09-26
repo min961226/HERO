@@ -2,4 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nextLevel.hero.mngVacation.model.dao.MngVacationMapper">
 
+	<resultMap type="com.nextLevel.hero.mngVacation.model.dto.MngHolidayDTO" id="listHolidayResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="holidayNo" column="HOLIDAY_NO"/>
+		<result property="calendar" column="CALENDAR"/>
+		<result property="holidayDate" column="HOLIDAY_DATE"/>
+		<result property="title" column="TITLE"/>
+		<result property="holidayStatus" column="HOLIDAY_STATUS"/>
+	</resultMap>
+	
+	<select id="listHoliday" resultMap="listHolidayResultMap">
+		SELECT 
+		       A.*
+		  FROM TBL_HOLIDAY A
+		 WHERE A.COMPANY_NO = #{ companyNo }      
+	</select>
+	
+
 </mapper>

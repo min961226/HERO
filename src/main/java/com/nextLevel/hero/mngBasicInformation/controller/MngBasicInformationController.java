@@ -23,6 +23,7 @@ import com.nextLevel.hero.member.model.dto.MemberDTO;
 import com.nextLevel.hero.member.model.dto.UserImpl;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO;
+import com.nextLevel.hero.mngBasicInformation.model.dto.MngInsuranceRateDTO;
 import com.nextLevel.hero.mngBasicInformation.model.service.MngBasicInformationService;
 
 @Controller
@@ -70,20 +71,26 @@ public class MngBasicInformationController {
 	@GetMapping("/departmentHistory")
 	public ModelAndView mngDepartmentHistory(ModelAndView mv,@AuthenticationPrincipal UserImpl user) {
 		
-		MngDepartmentHistoryDTO departmentHistory = mngBasicInformationService.selectDepartmentHistory(user.getCompanyNo());
+		List<MngDepartmentHistoryDTO> departmentHistory = mngBasicInformationService.selectDepartmentHistory(user.getCompanyNo());
 		
-		mv.addObject(departmentHistory);
+		mv.addObject("departmentHistory",departmentHistory);
 		mv.setViewName("mngBasicInformation/departmentHistory");
 		
 		return mv;
 	}
 	@GetMapping("/premiumRate")
 	public String mngPremiumRate() {
+		System.out.println("보험요율");
 		return "mngBasicInformation/premiumRate";
 	}
 	@GetMapping("/premiumRateHistory")
-	public String mngPremiumRateHistory() {
-		return "mngBasicInformation/premiumRateHistory";
+	public ModelAndView mngPremiumRateHistory(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
+		
+		MngInsuranceRateDTO insuranceRateHistory = mngBasicInformationService.selectInsuranceHistory(user.getCompanyNo());
+		System.out.println(insuranceRateHistory);
+		mv.addObject("insuranceRateHistory",insuranceRateHistory);
+		mv.setViewName("mngBasicInformation/premiumRateHistory");
+		return mv;
 	}
 	@GetMapping("/vacationType")
 	public String mngVacationType() {

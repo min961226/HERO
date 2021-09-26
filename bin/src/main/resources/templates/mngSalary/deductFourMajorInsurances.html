@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 	<div id="wrapper">
@@ -16,10 +17,50 @@
 						<div class="col-12">
 							<br>
 							<div class="page-title-box">
-								<h3 class="page-title">4대 보험 공제</h3>
+								<h3 class="page-title"><b>4대보험 공제항목</b></h3>
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div>
+								<label style="margin:12px;">설정일자 </label><input type="date" style="margin:0px 0px 0px 30px;">
+								<button type="button" class="btn btn-outline-primary" style="margin:5px;">검 색</button>				
+							</div>
+							<br>
+							<div class="col-10" style="margin:0 auto;">
+								<div class="card">
+									<div class="card-body">
+										<table class="table table-striped dt-responsive nowrap w-80 text-center" id="deducT">
+											<thead>
+												<tr>								
+													<th>사원번호</th>											
+													<th>성명 </th>											
+													<th>소 속</th>											
+													<th>설정시작일</th>										
+													<th><input type="checkbox" id="all_health" style="margin:5px;"> 건강보험</th>									
+													<th><input type="checkbox" id="all_pension" style="margin:5px;"> 국민연금</th>									
+													<th><input type="checkbox" id="all_unemployee" style="margin:5px;"> 고용보험</th>									
+													<th><input type="checkbox" id="all_industry" style="margin:5px;"> 산재보험</th>																				
+												</tr>
+											</thead>
+											
+											<tbody>
+												<tr th:each="fourIns,fourInsStat : ${fourInsuranceList}">
+													<td th:text="${fourIns.memberInfo.memberNo}" th:id="'memId' + {fourInsStat.index}" class="memNo"></td>
+													<td th:text="${fourIns.memberInfo.memberName}" class="memName"></td>
+													<td th:text="${fourIns.departmentName}" class="deptName"></td>
+													<td th:id="'memId' + {fourInsStat.index}"><input type="text" class="validateEdit" th:value="${fourIns.validateDate}"></td>
+													<td><input type="checkbox" class="health" style="margin:5px;" th:checked="${fourIns.healthYn == Y}">건강보험</td>
+													<td><input type="checkbox" class="pension" style="margin:5px;" th:checked="${fourIns.pensionYn == Y}">국민연금</td>
+													<td><input type="checkbox" class="unemployee" style="margin:5px;" th:checked="${fourIns.unemployeeYn == Y}">고용보험</td>
+													<td><input type="checkbox" class="industry" style="margin:5px;" th:checked="${fourIns.industryYn == Y}">산재보험</td>
+												</tr>
+											</tbody>
+										</table>
+										<br>
+										<button type="button" class="btn btn-success" id="modi" style="float: right;">변경 적용</button>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -27,5 +68,71 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script type="text/javascript">
+
+	$('#all_health').on("click", function() {
+		if($("input:checkbox[id='all_health']").prop("checked")){
+			$("input:checkbox[id='health']").prop("checked", true);
+		} else {
+			$("input:checkbox[id='health']").prop("checked", false);
+		}
+	});
+	
+	$('#all_pension').on("click", function() {
+		if($("input:checkbox[id='all_pension']").prop("checked")){
+			$("input:checkbox[id='pension']").prop("checked", true);
+		} else {
+			$("input:checkbox[id='pension']").prop("checked", false);
+		}
+	});
+	
+	$('#all_umemployee').on("click", function() {
+		if($("input:checkbox[id='all_umemployee']").prop("checked")){
+			$("input:checkbox[id='umemployee']").prop("checked", true);
+		} else {
+			$("input:checkbox[id='umemployee']").prop("checked", false);
+		}
+	});
+	
+	$('#all_industry').on("click", function() {
+		if($("input:checkbox[id='all_industry']").prop("checked")){
+			$("input:checkbox[id='industry']").prop("checked", true);
+		} else {
+			$("input:checkbox[id='industry']").prop("checked", false);
+		}
+	});
+	
+	$("[id^=name]").change(function(){
+		
+		const memId = $(this).siblings(".memId").text();
+		
+		console.log(memId);
+			
+	});
+	
+	$("#modi").click(function() {
+		
+		const tbody = $("#deducT > tbody");
+		const rows = tbody.children();
+		
+		const deductList = [];
+		
+		rows.each(function() {
+			const personal = {};
+			personal.memNo = $(this).find(".memNo").text();
+			personal.memName = $(this).find(".memName").text();
+			personal.deptDate = $(this).find(".deptDate").text();
+			personal.validate = $(this).find(".validateEdit").text();
+			personal.health = $(this).find(".health").text();
+			personal.pension = $(this).find(".pension").text();
+			personal.unemployee = $(this).find(".unemployee").text();
+			personal.industry = $(this).find(".industry").text();
+			
+			deductList.push(personal);
+		});
+		
+	});
+	
+	</script>
 </body>
 </html>

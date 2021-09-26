@@ -21,6 +21,46 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div>
+								<label style="padding:10px;">변경일 </label><input type="date"><br>
+								<label style="margin:15px;">검색</label>
+								<select>
+									<option value="deptName">부서명</option>
+									<option value="memberName">종류</option>
+								</select>
+								<input type="text" style="margin:10px;"><button type="button" class="btn btn-outline-primary">검 색</button>
+							</div>
+							<br>
+							<div class="card">
+								<div class="card-body">
+								<table class="table table-striped dt-responsive nowrap w-100 text-center">
+									<thead>
+										<tr>
+											<th>번호</th>											
+											<th>국민연금 보험요율</th>											
+											<th>건강보험 보험요율</th>											
+											<th>장기요양 보험요율</th>											
+											<th>실업급여 보험요율</th>											
+											<th>산재보험 요율</th>											
+											<th>보험요율 적용 일자</th>											
+										</tr>
+									</thead>
+										
+										<p align="right">단위 : 퍼센트(%)</p>
+									<tbody>
+										<tr th:each="history : ${insuranceRateHistory}">
+											<td th:text="${history.companyNo}"/>
+											<td id="pensionRate" th:text="${history.nationalPensionRate}"/>
+											<td id="healthRate" th:text="${history.healthRate}"/>
+											<td id="longTermRate" th:text="${history.longTermCareRate}"/>
+											<td id="unempBenefitRate" th:text="${history.unempBenefitRate}"/>
+											<td id="industrialInsuranceRate" th:text="${history.industrialInsuranceRate}"/>
+											<td th:text="${history.insuranceRateStartDate}"/>
+										</tr>
+									</tbody>
+								</table>
+							   </div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -28,5 +68,18 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script>
+		var pensionRate = document.getElementById('pensionRate').innerHTML
+		var healthRate = document.getElementById('healthRate').innerHTML
+		var longTermRate = document.getElementById('longTermRate').innerHTML
+		var unempBenefitRate = document.getElementById('unempBenefitRate').innerHTML
+		var industrialInsuranceRate = document.getElementById('industrialInsuranceRate').innerHTML
+		
+		document.getElementById('pensionRate').innerHTML = (pensionRate*100).toFixed(2);
+		document.getElementById('healthRate').innerHTML = (healthRate*100).toFixed(2);
+		document.getElementById('longTermRate').innerHTML = (longTermRate*100).toFixed(2);
+		document.getElementById('unempBenefitRate').innerHTML = (unempBenefitRate*100).toFixed(2);
+		document.getElementById('industrialInsuranceRate').innerHTML = (industrialInsuranceRate*100).toFixed(2);
+		</script>
 </body>
 </html>

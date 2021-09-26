@@ -10,6 +10,7 @@ import com.nextLevel.hero.member.model.dto.MemberDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dao.MngBasicInformationMapper;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO;
+import com.nextLevel.hero.mngBasicInformation.model.dto.MngInsuranceRateDTO;
 
 @Service("mngBasicInformationService")
 public class MngBasicInformationServiceImpl implements MngBasicInformationService {
@@ -33,8 +34,13 @@ public class MngBasicInformationServiceImpl implements MngBasicInformationServic
 	}
 
 	@Override
-	public MngDepartmentHistoryDTO selectDepartmentHistory(int companyNo) {
+	public List<MngDepartmentHistoryDTO> selectDepartmentHistory(int companyNo) {
 		return mngBasicInformationMapper.selectDepartmentHistory(companyNo);
+	}
+
+	@Override
+	public MngInsuranceRateDTO selectInsuranceHistory(int companyNo) {
+		return mngBasicInformationMapper.selectInsuranceHistory(companyNo);
 	}
 
 

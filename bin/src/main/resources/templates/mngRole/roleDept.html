@@ -4,6 +4,101 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style>
+.Mng-role {
+	width: 1550px;
+	height: 700px;
+}
+.head-role {
+	width: 30%;
+	height: 700px;
+	float: left;
+}
+.body-role {
+	width: 70%;
+	height: 700px;
+	float: left;
+}
+.roleTable {
+	width: 450px;
+	font-size: 14px;
+	margin-right: 0px;
+}
+.role-down {
+	width: 300px;
+	height: 60px;
+	margin-left: 90px;
+	position: absolute;
+	bottom: 0px;
+}
+.NoRoleImg {
+	width: 300px;
+}
+
+.NoRole {
+	padding: 10px;
+	width: 750px;
+	height: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 50px;
+	position: relative;
+}
+
+.td{
+	text-align: left;
+	height: 55px;
+}
+
+td {
+	text-align: center;
+	height: 55px;
+}
+.btn-success {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	padding: 10px;
+}
+input[type=checkbox] {
+	width: 25px;
+	height: 25px;
+	position: relative;
+	top: 8px;
+}
+input[type=radio] {
+	width: 20px;
+	height: 20px;
+	position: relative;
+	top: 3px;
+}
+.label {
+	font-size: 20px;
+}
+.bodyselectRole {
+	width: 500px;
+	float: left;
+	margin-top: 30px;
+	margin-left: 100px;
+	position: relative;
+	text-align: left;
+	
+}
+.explanation {
+	position: relative;
+	left: 45px; 
+}
+
+/* .btn_create {  
+  		right: 200px;
+  		color: #fff;
+   		background-color: #43d39e;
+   		border-color: #43d39e;
+   		font-size: 14px;
+   		padding: 7.2px 14.4px;
+  	} */
+</style>
 </head>
 <body>
 	<div id="wrapper">
@@ -16,10 +111,101 @@
 						<div class="col-12">
 							<br>
 							<div class="page-title-box">
-								<h3 class="page-title">직급별 권한관리</h3>
+								<h1 class="page-title">직급별 권한관리</h1>
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div class="Mng-role">
+								<div class="head-role">
+									<table align="center" class="roleTable">
+										<tr>
+											<th width="100"></th>
+											<th align="center" class="td" width="300">직급명</th>
+										</tr>
+
+										<tr th:each="rank : ${ rankList }">
+											<td><input type="radio" class="role_radio" name="role_radio" id="radio_select"></td>
+											<td th:text="${ rank.rank }" align="center" class="td"></td>
+										</tr>
+									</table>
+
+									<div class="role-down">
+										<ul class="pagination pagination-rounded">
+											<li class="paginate_button page-item previous disabled"
+												id="basic-datatable_previous"><a href="#"
+												aria-controls="basic-datatable" data-dt-idx="0" tabindex="0"
+												class="page-link"> <i class="uil uil-angle-left"></i></a></li>
+											<li class="paginate_button page-item active"><a href="#"
+												aria-controls="basic-datatable" data-dt-idx="1" tabindex="0"
+												class="page-link">1</a></li>
+											<li class="paginate_button page-item "><a href="#"
+												aria-controls="basic-datatable" data-dt-idx="2" tabindex="0"
+												class="page-link">2</a></li>
+											<li class="paginate_button page-item "><a href="#"
+												aria-controls="basic-datatable" data-dt-idx="3" tabindex="0"
+												class="page-link">3</a></li>
+											<li class="paginate_button page-item "><a href="#"
+												aria-controls="basic-datatable" data-dt-idx="4" tabindex="0"
+												class="page-link">4</a></li>
+											<li class="paginate_button page-item "><a href="#"
+												aria-controls="basic-datatable" data-dt-idx="5" tabindex="0"
+												class="page-link">5</a></li>
+											<li class="paginate_button page-item "><a href="#"
+												aria-controls="basic-datatable" data-dt-idx="6" tabindex="0"
+												class="page-link">6</a></li>
+											<li class="paginate_button page-item next"
+												id="basic-datatable_next"><a href="#"
+												aria-controls="basic-datatable" data-dt-idx="7" tabindex="0"
+												class="page-link"> <i class="uil uil-angle-right"></i></a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="body-role">
+									<th:block th:if="rankList == null">
+										<div class="NoRole" align="center">
+											<img src="/images/mngRole/NoRole.jpg" class="NoRoleImg">
+											<h2>생성된 권한이 없습니다. 권한을 부여하시겠습니까?</h2>
+											<input type="button" class="btn btn-success" value="생성">
+										</div>
+									</th:block>
+
+									<div class="NoRole" align="center">
+										<input type="checkbox" class="whole" name="" value="" id="cbx_chkAll" >&emsp;
+										<label class="label">전체선택</label>
+										<form action="/mngRole/roleDept" method="post" id="roleDept">
+										
+											<div class="bodyselectRole">
+		
+												<input type="checkbox" class="" name="chk" value="" id="">&emsp;
+												<label class="label">인사권한</label><br>
+												<p class="explanation">입 퇴직관리, 개인정보 조회, 개인정보 수정, 조직도 수정</p>
+												<input type="checkbox" class="" name="chk" value="" id="=">&emsp;
+												<label class="label">근태권한</label><br>
+												<p class="explanation">근태정보 조회, 근태정보 수정</p>
+												<input type="checkbox" class="" name="chk" value="" id="">&emsp;
+												<label class="label">휴가권한</label><br>
+												<p class="explanation">연차휴가 조회, 휴가 수정, 휴일관리</p>
+												<input type="checkbox" class="" name="chk" value="" id="">&emsp;
+												<label class="label">결재권한</label><br>
+												<p class="explanation">휴가 승인, 증명서 신청 승인, 결재 승인</p>
+												<input type="checkbox" class="" name="chk" value="" id="">&emsp;
+												<label class="label">급여권한</label><br>
+												<p class="explanation">연봉입력, 4대보험 등록, 급상여 정산, 예수금 관리, 퇴직정산</p>
+												<input type="checkbox" class="" name="chk" value="" id="">&emsp;
+												<label class="label">권한부여</label><br>
+												<p class="explanation">권한 부여 가능, 기초자료</p>
+													<!-- <th:block sec:authorize="hasRole('')">  -->
+													<input type="checkbox" class="" name="chk" value="" id="">&emsp;
+													<label class="label">급상여 이체/승인</label><br>
+													<p class="explanation">대표이사만 선택가능</p>
+													<!-- </th:block> -->
+											</div>
+												<button type="submit" class="btn btn-success" value="생성">수정</button>
+										</form>
+									</div>
+								</div>
+							</div>
+							<!-- 여기서부터 본문 끝 -->
 						</div>
 					</div>
 				</div>
@@ -27,5 +213,56 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script type="text/javascript">
+	
+		/* 전체선택, 전체해제 */
+		$(document).ready(function() {
+			$("#cbx_chkAll").click(function() {
+				if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+				else $("input[name=chk]").prop("checked", false);
+			});
+			
+			$("input[name=chk]").click(function() {
+				var total = $("input[name=chk]").length;
+				var checked = $("input[name=chk]:checked").length;
+				
+				if(total != checked) $("#cbx_chkAll").prop("checked", false);
+				else $("#cbx_chkAll").prop("checked", true); 
+			});
+		});
+		
+		/* 직급 권한 보유 확인*/
+		$('.role_radio').on("click", function() {
+			
+			var information = $(this);
+			
+			var tr = information.parent().parent();
+			var td = tr.children();
+			
+			var rank = td.eq(1).text();
+			
+	        alert(rank);
+	        
+	        $.ajax({
+		        url:"role_auth",
+		        type:'GET',
+		        data: { rank:rank},    
+		        success:function(data){
+		        	
+		        	$.each(data, function(idx, val) {
+		        		alert(idx + " " + val.createdAuthorityStatus);
+		        	});		        	 
+					
+		            alert("성공");
+		        },
+		        error:function(jqXHR, textStatus, errorThrown){
+		        	
+		            alert("에러 발생 ");
+		        }
+		    })
+		}
+		);
+
+	</script>
 </body>
 </html>

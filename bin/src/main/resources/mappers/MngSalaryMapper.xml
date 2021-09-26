@@ -2,4 +2,102 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nextLevel.hero.mngSalary.model.dao.MngSalaryMapper">
 
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO" id="annualSalaryResultMap">
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
+		<result property="rank" column="RANK"/>
+		<result property="salaryStep" column="SALARY_STEP"/>
+		<result property="salaryStepUpdatedDate" column="UPDATED_DATE"/>
+		<result property="changeStartDate" column="CHANGE_START_DATE"/>
+	
+		<association property="memberInfo" resultMap="memberInfoResult"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MemberInfoDTO" id="memberInfoResult">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberName" column="MEMBER_NAME"/>		
+		<result property="hireDate" column="HIRE_DATE"/>		
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO" id="fourInsResultMap">
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="validateDate" column="START_DATE"/>
+		<result property="healthYn" column="HEALTH"/>
+		<result property="pensionYn" column="PENSION"/>
+		<result property="unemployeeYn" column="UNEMPLOYEE"/>
+		<result property="industryYn" column="INDUSTRY"/>
+				
+		<association property="memberInfo" resultMap="memberInfoResult"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO" id="memberInsFeeResult">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="healthCoverDate" column="DEPARTMENT_NAME"/>
+		<result property="healthSal" column="DEPARTMENT_NAME"/>
+		<result property="healthInsFee" column="DEPARTMENT_NAME"/>
+		<result property="longtermFee" column="DEPARTMENT_NAME"/>
+		<result property="pensionCoverDate" column="DEPARTMENT_NAME"/>
+		<result property="pensionSal" column="DEPARTMENT_NAME"/>
+		<result property="pensionFee" column="DEPARTMENT_NAME"/>
+	
+		<association property="memberInfo" resultMap="memberInfoResult"/>
+	</resultMap> 
+	
+	<select id="listMngAnnualSalary" resultMap="annualSalaryResultMap">
+		SELECT
+		       G.COMPANY_NO
+     		 , G.MEMBER_NO
+     		 , G.MEMBER_NAME
+     		 , G.DEPARTMENT_NAME
+     		 , G.RANK
+     		 , G.SALARY_STEP
+		  FROM (SELECT
+				       A.COMPANY_NO
+					 , A.MEMBER_NO
+					 , A.KOREAN_NAME AS MEMBER_NAME
+					 , B.DEPARTMENT_NAME
+					 , F.RANK
+					 , F.SALARY_STEP
+				  FROM TBL_EMPLOYEE A
+				  JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+				  JOIN TBL_EMP_SALARY_STEP C ON (A.MEMBER_NO = C.MEMBER_NO)
+			      JOIN TBL_RANK_SALARY_STEP F ON (C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK)
+			     WHERE C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK
+			     )G	   	
+	</select>
+	
+	<select id="listMngFourInsuranceList" resultMap="fourInsResultMap">
+		SELECT
+		       A.COMPANY_NO
+		     , A.MEMBER_NO
+		     , A.KOREAN_NAME AS MEMBER_NAME
+		     , B.DEPARTMENT_NAME
+		     , C.START_DATE
+		     , C.HEALTH
+		     , C.PENSION
+		     , C.UNEMPLOYEE
+		     , C.INDUSTRY
+		  FROM TBL_EMPLOYEE A
+		  JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+		  JOIN TBL_FOUR_INSURANCE_DEDUCT C ON (A.MEMBER_NO = C.MEMBER_NO)			
+	</select>
+	
+	<select id="listMngNationalHealthInsurancePension" resultMap="memberInsFeeResult">
+		SELECT
+		       A.COMPANY_NO
+		     , A.MEMBER_NO
+		     , A.KOREAN_NAME AS MEMBER_NAME
+		     , A.HIRE_DATE
+		     , B.HEALTH_INSURANCE_COVERAGE_DATE
+		     , B.MONTHLY_HEALTH_AVERAGE_SALARY
+		     , B.HEALTH_INSURANCE_FEE
+			 , B.LONG_TERM_CARE_FEE
+			 , B.NATIONAL_PENSION_COVERAGE_DATE
+			 , B.MONTHLY_PENSION_AVERAGE_SALARY
+			 , B.PENSION_INSURANCE_FEE
+		  FROM TBL_EMPLOYEE A
+		  JOIN TBL_PERSONAL_INSURANCE_FEE B ON (A.MEMBER_NO = B.MEMBER_NO)
+	</select>
+	
 </mapper>
