@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.nextLevel.hero.mngSalary.model.dao.MngSalaryMapper;
 import com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO;
+import com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
@@ -28,6 +29,12 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		return mngSalaryMapper.listMngAnnualSalary();
 	}
 
+	/* 개인별 월 지급항목 조회 */
+	@Override
+	public List<MemberMonthlyPayDTO> listMonthlySalary(int memberNo, int companyNo) {
+		
+		return mngSalaryMapper.listMonthlySalary(memberNo, companyNo);
+	}
 	
 	/* 4대보험 개인별 공제항목 조회*/
 	@Override
@@ -50,6 +57,8 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		
 		return mngSalaryMapper.listmngPayrollAccount();
 	}
+
+	
 
 	
 	
