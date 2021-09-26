@@ -21,14 +21,7 @@
  		 WHERE COMPANY_NO = #{ companyNo }
 	</select>
 	
-	<select id="selectRankAuth" resultMap="rankAuthMap">
-		SELECT
-			   AUTHORITY_NO
-			 , CREATED_AUTHORITY_STATUS
-		  FROM TBL_RANK_AUTH
-		 WHERE COMPANY_NO = #{ companyNo }
-		   AND RANK = #{ rank }
-	</select>
+
 
 
 </mapper>
