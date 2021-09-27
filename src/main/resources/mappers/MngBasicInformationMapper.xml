@@ -117,6 +117,19 @@
 		  FROM TBL_INSURANCE_RATE A, TBL_BUSINESS B
 		 WHERE A.BUSINESS_CODE = B.BUSINESS_CODE
 		   AND A.COMPANY_NO = #{ companyNo }
-		   
+	</select>
+	<select id="selectInsurance" resultMap="insuranceResultMap">
+		SELECT
+			   A.*
+			 , B.INDUSTRY_RATE
+		  FROM TBL_INSURANCE_RATE A, TBL_BUSINESS B
+		 WHERE A.BUSINESS_CODE = B.BUSINESS_CODE
+		   AND A.COMPANY_NO = 1
+           AND A.INSURANCE_RATE_START_DATE <![CDATA[<]]> SYSDATE
+		   AND A.DIV_NO IN ( SELECT 
+		   						    MAX(DIV_NO)
+		   					   FROM TBL_INSURANCE_RATE
+                              GROUP BY COMPANY_NO
+		   					)
 	</select>
 </mapper>
