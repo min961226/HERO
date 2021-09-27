@@ -28,4 +28,11 @@ public class MngVacationServiceImpl implements MngVacationService {
 		
 		return mngVacationMapper.listHoliday(companyNo);
 	}
+	
+	
+	// 조회하는거 다시 만들기
+	
+	
+	
+	
 }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class MngVacationDTO implements Serializable{
 
-	
+	//직원휴가로 다시
 	
 	
 	
