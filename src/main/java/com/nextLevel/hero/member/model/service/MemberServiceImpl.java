@@ -15,12 +15,13 @@ import org.springframework.stereotype.Service;
 
 import com.nextLevel.hero.member.model.dao.MemberMapper;
 import com.nextLevel.hero.member.model.dto.AuthorityDTO;
+import com.nextLevel.hero.member.model.dto.FindIdDTO;
 import com.nextLevel.hero.member.model.dto.MemberDTO;
 import com.nextLevel.hero.member.model.dto.MemberRoleDTO;
 import com.nextLevel.hero.member.model.dto.UserImpl;
 
 
-@Service
+@Service("memberService")
 public class MemberServiceImpl implements MemberService{
 
    private final MemberMapper memberMapper;
@@ -65,5 +66,20 @@ public class MemberServiceImpl implements MemberService{
       
       return user;
    }
+
+
+@Override
+public FindIdDTO selectFindId(String username, String phone2) {
+
+	
+	
+	return memberMapper.selectFindId(username, phone2);
+}
+
+
+
+
+
+
    
 }
