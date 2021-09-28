@@ -7,7 +7,7 @@
 		<result property="rank" column="RANK"/>
 	</resultMap>
 	
-	<resultMap type="com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO" id="rankAuthMap">
+	<resultMap type="com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO" id="rankSalaryMap">
 		<id property="companyNo" column="COMPANY_NO"/>
 		<id property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
 		<result property="rank" column="RANK"/>
@@ -20,7 +20,7 @@
   		  FROM TBL_RANK_SALARY_STEP
  		 WHERE COMPANY_NO = #{ companyNo }
 	</select>
-	<select id="selectRankAuth" resultMap="rankAuthMap">
+	<select id="selectRankAuth" resultMap="rankSalaryMap">
 		SELECT
 			     ROWNUM
 			 , V.SALARY_STEP_BY_RANK
@@ -35,6 +35,12 @@
 		   AND RANK = #{ rank }
 		   AND ROWNUM = 1
 	</select>
+	<update id="updateRoleAuth" parameterType="com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO">
+		UPDATE TBL_RANK_SALARY_STEP
+		   SET TBL_USER_AUTH = 'Y'
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND RANK = #{ rank }
+	</update>
 
 
 
