@@ -4,6 +4,8 @@ import java.sql.Date;
 
 public class MngHolidayDTO {
 
+	
+	// 휴일여부 스트링으로 받아오는거 YN아님
 	private int companyNo;
 	private int holidayNo;
 	private String calendar;

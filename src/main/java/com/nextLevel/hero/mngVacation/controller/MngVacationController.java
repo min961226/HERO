@@ -26,7 +26,7 @@ public class MngVacationController {
 	
 	@GetMapping("/annualVacation")
 	public String mngAnnualVacation() {
-		
+		// 연차 받아오는걸로 생성하기
 		
 		
 		

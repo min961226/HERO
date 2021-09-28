@@ -8,6 +8,8 @@ public interface MngVacationService {
 
 	List<MngHolidayDTO> listHoliday(int companyNo);
 
+	// 연차 & 직원휴가 & 연차일괄조정
+	
 }
 
 
