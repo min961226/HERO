@@ -79,14 +79,17 @@ public class MngBasicInformationController {
 		return mv;
 	}
 	@GetMapping("/premiumRate")
-	public String mngPremiumRate() {
-		System.out.println("보험요율");
-		return "mngBasicInformation/premiumRate";
+	public ModelAndView mngPremiumRate(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
+		MngInsuranceRateDTO insuranceRate = mngBasicInformationService.selectInsurance(user.getCompanyNo());
+		System.out.println(insuranceRate);
+		mv.addObject("insuranceRate",insuranceRate);
+		mv.setViewName("mngBasicInformation/premiumRate");
+		return mv;
 	}
 	@GetMapping("/premiumRateHistory")
 	public ModelAndView mngPremiumRateHistory(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
 		
-		MngInsuranceRateDTO insuranceRateHistory = mngBasicInformationService.selectInsuranceHistory(user.getCompanyNo());
+		List<MngInsuranceRateDTO> insuranceRateHistory = mngBasicInformationService.selectInsuranceHistory(user.getCompanyNo());
 		System.out.println(insuranceRateHistory);
 		mv.addObject("insuranceRateHistory",insuranceRateHistory);
 		mv.setViewName("mngBasicInformation/premiumRateHistory");

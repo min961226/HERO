@@ -15,7 +15,9 @@ public interface MngBasicInformationService {
 
 	List<MngDepartmentHistoryDTO> selectDepartmentHistory(int companyNo);
 
-	MngInsuranceRateDTO selectInsuranceHistory(int companyNo);
+	List<MngInsuranceRateDTO> selectInsuranceHistory(int companyNo);
+
+	MngInsuranceRateDTO selectInsurance(int companyNo);
 
 
 
