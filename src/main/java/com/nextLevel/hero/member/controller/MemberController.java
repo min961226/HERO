@@ -1,14 +1,12 @@
 package com.nextLevel.hero.member.controller;
 
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,6 +19,7 @@ import com.nextLevel.hero.member.model.service.MemberService;
 @RequestMapping("/member")
 public class MemberController {
 	
+	private static final MailDTO MailDTO = null;
 	private final MemberService memberService;
 	
 	@Autowired
@@ -30,7 +29,6 @@ public class MemberController {
 	
 	@GetMapping("/login")
 	public void memberLoginForm() {
-		
 		
 	}
 
@@ -78,25 +76,78 @@ public class MemberController {
 	public String memberFindPasswordForm() {
 		return "member/findPasswordForm";
 	}
-	@GetMapping("/mail")
-	public MailDTO mailCheck(@RequestParam String email) {
 	
-		System.out.println("email : " + email);
-
-		MailDTO mailDTO = new MailDTO();
+	
+	
+//	@PostMapping(value="checkMail", produces ="application/json; charset=UTF-8")
+//	@ResponseBody
+//	public MailDTO mailCheck(@RequestParam String email) {
+//	
+//		System.out.println("email : " + email);
+//		
+//		String sendTo = email;
+//		String mailTitle = "이메일 인증";
+//		String mailContent = "얍얍";
+//		String sendFrom = "HeRo";
+//		return MailDTO;
+//		MimeMessagePreparator preparator = new MimeMessagePreparator() {
+//			
+//			@Override
+//			public void prepare(MimeMessage mimeMessage) throws Exception {
+//				final MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true,"UTF-8");
+//
+//				message.setTo(sendTo);
+//				message.setFrom(sendFrom);	//env.getProperty("spring.mail.username")
+//				message.setSubject(mailTitle);
+//				message.setText(mailContent, true); //ture : html 형식 사용
+//					
+//				//Mail에 img 삽입
+//			}
+//		};
+//			
+//		try{
+//			javaMailSender.send(preparator);
+//		} catch (MailException e){
+//			return false;
+//		}
+//		return true;
+//		
+//		SimpleMailMessage message = new SimpleMailMessage();
+//		Random random = new Random();
+//		String key = "";
+//
+//		message.setTo(email); // 스크립트에서 보낸 메일을 받을 사용자 이메일 주소
+//		// 입력 키를 위한 코드
+//		for (int i = 0; i < 3; i++) {
+//			int index = random.nextInt(25) + 65; // A~Z까지 랜덤 알파벳 생성
+//			key += (char) index;
+//		}
+//		int numIndex = random.nextInt(8999) + 1000; // 4자리 정수를 생성
+//		key += numIndex;
+//		message.setSubject("인증번호 입력을 위한 메일 전송");
+//		message.setText("인증 번호 : " + key);
+//		javaMailSender.send(message);
+//
+//		return key;
 		
-		mailDTO.setAddress(email);
-		mailDTO.setTitle("밤둘레 님이 발송한 이메일입니다.");
-		mailDTO.setMessage("안녕하세요. 반가워요!");
-		
-	    mailDTO = memberService.emailCheck(mailDTO);
-		
-
-
-		
-	        return mailDTO;
+//}
 		
 		
+		
+		
+//		MailDTO mailDTO = new MailDTO();
+//		
+//		mailDTO.setAddress(email);
+//		mailDTO.setTitle("밤둘레 님이 발송한 이메일입니다.");
+//		mailDTO.setMessage("안녕하세요. 반가워요!");
+//		
+//	    mailDTO = memberService.emailCheck(mailDTO);
+//		
+//
+//
+//		
+	        
+	    	
 		
 		
 		
@@ -159,7 +210,6 @@ public class MemberController {
 
 	
 		
-	}
 	
 	@PostMapping("/findPassword")
 	public ModelAndView memberFindPassword(@RequestParam String userId

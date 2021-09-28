@@ -16,6 +16,7 @@ public interface MemberService extends UserDetailsService {
 	FindPwdDTO updatePwd(String userId, String username, String email);
 
 	MailDTO emailCheck(MailDTO mailDTO);
+
 		
 
 
