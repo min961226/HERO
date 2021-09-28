@@ -20,8 +20,14 @@
 	<id property="username" column="MEMBER_NAME"/>
 	<result property="phone" column="PHONE"/>
 	<result property="id" column="MEMBER_ID"/>
+	</resultMap>
 	
-	
+	<resultMap type="com.nextLevel.hero.member.model.dto.FindPwdDTO" id="memberFindPwdMap">
+	<id property="userId" column="MEMBER_ID"/>
+	<result property="username" column="MEMBER_NAME"/>
+	<result property="email" column="EMAIL"/>
+	<result property="idNo" column="ID_NO"/>
+	<result property="userPwd" column="MEMBER_PASSWORD"/>
 	</resultMap>
 	
 	
@@ -79,7 +85,28 @@
       AND PHONE = #{ phone2 }
 	</select>
 	
+	<select id="selectFindPwd" resultMap="memberFindPwdMap">
+        SELECT
+            M.MEMBER_PASSWORD
+       FROM TBL_MEMBER M   
+	   JOIN TBL_EMPLOYEE E ON (M.ID_NO = E.ID_NO)
+	  WHERE MEMBER_ID = #{ userId } 
+	   AND MEMBER_NAME = #{ username } 
+       AND EMAIL = #{ email } 
+	</select>
 	
+	
+	<update id="updatePwd" parameterType="com.nextLevel.hero.member.model.dto.FindPwdDTO">
+       UPDATE 
+          TBL_MEMBER M
+        SET M.MEMBER_PASSWORD = '$2a$12$h3rtOXUhfWdeID5bkz35WeaOW.x8qdaz2RCq81h9zllR88qTqTcZu' 
+        WHERE M.ID_NO IN (SELECT E.ID_NO
+                            FROM TBL_EMPLOYEE E
+                           WHERE M.MEMBER_ID = #{ userId }
+                             AND M.MEMBER_NAME = #{ username }   
+                             AND EMAIL = #{ email }
+                          )
+	</update>
 	
 </mapper>
 

@@ -3,12 +3,10 @@ package com.nextLevel.hero.member.model.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -16,6 +14,8 @@ import org.springframework.stereotype.Service;
 import com.nextLevel.hero.member.model.dao.MemberMapper;
 import com.nextLevel.hero.member.model.dto.AuthorityDTO;
 import com.nextLevel.hero.member.model.dto.FindIdDTO;
+import com.nextLevel.hero.member.model.dto.FindPwdDTO;
+import com.nextLevel.hero.member.model.dto.MailDTO;
 import com.nextLevel.hero.member.model.dto.MemberDTO;
 import com.nextLevel.hero.member.model.dto.MemberRoleDTO;
 import com.nextLevel.hero.member.model.dto.UserImpl;
@@ -71,9 +71,36 @@ public class MemberServiceImpl implements MemberService{
 @Override
 public FindIdDTO selectFindId(String username, String phone2) {
 
-	
-	
 	return memberMapper.selectFindId(username, phone2);
+}
+
+
+@Override
+public FindPwdDTO selectFindPwd(String userId, String username, String email) {
+	return memberMapper.selectFindPwd(userId, username, email);
+}
+
+
+@Override
+public FindPwdDTO updatePwd(String userId, String username, String email) {
+	return memberMapper.updatePwd(userId, username, email);
+}
+
+
+@Override
+public MailDTO emailCheck(MailDTO mailDTO) {
+
+	SimpleMailMessage message = new SimpleMailMessage();
+    
+	message.setTo(mailDTO.getAddress());
+    message.setSubject(mailDTO.getTitle());
+    message.setText(mailDTO.getMessage());
+	
+    
+    return mailDTO;
+
+	
+	
 }
 
 
