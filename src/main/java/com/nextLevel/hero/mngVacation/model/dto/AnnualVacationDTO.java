@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class AnnualVacationDTO implements Serializable{
 
 	/* 연차 조정 */
+	/* 다시 디비보고 확인 */
 	private int companyNo;						// 회사번호
 	private int memberNo;						// 사번
 	private int createdMonthlyVacation;			// 발생월차

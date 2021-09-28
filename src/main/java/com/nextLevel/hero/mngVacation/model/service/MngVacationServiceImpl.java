@@ -28,6 +28,16 @@ public class MngVacationServiceImpl implements MngVacationService {
 		
 		return mngVacationMapper.listHoliday(companyNo);
 	}
+
+
+
+
+	// 이거 다시 확인해야됌
+	@Override
+	public List<MngHolidayDTO> insertPublicHoliday(int companyNo1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	// 조회하는거 다시 만들기
