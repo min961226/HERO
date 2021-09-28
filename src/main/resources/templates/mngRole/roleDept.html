@@ -174,7 +174,7 @@ input[type=radio] {
 										<form action="/mngRole/roleDept" method="post" id="roleDept">
 										
 											<div class="bodyselectRole">
-		
+											
 												<input type="checkbox" class="" name="chk" value="" id="">&emsp;
 												<label class="label">인사권한</label><br>
 												<p class="explanation">입 퇴직관리, 개인정보 조회, 개인정보 수정, 조직도 수정</p>
@@ -247,19 +247,17 @@ input[type=radio] {
 		        success:function(data){
 		        	
 		        	$.each(data, function(idx, val) {
-		        		alert(idx + " " + val.createdAuthorityStatus);
 		        		
-		        		if(val.createdAuthorityStatus == "") {
-		        			
-		        			alert("y성공");
+		        		if(val.tblUserAuth == "Y") {
+		        			$(".yesRole").show();			
+		        			$(".noRole").hide();
 		        		} else {
-		        			alert("n실패")
+		        			$(".noRole").show(); 	
+		        			$(".yesRole").hide();
 		        		}
-		        		$(".noRole").show(); //region 영역 보이기
-
-		        	});		        	 
-					
-		            alert("성공");
+		        								
+		        	});		 
+		        	
 		        },
 		        error:function(jqXHR, textStatus, errorThrown){
 		        	

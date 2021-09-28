@@ -2,21 +2,21 @@ package com.nextLevel.hero.mngRole.model.dto;
 
 public class MngRankAuthDTO {
 	
-	private int companyNo;
-	private int authorityNo;
-	private String rank;
-	private String createdAuthorityStatus;
+	private int companyNo;					//회사번호
+	private int salaryStepByRank;			//직급별호봉
+	private String rank;					//직급명
+	private char tblUserAuth;				//권한생성여부
 	
 	public MngRankAuthDTO() {
 		super();
 	}
 
-	public MngRankAuthDTO(int companyNo, int authorityNo, String rank, String createdAuthorityStatus) {
+	public MngRankAuthDTO(int companyNo, int salaryStepByRank, String rank, char tblUserAuth) {
 		super();
 		this.companyNo = companyNo;
-		this.authorityNo = authorityNo;
+		this.salaryStepByRank = salaryStepByRank;
 		this.rank = rank;
-		this.createdAuthorityStatus = createdAuthorityStatus;
+		this.tblUserAuth = tblUserAuth;
 	}
 
 	public int getCompanyNo() {
@@ -27,12 +27,12 @@ public class MngRankAuthDTO {
 		this.companyNo = companyNo;
 	}
 
-	public int getAuthorityNo() {
-		return authorityNo;
+	public int getSalaryStepByRank() {
+		return salaryStepByRank;
 	}
 
-	public void setAuthorityNo(int authorityNo) {
-		this.authorityNo = authorityNo;
+	public void setSalaryStepByRank(int salaryStepByRank) {
+		this.salaryStepByRank = salaryStepByRank;
 	}
 
 	public String getRank() {
@@ -43,20 +43,20 @@ public class MngRankAuthDTO {
 		this.rank = rank;
 	}
 
-	public String getCreatedAuthorityStatus() {
-		return createdAuthorityStatus;
+	public char getTblUserAuth() {
+		return tblUserAuth;
 	}
 
-	public void setCreatedAuthorityStatus(String createdAuthorityStatus) {
-		this.createdAuthorityStatus = createdAuthorityStatus;
+	public void setTblUserAuth(char tblUserAuth) {
+		this.tblUserAuth = tblUserAuth;
 	}
 
 	@Override
 	public String toString() {
-		return "MngRankAuthDTO [companyNo=" + companyNo + ", authorityNo=" + authorityNo + ", rank=" + rank
-				+ ", createdAuthorityStatus=" + createdAuthorityStatus + "]";
+		return "MngRankAuthDTO [companyNo=" + companyNo + ", salaryStepByRank=" + salaryStepByRank + ", rank=" + rank
+				+ ", tblUserAuth=" + tblUserAuth + "]";
 	}
-	
+
 	
 	
 

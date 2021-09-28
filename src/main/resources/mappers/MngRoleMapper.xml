@@ -9,9 +9,9 @@
 	
 	<resultMap type="com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO" id="rankAuthMap">
 		<id property="companyNo" column="COMPANY_NO"/>
-		<id property="authorityNo" column="AUTHORITY_NO"/>
+		<id property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
 		<result property="rank" column="RANK"/>
-		<result property="createdAuthorityStatus" column="CREATED_AUTHORITY_STATUS"/>
+		<result property="tblUserAuth" column="TBL_USER_AUTH"/>
 	</resultMap>
 	
 	<select id="selectRank" resultMap="rankResultMap">
@@ -20,7 +20,21 @@
   		  FROM TBL_RANK_SALARY_STEP
  		 WHERE COMPANY_NO = #{ companyNo }
 	</select>
-	
+	<select id="selectRankAuth" resultMap="rankAuthMap">
+		SELECT
+			     ROWNUM
+			 , V.SALARY_STEP_BY_RANK
+			 , V.TBL_USER_AUTH
+		  FROM (SELECT B.SALARY_STEP_BY_RANK
+		  			 , B.TBL_USER_AUTH
+                     , B.RANK
+                     , B.COMPANY_NO
+		  		  FROM TBL_RANK_SALARY_STEP B
+		  		) V
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND RANK = #{ rank }
+		   AND ROWNUM = 1
+	</select>
 
 
 
