@@ -1,22 +1,28 @@
 package com.nextLevel.hero.mngRole.model.dto;
 
+import java.util.List;
+
 public class MngRankAuthDTO {
 	
 	private int companyNo;					//회사번호
 	private int salaryStepByRank;			//직급별호봉
-	private String rank;					//직급명
-	private char tblUserAuth;				//권한생성여부
+	private int authoryityNo;				//권한번호
+	private String rankName;				//직급이름
 	
-	public MngRankAuthDTO() {
-		super();
-	}
+	private List<MngRankAuthDTO> salaryStepByRankArg;			//직급별호봉
+	private List<MngRankAuthDTO> authoryityNoArg;				//권한번호
 
-	public MngRankAuthDTO(int companyNo, int salaryStepByRank, String rank, char tblUserAuth) {
+	public MngRankAuthDTO() {}
+
+	public MngRankAuthDTO(int companyNo, int salaryStepByRank, int authoryityNo, String rankName,
+			List<MngRankAuthDTO> salaryStepByRankArg, List<MngRankAuthDTO> authoryityNoArg) {
 		super();
 		this.companyNo = companyNo;
 		this.salaryStepByRank = salaryStepByRank;
-		this.rank = rank;
-		this.tblUserAuth = tblUserAuth;
+		this.authoryityNo = authoryityNo;
+		this.rankName = rankName;
+		this.salaryStepByRankArg = salaryStepByRankArg;
+		this.authoryityNoArg = authoryityNoArg;
 	}
 
 	public int getCompanyNo() {
@@ -35,28 +41,46 @@ public class MngRankAuthDTO {
 		this.salaryStepByRank = salaryStepByRank;
 	}
 
-	public String getRank() {
-		return rank;
+	public int getAuthoryityNo() {
+		return authoryityNo;
 	}
 
-	public void setRank(String rank) {
-		this.rank = rank;
+	public void setAuthoryityNo(int authoryityNo) {
+		this.authoryityNo = authoryityNo;
 	}
 
-	public char getTblUserAuth() {
-		return tblUserAuth;
+	public String getRankName() {
+		return rankName;
 	}
 
-	public void setTblUserAuth(char tblUserAuth) {
-		this.tblUserAuth = tblUserAuth;
+	public void setRankName(String rankName) {
+		this.rankName = rankName;
+	}
+
+	public List<MngRankAuthDTO> getSalaryStepByRankArg() {
+		return salaryStepByRankArg;
+	}
+
+	public void setSalaryStepByRankArg(List<MngRankAuthDTO> salaryStepByRankArg) {
+		this.salaryStepByRankArg = salaryStepByRankArg;
+	}
+
+	public List<MngRankAuthDTO> getAuthoryityNoArg() {
+		return authoryityNoArg;
+	}
+
+	public void setAuthoryityNoArg(List<MngRankAuthDTO> authoryityNoArg) {
+		this.authoryityNoArg = authoryityNoArg;
 	}
 
 	@Override
 	public String toString() {
-		return "MngRankAuthDTO [companyNo=" + companyNo + ", salaryStepByRank=" + salaryStepByRank + ", rank=" + rank
-				+ ", tblUserAuth=" + tblUserAuth + "]";
+		return "MngRankAuthDTO [companyNo=" + companyNo + ", salaryStepByRank=" + salaryStepByRank + ", authoryityNo="
+				+ authoryityNo + ", rankName=" + rankName + ", salaryStepByRankArg=" + salaryStepByRankArg
+				+ ", authoryityNoArg=" + authoryityNoArg + "]";
 	}
 
+	
 	
 	
 

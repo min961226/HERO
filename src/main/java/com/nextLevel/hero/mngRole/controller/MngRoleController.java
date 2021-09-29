@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.nextLevel.hero.member.model.dto.UserImpl;
 import com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO;
+import com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRoleDTO;
 import com.nextLevel.hero.mngRole.model.service.MngRoleService;
 
@@ -27,6 +29,7 @@ public class MngRoleController {
 		this.mngRoleService = mngRoleService;
 	}
 	
+	/* 지급별 권한 */
 	@GetMapping("/roleDept")
 	public ModelAndView mngRoleDept(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
 		
@@ -38,25 +41,56 @@ public class MngRoleController {
 		mv.addObject("rankList", rankList);
 		mv.setViewName("/mngRole/roleDept");
 		
-		return mv;								//직급별 권한
+		return mv;								
 	}
 	
+	/* 직급 리스트 ajax 조회 */
 	@GetMapping(value="role_auth", produces ="application/json; charset=UTF-8")
 	@ResponseBody
-	public List<MngRankAuthDTO> findCategoryList(@AuthenticationPrincipal UserImpl user,
+	public List<MngRankSalaryDTO> findCategoryList(@AuthenticationPrincipal UserImpl user,
 												 @RequestParam("rank") String rank) {
 		int companyNo = user.getCompanyNo();
-		List<MngRankAuthDTO> rankAuth = mngRoleService.selectRankAuth(companyNo, rank);
+		List<MngRankSalaryDTO> rankAuth = mngRoleService.selectRankAuth(companyNo, rank);
 	
 		return rankAuth;
 	}
+
+	/* 직급 권한 조회 */
+	@PostMapping("updateRoleAuth")
+	public ModelAndView createRoleAuth(ModelAndView mv, MngRankSalaryDTO mngRankSalaryDTO, @AuthenticationPrincipal UserImpl user) {
+		
+		mngRankSalaryDTO.setCompanyNo(user.getCompanyNo());
+		mngRoleService.updateRoleAuth(mngRankSalaryDTO);
+		
+		mv.setViewName("redirect:/mngRole/roleDept");
+		
+		return mv;
+	}
 	
+	/* 해당 직급별호봉 조회 */
+	@PostMapping("/roleDept")
+	public ModelAndView insertUserAuth(ModelAndView mv, @AuthenticationPrincipal UserImpl user,MngRankAuthDTO mngRankAuthDTO) {
+		
+		mngRankAuthDTO.setCompanyNo(user.getCompanyNo());
+		 
+		List<MngRankAuthDTO> StepByRankArgList = mngRoleService.selectStepByRank(mngRankAuthDTO);
+		mngRankAuthDTO.setSalaryStepByRankArg(StepByRankArgList);
+		
+//		mngRoleService.deleteRankAuth(mngRankAuthDTO);
+		
+		System.out.println(mngRankAuthDTO);
+		mv.setViewName("redirect:/mngRole/roleDept");
+		
+		return mv;
+		
+	}
+	
+	/* 사용자별 권한 */
 	@GetMapping("/roleUser")
 	public String mngRoleUser() {
 		
-		return "mngRole/roleUser";									//사용자별 권한
+		return "mngRole/roleUser";									
 	}
-	
 	
 	
 }
