@@ -16,11 +16,16 @@ public interface MngBasicInformationMapper {
 
 	int updateCompanyInformation(MngBasicInformationDTO basicInformation);
 
+	int insertLogCompanyInformation(MngBasicInformationDTO basicInformation);
+	
 	List<MngDepartmentHistoryDTO> selectDepartmentHistory(int companyNo);
 
 	List<MngInsuranceRateDTO> selectInsuranceHistory(int companyNo);
 
 	MngInsuranceRateDTO selectInsurance(int companyNo);
+
+	int insertPremiumRate(MngInsuranceRateDTO insuranceRate);
+
 
 
 

@@ -32,6 +32,12 @@ public class MngBasicInformationServiceImpl implements MngBasicInformationServic
 	public int updateCompanyInformation(MngBasicInformationDTO basicInformation) {
 		return mngBasicInformationMapper.updateCompanyInformation(basicInformation);
 	}
+	
+	@Override
+	@Transactional
+	public int insertLogCompanyInformation(MngBasicInformationDTO basicInformation) {
+		return mngBasicInformationMapper.insertLogCompanyInformation(basicInformation);
+	}
 
 	@Override
 	public List<MngDepartmentHistoryDTO> selectDepartmentHistory(int companyNo) {
@@ -47,6 +53,14 @@ public class MngBasicInformationServiceImpl implements MngBasicInformationServic
 	public List<MngInsuranceRateDTO> selectInsuranceHistory(int companyNo) {
 		return mngBasicInformationMapper.selectInsuranceHistory(companyNo);
 	}
+
+	@Override
+	@Transactional
+	public int insertPremiumRate(MngInsuranceRateDTO insuranceRate) {
+		return mngBasicInformationMapper.insertPremiumRate(insuranceRate);
+	}
+
+
 
 
 

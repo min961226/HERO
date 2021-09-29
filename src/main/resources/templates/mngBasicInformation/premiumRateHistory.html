@@ -41,6 +41,8 @@
 											<th>건강보험 보험요율</th>											
 											<th>장기요양 보험요율</th>											
 											<th>실업급여 보험요율</th>											
+											<th>임금채권 부담금 여부</th>											
+											<th>석면피해 구제 부담금 여부</th>											
 											<th>산재보험 요율</th>											
 											<th>보험요율 적용 일자</th>											
 										</tr>
@@ -49,12 +51,16 @@
 										<p align="right">단위 : 퍼센트(%)</p>
 									<tbody>
 										<tr th:each="history : ${insuranceRateHistory}">
-											<td th:text="${history.companyNo}"/>
-											<td id="pensionRate" th:text="${history.nationalPensionRate}"/>
-											<td id="healthRate" th:text="${history.healthRate}"/>
-											<td id="longTermRate" th:text="${history.longTermCareRate}"/>
-											<td id="unempBenefitRate" th:text="${history.unempBenefitRate}"/>
-											<td id="industrialInsuranceRate" th:text="${history.industrialInsuranceRate}"/>
+											<td th:text="${history.divNo}"/>
+											<td id="pensionRate" th:text="${history.nationalPensionRate}*100"/>
+											<td id="healthRate" th:text="${history.healthRate}*100"/>
+											<td id="longTermRate" th:text="${history.longTermCareRate}*100"/>
+											<td id="wageBondChargesYn" th:if="${history.wageBondChargesYn}=='Y'" th:text="해당"/>
+											<td id="wageBondChargesYn" th:if="${history.wageBondChargesYn}=='N'" th:text="비해당"/>
+											<td id="asbestosDamagechargeYn" th:if="${history.asbestosDamagechargeYn}=='Y'" th:text="해당"/>
+											<td id="asbestosDamagechargeYn" th:if="${history.asbestosDamagechargeYn}=='N'" th:text="비해당"/>
+											<td id="unempBenefitRate" th:text="${history.unempBenefitRate}*100"/>
+											<td id="industrialInsuranceRate" th:text="${history.industrialInsuranceRate}*100"/>
 											<td th:text="${history.insuranceRateStartDate}"/>
 										</tr>
 									</tbody>
@@ -75,11 +81,11 @@
 		var unempBenefitRate = document.getElementById('unempBenefitRate').innerHTML
 		var industrialInsuranceRate = document.getElementById('industrialInsuranceRate').innerHTML
 		
-		document.getElementById('pensionRate').innerHTML = (pensionRate*100).toFixed(2);
-		document.getElementById('healthRate').innerHTML = (healthRate*100).toFixed(2);
-		document.getElementById('longTermRate').innerHTML = (longTermRate*100).toFixed(2);
-		document.getElementById('unempBenefitRate').innerHTML = (unempBenefitRate*100).toFixed(2);
-		document.getElementById('industrialInsuranceRate').innerHTML = (industrialInsuranceRate*100).toFixed(2);
+		document.getElementById('pensionRate').innerHTML = (pensionRate).toFixed(2);
+		document.getElementById('healthRate').innerHTML = (healthRate).toFixed(2);
+		document.getElementById('longTermRate').innerHTML = (longTermRate).toFixed(2);
+		document.getElementById('unempBenefitRate').innerHTML = (unempBenefitRate).toFixed(2);
+		document.getElementById('industrialInsuranceRate').innerHTML = (industrialInsuranceRate).toFixed(2);
 		</script>
 </body>
 </html>

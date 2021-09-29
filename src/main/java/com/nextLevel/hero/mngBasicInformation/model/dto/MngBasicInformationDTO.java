@@ -9,6 +9,7 @@ public class MngBasicInformationDTO implements Serializable{
 	private String companyName;
 	private String ceoName;
 	private String address;
+	private String addressDetail;
 	private String phone;
 	private String fax;
 	private String companyRegistrationNo;
@@ -27,16 +28,17 @@ public class MngBasicInformationDTO implements Serializable{
 	
 	public MngBasicInformationDTO() {}
 
-	public MngBasicInformationDTO(int companyNo, String companyName, String ceoName, String address, String phone,
-			String fax, String companyRegistrationNo, String companyRegistrationNo1, String companyRegistrationNo2,
-			String companyRegistrationNo3, String identificationNo, String identificationNo1, String identificationNo2,
-			String managerEmail, String website, Date foundingDate, char firstCompanyYn, int businessCode,
-			String businessName) {
+	public MngBasicInformationDTO(int companyNo, String companyName, String ceoName, String address,
+			String addressDetail, String phone, String fax, String companyRegistrationNo, String companyRegistrationNo1,
+			String companyRegistrationNo2, String companyRegistrationNo3, String identificationNo,
+			String identificationNo1, String identificationNo2, String managerEmail, String website, Date foundingDate,
+			char firstCompanyYn, int businessCode, String businessName) {
 		super();
 		this.companyNo = companyNo;
 		this.companyName = companyName;
 		this.ceoName = ceoName;
 		this.address = address;
+		this.addressDetail = addressDetail;
 		this.phone = phone;
 		this.fax = fax;
 		this.companyRegistrationNo = companyRegistrationNo;
@@ -84,6 +86,14 @@ public class MngBasicInformationDTO implements Serializable{
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getAddressDetail() {
+		return addressDetail;
+	}
+
+	public void setAddressDetail(String addressDetail) {
+		this.addressDetail = addressDetail;
 	}
 
 	public String getPhone() {
@@ -209,18 +219,15 @@ public class MngBasicInformationDTO implements Serializable{
 	@Override
 	public String toString() {
 		return "MngBasicInformationDTO [companyNo=" + companyNo + ", companyName=" + companyName + ", ceoName="
-				+ ceoName + ", address=" + address + ", phone=" + phone + ", fax=" + fax + ", companyRegistrationNo="
-				+ companyRegistrationNo + ", companyRegistrationNo1=" + companyRegistrationNo1
-				+ ", companyRegistrationNo2=" + companyRegistrationNo2 + ", companyRegistrationNo3="
-				+ companyRegistrationNo3 + ", identificationNo=" + identificationNo + ", identificationNo1="
-				+ identificationNo1 + ", identificationNo2=" + identificationNo2 + ", managerEmail=" + managerEmail
-				+ ", website=" + website + ", foundingDate=" + foundingDate + ", firstCompanyYn=" + firstCompanyYn
-				+ ", businessCode=" + businessCode + ", businessName=" + businessName + "]";
+				+ ceoName + ", address=" + address + ", addressDetail=" + addressDetail + ", phone=" + phone + ", fax="
+				+ fax + ", companyRegistrationNo=" + companyRegistrationNo + ", companyRegistrationNo1="
+				+ companyRegistrationNo1 + ", companyRegistrationNo2=" + companyRegistrationNo2
+				+ ", companyRegistrationNo3=" + companyRegistrationNo3 + ", identificationNo=" + identificationNo
+				+ ", identificationNo1=" + identificationNo1 + ", identificationNo2=" + identificationNo2
+				+ ", managerEmail=" + managerEmail + ", website=" + website + ", foundingDate=" + foundingDate
+				+ ", firstCompanyYn=" + firstCompanyYn + ", businessCode=" + businessCode + ", businessName="
+				+ businessName + "]";
 	}
 
-	
-	
-	
-	
-	
+
 }

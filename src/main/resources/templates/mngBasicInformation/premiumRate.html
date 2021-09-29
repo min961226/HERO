@@ -20,7 +20,7 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
-							<form action="/mngBasicInformation/premiumRate"method="POST">
+							<form class="form-horizontal" action="/mngBasicInformation/premiumRate" method="POST" onsubmit="return askAgain();">
 							<div class="row">
 								<div class="col-lg-10">
 									<div class="card">
@@ -30,6 +30,8 @@
 												<h4 class="header-title mt-0 mb-1" align="right">직원 수 :
 												</h4>
 											</h4>
+											<input name="companyNo" hidden="hidden" th:value="${insuranceRate.companyNo}">
+											<input name="businessCode" hidden="hidden" th:value="${insuranceRate.businessCode}">
 											<div class="table-responsive">
 												<table class="table table-bordered mb-0" align="center"
 													style="vertical-align: middle"  onchange="valChange()">
@@ -48,27 +50,27 @@
 															<th scope="row">국민연금</th>
 															<td>기준 월 소득액</td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="nationalPensionRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" required="required"
 																		th:value="${insuranceRate.nationalPensionRate}"
-																		id="nationalPensionRate" step="0.01"> <span
+																		id="nationalPensionRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="workersPensionRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" readonly="readonly"
 																		th:value="${insuranceRate.workersPensionRate}"
-																		id="workersPensionRate" step="0.01"> <span
+																		id="workersPensionRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="employerPensionRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" readonly="readonly"
 																		th:value="${insuranceRate.employerPensionRate}"
-																		id="employerPensionRate" step="0.01"> <span
+																		id="employerPensionRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 															<td rowspan="3">10원 미만 단수 버림</td>
@@ -77,53 +79,53 @@
 															<th scope="row" rowspan="2">건강보험</th>
 															<td>건강 보험료</td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="healthRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" required="required"
-																		th:value="${insuranceRate.healthRate}" id="healthRate" step="0.01">
+																		th:value="${insuranceRate.healthRate}" id="healthRate" step="0.0001">
 																	<span class="input-group-text">%</span>
 																</div></td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="workersHealthRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" readonly="readonly"
 																		th:value="${insuranceRate.workersHealthRate}"
-																		id="workersHealthRate" step="0.01"> <span
+																		id="workersHealthRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="employerHealthRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" readonly="readonly"
 																		th:value="${insuranceRate.employerHealthRate}"
-																		id="employerHealthRate" step="0.01"> <span
+																		id="employerHealthRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 														</tr>
 														<tr>
 															<td>장기 요양 보험료</td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="longTermCareRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" required="required"
 																		th:value="${insuranceRate.longTermCareRate}"
-																		id="longTermCareRate" step="0.01"> <span
+																		id="longTermCareRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="workersLongTermCareRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" readonly="readonly"
 																		th:value="${insuranceRate.workersLongTermCareRate}"
-																		id="workersLongTermCareRate" step="0.01"> <span
+																		id="workersLongTermCareRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="employerLongTermCareRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" readonly="readonly"
 																		th:value="${insuranceRate.employerLongTermCareRate}"
-																		id="employerLongTermCareRate" step="0.01"> <span
+																		id="employerLongTermCareRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 														</tr>
@@ -131,27 +133,27 @@
 															<th scope="row" rowspan="5">고용보험</th>
 															<td>실업 급여</td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="unempBenefitRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" required
 																		th:value="${insuranceRate.unempBenefitRate}"
-																		id="unempBenefitRate" step="0.01"> <span
+																		id="unempBenefitRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="workersUnempRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" readonly="readonly"
 																		th:value="${insuranceRate.workersUnempRate}"
-																		id="workersUnempRate" step="0.01"> <span
+																		id="workersUnempRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="employerUnempRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" readonly="readonly"
 																		th:value="${insuranceRate.employerUnempRate}"
-																		id="employerUnempRate" step="0.01"> <span
+																		id="employerUnempRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 															<td rowspan="5">고용안전 개발 능력 사업</td>
@@ -160,44 +162,44 @@
 															<td>150인 미만</td>
 															<td colspan="2" rowspan="4"></td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="under150EmpRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" required="required"
 																		th:value="${insuranceRate.under150EmpRate}"
-																		id="under150EmpRate" step="0.01"> <span
+																		id="under150EmpRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 														</tr>
 														<tr>
 															<td>150인 이상 우선 지원 대상</td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="over150PriorityEmpRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" required="required"
 																		th:value="${insuranceRate.over150PriorityEmpRate}"
-																		id="over150PriorityEmpRate" step="0.01"> <span
+																		id="over150PriorityEmpRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 														</tr>
 														<tr>
 															<td>150 ~ 1000인 미만</td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="under1000EmpRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" required="required"
 																		th:value="${insuranceRate.under1000EmpRate}"
-																		id="under1000EmpRate" step="0.01"> <span
+																		id="under1000EmpRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 														</tr>
 														<tr>
 															<td>1000인 이상 및 지자체</td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="over1000EmpRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" required="required"
 																		th:value="${insuranceRate.over1000EmpRate}"
-																		id="over1000EmpRate" step="0.01"> <span
+																		id="over1000EmpRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 														</tr>
@@ -231,11 +233,11 @@
 															<td>업종</td>
 															<td th:text="${insuranceRate.detailTypeOfBusiness}"></td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="industryRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" readonly="readonly"
 																		th:value="${insuranceRate.industryRate}"
-																		id="industryRate" step="0.01"> <span
+																		id="industryRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 														</tr>
@@ -243,11 +245,11 @@
 															<td>출 · 퇴근 재해 요율</td>
 															<td>전 업종 동일 요율 적용</td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="commuteAccidentRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px"
 																		th:value="${insuranceRate.commuteAccidentRate}"
-																		id="commuteAccidentRate" step="0.01"> <span
+																		id="commuteAccidentRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 														</tr>
@@ -256,29 +258,29 @@
 															<td align="center">
 																<div th:switch="${insuranceRate.wageBondChargesYn}">
 																	<div th:case="Y">
-																	<input type="radio" id="customRadio1"
+																	<input type="radio" id="wageBondChargesYn1"
 																		name="wageBondChargesYn" class="form-check-input" value="Y" checked="checked">
-																	<label class="form-check-label" for="customRadio1">해당&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;</label>
-																	<input type="radio" id="customRadio2"
+																	<label class="form-check-label" for="wageBondChargesYn1">해당&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;</label>
+																	<input type="radio" id="wageBondChargesYn2"
 																		name="wageBondChargesYn" class="form-check-input" value="N">
-																	<label class="form-check-label" for="customRadio2">비해당</label>
+																	<label class="form-check-label" for="wageBondChargesYn2">비해당</label>
 																	</div>
 																	<div th:case="N">
-																	<input type="radio" id="customRadio1"
+																	<input type="radio" id="wageBondChargesYn1"
 																		name="wageBondChargesYn" class="form-check-input" value="Y">
-																	<label class="form-check-label" for="customRadio1">해당&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;</label>
-																	<input type="radio" id="customRadio2"
+																	<label class="form-check-label" for="wageBondChargesYn1">해당&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;</label>
+																	<input type="radio" id="wageBondChargesYn2"
 																		name="wageBondChargesYn" class="form-check-input" value="N" checked="checked">
-																	<label class="form-check-label" for="customRadio2">비해당</label>
+																	<label class="form-check-label" for="wageBondChargesYn2">비해당</label>
 																	</div>
 																</div>
 															</td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="wageBondChargesRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" required="required"
 																		th:value="${insuranceRate.wageBondChargesRate}"
-																		id="wageBondChargesRate" step="0.01"> <span
+																		id="wageBondChargesRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 														</tr>
@@ -286,31 +288,41 @@
 															<th scope="row" colspan="2">석면 피해 구제 부담금</th>
 															<td align="center">
 																<div  th:switch="${insuranceRate.asbestosDamagechargeYn}">
-																	<input type="radio" id="customRadio3"
-																		name="customRadio1" class="form-check-input">
+																<div th:case="Y">
+																	<input type="radio" id="asbestosDamagechargeYn3"
+																		name="asbestosDamagechargeYn" class="form-check-input"value="Y" checked="checked">
 																	<label class="form-check-label" for="customRadio3">해당&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;</label>
-																	<input type="radio" id="customRadio4" 
-																		name="customRadio1" class="form-check-input" checked>
+																	<input type="radio" id="asbestosDamagechargeYn4" 
+																		name="asbestosDamagechargeYn" class="form-check-input" value="N">
 																	<label class="form-check-label" for="customRadio4">비해당</label>
+																</div>
+																<div th:case="N">
+																<input type="radio" id="asbestosDamagechargeYn3"
+																		name="asbestosDamagechargeYn" class="form-check-input"value="Y">
+																	<label class="form-check-label" for="customRadio3">해당&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;</label>
+																	<input type="radio" id="asbestosDamagechargeYn4" 
+																		name="asbestosDamagechargeYn" class="form-check-input" value="N"checked="checked">
+																	<label class="form-check-label" for="customRadio4" >비해당</label>
+																</div>
 																</div>
 															</td>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="asbestosDamagechargeRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px"
 																		th:value="${insuranceRate.asbestosDamagechargeRate}"
-																		id="asbestosDamagechargeRate" step="0.01"> <span
+																		id="asbestosDamagechargeRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 														</tr>
 														<tr>
 															<th scope="row" colspan="3">산재 보험 요율</th>
 															<td><div class="input-group">
-																	<input type="number" class="form-control"
+																	<input type="number" class="form-control" name="industrialInsuranceRate"
 																		aria-describedby="inputGroupPrepend"
 																		style="width: 10px" readonly="readonly"
 																		th:value="${insuranceRate.industrialInsuranceRate}"
-																		id="industrialInsuranceRate" step="0.01"> <span
+																		id="industrialInsuranceRate" step="0.0001"> <span
 																		class="input-group-text">%</span>
 																</div></td>
 														</tr>
@@ -322,11 +334,11 @@
 									 <div class="mb-3 row">
                                                         <label class="col-lg-2 col-form-label" for="example-date">현재 보험율 시작</label>
                                                         <div class="col-lg-4">
-                                                            <input class="form-control" id="example-date" type="date" name="date" readonly="readonly" th:value="${insuranceRate.insuranceRateStartDate}">
+                                                            <input class="form-control" id="example-date" type="date"  readonly="readonly" th:value="${insuranceRate.insuranceRateStartDate}">
                                                         </div>
                                                         <label class="col-lg-2 col-form-label" for="example-date">보험율 적용 예정일</label>
                                                         <div class="col-lg-4">
-                                                            <input class="form-control" id="currDate" type="date" name="date">
+                                                            <input class="form-control" id="currDate" name="insuranceRateStartDate" type="date">
                                                         </div>
                                                     </div>
 									<button type="button" class="btn btn-success" id="cancel"
@@ -336,7 +348,7 @@
 								</div>
 							</div>
 							</form>
-										<button type="button" class="btn btn-warning" id="calc"
+										<button type="button" class="btn btn-warning" id="calc" name="calc"
 											style="float: right;" onclick="calc()">계산하기</button>
 						</div>
 					</div>
@@ -346,6 +358,19 @@
 		</div>
 	</div>
 	<script>
+		function askAgain() {
+
+			var yn;
+			yn = document.getElementById('calc').innerHTML;
+
+			if (yn === "계산완료") {
+				return true;
+			} else {
+				alert("계산하기 버튼을 클릭하여 주세요.")
+				return false;
+			}
+		}
+	
 	 	document.getElementById('currDate').value= new Date().toISOString().slice(0, 10);
 		
 		const PensionRate = document.getElementById('nationalPensionRate').value;
@@ -412,26 +437,35 @@
 				.toFixed(2);
 		document.getElementById('industryRate').value = (industryRate * 100)
 				.toFixed(2);
-		
+
 		function calc(){
-	 		document.getElementById("calc").innerHTML="계산 완료";
+			
+	 		document.getElementById("calc").innerHTML="계산완료";
 	 		document.getElementById("calc").style.background="#25c2e3";
 	 		document.getElementById('workersPensionRate').value = (document.getElementById('nationalPensionRate').value)/2;
 	 		document.getElementById('employerPensionRate').value = (document.getElementById('nationalPensionRate').value)/2;
 	 		document.getElementById('workersHealthRate').value = (document.getElementById('healthRate').value)/2;
-	 		document.getElementById('employerPensionRate').value = (document.getElementById('healthRate').value)/2;
+	 		document.getElementById('employerHealthRate').value = (document.getElementById('healthRate').value)/2;
 	 		document.getElementById('workersLongTermCareRate').value = (document.getElementById('longTermCareRate').value)/2;
 	 		document.getElementById('employerLongTermCareRate').value = (document.getElementById('longTermCareRate').value)/2;
 	 		document.getElementById('workersUnempRate').value = (document.getElementById('unempBenefitRate').value)/2;
 	 		document.getElementById('employerUnempRate').value = (document.getElementById('unempBenefitRate').value)/2;
-	 		document.getElementById('industrialInsuranceRate').value = parseFloat(document.getElementById('industryRate').value)
-	 																 + parseFloat(document.getElementById('commuteAccidentRate').value)
-	 																 + parseFloat(document.getElementById('wageBondChargesRate').value)
-	 																 + parseFloat(document.getElementById('asbestosDamagechargeRate').value);
+			document.getElementById('industrialInsuranceRate').value = parseFloat(document.getElementById('industryRate').value) + parseFloat(document.getElementById('commuteAccidentRate').value)
+																	 + parseFloat(document.getElementById('wageBondChargesRate').value) + parseFloat(document.getElementById('asbestosDamagechargeRate').value);
+	 		const var1 = document.querySelector('input[name="wageBondChargesYn"]:checked').value;
+	 		const var2 = document.querySelector('input[name="asbestosDamagechargeYn"]:checked').value;
+			 if(var1 === "Y" && var2 ==="Y"){
+	 		}else if(var1 === "N" && var2 ==="Y"){
+	 			document.getElementById('industrialInsuranceRate').value -=  parseFloat(document.getElementById('wageBondChargesRate').value);
+	 		}else if(var1 === "Y" && var2 ==="N"){
+	 			document.getElementById('industrialInsuranceRate').value -= parseFloat(document.getElementById('asbestosDamagechargeRate').value);
+	 		}else{
+	 			document.getElementById('industrialInsuranceRate').value -= (parseFloat(document.getElementById('wageBondChargesRate').value) + parseFloat(document.getElementById('asbestosDamagechargeRate').value));
+	 		}
 	 		}
 		
 		function valChange(){
-	 		document.getElementById("calc").innerHTML="계산 하기";
+	 		document.getElementById("calc").innerHTML="계산하기";
 	 		document.getElementById("calc").style.background="#ffbe0b";
 	 	}
 		
