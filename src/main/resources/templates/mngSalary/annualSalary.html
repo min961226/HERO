@@ -28,13 +28,16 @@
 								<hr>
 							<!-- 여기서부터 본문 생성 -->
 							<div>
-								<label style="padding:10px;">기준일 </label><input type="date"><br>
-								<label style="margin:15px;">검색</label>
-								<select style="width:155px">
-									<option value="deptName">부서명</option>
-									<option value="memberName">성 명</option>
-								</select>
-								<input type="text" style="margin:10px;"><button type="button" class="btn btn-outline-primary">검 색</button>
+								<form action="/mngSalary/annualSalary" method="get">
+									<label style="padding:10px;">기준일 </label><input type="date" id="searchDate" name="searchDate"><br>
+									<label style="margin:15px;">검색</label>
+									<select style="width:155px" id="searchCondition" name="searchCondition">
+										<option value="searchDeptName" selected="selected">부서명</option>
+										<option value="searchMemberName" >성 명</option>
+									</select>
+									<input type="text" style="margin:10px;" id="searchValue" name="searchValue">
+									<button type="submit" class="btn btn-outline-primary" id="searchBtn">검 색</button>
+								</form>
 							</div>
 							<br>
 							<div class="card">
@@ -204,30 +207,30 @@
 
 	$("[id^=monDetail]").click(function(){
 		
-			const memberNo = $(this).siblings(".memberNo").text();
-			const memberName = $(this).siblings(".memberName").text();
-			const departmentName = $(this).siblings(".deptName").text();
-			const salRank = $(this).siblings(".rank").text();
-			const salStep = $(this).siblings(".step").text();
+		const memberNo = $(this).siblings(".memberNo").text();
+		const memberName = $(this).siblings(".memberName").text();
+		const departmentName = $(this).siblings(".deptName").text();
+		const salRank = $(this).siblings(".rank").text();
+		const salStep = $(this).siblings(".step").text();
 			
-			const memNo = $("#memNo").text(memberNo);
-			const deptName = $("#deptName").text(departmentName);
-			const memName = $("#memName").text(memberName);
-			const rank = $("#rank").text(salRank);
-			const step = $("#step").text(salStep);
-			
-			$.ajax({
-				url: "/mngSalary/annualSalary",
-				method: "POST",
-				data: { memberNo : memberNo },
-				dataType: 'JSON',
-				success: function(data) {
-					console.log(data);
-				},
-				error: function(xhr) {
-					alert("잠시 후 다시 시도해주세요");
-				}
-			});
+		const memNo = $("#memNo").text(memberNo);
+		const deptName = $("#deptName").text(departmentName);
+		const memName = $("#memName").text(memberName);
+		const rank = $("#rank").text(salRank);
+		const step = $("#step").text(salStep);
+		
+		
+		$.ajax({
+			url: "annualSalary",
+			method: "POST",
+			data: { memberNo : memberNo },
+			success: function(data) {
+				console.log(data);
+			},
+			error: function(xhr) {
+				alert("잠시 후 다시 시도해주세요");
+			}
+		});
 			
 	});
 	
