@@ -7,6 +7,7 @@
 		<result property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
 		<result property="rank" column="RANK"/>
 		<result property="salaryStep" column="SALARY_STEP"/>
+		<result property="salStepAmount" column="AMOUNT"/>
 		<result property="salaryStepUpdatedDate" column="UPDATED_DATE"/>
 		<result property="changeStartDate" column="CHANGE_START_DATE"/>
 	
@@ -21,10 +22,6 @@
 	</resultMap>
 	
 	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO" id="latestMonthlyResult">
-		<result property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
-		<result property="rank" column="RANK"/>
-		<result property="salaryStep" column="SALARY_STEP"/>
-		<result property="salaryNo" column="SALARY_NO"/>
 		<result property="payCategory" column="MONTHLY_PAY_CATEGORY"/>
 		<result property="amount" column="AMOUNT"/>
 		<result property="note" column="DESCRIPTION"/>
@@ -71,42 +68,76 @@
 	</resultMap>
 	
 	
-	<select id="listMngAnnualSalary" resultMap="annualSalaryResultMap">
+	<select id="listMngAnnualSalary" resultMap="annualSalaryResultMap" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO">
 		SELECT
-		       G.COMPANY_NO
-     		 , G.MEMBER_NO
-     		 , G.MEMBER_NAME
-     		 , G.DEPARTMENT_NAME
-     		 , G.RANK
-     		 , G.SALARY_STEP
-     		 , G.START_DATE
-		  FROM (SELECT
-				       A.COMPANY_NO
-					 , A.MEMBER_NO
-					 , A.KOREAN_NAME AS MEMBER_NAME
-					 , B.DEPARTMENT_NAME
-					 , F.RANK
-					 , F.SALARY_STEP
-					 , F.START_DATE
-				  FROM TBL_EMPLOYEE A
-				  JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
-				  JOIN TBL_EMP_SALARY_STEP C ON (A.MEMBER_NO = C.MEMBER_NO)
-			      JOIN TBL_RANK_SALARY_STEP F ON (C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK)
-			     WHERE C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK
-			     ORDER BY A.DEPARTMENT_NO
-			     )G  	
+               A.COMPANY_NO
+             , A.MEMBER_NO
+             , A.KOREAN_NAME AS MEMBER_NAME
+             , B.DEPARTMENT_NAME
+             , D.RANK
+             , D.SALARY_STEP
+             , D.AMOUNT
+             , C.START_DATE
+          FROM TBL_EMPLOYEE A
+          JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+          JOIN TBL_EMP_SALARY_STEP_UPDATE C ON(A.MEMBER_NO = C.MEMBER_NO)
+          JOIN TBL_RANK_SALARY_STEP D ON (C.SALARY_STEP_BY_RANK = D.SALARY_STEP_BY_RANK)
+         WHERE A.COMPANY_NO = #{ companyNo }
+           AND C.SALARY_STEP_BY_RANK = D.SALARY_STEP_BY_RANK
+           AND (A.MEMBER_NO, C.START_DATE) IN (SELECT 
+                                                      A1.MEMBER_NO
+                                                    , MAX(C1.START_DATE)AS START_DATE
+                                                 FROM TBL_EMPLOYEE A1
+                                                 JOIN TBL_EMP_SALARY_STEP_UPDATE C1 ON (A1.MEMBER_NO = C1.MEMBER_NO)
+                                                <where>
+                                                	<if test="searchDate != null and '' != searchDate">
+                                                	   C1.START_DATE <![CDATA[<=]]> #{ searchDate }
+                                                	</if>
+                                                </where> 
+                                                GROUP BY A1.MEMBER_NO)
+         <if test = "searchCondition == 'searchDeptName'">
+           AND B.DEPARTMENT_NAME LIKE '%' || #{ searchValue } || '%'
+         </if>
+         <if test = "searchCondition == 'searchMemberName'">
+           AND A.KOREAN_NAME = #{ searchValue }
+         </if>
+         ORDER BY B.DEPARTMENT_NO  	
 	</select>
 	
-	<select id="listMonthlySalary" parameterType="_int" resultMap="latestMonthlyResult">
-		
-	
-	
-	
+	<select id="listMonthlyPay" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO" resultMap="latestMonthlyResult">
+		SELECT
+		       A.COMPANY_NO
+		     , A.MEMBER_NO
+		     , A.AMOUNT 
+	      FROM (SELECT
+	                   A1.MEMBER_NO
+	                 , MAX(A1.CHANGE_START_DATE) AS CHANGE_START_DATE
+	              FROM TBL_EMP_MONTHLY_SALARY_LIST A1
+	             WHERE A1.COMPANY_NO = #{ companyNo }
+	            <where>
+                    <if test="(searchDate != null) and '' != searchDate">
+                       C1.START_DATE <![CDATA[<=]]> #{ searchDate } 
+                    </if>
+                </where> 
+                 GROUP BY A1.MEMBER_NO)A	
 	</select>
 	
-	
-	
-	
+	<select id="listMonthlySalary" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO" resultMap="latestMonthlyResult">
+		SELECT
+		       A.COMPANY_NO
+		     , A.MONTHLY_PAY_CATEGORY
+		     , A.AMOUNT
+		     , A.DESCRIPTION
+		     , A.CHANGE_START_DATE
+		     , A.DEDUCTION_YN
+		     , A.SALARY_NO 
+	      FROM TBL_EMP_MONTHLY_SALARY_LIST A
+	     WHERE A.COMPANY_NO = #{ companyNo }
+	       AND A.MEMBER_NO = #{ memberNo }
+	    <if test="(searchDate != null) and '' != searchDate">
+           AND A.CHANGE_START_DATE <![CDATA[<=]]> #{ searchDate } 
+        </if>
+	</select>
 	
 	
 	<select id="listMngFourInsuranceList" resultMap="fourInsResultMap">

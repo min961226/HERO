@@ -8,11 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.nextLevel.hero.member.model.dto.UserImpl;
+import com.nextLevel.hero.mngSalary.model.dto.MemberInfoDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO;
@@ -33,9 +37,12 @@ public class MngSalaryController {
 	
 	/* 연봉 조회 */
 	@GetMapping("/annualSalary")		// postMapping으로 변경해야 할 것 같은데...일단 보류
-	public ModelAndView mngAnnualSalary(ModelAndView mv) {
+	public ModelAndView mngAnnualSalary(ModelAndView mv, MngSalaryDTO search, @AuthenticationPrincipal UserImpl user) {
 		
-		List<MngSalaryDTO> salaryList = mngSalaryService.listMngAnnualSalary();
+		search.setCompanyNo(user.getCompanyNo());
+
+		
+		List<MngSalaryDTO> salaryList = mngSalaryService.listMngAnnualSalary(search);
 		
 		mv.addObject("salaryList",salaryList);
 		mv.setViewName("/mngSalary/annualSalary");
@@ -44,13 +51,22 @@ public class MngSalaryController {
 	}
 	
 	/* 월 지급금액 조회 */
-	@PostMapping(value ="annaulSalary", produces = "application/json; chartset=UTF-8")
+	@PostMapping(value ="annualSalary", produces = "application/json; chartset=UTF-8")
 	@ResponseBody
-	public String listMonthlySalary(@AuthenticationPrincipal UserImpl user, int memberNo) {
+	public String listMonthlySalary(@AuthenticationPrincipal UserImpl user, MngSalaryDTO search) {
+
+		search.setCompanyNo(user.getCompanyNo());
 		
-		int companyNo = user.getCompanyNo();
-		List<MemberMonthlyPayDTO> memberMonthly = mngSalaryService.listMonthlySalary(memberNo, companyNo);
-		Gson gson = new Gson();
+		List<MemberMonthlyPayDTO> memberMonthly = mngSalaryService.listMonthlySalary(search);
+		
+		System.out.println(memberMonthly);
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
 		
 		
 		return gson.toJson(memberMonthly);

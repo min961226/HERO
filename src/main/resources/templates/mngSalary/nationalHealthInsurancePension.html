@@ -28,13 +28,16 @@
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
 							<div>
-								<label style="padding:10px;">기준일 </label><input type="date"><br>
-								<label style="margin:15px;">검색</label>
-								<select>
-									<option value="deptName">부서명</option>
-									<option value="memberName">성 명</option>
-								</select>
-								<input type="text" style="margin:10px;"><button type="button" class="btn btn-outline-primary">검 색</button>
+								<form action="/mngSalary//nationalHealthInsurancePension" method="get">
+									<label style="padding:10px;">기준일 </label><input type="date" id="searchDate" name="searchDate"><br>
+									<label style="margin:15px;">검색</label>
+									<select id="searchCondition" name="searchCondition">
+										<option value="searchDeptName">부서명</option>
+										<option value="searchMemberName">성 명</option>
+									</select>
+									<input type="text" style="margin:10px;" id="searchValue" name="searchValue">
+									<button type="button" class="btn btn-outline-primary">검 색</button>
+								</form>
 							</div>
 							<br>
 							<div class="card">

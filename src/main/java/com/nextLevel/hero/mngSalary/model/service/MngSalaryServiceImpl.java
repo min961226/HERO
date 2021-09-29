@@ -1,5 +1,6 @@
 package com.nextLevel.hero.mngSalary.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,34 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 
 	/* 연봉 조회 */
 	@Override
-	public List<MngSalaryDTO> listMngAnnualSalary() {
+	public List<MngSalaryDTO> listMngAnnualSalary(MngSalaryDTO search) {
 
-		return mngSalaryMapper.listMngAnnualSalary();
+		/*
+		List<MngSalaryDTO> salStepList = mngSalaryMapper.listMngAnnualSalary(search);
+		List<MemberMonthlyPayDTO> monthlyList = mngSalaryMapper.listMonthlyPay(search);
+		
+		List<MngSalaryDTO> annualList = new ArrayList<>();
+		
+		 호봉 정보와 월 지급항목 합산 후 연 환산 
+		for(int i = 0; i < salStepList.size(); i++) {
+			
+			if()
+			for(int j = 0; j < monthlyList.size(); j++) {
+				
+			}
+		}*/
+		
+		
+		return mngSalaryMapper.listMngAnnualSalary(search);
 	}
 
+	
+	
 	/* 개인별 월 지급항목 조회 */
 	@Override
-	public List<MemberMonthlyPayDTO> listMonthlySalary(int memberNo, int companyNo) {
+	public List<MemberMonthlyPayDTO> listMonthlySalary(MngSalaryDTO search) {
 		
-		return mngSalaryMapper.listMonthlySalary(memberNo, companyNo);
+		return mngSalaryMapper.listMonthlySalary(search);
 	}
 	
 	/* 4대보험 개인별 공제항목 조회*/
@@ -58,7 +77,6 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		return mngSalaryMapper.listmngPayrollAccount();
 	}
 
-	
 
 	
 	

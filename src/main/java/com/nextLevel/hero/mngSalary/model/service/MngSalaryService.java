@@ -10,15 +10,15 @@ import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
 
 public interface MngSalaryService {
 
-	List<MngSalaryDTO> listMngAnnualSalary();
+	List<MngSalaryDTO> listMngAnnualSalary(MngSalaryDTO search);
 
 	List<MngDeductFourInsDTO> listMngFourInsuranceList();
 
 	List<MemberInsFeeDTO> listMngNationalHealthInsurancePension();
 
 	List<MngAccountDTO> listmngPayrollAccount();
-
-	List<MemberMonthlyPayDTO> listMonthlySalary(int memberNo, int companyNo);
+	
+	List<MemberMonthlyPayDTO> listMonthlySalary(MngSalaryDTO search);
 
 
 }

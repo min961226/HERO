@@ -106,6 +106,8 @@ public class MemberMonthlyPayDTO {
 				+ rank + ", salaryStep=" + salaryStep + ", salaryNo=" + salaryNo + ", payCategory=" + payCategory
 				+ ", amount=" + amount + ", note=" + note + ", deductionYn=" + deductionYn + "]";
 	}
+
+	
 	
 	
 }

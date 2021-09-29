@@ -13,7 +13,9 @@ import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
 @Mapper
 public interface MngSalaryMapper {
 
-	List<MngSalaryDTO> listMngAnnualSalary();
+	List<MngSalaryDTO> listMngAnnualSalary(MngSalaryDTO search);
+	
+	List<MemberMonthlyPayDTO> listMonthlyPay(MngSalaryDTO search);
 
 	List<MngDeductFourInsDTO> listMngFourInsuranceList();
 
@@ -21,6 +23,8 @@ public interface MngSalaryMapper {
 
 	List<MngAccountDTO> listmngPayrollAccount();
 
-	List<MemberMonthlyPayDTO> listMonthlySalary(int memberNo, int companyNo);
+	List<MemberMonthlyPayDTO> listMonthlySalary(MngSalaryDTO search);
+
+	
 
 }
