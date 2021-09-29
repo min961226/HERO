@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+<link rel="stylesheet" th:href="@{/libs/smartwizard/css/smart_wizard_theme_arrows.min.css}" type="text/css" />
+
 </head>
 <body>
 	<div id="wrapper">
@@ -20,6 +23,412 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							  <div class="col-lg-6">
+								<div class="card">
+									<div class="card-body">
+										<h4 class="header-title mt-0 mb-1">Arrows in Header</h4>
+										<p class="sub-header">Example of arrows wizard</p>
+										<div id="smartwizard-arrows">
+											<ul>
+												<li><a href="#sw-arrows-step-1">Account<small
+														class="d-block fw-normal">Step description</small></a></li>
+												<li><a href="#sw-arrows-step-2">Profile<small
+														class="d-block fw-normal">Step description</small></a></li>
+												<li><a href="#sw-arrows-step-3">Finish<small
+														class="d-block fw-normal">Step description</small></a></li>
+											</ul>
+
+											<div class="p-3">
+												<div id="sw-arrows-step-1">
+													<div class="row">
+														<div class="col-12">
+															<div class="mb-3">
+																<div class="row">
+													<div class="col">
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">기업체명</label>
+															<div class="col-lg-10">
+																<input  type="text" class="form-control" name="companyName" >
+															</div>
+														</div>
+
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">본사
+																주소</label>
+															<div class="col-lg-7">
+																<input type="text" class="form-control" id="companyAddress" name="address" readonly="readonly">
+															</div>
+															<div class="col-lg-3">
+																<button type="button" id="address" class="btn btn-info">주소 찾기</button>
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">상세주소</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" id="address_detail" name="addressDetail" >
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">법인(주민)등록 번호</label>
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="identificationNo1" >
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="identificationNo2" >
+															</div>
+														</div>
+														
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">본사 연락처</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-number"
+																	type="text" name="phone" >
+															</div>
+														</div>
+
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-email">회사 이메일</label>
+															<div class="col-lg-10">
+																<input type="email" id="example-email"
+																	class="form-control"  name="managerEmail" >
+															</div>
+														</div>
+														
+
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" align="center">150인
+																우선 기업 여부</label>
+															<div class="col-lg-10">
+																<select class="form-select" name="firstCompanyYn" >
+																	<option >해당</option>
+																	<option >비해당</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="col">
+													<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"  style="height: 40px"></label>
+															<div class="col-lg-10">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" >대표자명</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" name="ceoName" >
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"  >업종</label>
+															<div class="col-lg-7">
+																<input type="text" class="form-control" id="simpleinput"  >
+																<input type="text" class="form-control" id="simpleinput" name="businessCode"  hidden="hidden">
+															</div>
+															<div class="col-lg-3">
+																<button type="button" class="btn btn-info">업종
+																	검색</button>
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">사업자 등록 번호</label>
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="companyRegistrationNo1" >
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="companyRegistrationNo2" >
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="companyRegistrationNo3" >
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">팩스 번호</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-number"
+																	type="text" name="fax">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label">홈페이지 주소</label>
+															<div class="col-lg-10">
+																<input class="form-control" type="url" name="website" >
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="example-date">설립일</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-date"
+																	type="date" name="foundingDate" >
+															</div>
+														</div>
+														</div>
+														<!-- end col -->
+													</div>
+													<!-- end row -->
+												</div>
+												<div id="sw-arrows-step-2">
+													<div class="row">
+														<div class="col-12">
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-first-name">First
+																	name</label> <input type="text" id="sw-arrows-first-name"
+																	class="form-control" placeholder="Enter First name...">
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-last-name">Last
+																	name</label> <input type="text" id="sw-arrows-last-name"
+																	class="form-control" placeholder="Enter Last name...">
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-email">Email</label>
+																<input type="email" id="sw-arrows-email"
+																	class="form-control" placeholder="Enter Email...">
+															</div>
+														</div>
+														<!-- end col -->
+													</div>
+													<!-- end row -->
+												</div>
+												<div id="sw-arrows-step-3">
+													<div class="row">
+														<div class="col-12">
+															<div class="text-center">
+																<div class="mb-3">
+																	<i class="uil uil-check-square text-success h2"></i>
+																</div>
+																<h3>Thank you !</h3>
+																<p class="w-75 mb-2 mx-auto text-muted">Quisque nec
+																	turpis at urna dictum luctus. Suspendisse convallis
+																	dignissim eros at volutpat. In egestas mattis dui.
+																	Aliquam mattis dictum aliquet.</p>
+																<div class="mb-3">
+																	<div class="form-check d-inline-block">
+																		<input type="checkbox" class="form-check-input"
+																			id="sm-arrows-customCheck"> <label
+																			class="form-check-label" for="sm-arrows-customCheck">I
+																			agree with the Terms and Conditions</label>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<!-- end col -->
+													</div>
+													<!-- end row -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- end card -->
+							</div>
+                    
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+							
+							<div class="row">
+								<div class="col-12">
+									<div class="card">
+										<div class="card-body">
+											<h4 class="header-title mt-0">회사 기본정보</h4>
+											<p class="sub-header">
+												수정에 유의하며 수정 시 변경내용을 다시한번 확인 후 저장버튼을 눌러주시기 바랍니다.
+												<br>
+												업체 기본 정보는
+												<code>기업체명</code>
+												,
+												<code>대표자명</code>
+												,
+												<code>본사주소</code>
+												,
+												<code>본사연락처</code>
+												,
+												<code>법인(주민)등록 번호</code>
+												,
+												<code>사업자 등록 번호</code>
+												,
+												<code>업종</code>
+												,
+												<code>팩스</code>
+												,
+												<code>회사이메일</code>
+												,
+												<code>홈페이지 주소</code>
+												,
+												<code>150인 우선 기업 여부</code>
+												,
+												<code>설립일</code>
+												의 정보를 담고있습니다.
+											</p>
+
+											<form class="form-horizontal" method="post" action="/mngBasicInformation/company">
+												<div class="row">
+													<div class="col">
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">기업체명</label>
+															<div class="col-lg-10">
+																<input  type="text" class="form-control" name="companyName" >
+															</div>
+														</div>
+
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">본사
+																주소</label>
+															<div class="col-lg-7">
+																<input type="text" class="form-control" id="companyAddress" name="address" readonly="readonly">
+															</div>
+															<div class="col-lg-3">
+																<button type="button" id="address" class="btn btn-info">주소 찾기</button>
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">상세주소</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" id="address_detail" name="addressDetail" >
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">법인(주민)등록 번호</label>
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="identificationNo1" >
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="identificationNo2" >
+															</div>
+														</div>
+														
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">본사 연락처</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-number"
+																	type="text" name="phone" >
+															</div>
+														</div>
+
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-email">회사 이메일</label>
+															<div class="col-lg-10">
+																<input type="email" id="example-email"
+																	class="form-control"  name="managerEmail" >
+															</div>
+														</div>
+														
+
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" align="center">150인
+																우선 기업 여부</label>
+															<div class="col-lg-10">
+																<select class="form-select" name="firstCompanyYn" >
+																	<option >해당</option>
+																	<option >비해당</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="col">
+													<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"  style="height: 40px"></label>
+															<div class="col-lg-10">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" >대표자명</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" name="ceoName" >
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"  >업종</label>
+															<div class="col-lg-7">
+																<input type="text" class="form-control" id="simpleinput"  >
+																<input type="text" class="form-control" id="simpleinput" name="businessCode"  hidden="hidden">
+															</div>
+															<div class="col-lg-3">
+																<button type="button" class="btn btn-info">업종
+																	검색</button>
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">사업자 등록 번호</label>
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="companyRegistrationNo1" >
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="companyRegistrationNo2" >
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="companyRegistrationNo3" >
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">팩스 번호</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-number"
+																	type="text" name="fax">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label">홈페이지 주소</label>
+															<div class="col-lg-10">
+																<input class="form-control" type="url" name="website" >
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="example-date">설립일</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-date"
+																	type="date" name="foundingDate" >
+															</div>
+														</div>
+
+															<div align="right" >
+															<button type="submit" class="btn btn-info">저장</button>
+															<button type="reset" class="btn btn-success"style="margin-left: 10px"  id="cancel">취소</button>
+														</div>
+													</div>
+												</div>
+											</form>
+
+										</div>
+										<!-- end card-body -->
+									</div>
+									<!-- end card-->
+								</div>
+								<!-- end col -->
+							</div>
 						</div>
 					</div>
 				</div>
@@ -27,5 +436,7 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script th:src="@{/libs/smartwizard/js/jquery.smartWizard.min.js}"></script>
+	<script th:src="@{/js/pages/form-wizard.init.js}"></script>
 </body>
 </html>

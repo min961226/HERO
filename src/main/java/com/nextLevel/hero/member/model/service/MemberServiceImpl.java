@@ -82,8 +82,8 @@ public FindPwdDTO selectFindPwd(String userId, String username, String email) {
 
 
 @Override
-public FindPwdDTO updatePwd(String userId, String username, String email) {
-	return memberMapper.updatePwd(userId, username, email);
+public int updatePwd(FindPwdDTO findPwdDTO) {
+	return memberMapper.updatePwd(findPwdDTO);
 }
 
 
@@ -102,6 +102,9 @@ public MailDTO emailCheck(MailDTO mailDTO) {
 	
 	
 }
+
+
+
 
 
 

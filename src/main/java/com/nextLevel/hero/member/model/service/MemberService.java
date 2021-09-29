@@ -13,14 +13,8 @@ public interface MemberService extends UserDetailsService {
 
 	FindPwdDTO selectFindPwd(String userId, String username, String email);
 
-	FindPwdDTO updatePwd(String userId, String username, String email);
-
 	MailDTO emailCheck(MailDTO mailDTO);
 
-		
-
-
-
-	 
+	int updatePwd(FindPwdDTO findPwdDTO);
 
 }

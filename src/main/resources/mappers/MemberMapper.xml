@@ -99,7 +99,7 @@
 	<update id="updatePwd" parameterType="com.nextLevel.hero.member.model.dto.FindPwdDTO">
        UPDATE 
           TBL_MEMBER M
-        SET M.MEMBER_PASSWORD = '$2a$12$h3rtOXUhfWdeID5bkz35WeaOW.x8qdaz2RCq81h9zllR88qTqTcZu' 
+        SET M.MEMBER_PASSWORD = #{ userPwd }
         WHERE M.ID_NO IN (SELECT E.ID_NO
                             FROM TBL_EMPLOYEE E
                            WHERE M.MEMBER_ID = #{ userId }

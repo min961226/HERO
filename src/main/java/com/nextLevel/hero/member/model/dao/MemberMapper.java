@@ -17,6 +17,6 @@ public interface MemberMapper {
 
 	FindPwdDTO selectFindPwd(String userId, String username, String email);
 
-	FindPwdDTO updatePwd(String userId, String username, String email);
+	int updatePwd(FindPwdDTO findPwdDTO);
 
 }
