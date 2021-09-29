@@ -36,6 +36,8 @@ public class MngVacationServiceImpl implements MngVacationService {
 	@Override
 	public List<MngHolidayDTO> insertPublicHoliday(int companyNo1) {
 		// TODO Auto-generated method stub
+		
+		//null 말고 확인해보고 리턴값 받아오게
 		return null;
 	}
 	
