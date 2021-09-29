@@ -12,4 +12,9 @@ public interface MngVacationMapper {
 	/* 휴일 조회 */
 	List<MngHolidayDTO> listHoliday(int companyNo);
 	
+	/* 휴일 insert */
+	//ㅗㅓ허ㅏㅗㅎ
+	
+	
+	
 }

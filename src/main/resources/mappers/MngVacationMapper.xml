@@ -11,12 +11,43 @@
 		<result property="holidayStatus" column="HOLIDAY_STATUS"/>
 	</resultMap>
 	
+	<!-- 조회 -->
 	<select id="listHoliday" resultMap="listHolidayResultMap">
 		SELECT 
 		       A.*
 		  FROM TBL_HOLIDAY A
 		 WHERE A.COMPANY_NO = #{ companyNo }      
 	</select>
+	
+	<!-- Insert -->
+	<!-- <insert id="holidayInsert" parameterType="com.nextLevel.hero.mngVacation.model.dto.MngHolidayDTO">
+		INSERT
+		  INTO TBL_HOLIDAY A
+		(
+		  A.COMPANY_NO
+		, A.HOLIDAY_NO
+		, A.CALENDAR
+		, A.HOLIDAY_DATE
+		, A.TITLE
+		, HOLIDAY_STATUS  
+		)
+		VALUES
+		(
+		  #{ companyNo }
+		, SEQ_HOLIDAY.NEXTVAL
+		, #{ calendar } 
+		, #{ holidayDate } 
+		, #{ title } 
+		, #{ holidayStatus} 
+		)  
+	</insert> -->
+	
+	<!-- Delete -->
+	<!-- <delete id="holidayDelete">
+		DELETE
+		  FROM TBL_HOLIDAY A
+		 WHERE A.HOLIDAY_NO = #{ holidayNo } 
+	</delete> -->
 	
 
 </mapper>

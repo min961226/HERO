@@ -20,10 +20,70 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							
+							<!-- 신규추가 버튼으로 모달창 띄워서 gson start -->
 							<div>
-								<button type="button" class="btn btn-outline-primary">신규추가</button>
+								<!-- th id값이랑 주소값 넣어야함 -->
+								<button type="button" class="btn btn-soft-success width-xs" 
+												data-bs-toggle="modal" data-bs-target="#insertHoliday" id="createInsertForm">신규추가</button>
+								<!-- 필요없을것같음 -->
+								<!-- <table id="insertForm" border="1">
+									<thead>
+										<tr>
+											<th>번호</th>											
+											<th>달력</th>											
+											<th>날짜</th>											
+											<th>제목</th>											
+											<th>휴일여부</th>											
+											<th>상세보기</th>											
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
 							</div>
-							<br>
+							<br>  -->
+							<!-- 신규추가 모달창 -->
+									<div class="modal fade" id="insertHoliday" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                             <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="insertHolidayModal">기념일/공휴일 상세보기</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    	<div>
+                                                    	<!-- 등록버튼에 이벤트 걸어줘서 insert 가능하게 하기, 휴일 마지막 날도 정해야 하는지??
+                                                    	     등록버튼 이벤트 걸어주는거 다시 하기-->
+                                                    	     <!-- 비비에 들어가나? -->
+	                                                       <label style="margin:5px; display: none;" id="holiNo" ></label>
+	                                                        <label style="margin:10px;">달력 :</label>양력<label id="calendarInsert" style="margin:5px;">
+	                                                        	<!-- <input type="text" placeholder="양력" name="holiNo"> -->
+	                                                        </label><br>
+	                                                        <label style="margin:10px;">날짜 :</label><label id="holidayDateInsert" style="margin:5px;">
+	                                                        	<input type="date" placeholder="날짜입력칸" name="holidayDate">
+	                                                        </label><br>
+	                                                        <label style="margin:10px;">제목 :</label><label id="titleInsert" style="margin:5px;">
+	                                                        	<input type="text" placeholder="제목입력칸" name="title">
+	                                                        </label><br>
+	                                                        <label style="margin:10px;">휴일여부 :</label><label id="holidayStatusInsert" style="margin:5px;">
+	                                                        	<input type="text" placeholder="기념일 or 휴일" name="holidayStatus">
+	                                                        </label><br> 
+                                                    	</div>
+                                                    	<br>
+                                                    	
+                                                    </div>
+                                                   <div class="modal-footer">
+	                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
+	                   									<button type="submit" class="btn btn-success width-xs">등록</button>
+                                                   </div> 
+                                              </div>
+                                        </div>
+                                     </div>  
+                                     <!-- 신규추가 모달창 종료 -->
+							<!-- 신규추가 버튼으로 모달창 띄워서 gson end -->
+							
+							
+							
 							
 							<div class="card">
 								<div class="card-body">
@@ -43,12 +103,13 @@
 										
 									<tbody>
 										<tr th:each="holiday:${holidayList}">
-											<td th:text="${holiday.holidayNo}"></td>
-											<td th:text="${holiday.calendar}"></td>
-											<td th:text="${holiday.holidayDate}"></td>
-											<td th:text="${holiday.title}"></td>
-											<td th:text="${holiday.holidayStatus}"></td>
-											<td><button type="button" class="btn btn-soft-warning">상세보기</button></td>
+											<td th:text="${holiday.holidayNo}" class="holidayNo"></td>
+											<td th:text="${holiday.calendar}" class="calendar"></td>
+											<td th:text="${holiday.holidayDate}" class="holidayDate"></td>
+											<td th:text="${holiday.title}" class="title"></td>
+											<td th:text="${holiday.holidayStatus}" class="holidayStatus"></td>
+											<td th:id="'holidayDetail' + ${holiday.holidayNo}"><button type="button" class="btn btn-soft-success width-xs" 
+												data-bs-toggle="modal" data-bs-target="#detailHoliday">상세보기</button></td>
 										</tr>
 									</tbody>
 								</table>
@@ -57,6 +118,33 @@
 							</div>
 							
 							<!-- 모달창 집어넣기 -->
+							<!-- 상세보기 모달창 -->
+									<div class="modal fade" id="detailHoliday" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                             <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="detailHolidayModal">기념일/공휴일 상세보기</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    	<div>
+	                                                        <label style="margin:5px; display: none;" id="holiNo" ></label>
+	                                                        <label style="margin:10px;">달력 :</label><label id="calendar1" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">날짜 :</label><label id="holidayDate1" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">제목 :</label><label id="title1" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">휴일여부 :</label><label id="holidayStatus1" style="margin:5px;"></label><br>
+                                                    	</div>
+                                                    	<br>
+                                                    	
+                                                    </div>
+                                                   <div class="modal-footer">
+	                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
+	                   									<button type="button" class="btn btn-success width-xs">삭제</button>
+                                                   </div> 
+                                              </div>
+                                        </div>
+                                     </div> 
+                                     <!-- 상세보기 모달창 종료 -->
 							
 						</div>
 					</div>
@@ -65,5 +153,78 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	</div>
+	
+	<!-- 신규추가 모달창 스크립트 -->
+	<script>
+   $("#createInsertForm").click(function() {
+       $.ajax({
+          url: "createInsertForm",
+          success: function(data, status, xhr) {
+             console.table(data);
+             
+            /*  const $table = $("#insertForm tbody"); //요소 저장하는 변수
+             $table.html("") //실행할 때 비워놓고 시작 
+             
+             for(let index in data) {
+                $tr = $("<tr>");    //닫기 태그도 알아서 해줌
+                $holidayNoTd = $("<td>").text(data[index].holidayNo);
+                $calendarTd = $("<td>").text(data[index].calendar);
+                $holidayDateTd = $("<td>").text(data[index].holidayDate);
+                $titleTd = $("<td>").text(data[index].title);
+                $holidayStatusTd = $("<td>").text(data[index].holidayStatus);
+                
+                $tr.append($holidayNoTd);
+                $tr.append($calendarTd);
+                $tr.append($holidayDateTd);
+                $tr.append($titleTd);
+                $tr.append($holidayStatusTd);
+                
+                $table.append($tr);       //반복해서 tr들을 더해준다.
+             } */
+             
+          },
+          error: function(xhr, status, error) {
+             console.log(error)
+          }
+       });
+    });
+   
+   </script>
+	
+	
+	<!-- 상세보기 모달창 스크립트 -->
+	<script type="text/javascript">
+
+	$("[id^=holidayDetail]").click(function(){
+		
+			const holidayNo = $(this).siblings(".holidayNo").text();
+			const calendar = $(this).siblings(".calendar").text();
+			const holidayDate = $(this).siblings(".holidayDate").text();
+			const title = $(this).siblings(".title").text();
+			const holidayStatus = $(this).siblings(".holidayStatus").text();
+			
+			const holiNo = $("#holiNo").text(holidayNo);
+			const calendar1 = $("#calendar1").text(calendar);
+			const holidayDate1 = $("#holidayDate1").text(holidayDate);
+			const title1 = $("#title1").text(title);
+			const holidayStatus1 = $("#holidayStatus1").text(holidayStatus);
+			
+	});
+	
+	
+	
+	
+	
+	</script>
+	
+	
 </body>
 </html>
+
+
+
+
+
+
+
