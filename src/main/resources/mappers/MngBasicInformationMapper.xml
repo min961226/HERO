@@ -60,12 +60,13 @@
 		<result property="under1000EmpRate" column="UNDER1000_EMP_INSURANCE"/>
 		<result property="over1000EmpRate" column="OVER1000_EMP_INSURANCE"/>
 		<result property="commuteAccidentRate" column="COMMUTE_ACCIDENT_RATE"/>
-		<result property="wageBondChargesYn" column="WAGE_BOND_CHARGES_YN"/>
+		<result property="wageBondChargesYn" column="WAGE_BOND_CHARGES"/>
 		<result property="wageBondChargesRate" column="WAGE_BOND_CHARGES_RATE"/>
-		<result property="asbestosDamagechargeYn" column="ASBESTOS_DAMAGE_CHARGE_YN"/>
+		<result property="asbestosDamagechargeYn" column="ASBESTOS_DAMAGE_CHARGE"/>
 		<result property="asbestosDamagechargeRate" column="ASBESTOS_DAMAGE_CHARGE_RATE"/>
 		<result property="industrialInsuranceRate" column="INDUSTRIAL_INSURANCE_RATE"/>
 		<result property="businessCode" column="BUSINESS_CODE"/>
+		<result property="detailTypeOfBusiness" column="DETAIL_TYPE_OF_BUSINESS"/>
 		<result property="industryRate" column="INDUSTRY_RATE"/>
 	</resultMap>
 	
@@ -121,10 +122,11 @@
 	<select id="selectInsurance" resultMap="insuranceResultMap">
 		SELECT
 			   A.*
+			 , B.DETAIL_TYPE_OF_BUSINESS
 			 , B.INDUSTRY_RATE
 		  FROM TBL_INSURANCE_RATE A, TBL_BUSINESS B
 		 WHERE A.BUSINESS_CODE = B.BUSINESS_CODE
-		   AND A.COMPANY_NO = 1
+		   AND A.COMPANY_NO = #{ companyNo }
            AND A.INSURANCE_RATE_START_DATE <![CDATA[<]]> SYSDATE
 		   AND A.DIV_NO IN ( SELECT 
 		   						    MAX(DIV_NO)

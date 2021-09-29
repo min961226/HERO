@@ -9,6 +9,7 @@
 .Mng-role {
 	width: 1550px;
 	height: 700px;
+	background-color: white;
 }
 .head-role {
 	width: 30%;
@@ -36,7 +37,16 @@
 	width: 300px;
 }
 
-.NoRole {
+.noRole {
+	padding: 10px;
+	width: 750px;
+	height: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 50px;
+	position: relative;
+}
+.yesRole {
 	padding: 10px;
 	width: 750px;
 	height: 90%;
@@ -89,15 +99,6 @@ input[type=radio] {
 	position: relative;
 	left: 45px; 
 }
-
-/* .btn_create {  
-  		right: 200px;
-  		color: #fff;
-   		background-color: #43d39e;
-   		border-color: #43d39e;
-   		font-size: 14px;
-   		padding: 7.2px 14.4px;
-  	} */
 </style>
 </head>
 <body>
@@ -122,7 +123,6 @@ input[type=radio] {
 											<th width="100"></th>
 											<th align="center" class="td" width="300">직급명</th>
 										</tr>
-
 										<tr th:each="rank : ${ rankList }">
 											<td><input type="radio" class="role_radio" name="role_radio" id="radio_select"></td>
 											<td th:text="${ rank.rank }" align="center" class="td"></td>
@@ -161,21 +161,20 @@ input[type=radio] {
 									</div>
 								</div>
 								<div class="body-role">
-									<th:block th:if="rankList == null">
-										<div class="NoRole" align="center">
+								
+										<div class="noRole" align="center" style="display:none">
 											<img src="/images/mngRole/NoRole.jpg" class="NoRoleImg">
 											<h2>생성된 권한이 없습니다. 권한을 부여하시겠습니까?</h2>
 											<input type="button" class="btn btn-success" value="생성">
 										</div>
-									</th:block>
-
-									<div class="NoRole" align="center">
+									
+									<div class="yesRole" align="center" style="display:none">
 										<input type="checkbox" class="whole" name="" value="" id="cbx_chkAll" >&emsp;
 										<label class="label">전체선택</label>
 										<form action="/mngRole/roleDept" method="post" id="roleDept">
 										
 											<div class="bodyselectRole">
-		
+											
 												<input type="checkbox" class="" name="chk" value="" id="">&emsp;
 												<label class="label">인사권한</label><br>
 												<p class="explanation">입 퇴직관리, 개인정보 조회, 개인정보 수정, 조직도 수정</p>
@@ -194,11 +193,11 @@ input[type=radio] {
 												<input type="checkbox" class="" name="chk" value="" id="">&emsp;
 												<label class="label">권한부여</label><br>
 												<p class="explanation">권한 부여 가능, 기초자료</p>
-													<!-- <th:block sec:authorize="hasRole('')">  -->
+													<div style="display:none">
 													<input type="checkbox" class="" name="chk" value="" id="">&emsp;
 													<label class="label">급상여 이체/승인</label><br>
 													<p class="explanation">대표이사만 선택가능</p>
-													<!-- </th:block> -->
+													</div>
 											</div>
 												<button type="submit" class="btn btn-success" value="생성">수정</button>
 										</form>
@@ -241,8 +240,6 @@ input[type=radio] {
 			
 			var rank = td.eq(1).text();
 			
-	        alert(rank);
-	        
 	        $.ajax({
 		        url:"role_auth",
 		        type:'GET',
@@ -250,10 +247,17 @@ input[type=radio] {
 		        success:function(data){
 		        	
 		        	$.each(data, function(idx, val) {
-		        		alert(idx + " " + val.createdAuthorityStatus);
-		        	});		        	 
-					
-		            alert("성공");
+		        		
+		        		if(val.tblUserAuth == "Y") {
+		        			$(".yesRole").show();			
+		        			$(".noRole").hide();
+		        		} else {
+		        			$(".noRole").show(); 	
+		        			$(".yesRole").hide();
+		        		}
+		        								
+		        	});		 
+		        	
 		        },
 		        error:function(jqXHR, textStatus, errorThrown){
 		        	
@@ -262,7 +266,8 @@ input[type=radio] {
 		    })
 		}
 		);
-
+		
+	
 	</script>
 </body>
 </html>

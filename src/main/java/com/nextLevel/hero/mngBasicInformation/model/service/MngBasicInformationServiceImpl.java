@@ -37,16 +37,17 @@ public class MngBasicInformationServiceImpl implements MngBasicInformationServic
 	public List<MngDepartmentHistoryDTO> selectDepartmentHistory(int companyNo) {
 		return mngBasicInformationMapper.selectDepartmentHistory(companyNo);
 	}
+	
+	@Override
+	public MngInsuranceRateDTO selectInsurance(int companyNo) {
+		return mngBasicInformationMapper.selectInsurance(companyNo);
+	}
 
 	@Override
 	public List<MngInsuranceRateDTO> selectInsuranceHistory(int companyNo) {
 		return mngBasicInformationMapper.selectInsuranceHistory(companyNo);
 	}
 
-	@Override
-	public MngInsuranceRateDTO selectInsurance(int companyNo) {
-		return mngBasicInformationMapper.selectInsurance(companyNo);
-	}
 
 
 	

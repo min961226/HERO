@@ -1,6 +1,7 @@
 package com.nextLevel.hero.mngBasicInformation.controller;
 
 import java.lang.ProcessBuilder.Redirect;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -82,6 +83,7 @@ public class MngBasicInformationController {
 	public ModelAndView mngPremiumRate(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
 		MngInsuranceRateDTO insuranceRate = mngBasicInformationService.selectInsurance(user.getCompanyNo());
 		System.out.println(insuranceRate);
+		System.out.println(insuranceRate.getAsbestosDamagechargeRate());
 		mv.addObject("insuranceRate",insuranceRate);
 		mv.setViewName("mngBasicInformation/premiumRate");
 		return mv;

@@ -1,6 +1,7 @@
 package com.nextLevel.hero.mngBasicInformation.model.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
 
 public class MngInsuranceRateDTO implements Serializable {
@@ -8,40 +9,43 @@ public class MngInsuranceRateDTO implements Serializable {
 	private int companyNo;
 	private int divNo;
 	private Date insuranceRateStartDate;
-	private double nationalPensionRate;
-	private double workersPensionRate;
-	private double employerPensionRate;
-	private double healthRate;
-	private double workersHealthRate;
-	private double employerHealthRate;
-	private double longTermCareRate;
-	private double workersLongTermCareRate;
-	private double employerLongTermCareRate;
-	private double unempBenefitRate;
-	private double workersUnempRate;
-	private double employerUnempRate;
-	private double under150EmpRate;
-	private double over150PriorityEmpRate;
-	private double under1000EmpRate;
-	private double over1000EmpRate;
-	private double commuteAccidentRate;
+	private BigDecimal nationalPensionRate;
+	private BigDecimal workersPensionRate;
+	private BigDecimal employerPensionRate;
+	private BigDecimal healthRate;
+	private BigDecimal workersHealthRate;
+	private BigDecimal employerHealthRate;
+	private BigDecimal longTermCareRate;
+	private BigDecimal workersLongTermCareRate;
+	private BigDecimal employerLongTermCareRate;
+	private BigDecimal unempBenefitRate;
+	private BigDecimal workersUnempRate;
+	private BigDecimal employerUnempRate;
+	private BigDecimal under150EmpRate;
+	private BigDecimal over150PriorityEmpRate;
+	private BigDecimal under1000EmpRate;
+	private BigDecimal over1000EmpRate;
+	private BigDecimal commuteAccidentRate;
 	private char wageBondChargesYn;
-	private double wageBondChargesRate;
+	private BigDecimal wageBondChargesRate;
 	private char asbestosDamagechargeYn;
-	private double asbestosDamagechargeRate;
-	private double industrialInsuranceRate;
+	private BigDecimal asbestosDamagechargeRate;
+	private BigDecimal industrialInsuranceRate;
 	private int businessCode;
-	private double industryRate;
+	private String detailTypeOfBusiness;
+	private BigDecimal industryRate;
 	
 	public MngInsuranceRateDTO() {}
 
-	public MngInsuranceRateDTO(int companyNo, int divNo, Date insuranceRateStartDate, double nationalPensionRate,
-			double workersPensionRate, double employerPensionRate, double healthRate, double workersHealthRate,
-			double employerHealthRate, double longTermCareRate, double workersLongTermCareRate,
-			double employerLongTermCareRate, double unempBenefitRate, double workersUnempRate, double employerUnempRate,
-			double under150EmpRate, double over150PriorityEmpRate, double under1000EmpRate, double over1000EmpRate,
-			double commuteAccidentRate, char wageBondChargesYn, double wageBondChargesRate, char asbestosDamagechargeYn,
-			double asbestosDamagechargeRate, double industrialInsuranceRate, int businessCode, double industryRate) {
+	public MngInsuranceRateDTO(int companyNo, int divNo, Date insuranceRateStartDate, BigDecimal nationalPensionRate,
+			BigDecimal workersPensionRate, BigDecimal employerPensionRate, BigDecimal healthRate,
+			BigDecimal workersHealthRate, BigDecimal employerHealthRate, BigDecimal longTermCareRate,
+			BigDecimal workersLongTermCareRate, BigDecimal employerLongTermCareRate, BigDecimal unempBenefitRate,
+			BigDecimal workersUnempRate, BigDecimal employerUnempRate, BigDecimal under150EmpRate,
+			BigDecimal over150PriorityEmpRate, BigDecimal under1000EmpRate, BigDecimal over1000EmpRate,
+			BigDecimal commuteAccidentRate, char wageBondChargesYn, BigDecimal wageBondChargesRate,
+			char asbestosDamagechargeYn, BigDecimal asbestosDamagechargeRate, BigDecimal industrialInsuranceRate,
+			int businessCode, String detailTypeOfBusiness, BigDecimal industryRate) {
 		super();
 		this.companyNo = companyNo;
 		this.divNo = divNo;
@@ -69,6 +73,7 @@ public class MngInsuranceRateDTO implements Serializable {
 		this.asbestosDamagechargeRate = asbestosDamagechargeRate;
 		this.industrialInsuranceRate = industrialInsuranceRate;
 		this.businessCode = businessCode;
+		this.detailTypeOfBusiness = detailTypeOfBusiness;
 		this.industryRate = industryRate;
 	}
 
@@ -96,139 +101,139 @@ public class MngInsuranceRateDTO implements Serializable {
 		this.insuranceRateStartDate = insuranceRateStartDate;
 	}
 
-	public double getNationalPensionRate() {
+	public BigDecimal getNationalPensionRate() {
 		return nationalPensionRate;
 	}
 
-	public void setNationalPensionRate(double nationalPensionRate) {
+	public void setNationalPensionRate(BigDecimal nationalPensionRate) {
 		this.nationalPensionRate = nationalPensionRate;
 	}
 
-	public double getWorkersPensionRate() {
+	public BigDecimal getWorkersPensionRate() {
 		return workersPensionRate;
 	}
 
-	public void setWorkersPensionRate(double workersPensionRate) {
+	public void setWorkersPensionRate(BigDecimal workersPensionRate) {
 		this.workersPensionRate = workersPensionRate;
 	}
 
-	public double getEmployerPensionRate() {
+	public BigDecimal getEmployerPensionRate() {
 		return employerPensionRate;
 	}
 
-	public void setEmployerPensionRate(double employerPensionRate) {
+	public void setEmployerPensionRate(BigDecimal employerPensionRate) {
 		this.employerPensionRate = employerPensionRate;
 	}
 
-	public double getHealthRate() {
+	public BigDecimal getHealthRate() {
 		return healthRate;
 	}
 
-	public void setHealthRate(double healthRate) {
+	public void setHealthRate(BigDecimal healthRate) {
 		this.healthRate = healthRate;
 	}
 
-	public double getWorkersHealthRate() {
+	public BigDecimal getWorkersHealthRate() {
 		return workersHealthRate;
 	}
 
-	public void setWorkersHealthRate(double workersHealthRate) {
+	public void setWorkersHealthRate(BigDecimal workersHealthRate) {
 		this.workersHealthRate = workersHealthRate;
 	}
 
-	public double getEmployerHealthRate() {
+	public BigDecimal getEmployerHealthRate() {
 		return employerHealthRate;
 	}
 
-	public void setEmployerHealthRate(double employerHealthRate) {
+	public void setEmployerHealthRate(BigDecimal employerHealthRate) {
 		this.employerHealthRate = employerHealthRate;
 	}
 
-	public double getLongTermCareRate() {
+	public BigDecimal getLongTermCareRate() {
 		return longTermCareRate;
 	}
 
-	public void setLongTermCareRate(double longTermCareRate) {
+	public void setLongTermCareRate(BigDecimal longTermCareRate) {
 		this.longTermCareRate = longTermCareRate;
 	}
 
-	public double getWorkersLongTermCareRate() {
+	public BigDecimal getWorkersLongTermCareRate() {
 		return workersLongTermCareRate;
 	}
 
-	public void setWorkersLongTermCareRate(double workersLongTermCareRate) {
+	public void setWorkersLongTermCareRate(BigDecimal workersLongTermCareRate) {
 		this.workersLongTermCareRate = workersLongTermCareRate;
 	}
 
-	public double getEmployerLongTermCareRate() {
+	public BigDecimal getEmployerLongTermCareRate() {
 		return employerLongTermCareRate;
 	}
 
-	public void setEmployerLongTermCareRate(double employerLongTermCareRate) {
+	public void setEmployerLongTermCareRate(BigDecimal employerLongTermCareRate) {
 		this.employerLongTermCareRate = employerLongTermCareRate;
 	}
 
-	public double getUnempBenefitRate() {
+	public BigDecimal getUnempBenefitRate() {
 		return unempBenefitRate;
 	}
 
-	public void setUnempBenefitRate(double unempBenefitRate) {
+	public void setUnempBenefitRate(BigDecimal unempBenefitRate) {
 		this.unempBenefitRate = unempBenefitRate;
 	}
 
-	public double getWorkersUnempRate() {
+	public BigDecimal getWorkersUnempRate() {
 		return workersUnempRate;
 	}
 
-	public void setWorkersUnempRate(double workersUnempRate) {
+	public void setWorkersUnempRate(BigDecimal workersUnempRate) {
 		this.workersUnempRate = workersUnempRate;
 	}
 
-	public double getEmployerUnempRate() {
+	public BigDecimal getEmployerUnempRate() {
 		return employerUnempRate;
 	}
 
-	public void setEmployerUnempRate(double employerUnempRate) {
+	public void setEmployerUnempRate(BigDecimal employerUnempRate) {
 		this.employerUnempRate = employerUnempRate;
 	}
 
-	public double getUnder150EmpRate() {
+	public BigDecimal getUnder150EmpRate() {
 		return under150EmpRate;
 	}
 
-	public void setUnder150EmpRate(double under150EmpRate) {
+	public void setUnder150EmpRate(BigDecimal under150EmpRate) {
 		this.under150EmpRate = under150EmpRate;
 	}
 
-	public double getOver150PriorityEmpRate() {
+	public BigDecimal getOver150PriorityEmpRate() {
 		return over150PriorityEmpRate;
 	}
 
-	public void setOver150PriorityEmpRate(double over150PriorityEmpRate) {
+	public void setOver150PriorityEmpRate(BigDecimal over150PriorityEmpRate) {
 		this.over150PriorityEmpRate = over150PriorityEmpRate;
 	}
 
-	public double getUnder1000EmpRate() {
+	public BigDecimal getUnder1000EmpRate() {
 		return under1000EmpRate;
 	}
 
-	public void setUnder1000EmpRate(double under1000EmpRate) {
+	public void setUnder1000EmpRate(BigDecimal under1000EmpRate) {
 		this.under1000EmpRate = under1000EmpRate;
 	}
 
-	public double getOver1000EmpRate() {
+	public BigDecimal getOver1000EmpRate() {
 		return over1000EmpRate;
 	}
 
-	public void setOver1000EmpRate(double over1000EmpRate) {
+	public void setOver1000EmpRate(BigDecimal over1000EmpRate) {
 		this.over1000EmpRate = over1000EmpRate;
 	}
 
-	public double getCommuteAccidentRate() {
+	public BigDecimal getCommuteAccidentRate() {
 		return commuteAccidentRate;
 	}
 
-	public void setCommuteAccidentRate(double commuteAccidentRate) {
+	public void setCommuteAccidentRate(BigDecimal commuteAccidentRate) {
 		this.commuteAccidentRate = commuteAccidentRate;
 	}
 
@@ -240,11 +245,11 @@ public class MngInsuranceRateDTO implements Serializable {
 		this.wageBondChargesYn = wageBondChargesYn;
 	}
 
-	public double getWageBondChargesRate() {
+	public BigDecimal getWageBondChargesRate() {
 		return wageBondChargesRate;
 	}
 
-	public void setWageBondChargesRate(double wageBondChargesRate) {
+	public void setWageBondChargesRate(BigDecimal wageBondChargesRate) {
 		this.wageBondChargesRate = wageBondChargesRate;
 	}
 
@@ -256,19 +261,19 @@ public class MngInsuranceRateDTO implements Serializable {
 		this.asbestosDamagechargeYn = asbestosDamagechargeYn;
 	}
 
-	public double getAsbestosDamagechargeRate() {
+	public BigDecimal getAsbestosDamagechargeRate() {
 		return asbestosDamagechargeRate;
 	}
 
-	public void setAsbestosDamagechargeRate(double asbestosDamagechargeRate) {
+	public void setAsbestosDamagechargeRate(BigDecimal asbestosDamagechargeRate) {
 		this.asbestosDamagechargeRate = asbestosDamagechargeRate;
 	}
 
-	public double getIndustrialInsuranceRate() {
+	public BigDecimal getIndustrialInsuranceRate() {
 		return industrialInsuranceRate;
 	}
 
-	public void setIndustrialInsuranceRate(double industrialInsuranceRate) {
+	public void setIndustrialInsuranceRate(BigDecimal industrialInsuranceRate) {
 		this.industrialInsuranceRate = industrialInsuranceRate;
 	}
 
@@ -280,11 +285,19 @@ public class MngInsuranceRateDTO implements Serializable {
 		this.businessCode = businessCode;
 	}
 
-	public double getIndustryRate() {
+	public String getDetailTypeOfBusiness() {
+		return detailTypeOfBusiness;
+	}
+
+	public void setDetailTypeOfBusiness(String detailTypeOfBusiness) {
+		this.detailTypeOfBusiness = detailTypeOfBusiness;
+	}
+
+	public BigDecimal getIndustryRate() {
 		return industryRate;
 	}
 
-	public void setIndustryRate(double industryRate) {
+	public void setIndustryRate(BigDecimal industryRate) {
 		this.industryRate = industryRate;
 	}
 
@@ -302,8 +315,10 @@ public class MngInsuranceRateDTO implements Serializable {
 				+ ", commuteAccidentRate=" + commuteAccidentRate + ", wageBondChargesYn=" + wageBondChargesYn
 				+ ", wageBondChargesRate=" + wageBondChargesRate + ", asbestosDamagechargeYn=" + asbestosDamagechargeYn
 				+ ", asbestosDamagechargeRate=" + asbestosDamagechargeRate + ", industrialInsuranceRate="
-				+ industrialInsuranceRate + ", businessCode=" + businessCode + ", industryRate=" + industryRate + "]";
+				+ industrialInsuranceRate + ", businessCode=" + businessCode + ", detailTypeOfBusiness="
+				+ detailTypeOfBusiness + ", industryRate=" + industryRate + "]";
 	}
 
+	
 	
 }
