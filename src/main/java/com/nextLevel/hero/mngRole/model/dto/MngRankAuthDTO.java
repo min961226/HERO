@@ -1,23 +1,28 @@
 package com.nextLevel.hero.mngRole.model.dto;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MngRankAuthDTO {
 	
 	private int companyNo;					//회사번호
-	private int[] salaryStepByRank;			//직급별호봉
-	private int[] authoryityNo;				//권한번호
+	private int salaryStepByRank;			//직급별호봉
+	private int authoryityNo;				//권한번호
 	private String rankName;				//직급이름
 	
+	private List<MngRankAuthDTO> salaryStepByRankArg;			//직급별호봉
+	private List<MngRankAuthDTO> authoryityNoArg;				//권한번호
+
 	public MngRankAuthDTO() {}
 
-	public MngRankAuthDTO(int companyNo, int[] salaryStepByRank, int[] authoryityNo, String rankName) {
+	public MngRankAuthDTO(int companyNo, int salaryStepByRank, int authoryityNo, String rankName,
+			List<MngRankAuthDTO> salaryStepByRankArg, List<MngRankAuthDTO> authoryityNoArg) {
 		super();
 		this.companyNo = companyNo;
 		this.salaryStepByRank = salaryStepByRank;
 		this.authoryityNo = authoryityNo;
 		this.rankName = rankName;
+		this.salaryStepByRankArg = salaryStepByRankArg;
+		this.authoryityNoArg = authoryityNoArg;
 	}
 
 	public int getCompanyNo() {
@@ -28,19 +33,19 @@ public class MngRankAuthDTO {
 		this.companyNo = companyNo;
 	}
 
-	public int[] getSalaryStepByRank() {
+	public int getSalaryStepByRank() {
 		return salaryStepByRank;
 	}
 
-	public void setSalaryStepByRank(int[] salaryStepByRank) {
+	public void setSalaryStepByRank(int salaryStepByRank) {
 		this.salaryStepByRank = salaryStepByRank;
 	}
 
-	public int[] getAuthoryityNo() {
+	public int getAuthoryityNo() {
 		return authoryityNo;
 	}
 
-	public void setAuthoryityNo(int[] authoryityNo) {
+	public void setAuthoryityNo(int authoryityNo) {
 		this.authoryityNo = authoryityNo;
 	}
 
@@ -52,12 +57,30 @@ public class MngRankAuthDTO {
 		this.rankName = rankName;
 	}
 
-	@Override
-	public String toString() {
-		return "MngRankAuthDTO [companyNo=" + companyNo + ", salaryStepByRank=" + Arrays.toString(salaryStepByRank)
-				+ ", authoryityNo=" + Arrays.toString(authoryityNo) + ", rankName=" + rankName + "]";
+	public List<MngRankAuthDTO> getSalaryStepByRankArg() {
+		return salaryStepByRankArg;
 	}
 
+	public void setSalaryStepByRankArg(List<MngRankAuthDTO> salaryStepByRankArg) {
+		this.salaryStepByRankArg = salaryStepByRankArg;
+	}
+
+	public List<MngRankAuthDTO> getAuthoryityNoArg() {
+		return authoryityNoArg;
+	}
+
+	public void setAuthoryityNoArg(List<MngRankAuthDTO> authoryityNoArg) {
+		this.authoryityNoArg = authoryityNoArg;
+	}
+
+	@Override
+	public String toString() {
+		return "MngRankAuthDTO [companyNo=" + companyNo + ", salaryStepByRank=" + salaryStepByRank + ", authoryityNo="
+				+ authoryityNo + ", rankName=" + rankName + ", salaryStepByRankArg=" + salaryStepByRankArg
+				+ ", authoryityNoArg=" + authoryityNoArg + "]";
+	}
+
+	
 	
 	
 

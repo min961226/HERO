@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nextLevel.hero.mngRole.model.dao.MngRoleMapper;
+import com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRoleDTO;
 
@@ -34,10 +35,23 @@ public class MngRoleServiceImpl implements MngRoleService {
 
 	@Override
 	@Transactional
-	public void updateRoleAuth(MngRankSalaryDTO mngRankSalaryDTO) {
+	public int updateRoleAuth(MngRankSalaryDTO mngRankSalaryDTO) {
 		
-		mngRoleMapper.updateRoleAuth(mngRankSalaryDTO);
+		return mngRoleMapper.updateRoleAuth(mngRankSalaryDTO);
 
+	}
+
+	@Override
+	public List<MngRankAuthDTO> selectStepByRank(MngRankAuthDTO mngRankAuthDTO) {
+		
+		return mngRoleMapper.selectStepByRank(mngRankAuthDTO);
+	}
+
+	@Override
+	@Transactional
+	public int deleteRankAuth(MngRankAuthDTO mngRankAuthDTO) {
+		
+		return mngRoleMapper.deleteRankAuth(mngRankAuthDTO);
 	}
 
 

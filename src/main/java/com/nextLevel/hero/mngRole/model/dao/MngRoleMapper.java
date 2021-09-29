@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRoleDTO;
 
@@ -14,7 +15,11 @@ public interface MngRoleMapper {
 
 	List<MngRankSalaryDTO> selectRankAuth(int companyNo, String rank);
 
-	void updateRoleAuth(MngRankSalaryDTO mngRankSalaryDTO);
+	int updateRoleAuth(MngRankSalaryDTO mngRankSalaryDTO);
+
+	List<MngRankAuthDTO> selectStepByRank(MngRankAuthDTO mngRankAuthDTO);
+
+	int deleteRankAuth(MngRankAuthDTO mngRankAuthDTO);
 
 
 }

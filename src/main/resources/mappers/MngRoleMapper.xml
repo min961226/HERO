@@ -14,6 +14,14 @@
 		<result property="tblUserAuth" column="TBL_USER_AUTH"/>
 	</resultMap>
 	
+	<resultMap type="com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO" id="rankAuthMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<id property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
+		<id property="authoryityNo" column="AUTHORITY_NO"/>
+		<result property="rankName" column="RANK_NAME"/>
+		
+	</resultMap>
+	
 	<select id="selectRank" resultMap="rankResultMap">
 		SELECT
         	   DISTINCT RANK
@@ -35,13 +43,27 @@
 		   AND RANK = #{ rank }
 		   AND ROWNUM = 1
 	</select>
-	<update id="updateRoleAuth" parameterType="com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO">
+	<update id="updateRoleAuth">
 		UPDATE TBL_RANK_SALARY_STEP
 		   SET TBL_USER_AUTH = 'Y'
 		 WHERE COMPANY_NO = #{ companyNo }
 		   AND RANK = #{ rank }
 	</update>
 
-
+	<select id="selectStepByRank" resultMap="rankAuthMap">
+		SELECT
+			   SALARY_STEP_BY_RANK
+		  FROM TBL_RANK_SALARY_STEP
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND RANK = #{ rankName }
+	</select>
+	
+	<delete id="deleteRankAuth">
+		DELETE
+		  FROM TBL_RANK_AUTH
+		WHERE COMPANY_NO = #{ companyNo }
+		  AND 
+	
+	</delete>
 
 </mapper>

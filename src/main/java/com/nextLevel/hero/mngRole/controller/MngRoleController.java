@@ -1,6 +1,5 @@
 package com.nextLevel.hero.mngRole.controller;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,7 @@ public class MngRoleController {
 		this.mngRoleService = mngRoleService;
 	}
 	
+	/* 지급별 권한 */
 	@GetMapping("/roleDept")
 	public ModelAndView mngRoleDept(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
 		
@@ -41,9 +41,10 @@ public class MngRoleController {
 		mv.addObject("rankList", rankList);
 		mv.setViewName("/mngRole/roleDept");
 		
-		return mv;								//직급별 권한
+		return mv;								
 	}
 	
+	/* 직급 리스트 ajax 조회 */
 	@GetMapping(value="role_auth", produces ="application/json; charset=UTF-8")
 	@ResponseBody
 	public List<MngRankSalaryDTO> findCategoryList(@AuthenticationPrincipal UserImpl user,
@@ -53,13 +54,8 @@ public class MngRoleController {
 	
 		return rankAuth;
 	}
-	
-	@GetMapping("/roleUser")
-	public String mngRoleUser() {
-		
-		return "mngRole/roleUser";									//사용자별 권한
-	}
-	
+
+	/* 직급 권한 조회 */
 	@PostMapping("updateRoleAuth")
 	public ModelAndView createRoleAuth(ModelAndView mv, MngRankSalaryDTO mngRankSalaryDTO, @AuthenticationPrincipal UserImpl user) {
 		
@@ -71,23 +67,30 @@ public class MngRoleController {
 		return mv;
 	}
 	
-	@PostMapping("roleDept")
+	/* 해당 직급별호봉 조회 */
+	@PostMapping("/roleDept")
 	public ModelAndView insertUserAuth(ModelAndView mv, @AuthenticationPrincipal UserImpl user,MngRankAuthDTO mngRankAuthDTO) {
 		
 		mngRankAuthDTO.setCompanyNo(user.getCompanyNo());
+		 
+		List<MngRankAuthDTO> StepByRankArgList = mngRoleService.selectStepByRank(mngRankAuthDTO);
+		mngRankAuthDTO.setSalaryStepByRankArg(StepByRankArgList);
 		
-		
-		for (int i = 0; i < mngRankAuthDTO.getAuthoryityNo().length; i++) {
-			System.out.println(mngRankAuthDTO.getAuthoryityNo()[i]);
-		}
+//		mngRoleService.deleteRankAuth(mngRankAuthDTO);
 		
 		System.out.println(mngRankAuthDTO);
-		
 		mv.setViewName("redirect:/mngRole/roleDept");
 		
 		return mv;
+		
 	}
 	
+	/* 사용자별 권한 */
+	@GetMapping("/roleUser")
+	public String mngRoleUser() {
+		
+		return "mngRole/roleUser";									
+	}
 	
 	
 }
