@@ -56,14 +56,14 @@
 															</thead>
 																
 															<tbody>
-																<tr>
-																	<td></td>
-																	<td></td>
-																	<td></td>
-																	<td></td>
-																	<td></td>
-																	<td></td>
-																	<td></td>
+																<tr th:each="account,num : ${memAccount}">
+																	<td th:text="${num.count}"></td>
+																	<td th:text="${account.memberInfo.memberNo}"></td>
+																	<td th:text="${account.memberInfo.memberName}"></td>
+																	<td th:text="${account.departmentName}"></td>
+																	<td th:text="${account.rank}"></td>
+																	<td th:text="${account.bankName}"></td>
+																	<td th:text="${account.accountNo}"></td>
 																</tr>
 															</tbody>
 														</table>

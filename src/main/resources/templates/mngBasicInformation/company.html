@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
@@ -69,17 +70,16 @@
 															<label class="col-lg-2 col-form-label" for="simpleinput">본사
 																주소</label>
 															<div class="col-lg-7">
-																<input type="text" class="form-control" id="simpleinput" th:value="${companyInfo.address}">
+																<input type="text" class="form-control" id="companyAddress" name="address" readonly="readonly"th:value="${companyInfo.address}">
 															</div>
 															<div class="col-lg-3">
-																<button type="button" class="btn btn-info">우편번호
-																	찾기</button>
+																<button type="button" id="address" class="btn btn-info">주소 찾기</button>
 															</div>
 														</div>
 														<div class="mb-3 row">
-															<label class="col-lg-2 col-form-label" for="simpleinput"></label>
+															<label class="col-lg-2 col-form-label" for="simpleinput">상세주소</label>
 															<div class="col-lg-10">
-																<input type="text" class="form-control" id="simpleinput" name="address" th:value="${companyInfo.address}">
+																<input type="text" class="form-control" id="address_detail" name="addressDetail" th:value="${companyInfo.addressDetail}">
 															</div>
 														</div>
 														<div class="mb-3 row">
@@ -211,6 +211,18 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
-		
+		<script>
+window.onload = function(){
+    document.getElementById("address").addEventListener("click", function(){ //주소입력칸을 클릭하면
+        //카카오 지도 발생
+        new daum.Postcode({
+            oncomplete: function(data) { //선택시 입력값 세팅
+                document.getElementById("companyAddress").value = data.address; // 주소 넣기
+                document.querySelector("input[name=addressDetail]").focus(); //상세입력 포커싱
+            }
+        }).open();
+    });
+}
+</script>
 </body>
 </html>

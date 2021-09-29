@@ -1,6 +1,7 @@
 package com.nextLevel.hero.mngBasicInformation.controller;
 
 import java.lang.ProcessBuilder.Redirect;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -57,6 +58,7 @@ public class MngBasicInformationController {
 		System.out.println(basicInformation);
 		
 		mngBasicInformationService.updateCompanyInformation(basicInformation);
+		mngBasicInformationService.insertLogCompanyInformation(basicInformation);
 		
 		rttr.addFlashAttribute("successMessage", "회사 정보 수정에 성공하였습니다!");
 		mv.setViewName("redirect:/mngBasicInformation/company");
@@ -82,10 +84,20 @@ public class MngBasicInformationController {
 	public ModelAndView mngPremiumRate(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
 		MngInsuranceRateDTO insuranceRate = mngBasicInformationService.selectInsurance(user.getCompanyNo());
 		System.out.println(insuranceRate);
+		System.out.println(insuranceRate.getAsbestosDamagechargeRate());
 		mv.addObject("insuranceRate",insuranceRate);
 		mv.setViewName("mngBasicInformation/premiumRate");
 		return mv;
 	}
+	@PostMapping("/premiumRate")
+	public ModelAndView updatePremiumRate(ModelAndView mv,RedirectAttributes rttr,MngInsuranceRateDTO insuranceRate) {
+		
+		mngBasicInformationService.insertPremiumRate(insuranceRate);
+		rttr.addFlashAttribute("successMessage", "보험 요율 수정에 성공하였습니다!");
+		mv.setViewName("redirect:/mngBasicInformation/premiumRate");
+		return mv;
+	}
+	
 	@GetMapping("/premiumRateHistory")
 	public ModelAndView mngPremiumRateHistory(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
 		

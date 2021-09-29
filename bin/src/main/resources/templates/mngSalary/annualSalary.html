@@ -64,7 +64,7 @@
 											<td th:text="${annual.departmentName}" class="deptName"></td>
 											<td th:text="${annual.rank}" class="rank"></td>
 											<td th:text="${annual.salaryStep}" class="step"></td>
-											<td></td>
+											<td th:text="${annual.salaryStepUpdatedDate >= annual.changeStartDate? annual.salaryStepUpdatedDate : annual.changeStartDate}"></td>
 											<td></td>
 											<td th:id="'monDetail' + ${num.count}"><button type="button" class="btn btn-soft-success width-xs" 
 												data-bs-toggle="modal" data-bs-target="#monthlyPay">지급항목</button></td>
@@ -215,6 +215,20 @@
 			const memName = $("#memName").text(memberName);
 			const rank = $("#rank").text(salRank);
 			const step = $("#step").text(salStep);
+			
+			$.ajax({
+				url: "/mngSalary/annualSalary",
+				method: "POST",
+				data: { memberNo : memberNo },
+				dataType: 'JSON',
+				success: function(data) {
+					console.log(data);
+				},
+				error: function(xhr) {
+					alert("잠시 후 다시 시도해주세요");
+				}
+			});
+			
 	});
 	
 	$("[id^=historyDetail]").click(function(){
