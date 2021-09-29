@@ -90,7 +90,7 @@
                                                  FROM TBL_EMPLOYEE A1
                                                  JOIN TBL_EMP_SALARY_STEP_UPDATE C1 ON (A1.MEMBER_NO = C1.MEMBER_NO)
                                                 <where>
-                                                	<if test="searchDate != null">
+                                                	<if test="searchDate != null and '' != searchDate">
                                                 	   C1.START_DATE <![CDATA[<=]]> #{ searchDate }
                                                 	</if>
                                                 </where> 
@@ -115,7 +115,7 @@
 	              FROM TBL_EMP_MONTHLY_SALARY_LIST A1
 	             WHERE A1.COMPANY_NO = #{ companyNo }
 	            <where>
-                    <if test="(searchDate != null) and !'' eq (searchDate)">
+                    <if test="(searchDate != null) and '' != searchDate">
                        C1.START_DATE <![CDATA[<=]]> #{ searchDate } 
                     </if>
                 </where> 
@@ -134,7 +134,7 @@
 	      FROM TBL_EMP_MONTHLY_SALARY_LIST A
 	     WHERE A.COMPANY_NO = #{ companyNo }
 	       AND A.MEMBER_NO = #{ memberNo }
-	    <if test="(searchDate != null) and !'' eq (searchDate)">
+	    <if test="(searchDate != null) and '' != searchDate">
            AND A.CHANGE_START_DATE <![CDATA[<=]]> #{ searchDate } 
         </if>
 	</select>

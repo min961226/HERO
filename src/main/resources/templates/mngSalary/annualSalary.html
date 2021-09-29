@@ -103,21 +103,22 @@
 				                                                        <th>과세여부</th>
 				                                                    </tr>
 				                                                </thead>
-				                                                <tbody>
-				                                                    <tr>
-				                                                        <th scope="row">1</th>
-				                                                        <td>Mark</td>
+				                                                	<tr>
+				                                                        <th>기본급</th>
+				                                                        <td id="salAmount"></td>
 				                                                        <td>Otto</td>
 				                                                        <td>@mdo</td>
 				                                                    </tr>
 				                                                    <tr>
-				                                                        <th scope="row">2</th>
-				                                                        <td>Jacob</td>
-				                                                        <td>Thornton</td>
+				                                                        <th>식 대</th>
+				                                                        <td>100000</td>
+				                                                        <td>T</td>
 				                                                        <td>@fat</td>
 				                                                    </tr>
+				                                                <tbody>
+				                                                    
 				                                                    <tr>
-				                                                        <th scope="row">3</th>
+				                                                        <th>3</th>
 				                                                        <td>Larry</td>
 				                                                        <td>the Bird</td>
 				                                                        <td>@twitter</td>
@@ -218,7 +219,7 @@
 		const memName = $("#memName").text(memberName);
 		const rank = $("#rank").text(salRank);
 		const step = $("#step").text(salStep);
-		
+		let name = /*[[${session.user.name}]]*/
 		
 		$.ajax({
 			url: "annualSalary",
@@ -226,6 +227,8 @@
 			data: { memberNo : memberNo },
 			success: function(data) {
 				console.log(data);
+				
+
 			},
 			error: function(xhr) {
 				alert("잠시 후 다시 시도해주세요");
