@@ -1,5 +1,8 @@
 package com.nextLevel.hero.member.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,153 +79,25 @@ public class MemberController {
 	public String memberFindPasswordForm() {
 		return "member/findPasswordForm";
 	}
-	
-	
-	
-//	@PostMapping(value="checkMail", produces ="application/json; charset=UTF-8")
-//	@ResponseBody
-//	public MailDTO mailCheck(@RequestParam String email) {
-//	
-//		System.out.println("email : " + email);
-//		
-//		String sendTo = email;
-//		String mailTitle = "이메일 인증";
-//		String mailContent = "얍얍";
-//		String sendFrom = "HeRo";
-//		return MailDTO;
-//		MimeMessagePreparator preparator = new MimeMessagePreparator() {
-//			
-//			@Override
-//			public void prepare(MimeMessage mimeMessage) throws Exception {
-//				final MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true,"UTF-8");
-//
-//				message.setTo(sendTo);
-//				message.setFrom(sendFrom);	//env.getProperty("spring.mail.username")
-//				message.setSubject(mailTitle);
-//				message.setText(mailContent, true); //ture : html 형식 사용
-//					
-//				//Mail에 img 삽입
-//			}
-//		};
-//			
-//		try{
-//			javaMailSender.send(preparator);
-//		} catch (MailException e){
-//			return false;
-//		}
-//		return true;
-//		
-//		SimpleMailMessage message = new SimpleMailMessage();
-//		Random random = new Random();
-//		String key = "";
-//
-//		message.setTo(email); // 스크립트에서 보낸 메일을 받을 사용자 이메일 주소
-//		// 입력 키를 위한 코드
-//		for (int i = 0; i < 3; i++) {
-//			int index = random.nextInt(25) + 65; // A~Z까지 랜덤 알파벳 생성
-//			key += (char) index;
-//		}
-//		int numIndex = random.nextInt(8999) + 1000; // 4자리 정수를 생성
-//		key += numIndex;
-//		message.setSubject("인증번호 입력을 위한 메일 전송");
-//		message.setText("인증 번호 : " + key);
-//		javaMailSender.send(message);
-//
-//		return key;
-		
-//}
-		
-		
-		
-		
-//		MailDTO mailDTO = new MailDTO();
-//		
-//		mailDTO.setAddress(email);
-//		mailDTO.setTitle("밤둘레 님이 발송한 이메일입니다.");
-//		mailDTO.setMessage("안녕하세요. 반가워요!");
-//		
-//	    mailDTO = memberService.emailCheck(mailDTO);
-//		
-//
-//
-//		
-	        
-	    	
-		
-		
-		
-//		boolean emailCheck = memberService.emailCheck(email);
-		
-		
 
-//	        System.out.println(pwFindCheck);
-//	        json.put("check", pwFindCheck);
-		
-		
-//		Random random=new Random();  //난수 생성을 위한 랜덤 클래스
-//		String key="";  //인증번호 
-//
-//		SimpleMailMessage message = new SimpleMailMessage();
-//		message.setTo(email); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
-//		//입력 키를 위한 코드
-//		for(int i =0; i<3;i++) {
-//			int index=random.nextInt(25)+65; //A~Z까지 랜덤 알파벳 생성
-//			key+=(char)index;
-//		}
-//		int numIndex=random.nextInt(9999)+1000; //4자리 랜덤 정수를 생성
-//		key+=numIndex;
-//		message.setSubject("인증번호 입력을 위한 메일 전송");
-//		message.setText("인증 번호 : " + key);
-		
-		
-		
-
-//		StringBuffer temp = new StringBuffer();											/* 인증 번호 생성기 랜덤 메소드*/
-//		Random rnd = new Random();
-//		for (int i = 0; i < 10; i++) {
-//			int rIndex = rnd.nextInt(3);
-//			switch (rIndex) {
-//			case 0:
-//				// a-z
-//				temp.append((char) ((int) (rnd.nextInt(26)) + 97));
-//				break;
-//			case 1:
-//				// A-Z
-//				temp.append((char) ((int) (rnd.nextInt(26)) + 65));
-//				break;
-//			case 2:
-//				// 0-9
-//				temp.append((rnd.nextInt(10)));
-//				break;
-//			}
-//		}
-			
-//			msg.setSubject("GrouBear 이메일 인증번호");										/* 메일 제목*/	
-//			
-//			msg.setText("===================================================\n"			/* 메일 내용*/
-//						+ "                  회원님 안녕하세요. \n"
-//						+ "   GrouBear 회원 이메일 인증번호를 발송해드립니다. \n"
-//						+ "             [ 인증번호 : " + temp + " ] \n"
-//						+ "===================================================\n"
-//						+ "                   - Grou Bear -");
-
-	
-
-	
-		
 	
 	@PostMapping("/findPassword")
 	public ModelAndView memberFindPassword(@RequestParam String userId
 			, @RequestParam String username , @RequestParam String email ,  @RequestParam String emailCode
-			,ModelAndView mv
-			,RedirectAttributes rttr) {
+			,ModelAndView mv ,RedirectAttributes rttr, HttpServletRequest request) {
+		HttpSession session = request.getSession();
 		
+		String AuthenticationKey = request.getParameter("AuthenticationKey");
+		String AuthenticationKey2 = (String) session.getAttribute("AuthenticationKey");
+		
+		
+		System.out.println("AuthenticationKey : " + AuthenticationKey);
+		System.out.println("AuthenticationKey2 : " + AuthenticationKey2);
 		System.out.println("userId : " + userId);
 		System.out.println("username : " + username);
 		System.out.println("email : " + email);
 		System.out.println("emailCode : " + emailCode);
 		
-				
 		FindPwdDTO findPwdDTO = memberService.selectFindPwd(userId, username, email);
 		
 		findPwdDTO = memberService.updatePwd(userId, username, email);

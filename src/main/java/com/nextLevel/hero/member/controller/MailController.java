@@ -3,13 +3,17 @@ package com.nextLevel.hero.member.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +25,7 @@ public class MailController {
 
 	@PostMapping(value="checkMail", produces ="application/json; charset=UTF-8")
 	@ResponseBody
-	public void mail(HttpServletResponse response, @RequestParam String email, @RequestParam String username ) {
+	public void mail(HttpServletResponse response, HttpServletRequest request ,Model model, @RequestParam String email, @RequestParam String username ) {
 
 		System.out.println("email : " + email);
 		System.out.println("username : " + username);
@@ -45,6 +49,8 @@ public class MailController {
 				break;
 			}
 		}
+		
+		String AuthenticationKey = temp.toString();
 		
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out=null;
@@ -77,6 +83,13 @@ public class MailController {
 				out = response.getWriter();
 				response1 = email1.send();
 				out.println("<script>alert('메일을 보냈습니다'); history.back();</script>");
+				
+				HttpSession saveKey = request.getSession();
+				
+				saveKey.setAttribute("AuthenticationKey", AuthenticationKey);
+				model.addAttribute("AuthenticationKey", AuthenticationKey);
+				
+				System.out.println("AuthenticationKey : " + AuthenticationKey);
 			} catch (IOException e) {
 					e.printStackTrace();
 			}
