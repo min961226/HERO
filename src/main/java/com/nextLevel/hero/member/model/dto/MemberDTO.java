@@ -15,13 +15,15 @@ public class MemberDTO {
 	private java.sql.Date registDatetime;				//회원가입일시
 	private java.sql.Date accSecessionDatetime;			//계정탈퇴일시
 	private String accSecessionYn;						//계정탈퇴여부
-	
+	private int salaryStepByRank;
+
 	private List<MemberRoleDTO> memberRoleList;			//회원별권한리스트
 	
 	public MemberDTO() {}
-
-	public MemberDTO(int no,int companyNo, String id, String pwd, String tempPwdYn, String name, Date registDatetime,
-			Date accSecessionDatetime, String accSecessionYn, List<MemberRoleDTO> memberRoleList) {
+	
+	public MemberDTO(int no, int companyNo, String id, String pwd, String tempPwdYn, String name, Date registDatetime,
+			Date accSecessionDatetime, String accSecessionYn, int salaryStepByRank,
+			List<MemberRoleDTO> memberRoleList) {
 		super();
 		this.no = no;
 		this.companyNo = companyNo;
@@ -32,6 +34,7 @@ public class MemberDTO {
 		this.registDatetime = registDatetime;
 		this.accSecessionDatetime = accSecessionDatetime;
 		this.accSecessionYn = accSecessionYn;
+		this.salaryStepByRank = salaryStepByRank;
 		this.memberRoleList = memberRoleList;
 	}
 
@@ -42,7 +45,7 @@ public class MemberDTO {
 	public void setNo(int no) {
 		this.no = no;
 	}
-	
+
 	public int getCompanyNo() {
 		return companyNo;
 	}
@@ -107,6 +110,14 @@ public class MemberDTO {
 		this.accSecessionYn = accSecessionYn;
 	}
 
+	public int getSalaryStepByRank() {
+		return salaryStepByRank;
+	}
+
+	public void setSalaryStepByRank(int salaryStepByRank) {
+		this.salaryStepByRank = salaryStepByRank;
+	}
+
 	public List<MemberRoleDTO> getMemberRoleList() {
 		return memberRoleList;
 	}
@@ -117,11 +128,14 @@ public class MemberDTO {
 
 	@Override
 	public String toString() {
-		return "MemberDTO [no=" + no + ", id=" + id + ", pwd=" + pwd + ", tempPwdYn=" + tempPwdYn + ", name=" + name
-				+ ", registDatetime=" + registDatetime + ", accSecessionDatetime=" + accSecessionDatetime
-				+ ", accSecessionYn=" + accSecessionYn + ", memberRoleList=" + memberRoleList + "]";
+		return "MemberDTO [no=" + no + ", companyNo=" + companyNo + ", id=" + id + ", pwd=" + pwd + ", tempPwdYn="
+				+ tempPwdYn + ", name=" + name + ", registDatetime=" + registDatetime + ", accSecessionDatetime="
+				+ accSecessionDatetime + ", accSecessionYn=" + accSecessionYn + ", salaryStepByRank=" + salaryStepByRank
+				+ ", memberRoleList=" + memberRoleList + "]";
 	}
 
+	
+	
 
 	
 }

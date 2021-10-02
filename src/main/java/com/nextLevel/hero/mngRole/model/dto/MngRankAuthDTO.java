@@ -8,19 +8,21 @@ public class MngRankAuthDTO {
 	private int salaryStepByRank;			//직급별호봉
 	private int authoryityNo;				//권한번호
 	private String rankName;				//직급이름
+	private char tblUserAuth;				//권한생성여부
 	
 	private List<MngRankAuthDTO> salaryStepByRankArg;			//직급별호봉
 	private List<MngRankAuthDTO> authoryityNoArg;				//권한번호
 
 	public MngRankAuthDTO() {}
 
-	public MngRankAuthDTO(int companyNo, int salaryStepByRank, int authoryityNo, String rankName,
+	public MngRankAuthDTO(int companyNo, int salaryStepByRank, int authoryityNo, String rankName, char tblUserAuth,
 			List<MngRankAuthDTO> salaryStepByRankArg, List<MngRankAuthDTO> authoryityNoArg) {
 		super();
 		this.companyNo = companyNo;
 		this.salaryStepByRank = salaryStepByRank;
 		this.authoryityNo = authoryityNo;
 		this.rankName = rankName;
+		this.tblUserAuth = tblUserAuth;
 		this.salaryStepByRankArg = salaryStepByRankArg;
 		this.authoryityNoArg = authoryityNoArg;
 	}
@@ -57,6 +59,14 @@ public class MngRankAuthDTO {
 		this.rankName = rankName;
 	}
 
+	public char getTblUserAuth() {
+		return tblUserAuth;
+	}
+
+	public void setTblUserAuth(char tblUserAuth) {
+		this.tblUserAuth = tblUserAuth;
+	}
+
 	public List<MngRankAuthDTO> getSalaryStepByRankArg() {
 		return salaryStepByRankArg;
 	}
@@ -76,12 +86,10 @@ public class MngRankAuthDTO {
 	@Override
 	public String toString() {
 		return "MngRankAuthDTO [companyNo=" + companyNo + ", salaryStepByRank=" + salaryStepByRank + ", authoryityNo="
-				+ authoryityNo + ", rankName=" + rankName + ", salaryStepByRankArg=" + salaryStepByRankArg
-				+ ", authoryityNoArg=" + authoryityNoArg + "]";
+				+ authoryityNo + ", rankName=" + rankName + ", tblUserAuth=" + tblUserAuth + ", salaryStepByRankArg="
+				+ salaryStepByRankArg + ", authoryityNoArg=" + authoryityNoArg + "]";
 	}
 
-	
-	
 	
 
 }

@@ -11,6 +11,7 @@
 		<result property="registDatetime" column="HIRE_DATE"/>
 		<result property="accSecessionDatetime" column="ACC_SECESSION_DATETIME"/>
 		<result property="accSecessionYn" column="ACC_SECESSION_YN"/>
+		<result property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
 		
 		<collection property="memberRoleList" resultMap="memberRoleResultMap"/>
 	</resultMap>
@@ -30,7 +31,14 @@
 	<result property="userPwd" column="MEMBER_PASSWORD"/>
 	</resultMap>
 	
+	<resultMap type="com.nextLevel.hero.member.model.dto.RankAuthDTO" id="rankAuthMap">
+	<id property="companyNo" column="COMPANY_NO"/>
+	<id property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
+	<id property="authorityNo" column="AUTHORITY_NO"/>
+	<result property="rankName" column="RANK_NAME"/>
 	
+	<association property="rankRoleList" resultMap="authorityResultMap"/>
+	</resultMap>
 	
 	<resultMap type="com.nextLevel.hero.member.model.dto.MemberRoleDTO" id="memberRoleResultMap">
 		<id property="idNo" column="ID_NO"/>
@@ -43,7 +51,6 @@
 		<id property="code" column="AUTHORITY_NO"/>
 		<result property="name" column="AUTHORITY_NAME"/>
 		<result property="desc" column="AUTHORITY_DESCRIPTION"/>
-	
 	</resultMap>
 	
 	<select id="findMemberById" resultMap="loginMemberResultMap">
@@ -61,9 +68,11 @@
              , C.AUTHORITY_NO 
              , C.AUTHORITY_NAME
              , C.AUTHORITY_DESCRIPTION
+             , D.SALARY_STEP_BY_RANK
           FROM TBL_MEMBER A
           LEFT JOIN TBL_USER_AUTH B ON (A.ID_NO = B.ID_NO)
           LEFT JOIN TBL_AUTH C ON (B.AUTHORITY_NO = C.AUTHORITY_NO)
+          LEFT JOIN TBL_EMP_SALARY_STEP D ON(A.ID_NO = D.ID_NO)
          WHERE A.MEMBER_ID = #{ username }
 	</select>
 
@@ -74,6 +83,14 @@
 		 WHERE ID_NO = #{ no }
 	</select>
 	
+	<select id="findRankAuth" resultMap="authorityResultMap">
+        SELECT
+               B.AUTHORITY_NAME
+          FROM TBL_RANK_AUTH A
+          LEFT JOIN TBL_AUTH B ON(A.AUTHORITY_NO = B.AUTHORITY_NO)
+         WHERE COMPANY_NO = #{ companyNo }	
+           AND SALARY_STEP_BY_RANK = #{ member.salaryStepByRank }		
+	</select>
 	
 	
 	<select id="selectFindId" resultMap="memberFindIdMap">

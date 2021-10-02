@@ -175,9 +175,9 @@ input[type=radio] {
 											<input type="checkbox" class="cbx_chkAll">&emsp; <label
 												class="label">전체선택</label>
 
-											<form action="/mngRole/roleDept" method="post">
+											<form action="/mngRole/rankRoleDept" method="post">
 												<div class="bodyselectRole">
-													<input type="checkbox" class="chk" value="2" name="authoryityNoArg[0].authoryityNo">&emsp; 
+													<input type="checkbox" class="chk" value="2" name="authoryityNoArg[0].authoryityNo"> &emsp; 	
 													<label class="label">인사권한</label><br>
 													<p class="explanation">입 퇴직관리, 개인정보 조회, 개인정보 수정, 조직도 수정</p>
 													<input type="checkbox" class="chk" value="3" name="authoryityNoArg[1].authoryityNo">&emsp; 
@@ -187,8 +187,8 @@ input[type=radio] {
 													<label class="label">휴가권한</label><br>
 													<p class="explanation">연차휴가 조회, 휴가 수정, 휴일관리</p>
 													<input type="checkbox" class="chk" value="5" name="authoryityNoArg[3].authoryityNo">&emsp;
-													<label class="label">결재권한</label><br>
-													<p class="explanation">휴가 승인, 증명서 신청 승인, 결재 승인</p>
+													<label class="label">증명서권한</label><br>
+													<p class="explanation">출력 대상 목록, 요청 목록, 증명서 발급 내역</p>
 													<input type="checkbox" class="chk" value="6" name="authoryityNoArg[4].authoryityNo">&emsp; 
 													<label class="label">급여권한</label><br>
 													<p class="explanation">연봉입력, 4대보험 등록, 급상여 정산, 예수금 관리,퇴직정산</p>
@@ -198,6 +198,7 @@ input[type=radio] {
 													<input type="checkbox" class="chk" value="8" name="authoryityNoArg[6].authoryityNo">&emsp;
 													<label class="label">급상여 이체/승인</label><br>
 													<p class="explanation">급상여 이체 승인</p>
+													
 													<input type="hidden" name="rankName" id="rankName" />
 													<div align="right">
 														<button type="submit" class="btn btn-success" value="생성" align="right">수정</button>
@@ -239,13 +240,13 @@ input[type=radio] {
 
 		/* 직급 권한 보유 확인*/
 		$('.role_radio').on("click", function() {
-
+			
+			$("input[class=chk]").prop("checked", false);
 			var information = $(this);
-
 			var tr = information.parent().parent();
 			var td = tr.children();
 
-			var rank = td.eq(1).text();
+			rank = td.eq(1).text();
 
 			document.getElementById("rank").value = rank;
 			document.getElementById("rankName").value = rank;
@@ -257,20 +258,21 @@ input[type=radio] {
 					rank : rank
 				},
 				success : function(data) {
-
-					$.each(data, function(idx, val) {
-
-						if(val.tblUserAuth == "Y") {
+					 	
+						if(data[0].tblUserAuth == "Y") {
+							
 							$(".yesRole").show();
 							$(".noRole").hide();
-
 						} else {
 							$(".noRole").show();
 							$(".yesRole").hide();
 						}
 
+					$.each(data, function(idx, val) {
+						var i = val.authoryityNo;
+						$("input[value="+i+"]").prop("checked", true);
 					});
-
+	
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 
@@ -285,7 +287,6 @@ input[type=radio] {
 			$create_auth.onclick = function() {
 				if(confirm("정말 생성하시겠습니까?") == true) {
 
-					alert("권한 부여가 완료 되었습니다");
 					document.create_auth.submit();
 				} else { 
 					return false;
