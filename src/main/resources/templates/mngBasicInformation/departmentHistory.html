@@ -40,7 +40,7 @@
 											<th>부서 번호</th>											
 											<th>부서명</th>											
 											<th>부서 연락처</th>											
-											<th>상세 이력</th>											
+											<th>부서 생성일</th>											
 											<th>추가/수정 일자</th>											
 										</tr>
 									</thead>
@@ -50,9 +50,9 @@
 											<td th:text="${dept.updatedHistoryNo}"></td>
 											<td th:text="${dept.updatedCategory}"></td>
 											<td th:text="${dept.departmentNo}"></td>
-											<td th:text="${dept.departmentPhone}"></td>
 											<td th:text="${dept.departmentName}"></td>
-											<td th:text="${dept.departmentUpdatedDate}"></td>
+											<td th:text="${dept.departmentPhone}"></td>
+											<td th:text="${dept.departmentCreateDate}"></td>
 											<td th:text="${dept.departmentUpdatedDate}"></td>
 										</tr>
 									</tbody>
