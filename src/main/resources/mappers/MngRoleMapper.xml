@@ -19,16 +19,26 @@
 		<id property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
 		<id property="authoryityNo" column="AUTHORITY_NO"/>
 		<result property="rankName" column="RANK_NAME"/>
+		<result property="tblUserAuth" column="TBL_USER_AUTH"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngRole.model.dto.MngUserDTO" id="userResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="name" column="KOREAN_NAME"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
 		
 	</resultMap>
 	
 	<select id="selectRank" resultMap="rankResultMap">
-		SELECT
+  		SELECT
         	   DISTINCT RANK
   		  FROM TBL_RANK_SALARY_STEP
- 		 WHERE COMPANY_NO = #{ companyNo }
+ 		 WHERE COMPANY_NO = 1
+ 		 ORDER BY 1 ASC
+ 		 
 	</select>
-	<select id="selectRankAuth" resultMap="rankSalaryMap">
+	<select id="selectRankAuth" resultMap="rankAuthMap">
 		SELECT
 			     ROWNUM
 			 , V.SALARY_STEP_BY_RANK
@@ -43,7 +53,16 @@
 		   AND RANK = #{ rank }
 		   AND ROWNUM = 1
 	</select>
-	<update id="updateRoleAuth">
+	
+	<select id="selectAuthority" resultMap="rankAuthMap">
+		SELECT
+			   AUTHORITY_NO
+		  FROM TBL_RANK_AUTH
+		 WHERE COMPANY_NO = #{ companyNo }
+	   	   AND SALARY_STEP_BY_RANK = #{ salaryStepByRank }
+	</select>
+	
+	<update id="updateRoleAuth" parameterType="com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO">
 		UPDATE TBL_RANK_SALARY_STEP
 		   SET TBL_USER_AUTH = 'Y'
 		 WHERE COMPANY_NO = #{ companyNo }
@@ -61,9 +80,43 @@
 	<delete id="deleteRankAuth">
 		DELETE
 		  FROM TBL_RANK_AUTH
-		WHERE COMPANY_NO = #{ companyNo }
-		  AND 
-	
+	 	 WHERE COMPANY_NO = #{ companyNo }
+		   AND SALARY_STEP_BY_RANK IN
+			<foreach collection="salaryStepByRankArg" item="item" index="index" open="(" separator="," close=")">
+			   #{ item.salaryStepByRank }
+			</foreach>
 	</delete>
+	
+	<insert id="insertRankAuth" parameterType="com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO">
+		<foreach collection="salaryStepByRankArg" item="item" open="INSERT ALL" close= "SELECT * FROM SYS.DUAL" separator=" ">
+			INTO TBL_RANK_AUTH
+		(
+		  COMPANY_NO
+		, SALARY_STEP_BY_RANK
+		, AUTHORITY_NO
+		, RANK_NAME
+		)
+		VALUES
+		(
+		  #{ companyNo }
+		, ${ item.salaryStepByRank }
+		, #{ authoryityNo }
+		, #{ rankName }
+		)
+		</foreach>
+	</insert>
+	
+	<select id="selectUser" resultMap="userResultMap">
+         SELECT
+               A.KOREAN_NAME
+             , A.MEMBER_NO
+             , B.DEPARTMENT_NAME
+          FROM TBL_EMPLOYEE A
+          JOIN TBL_DEPARTMENT B ON(A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+         WHERE A.COMPANY_NO = #{ companyNo }
+	</select>
+	
+	
 
+    
 </mapper>

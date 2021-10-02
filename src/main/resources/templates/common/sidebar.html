@@ -473,9 +473,9 @@
 											  || hasRole('SALARY') || hasRole('ROLE') || hasRole('PAY')">
 
 							<li class="menu-title mt-2">인사 관리자</li>
-
-
-
+							</th:block>
+			
+							<th:block sec:authorize="hasRole('ROLE') || hasRole('ADMIN')">
 							<li><a href="#sidebarLayouts" data-bs-toggle="collapse">
 									<i data-feather="clipboard"></i> <span> 기초자료 </span><span
 									class="menu-arrow"></span>
@@ -497,6 +497,8 @@
 									</ul>
 								</div></li>
 
+							</th:block>
+							<th:block sec:authorize="hasRole('ROLE') || hasRole('ADMIN')">
 							<li><a href="#sidebarIcons" data-bs-toggle="collapse"> <i
 									data-feather="alert-triangle"></i> <span> 권한 관리 </span> <span
 									class="menu-arrow"></span>
@@ -522,7 +524,8 @@
 												수정 이력</a></li>
 									</ul>
 								</div></li>
-
+							</th:block>
+							<th:block sec:authorize="hasRole('ATTITUDE') || hasRole('ADMIN')">
 							<li><a href="#sidebarTables" data-bs-toggle="collapse">
 									<i data-feather="check-square"></i> <span> 근태 관리 </span> <span
 									class="menu-arrow"></span>
@@ -537,7 +540,8 @@
 												기록 수정 내역</a></li>
 									</ul>
 								</div></li>
-
+							</th:block>
+							<th:block sec:authorize="hasRole('HOLIDAY') || hasRole('ADMIN')">
 							<li><a href="#sidebarMaps" data-bs-toggle="collapse"> <i
 									data-feather="calendar"></i> <span> 휴가 관리 </span> <span
 									class="menu-arrow"></span>
@@ -549,7 +553,8 @@
 										<li><a href="/mngVacation/vacationList">직원 휴가</a></li>
 									</ul>
 								</div></li>
-
+							</th:block>
+							<th:block sec:authorize="hasRole('SALARY') || hasRole('ADMIN')">
 							<li><a href="#sidebarMultilevel" data-bs-toggle="collapse">
 									<i data-feather="dollar-sign"></i> <span> 급여 관리 </span> <span
 									class="menu-arrow"></span>
@@ -563,14 +568,17 @@
 												보험, 국민 연금</a></li>
 										<li><a href="/mngSalary/payrollAccount">급여 계좌</a></li>
 										<li><a href="/mngSalary/salaryAndBonus">급 · 상여</a></li>
-										<li><a href="/mngSalary/paySalaryAndBonus">급 · 상여 이체
+										<th:block sec:authorize="hasRole('PAY') || hasRole('ADMIN')">
+										<li><a href="/mngPay/paySalaryAndBonus">급 · 상여 이체
 												/ 승인</a></li>
+										</th:block>
 										<li><a href="/mngSalary/deposit">예수금</a></li>
 										<li><a href="/mngSalary/severancePay">퇴직금</a></li>
 									</ul>
 								</div></li>
-
-
+							</th:block>
+							
+							<th:block sec:authorize="hasRole('APPROVAL') || hasRole('ADMIN')">
 							<li><a href="#sidebarDashboard" data-bs-toggle="collapse">
 									<i data-feather="layers"></i> <span> 증명서 관리 </span> <span
 									class="menu-arrow"></span>
@@ -583,8 +591,7 @@
 												발급 내역</a></li>
 									</ul>
 								</div></li>
-
-						</th:block>
+							</th:block>
 					</ul>
 
 				</div>
