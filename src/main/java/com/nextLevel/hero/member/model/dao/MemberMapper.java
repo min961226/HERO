@@ -8,7 +8,6 @@ import com.nextLevel.hero.member.model.dto.AuthorityDTO;
 import com.nextLevel.hero.member.model.dto.FindIdDTO;
 import com.nextLevel.hero.member.model.dto.FindPwdDTO;
 import com.nextLevel.hero.member.model.dto.MemberDTO;
-import com.nextLevel.hero.member.model.dto.RankAuthDTO;
 
 @Mapper
 public interface MemberMapper {
