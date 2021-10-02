@@ -2,6 +2,8 @@ package com.nextLevel.hero.mngVacation.model.dto;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class MngHolidayDTO {
 
 	
@@ -9,6 +11,7 @@ public class MngHolidayDTO {
 	private int companyNo;
 	private int holidayNo;
 	private String calendar;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private java.sql.Date holidayDate;
 	private String title;
 	private String holidayStatus;
