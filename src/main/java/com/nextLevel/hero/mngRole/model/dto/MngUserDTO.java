@@ -5,13 +5,13 @@ public class MngUserDTO {
 	private int companyNo;
 	private String name;
 	private int memberNo;
-	private int departmentName;
+	private String departmentName;
 	
 	public MngUserDTO() {
 		super();
 	}
 
-	public MngUserDTO(int companyNo, String name, int memberNo, int departmentName) {
+	public MngUserDTO(int companyNo, String name, int memberNo, String departmentName) {
 		super();
 		this.companyNo = companyNo;
 		this.name = name;
@@ -43,11 +43,11 @@ public class MngUserDTO {
 		this.memberNo = memberNo;
 	}
 
-	public int getDepartmentName() {
+	public String getDepartmentName() {
 		return departmentName;
 	}
 
-	public void setDepartmentName(int departmentName) {
+	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
 	}
 
@@ -56,8 +56,7 @@ public class MngUserDTO {
 		return "MngUserDTO [companyNo=" + companyNo + ", name=" + name + ", memberNo=" + memberNo + ", departmentName="
 				+ departmentName + "]";
 	}
-	
-	
+
 	
 	
 

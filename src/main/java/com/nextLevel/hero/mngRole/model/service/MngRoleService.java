@@ -1,6 +1,6 @@
 package com.nextLevel.hero.mngRole.model.service;
 
-import java.util.List;
+import java.util.List; 
 
 import com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO;
