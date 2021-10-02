@@ -23,7 +23,7 @@
 							<div class="col-10" style="margin:0 auto;">
 								<div class="card">
 									<div class="card-body">
-										<table class="table table-striped dt-responsive nowrap w-80 text-center" id="deducT">
+										<table class="table table-striped dt-responsive nowrap w-80 text-center" id="account">
 											<thead>
 												<tr>								
 													<th>구분</th>											
@@ -45,7 +45,36 @@
 											</tbody>
 										</table>
 										<br>
-										<button type="button" class="btn btn-success" id="change" style="float: right;">등록</button>
+										<button type="button" class="btn btn-info" id="change" style="float: right;"
+										data-bs-toggle="modal" data-bs-target="#registAccount">등록</button>
+										
+										<!-- 급여계좌 추가 모달창 -->
+										<div class="modal fade" id="registAccount" tabindex="-1" role="dialog" aria-labelledby="myCenterModalLabel" aria-hidden="true">
+	                                        <div class="modal-dialog modal-dialog-centered">
+	                                             <div class="modal-content">
+	                                                    <div class="modal-header">
+	                                                        <h4 class="modal-title" id="registAccountModal"><b>급여 계좌 추가</b></h4>
+	                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	                                                    </div>
+	                                                    <div class="modal-body">
+	                                                    	<div>
+		                                                        <label style="margin:5px; display: none;" id="memberNo" ></label>		                                                       
+		                                                        <label style="margin:10px;">성명 :</label><input type="text"><br>
+		                                                        <label style="margin:10px;">주민등록번호 :</label><input type="text" style="margin:5px;"><br>
+		                                                        <select style="margin:10px;" name="bankList" id="bankList">
+		                                                        	
+		                                                        </select>
+		                                                        <input type="text" style="margin:10px;" id="certification">
+		                                                        <button type="button" class="btn btn-info width-xs" id="confirm">계좌인증</button>
+	                                                    	</div>	                                                  
+	                                                    </div>
+	                                                   <div class="modal-footer">
+		                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
+		                   									<button type="button" class="btn btn-success width-xs">계좌인증</button>
+	                                                   </div> 
+	                                              </div>
+	                                        </div>
+	                                     </div> <!-- 급여계좌 추가 모달창 종료 -->
 									</div>
 								</div>
 							</div>
@@ -56,5 +85,36 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script>
+		$("#change").click(function() {
+			$.ajax({
+				url: "/salary/bankList",
+				method: "POST",
+				success: function(data) {
+					const $bankList = $("#bankList");
+					$bankList.html("");				
+					$bankList.append($("<option>").text("은행명"));
+					
+					for(let index in data) {
+						$bankList.append($("<option>").val(data[index].code).text(data[index].bankName));
+					}
+				},
+				error: function(xhr) {
+					alert("잠시 후 다시 시도해주세요");
+				}
+				
+			});
+	
+		});
+	
+		
+		$("#confirm").click(function() {
+			// 계좌인증 api
+			
+		});
+	
+	
+	
+	</script>
 </body>
 </html>

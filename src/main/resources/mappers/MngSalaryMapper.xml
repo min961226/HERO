@@ -8,7 +8,7 @@
 		<result property="rank" column="RANK"/>
 		<result property="salaryStep" column="SALARY_STEP"/>
 		<result property="salStepAmount" column="AMOUNT"/>
-		<result property="salaryStepUpdatedDate" column="UPDATED_DATE"/>
+		<result property="salaryStepUpdatedDate" column="START_DATE"/>
 		<result property="changeStartDate" column="CHANGE_START_DATE"/>
 	
 		<association property="memberInfo" resultMap="memberInfoResult"/>
@@ -23,35 +23,41 @@
 	
 	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO" id="latestMonthlyResult">
 		<result property="payCategory" column="MONTHLY_PAY_CATEGORY"/>
+		<result property="monthlyStartDate" column="CHANGE_START_DATE"/>
 		<result property="amount" column="AMOUNT"/>
 		<result property="note" column="DESCRIPTION"/>
 		<result property="deductionYn" column="DEDUCTION_YN"/>
+		<result property="monthlyStopDate" column="STOP_DATE"/>
 	
 		<association property="memberInfo" resultMap="memberInfoResult"/>
 	</resultMap>
 	
 	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO" id="fourInsResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<id property="idNo" column="ID_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberName" column="MEMBER_NAME"/>
 		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="divNo" column="DIV_NO"/>
 		<result property="validateDate" column="START_DATE"/>
 		<result property="healthYn" column="HEALTH"/>
 		<result property="pensionYn" column="PENSION"/>
 		<result property="unemployeeYn" column="UNEMPLOYEE"/>
 		<result property="industryYn" column="INDUSTRY"/>
-				
-		<association property="memberInfo" resultMap="memberInfoResult"/>
 	</resultMap>
 	
 	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO" id="memberInsFeeResult">
 		<id property="companyNo" column="COMPANY_NO"/>
-		<result property="healthCoverDate" column="DEPARTMENT_NAME"/>
-		<result property="healthSal" column="DEPARTMENT_NAME"/>
-		<result property="healthInsFee" column="DEPARTMENT_NAME"/>
-		<result property="longtermFee" column="DEPARTMENT_NAME"/>
-		<result property="pensionCoverDate" column="DEPARTMENT_NAME"/>
-		<result property="pensionSal" column="DEPARTMENT_NAME"/>
-		<result property="pensionFee" column="DEPARTMENT_NAME"/>
-	
-		<association property="memberInfo" resultMap="memberInfoResult"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="hireDate" column="HIRE_DATE"/>
+		<result property="healthCoverDate" column="HEALTH_INSURANCE_COVERAGE_DATE"/>
+		<result property="healthSal" column="MONTHLY_HEALTH_AVERAGE_SALARY"/>
+		<result property="healthInsFee" column="HEALTH_INSURANCE_FEE"/>
+		<result property="longtermFee" column="LONG_TERM_CARE_FEE"/>
+		<result property="pensionCoverDate" column="NATIONAL_PENSION_COVERAGE_DATE"/>
+		<result property="pensionSal" column="MONTHLY_PENSION_AVERAGE_SALARY"/>
+		<result property="pensionFee" column="PENSION_INSURANCE_FEE"/>
 	</resultMap> 
 	
 	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO" id="memberAccountResultMap">
@@ -93,6 +99,9 @@
                                                 	<if test="searchDate != null and '' != searchDate">
                                                 	   C1.START_DATE <![CDATA[<=]]> #{ searchDate }
                                                 	</if>
+                                                	<if test="(searchDate == null) or '' == searchDate">
+                                           			   C1.START_DATE <![CDATA[<=]]> SYSDATE
+                                                    </if>
                                                 </where> 
                                                 GROUP BY A1.MEMBER_NO)
          <if test = "searchCondition == 'searchDeptName'">
@@ -105,47 +114,83 @@
 	</select>
 	
 	<select id="listMonthlyPay" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO" resultMap="latestMonthlyResult">
-		SELECT
+	    SELECT
 		       A.COMPANY_NO
-		     , A.MEMBER_NO
-		     , A.AMOUNT 
-	      FROM (SELECT
-	                   A1.MEMBER_NO
-	                 , MAX(A1.CHANGE_START_DATE) AS CHANGE_START_DATE
-	              FROM TBL_EMP_MONTHLY_SALARY_LIST A1
-	             WHERE A1.COMPANY_NO = #{ companyNo }
-	            <where>
-                    <if test="(searchDate != null) and '' != searchDate">
-                       C1.START_DATE <![CDATA[<=]]> #{ searchDate } 
-                    </if>
-                </where> 
-                 GROUP BY A1.MEMBER_NO)A	
+             , A.MEMBER_NO
+		     , A.MONTHLY_PAY_CATEGORY
+		     , A.AMOUNT
+		     , A.CHANGE_START_DATE
+		     , A.DEDUCTION_YN
+		     , A.SALARY_NO 
+		     , A.STOP_DATE
+	      FROM TBL_EMP_MONTHLY_SALARY_LIST A
+	     WHERE A.COMPANY_NO = #{ companyNo }
+	     <if test="(searchDate == null) or '' == searchDate">
+                AND A.CHANGE_START_DATE <![CDATA[<=]]> SYSDATE
+                AND A.USE_STATUS = 'Y'
+         </if>
+         <if test="(searchDate != null) and '' != searchDate">
+                AND A.CHANGE_START_DATE <![CDATA[<=]]> #{ searchDate } 
+         </if>
 	</select>
+	
+	
+	<select id="listMonthlyPay2" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO" resultMap="latestMonthlyResult">
+	    SELECT
+		       A.COMPANY_NO
+             , A.MEMBER_NO
+		     , A.MONTHLY_PAY_CATEGORY
+		     , A.CHANGE_START_DATE
+		     , A.STOP_DATE
+	      FROM TBL_EMP_MONTHLY_SALARY_LIST A
+	     WHERE A.COMPANY_NO = #{ companyNo }
+         <if test="(searchDate != null) and '' != searchDate">
+                AND A.CHANGE_START_DATE <![CDATA[<=]]> #{ searchDate }
+                AND A.STOP_DATE IN (SELECT 
+                                           A1.STOP_DATE
+                                      FROM TBL_EMP_MONTHLY_SALARY_LIST A1
+                                      WHERE A1.STOP_DATE <![CDATA[<=]]> #{ searchDate })
+         </if>
+         <if test="(searchDate == null) or '' == searchDate">
+                AND A.CHANGE_START_DATE <![CDATA[<=]]> SYSDATE
+                AND A.USE_STATUS = 'Y'
+         </if>                                     
+	</select>
+	
+	
+	
 	
 	<select id="listMonthlySalary" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO" resultMap="latestMonthlyResult">
 		SELECT
 		       A.COMPANY_NO
-		     , A.MONTHLY_PAY_CATEGORY
+             , A.MONTHLY_PAY_CATEGORY
 		     , A.AMOUNT
 		     , A.DESCRIPTION
 		     , A.CHANGE_START_DATE
 		     , A.DEDUCTION_YN
 		     , A.SALARY_NO 
+		     , A.STOP_DATE
 	      FROM TBL_EMP_MONTHLY_SALARY_LIST A
 	     WHERE A.COMPANY_NO = #{ companyNo }
 	       AND A.MEMBER_NO = #{ memberNo }
 	    <if test="(searchDate != null) and '' != searchDate">
            AND A.CHANGE_START_DATE <![CDATA[<=]]> #{ searchDate } 
         </if>
+        <if test="(searchDate == null) or '' == searchDate">
+           AND A.CHANGE_START_DATE <![CDATA[<=]]> SYSDATE
+           AND A.USE_STATUS = 'Y'
+        </if>
 	</select>
 	
 	
-	<select id="listMngFourInsuranceList" resultMap="fourInsResultMap">
+	<select id="listMngFourInsuranceList" parameterType="_int" resultMap="fourInsResultMap">
 		SELECT
 		       A.COMPANY_NO
 		     , A.MEMBER_NO
 		     , A.KOREAN_NAME AS MEMBER_NAME
+		     , A.ID_NO
 		     , B.DEPARTMENT_NAME
+		     , C.DIV_NO
 		     , C.START_DATE
 		     , C.HEALTH
 		     , C.PENSION
@@ -153,24 +198,77 @@
 		     , C.INDUSTRY
 		  FROM TBL_EMPLOYEE A
 		  JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
-		  JOIN TBL_FOUR_INSURANCE_DEDUCT C ON (A.MEMBER_NO = C.MEMBER_NO)			
+		  JOIN TBL_FOUR_INSURANCE_DEDUCT C ON (A.MEMBER_NO = C.MEMBER_NO)
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		 ORDER BY B.DEPARTMENT_NO			
 	</select>
+	
+	<update id="updateFourInsuranceList" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO">
+	    UPDATE TBL_FOUR_INSURANCE_DEDUCT
+	       SET 
+	           START_DATE = #{ validateDate }
+	         , HEALTH = #{ healthYn }
+	         , PENSION = #{ pensionYn }
+	         , UNEMPLOYEE = #{ unemployeeYn }
+	         , INDUSTRY = #{ industryYn }	         
+	     WHERE COMPANY_NO = #{ companyNo }
+	      AND  DIV_NO = #{ divNo }
+	      AND  MEMBER_NO = #{ memberNo }
+	      AND  ID_NO = #{ idNo }
+	</update>
+	
+	<insert id="insertFourInsHistory" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO">
+	    INSERT
+	      INTO TBL_FOUR_INS_HISTORY
+	    VALUES
+	    (
+	      SEQ_FOUR_UPDATE_NO.NEXTVAL
+	    , #{ memberNo }
+	    , #{ validateDate }
+	    , SYSDATE
+	    , #{ healthYn }
+	    , #{ pensionYn }
+	    , #{ unemployeeYn }
+	    , #{ industryYn }
+	    , #{ companyNo }
+	    , #{ divNo }
+	    )
+	</insert>
 	
 	<select id="listMngNationalHealthInsurancePension" resultMap="memberInsFeeResult">
 		SELECT
-		       A.COMPANY_NO
-		     , A.MEMBER_NO
-		     , A.KOREAN_NAME AS MEMBER_NAME
-		     , A.HIRE_DATE
-		     , B.HEALTH_INSURANCE_COVERAGE_DATE
-		     , B.MONTHLY_HEALTH_AVERAGE_SALARY
-		     , B.HEALTH_INSURANCE_FEE
-			 , B.LONG_TERM_CARE_FEE
-			 , B.NATIONAL_PENSION_COVERAGE_DATE
-			 , B.MONTHLY_PENSION_AVERAGE_SALARY
-			 , B.PENSION_INSURANCE_FEE
-		  FROM TBL_EMPLOYEE A
-		  JOIN TBL_PERSONAL_INSURANCE_FEE B ON (A.MEMBER_NO = B.MEMBER_NO)
+               A.COMPANY_NO
+             , A.MEMBER_NO
+             , A.KOREAN_NAME AS MEMBER_NAME
+             , A.HIRE_DATE
+             , B.HEALTH_INSURANCE_COVERAGE_DATE
+             , B.MONTHLY_HEALTH_AVERAGE_SALARY
+             , B.HEALTH_INSURANCE_FEE
+             , B.LONG_TERM_CARE_FEE
+             , B.NATIONAL_PENSION_COVERAGE_DATE
+             , B.MONTHLY_PENSION_AVERAGE_SALARY
+             , B.PENSION_INSURANCE_FEE
+          FROM TBL_EMPLOYEE A
+          JOIN TBL_PERSONAL_INSURANCE_FEE B ON (A.MEMBER_NO = B.MEMBER_NO)         
+         WHERE A.COMPANY_NO = #{ companyNo }
+           AND (A.MEMBER_NO, B.HEALTH_INSURANCE_COVERAGE_DATE, B.NATIONAL_PENSION_COVERAGE_DATE) IN (SELECT 
+                                                                                                            A1.MEMBER_NO
+                                                                                                          , MAX(B1.HEALTH_INSURANCE_COVERAGE_DATE)AS HEALTH_INSURANCE_COVERAGE_DATE
+                                                                                                          , MAX(B1.NATIONAL_PENSION_COVERAGE_DATE)AS NATIONAL_PENSION_COVERAGE_DATE
+                                            
+                                                                                                       FROM TBL_EMPLOYEE A1
+                                                                                                       JOIN TBL_PERSONAL_INSURANCE_FEE B1 ON (A1.MEMBER_NO = B1.MEMBER_NO)
+                                                                                                     <where>
+                                                                                                         <if test="(searchDate != null) and '' != searchDate">  
+                                                                                                             B1.HEALTH_INSURANCE_COVERAGE_DATE <![CDATA[<=]]> #{ searchDate } 
+                                                                                                         OR  B1.NATIONAL_PENSION_COVERAGE_DATE <![CDATA[<=]]> #{ searchDate } 
+                                                                                                         </if>
+                                                                                                         <if test="(searchDate == null) or '' == searchDate">
+                                                                                                             B1.HEALTH_INSURANCE_COVERAGE_DATE <![CDATA[<=]]> SYSDATE 
+                                                                                                         OR  B1.NATIONAL_PENSION_COVERAGE_DATE <![CDATA[<=]]> SYSDATE 
+                                                                                                         </if>
+                                                                                                     </where>
+                                                                                                       GROUP BY A1.MEMBER_NO)
 	</select>
 	
 	

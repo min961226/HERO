@@ -67,8 +67,9 @@
 											<td th:text="${annual.departmentName}" class="deptName"></td>
 											<td th:text="${annual.rank}" class="rank"></td>
 											<td th:text="${annual.salaryStep}" class="step"></td>
-											<td th:text="${annual.salaryStepUpdatedDate >= annual.changeStartDate? annual.salaryStepUpdatedDate : annual.changeStartDate}"></td>
-											<td></td>
+											<td th:text="${annual.salStepAmount}" class="stepAmount" style="display: none;"></td>
+											<td th:text="${annual.changeStartDate}"></td>
+											<td th:text="${#numbers.formatInteger(annual.annualSal, 3, 'COMMA')}"></td>
 											<td th:id="'monDetail' + ${num.count}"><button type="button" class="btn btn-soft-success width-xs" 
 												data-bs-toggle="modal" data-bs-target="#monthlyPay">지급항목</button></td>
 											<td th:id="'historyDetail' + ${num.count}"><button type="button" class="btn btn-soft-success width-xs"
@@ -86,14 +87,14 @@
                                                     </div>
                                                     <div class="modal-body">
                                                     	<div>
-	                                                        <label style="margin:5px; display: none;" id="memNo" ></label>
+	                                                        <label style="margin:5px; display: none;" id="memberNo" ></label>
 	                                                        <label style="margin:10px;">소속 :</label><label id="deptName" style="margin:5px;"></label><br>
 	                                                        <label style="margin:10px;">직급 :</label><label id="rank" style="margin:5px;"></label><br>
 	                                                        <label style="margin:10px;">성명 :</label><label id="memName" style="margin:5px;"></label><br>
 	                                                        <label style="margin:10px;">호봉 :</label><label id="step" style="margin:5px;"></label><br>
                                                     	</div>
                                                     	<br>
-                                                    	<div style="margin:0 auto; padding:20px;">
+                                                    	<div style="margin:0 auto; padding:20px; height:400px; overflow-y:scroll;">
 				                                            <table class="table mb-0 text-center" id="modalTBL">
 				                                                <thead class="table-light">
 				                                                    <tr>
@@ -105,24 +106,18 @@
 				                                                </thead>
 				                                                	<tr>
 				                                                        <th>기본급</th>
-				                                                        <td id="salAmount"></td>
-				                                                        <td>Otto</td>
-				                                                        <td>@mdo</td>
+				                                                        <td th:text="${#numbers.formatInteger(num,3,'COMMA')}" id="salAmount"></td>
+				                                                        <td>월 209시간 근로에 대한 임금(주휴수당 포함)</td>
+				                                                        <td>Y</td>
 				                                                    </tr>
 				                                                    <tr>
 				                                                        <th>식 대</th>
-				                                                        <td>100000</td>
-				                                                        <td>T</td>
-				                                                        <td>@fat</td>
+				                                                        <td>100,000</td>
+				                                                        <td></td>
+				                                                        <td>N</td>
 				                                                    </tr>
-				                                                <tbody>
+				                                                <tbody id="monthly">
 				                                                    
-				                                                    <tr>
-				                                                        <th>3</th>
-				                                                        <td>Larry</td>
-				                                                        <td>the Bird</td>
-				                                                        <td>@twitter</td>
-				                                                    </tr>
 				                                                </tbody>
 				                                            </table>
 				                                        </div>
@@ -213,29 +208,50 @@
 		const departmentName = $(this).siblings(".deptName").text();
 		const salRank = $(this).siblings(".rank").text();
 		const salStep = $(this).siblings(".step").text();
+		const salStepAmount = $(this).siblings(".stepAmount").text();
 			
 		const memNo = $("#memNo").text(memberNo);
 		const deptName = $("#deptName").text(departmentName);
 		const memName = $("#memName").text(memberName);
 		const rank = $("#rank").text(salRank);
 		const step = $("#step").text(salStep);
-		let name = /*[[${session.user.name}]]*/
+		const salAmount = $("#salAmount").text(salStepAmount - 100000);
+			
 		
 		$.ajax({
 			url: "annualSalary",
 			method: "POST",
 			data: { memberNo : memberNo },
 			success: function(data) {
-				console.log(data);
 				
-
+				const $monthly = $("#monthly");
+				$monthly.html("");
+				
+				var monTotal = 0;
+				for(let index in data) {
+					$monthly.append($("<tr>").append($("<th>").text(data[index].payCategory))
+											 .append($("<td>").text(data[index].amount))
+											 .append($("<td>").text(data[index].note))
+											 .append($("<td>").text(data[index].deductionYn))
+									);
+					monTotal += data[index].amount;
+					
+				}
+				
+				
+				$monthly.append($("<tr>").append($("<th>").text("총계"))
+										 .append($("<th>").text(parseInt(monTotal) + parseInt(salStepAmount)))
+										 .append($("<td>"))
+										 .append($("<td>"))
+								);
+				
 			},
 			error: function(xhr) {
 				alert("잠시 후 다시 시도해주세요");
 			}
 		});
-			
 	});
+	
 	
 	$("[id^=historyDetail]").click(function(){
 		

@@ -6,22 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nextLevel.hero.member.model.dto.UserImpl;
-import com.nextLevel.hero.mngSalary.model.dto.MemberInfoDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
+import com.nextLevel.hero.mngSalary.model.dto.fourInsuranceList;
 import com.nextLevel.hero.mngSalary.model.service.MngSalaryService;
 
 @Controller
@@ -74,22 +75,40 @@ public class MngSalaryController {
 	
 	/* 4대보험 개인별 공제항목 리스트*/
 	@GetMapping("/deductFourMajorInsurances")
-	public ModelAndView mngDeductFourMajorInsurances(ModelAndView mv) {
+	public ModelAndView mngDeductFourMajorInsurances(@AuthenticationPrincipal UserImpl user, ModelAndView mv) {
 		
-		List<MngDeductFourInsDTO> fourInsuranceList = mngSalaryService.listMngFourInsuranceList();
+		int companyNo = user.getCompanyNo();		
 		
+		List<MngDeductFourInsDTO> fourInsuranceList = mngSalaryService.listMngFourInsuranceList(companyNo);
+		System.out.println("컨트롤러 : " + fourInsuranceList);
 		mv.addObject("fourInsuranceList", fourInsuranceList);
 		mv.setViewName("mngSalary/deductFourMajorInsurances");
 		
 		return mv;
 	}
 	
+	/* 4대보험 개인별 공제항목 수정 */
+	@PostMapping("/updateInsurances")
+	public ModelAndView updateInsurances(@AuthenticationPrincipal UserImpl user, ModelAndView mv, 
+			@ModelAttribute fourInsuranceList deductList, RedirectAttributes rttr)  {
+		
+		int companyNo = user.getCompanyNo();
+		
+		mngSalaryService.updateFourInsuranceList(companyNo, deductList);
+		rttr.addFlashAttribute("successMessage", "4대보험 공제항목 수정에 성공하였습니다!");
+		mv.setViewName("redirect:/mngSalary/deductFourMajorInsurances");
+		
+		return mv;
+	}
+	
+	
 	
 	/* 건강보험 국민연금 */
 	@GetMapping("/nationalHealthInsurancePension")
-	public ModelAndView mngNationalHealthInsurancePension(ModelAndView mv) {
+	public ModelAndView mngNationalHealthInsurancePension(ModelAndView mv, MemberInsFeeDTO search, @AuthenticationPrincipal UserImpl user) {
 		
-		List<MemberInsFeeDTO> memInsFeeList = mngSalaryService.listMngNationalHealthInsurancePension();
+		search.setCompanyNo(user.getCompanyNo());
+		List<MemberInsFeeDTO> memInsFeeList = mngSalaryService.listMngNationalHealthInsurancePension(search);
 		
 		mv.addObject("memInsFeeList", memInsFeeList);
 		mv.setViewName("mngSalary/nationalHealthInsurancePension");
@@ -114,12 +133,6 @@ public class MngSalaryController {
 	@GetMapping("/salaryAndBonus")
 	public String mngSalaryAndBonus() {
 		return "mngSalary/salaryAndBonus";
-	}
-	
-	/* 급상여 지급 이체 리스트 */
-	@GetMapping("/paySalaryAndBonus")
-	public String mngPaySalaryAndBonus() {
-		return "mngSalary/paySalaryAndBonus";
 	}
 	
 	/* 예수금 */

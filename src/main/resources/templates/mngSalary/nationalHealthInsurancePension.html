@@ -44,7 +44,7 @@
 								<div class="card-body">
 								<button type="button" class="btn btn-success" style="margin:5px;">수 정</button>
 								<button type="button" class="btn btn-warning" style="margin:5px;">수정완료</button>
-								<table class="table table-bordered mb-0 nowrap w-100 text-center">
+								<table class="table table-bordered mb-0 nowrap w-100 text-center" id="tbl">
 									<thead>
 										<tr>
 											<th rowspan = "2" class="thSpan">구 분</th>											
@@ -67,21 +67,21 @@
 										</tr>
 									</thead>
 										
-									<tbody>
+									<tbody class="thSpan">
 										<tr th:each="fee, num : ${memInsFeeList}">
 											<td th:text="${num.count}"></td>
-											<td th:text="${fee.memberInfo.memberNo}"></td>
-											<td th:text="${fee.memberInfo.memberName}"></td>
-											<td th:text="${fee.memberInfo.hireDate}"></td>
-											<td th:text="${fee.healthCoverDate}"></td>
-											<td th:text="${fee.healthSal}"></td>
+											<td th:text="${fee.memberNo}" class="memberNo"></td>
+											<td th:text="${fee.memberName}" class="memberName"></td>
+											<td th:text="${fee.hireDate}" class="hireDate"></td>
+											<td th:text="${fee.healthCoverDate}" class="healthDate"></td>
+											<td th:text="${#numbers.formatInteger(fee.healthSal, 3, 'COMMA')}" class="healthSal"></td>
 											<td ><button type="button" class="btn btn-soft-success">경감</button></td>
-											<td ></td>
-											<td th:text="${fee.healthInsFee}"></td>
-											<td th:text="${fee.longtermFee}"></td>
-											<td th:text="${fee.pensionCoverDate}"></td>
-											<td th:text="${fee.pensionSal}"></td>
-											<td th:text="${fee.pensionFee}"></td>
+											<td class="totalHealthFee" th:text="${#numbers.formatInteger(fee.healthInsFee + fee.longtermFee, 3, 'COMMA')}"></td>
+											<td th:text="${#numbers.formatInteger(fee.healthInsFee, 3, 'COMMA')}" class="healthInsFee"></td>
+											<td th:text="${#numbers.formatInteger(fee.longtermFee, 3, 'COMMA')}" class="longtermFee"></td>
+											<td th:text="${fee.pensionCoverDate}" class="pensionDate"></td>
+											<td th:text="${#numbers.formatInteger(fee.pensionSal, 3, 'COMMA')}" class="pensionSal"></td>
+											<td th:text="${#numbers.formatInteger(fee.pensionFee, 3, 'COMMA')}" class="pensionFee"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -94,5 +94,12 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script>
+	
+	
+	
+	
+	
+	</script>
 </body>
 </html>
