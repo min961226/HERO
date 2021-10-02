@@ -3,7 +3,6 @@ package com.nextLevel.hero.member.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.ProcessBuilder.Redirect;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,11 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/member")
-public class MailController {
+public class MailCheckController {
 
 	@PostMapping(value="checkMail", produces ="application/json; charset=UTF-8")
 	@ResponseBody
-	public void mail(HttpServletResponse response, HttpServletRequest request ,Model model, @RequestParam String email, @RequestParam String username ) {
+	public void mail(HttpServletResponse response, HttpServletRequest request , @RequestParam String email, @RequestParam String username ) {
 
 		System.out.println("email : " + email);
 		System.out.println("username : " + username);
@@ -87,7 +85,6 @@ public class MailController {
 				HttpSession saveKey = request.getSession();
 				
 				saveKey.setAttribute("AuthenticationKey", AuthenticationKey);
-				model.addAttribute("AuthenticationKey", AuthenticationKey);
 				
 				System.out.println("AuthenticationKey : " + AuthenticationKey);
 			} catch (IOException e) {
