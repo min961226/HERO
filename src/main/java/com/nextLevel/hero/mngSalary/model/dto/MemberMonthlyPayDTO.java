@@ -1,5 +1,7 @@
 package com.nextLevel.hero.mngSalary.model.dto;
 
+import java.sql.Date;
+
 public class MemberMonthlyPayDTO {
 
 	private MemberInfoDTO memberInfo;		//직원 정보
@@ -7,25 +9,30 @@ public class MemberMonthlyPayDTO {
 	private String rank;					//직급
 	private	String salaryStep;				//호봉
 	private int salaryNo;					//급여번호
+	private java.sql.Date monthlyStartDate; //월 지급금액 적용일자
 	private String payCategory;				//지급항목명
 	private int amount;						//지급금액
 	private String note;					//비고
 	private String deductionYn;				//과세여부
-
+	private java.sql.Date monthlyStopDate;  //지급 중단 시작일
+	
 	public MemberMonthlyPayDTO() {}
 
 	public MemberMonthlyPayDTO(MemberInfoDTO memberInfo, int salaryStepByRank, String rank, String salaryStep,
-			int salaryNo, String payCategory, int amount, String note, String deductionYn) {
+			int salaryNo, Date monthlyStartDate, String payCategory, int amount, String note, String deductionYn,
+			Date monthlyStopDate) {
 		super();
 		this.memberInfo = memberInfo;
 		this.salaryStepByRank = salaryStepByRank;
 		this.rank = rank;
 		this.salaryStep = salaryStep;
 		this.salaryNo = salaryNo;
+		this.monthlyStartDate = monthlyStartDate;
 		this.payCategory = payCategory;
 		this.amount = amount;
 		this.note = note;
 		this.deductionYn = deductionYn;
+		this.monthlyStopDate = monthlyStopDate;
 	}
 
 	public MemberInfoDTO getMemberInfo() {
@@ -68,6 +75,14 @@ public class MemberMonthlyPayDTO {
 		this.salaryNo = salaryNo;
 	}
 
+	public java.sql.Date getMonthlyStartDate() {
+		return monthlyStartDate;
+	}
+
+	public void setMonthlyStartDate(java.sql.Date monthlyStartDate) {
+		this.monthlyStartDate = monthlyStartDate;
+	}
+
 	public String getPayCategory() {
 		return payCategory;
 	}
@@ -100,11 +115,20 @@ public class MemberMonthlyPayDTO {
 		this.deductionYn = deductionYn;
 	}
 
+	public java.sql.Date getMonthlyStopDate() {
+		return monthlyStopDate;
+	}
+
+	public void setMonthlyStopDate(java.sql.Date monthlyStopDate) {
+		this.monthlyStopDate = monthlyStopDate;
+	}
+
 	@Override
 	public String toString() {
 		return "MemberMonthlyPayDTO [memberInfo=" + memberInfo + ", salaryStepByRank=" + salaryStepByRank + ", rank="
-				+ rank + ", salaryStep=" + salaryStep + ", salaryNo=" + salaryNo + ", payCategory=" + payCategory
-				+ ", amount=" + amount + ", note=" + note + ", deductionYn=" + deductionYn + "]";
+				+ rank + ", salaryStep=" + salaryStep + ", salaryNo=" + salaryNo + ", monthlyStartDate="
+				+ monthlyStartDate + ", payCategory=" + payCategory + ", amount=" + amount + ", note=" + note
+				+ ", deductionYn=" + deductionYn + ", monthlyStopDate=" + monthlyStopDate + "]";
 	}
 
 	

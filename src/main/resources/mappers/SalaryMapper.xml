@@ -12,32 +12,37 @@
 	</resultMap>
 
 
+	<resultMap type="com.nextLevel.hero.salary.model.dto.BankListDTO" id="bankListResultMap">
+		<id property="code" column="BANK_CODE"/>
+		<result property="bankName" column="BANK_NAME"/>
+	</resultMap>
+	
+	
 	<select id="selectAccountList" resultMap="accountListResultMap" parameterType="_int">
 		SELECT
-		        E.COMPANY_NO
-		      , E.BANK_CODE
-		      , E.BANK_NAME
-		      , E.ACCOUNT_NO
-		      , E.MEMBER_NO
-		      , E.MEMBER_NAME
-		      , E.DEPARTMENT_NAME
-		      , E.ENROLL_DATE
-		 FROM   (SELECT
-		               A.COMPANY_NO
-		             , A.BANK_CODE
-		             , A.ACCOUNT_NO
-		             , A.MEMBER_NO
-		             , B.KOREAN_NAME AS MEMBER_NAME
-		             , B.ID_NO
-		             , C.DEPARTMENT_NAME
-		             , A.ENROLL_DATE
-		             , D.BANK_NAME
-		          FROM TBL_EMP_ACCOUNT_UPDATE A
-		          JOIN TBL_EMPLOYEE B ON (A.MEMBER_NO = B.MEMBER_NO)
-		          JOIN TBL_DEPARTMENT C ON (B.DEPARTMENT_NO = C.DEPARTMENT_NO)
-		          JOIN TBL_BANK D ON (A.BANK_CODE = D.BANK_CODE)	
-		         )E
-	    WHERE E.COMPANY_NO = #{ companyNo }
-	      AND E.ID_NO = #{ idNo }
+               A.COMPANY_NO
+             , A.BANK_CODE
+             , A.ACCOUNT_NO
+             , A.MEMBER_NO
+             , B.KOREAN_NAME AS MEMBER_NAME
+             , B.ID_NO
+             , C.DEPARTMENT_NAME
+             , A.ENROLL_DATE
+             , D.BANK_NAME
+          FROM TBL_EMP_ACCOUNT_UPDATE A
+          JOIN TBL_EMPLOYEE B ON (A.MEMBER_NO = B.MEMBER_NO)
+          JOIN TBL_DEPARTMENT C ON (B.DEPARTMENT_NO = C.DEPARTMENT_NO)
+          JOIN TBL_BANK D ON (A.BANK_CODE = D.BANK_CODE)
+         WHERE A.COMPANY_NO = #{ companyNo }
+           AND B.ID_NO = #{ idNo }
 	</select>
+	
+	<select id="selectBankList" resultMap="bankListResultMap">
+	    SELECT
+	           A.BANK_CODE
+	         , A.BANK_NAME
+          FROM TBL_BANK A
+	</select>
+	
+	
 </mapper>

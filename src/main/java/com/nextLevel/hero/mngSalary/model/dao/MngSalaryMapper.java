@@ -17,14 +17,19 @@ public interface MngSalaryMapper {
 	
 	List<MemberMonthlyPayDTO> listMonthlyPay(MngSalaryDTO search);
 
-	List<MngDeductFourInsDTO> listMngFourInsuranceList();
+	List<MemberMonthlyPayDTO> listMonthlyPay2(MngSalaryDTO search);
 
-	List<MemberInsFeeDTO> listMngNationalHealthInsurancePension();
+	List<MngDeductFourInsDTO> listMngFourInsuranceList(int companyNo);
+	
+	int updateFourInsuranceList(MngDeductFourInsDTO personal);
+
+	int insertFourInsHistory(MngDeductFourInsDTO personal);
+
+	List<MemberInsFeeDTO> listMngNationalHealthInsurancePension(MemberInsFeeDTO search);
 
 	List<MngAccountDTO> listmngPayrollAccount();
 
 	List<MemberMonthlyPayDTO> listMonthlySalary(MngSalaryDTO search);
 
-	
 
 }

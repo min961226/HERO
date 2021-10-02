@@ -5,11 +5,11 @@ import java.sql.Date;
 
 public class MngSalaryDTO implements Serializable{
 
-	private String searchDate;					//검색 일자
+	private String searchDate;							//검색 일자
 	private String searchCondition;						//검색 조건
 	private String searchValue;							//검색어
 	private int companyNo;								//회사번호
-	private int memberNo;
+	private int memberNo;								//사번
 	private MemberInfoDTO memberInfo;					//직원정보
 	private String departmentName;						//부서명
 	private int salaryStepByRank;						//직급별 호봉
@@ -241,6 +241,7 @@ public class MngSalaryDTO implements Serializable{
 				+ ", annualSal=" + annualSal + "]";
 	}
 
+	
 
 	
 

@@ -4,7 +4,11 @@ import java.sql.Date;
 
 public class MngDeductFourInsDTO {
 
-	private MemberInfoDTO memberInfo;
+	private int memberNo;
+	private String memberName;
+	private int companyNo;
+	private int idNo;
+	private int divNo;
 	private String departmentName;
 	private java.sql.Date validateDate;
 	private String healthYn;
@@ -14,10 +18,15 @@ public class MngDeductFourInsDTO {
 	
 	public MngDeductFourInsDTO() {}
 
-	public MngDeductFourInsDTO(MemberInfoDTO memberInfo, String departmentName, Date validateDate, String healthYn,
-			String pensionYn, String unemployeeYn, String industryYn) {
+	public MngDeductFourInsDTO(int memberNo, String memberName, int companyNo, int idNo, int divNo,
+			String departmentName, Date validateDate, String healthYn, String pensionYn, String unemployeeYn,
+			String industryYn) {
 		super();
-		this.memberInfo = memberInfo;
+		this.memberNo = memberNo;
+		this.memberName = memberName;
+		this.companyNo = companyNo;
+		this.idNo = idNo;
+		this.divNo = divNo;
 		this.departmentName = departmentName;
 		this.validateDate = validateDate;
 		this.healthYn = healthYn;
@@ -26,12 +35,44 @@ public class MngDeductFourInsDTO {
 		this.industryYn = industryYn;
 	}
 
-	public MemberInfoDTO getMemberInfo() {
-		return memberInfo;
+	public int getMemberNo() {
+		return memberNo;
 	}
 
-	public void setMemberInfo(MemberInfoDTO memberInfo) {
-		this.memberInfo = memberInfo;
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
+	}
+
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+
+	public int getCompanyNo() {
+		return companyNo;
+	}
+
+	public void setCompanyNo(int companyNo) {
+		this.companyNo = companyNo;
+	}
+
+	public int getIdNo() {
+		return idNo;
+	}
+
+	public void setIdNo(int idNo) {
+		this.idNo = idNo;
+	}
+
+	public int getDivNo() {
+		return divNo;
+	}
+
+	public void setDivNo(int divNo) {
+		this.divNo = divNo;
 	}
 
 	public String getDepartmentName() {
@@ -84,10 +125,11 @@ public class MngDeductFourInsDTO {
 
 	@Override
 	public String toString() {
-		return "MngDeductFourInsDTO [memberInfo=" + memberInfo + ", departmentName=" + departmentName
-				+ ", validateDate=" + validateDate + ", healthYn=" + healthYn + ", pensionYn=" + pensionYn
-				+ ", unemployeeYn=" + unemployeeYn + ", industryYn=" + industryYn + "]";
+		return "MngDeductFourInsDTO [memberNo=" + memberNo + ", memberName=" + memberName + ", companyNo=" + companyNo
+				+ ", idNo=" + idNo + ", divNo=" + divNo + ", departmentName=" + departmentName + ", validateDate="
+				+ validateDate + ", healthYn=" + healthYn + ", pensionYn=" + pensionYn + ", unemployeeYn="
+				+ unemployeeYn + ", industryYn=" + industryYn + "]";
 	}
-	
+
 	
 }
