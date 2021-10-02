@@ -20,7 +20,7 @@
 	</select>
 	
 	<!-- Insert -->
-	<!-- <insert id="holidayInsert" parameterType="com.nextLevel.hero.mngVacation.model.dto.MngHolidayDTO">
+	<insert id="insertPublicHoliday" parameterType="com.nextLevel.hero.mngVacation.model.dto.MngHolidayDTO">
 		INSERT
 		  INTO TBL_HOLIDAY A
 		(
@@ -29,18 +29,18 @@
 		, A.CALENDAR
 		, A.HOLIDAY_DATE
 		, A.TITLE
-		, HOLIDAY_STATUS  
+		, A.HOLIDAY_STATUS  
 		)
 		VALUES
 		(
 		  #{ companyNo }
 		, SEQ_HOLIDAY.NEXTVAL
-		, #{ calendar } 
+		, '양력'
 		, #{ holidayDate } 
 		, #{ title } 
 		, #{ holidayStatus} 
 		)  
-	</insert> -->
+	</insert> 
 	
 	<!-- Delete -->
 	<!-- <delete id="holidayDelete">

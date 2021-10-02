@@ -11,10 +11,14 @@ public interface MngVacationMapper {
 
 	/* 휴일 조회 */
 	List<MngHolidayDTO> listHoliday(int companyNo);
-	
+
+	int insertPublicHoliday(MngHolidayDTO mngHolidayDTO);
+
+	/*
+	 * 휴일 insert int holidayModalInsert(MngHolidayDTO mngHolidayDTO);
+	 */
+
 	/* 휴일 insert */
-	//ㅗㅓ허ㅏㅗㅎ
-	
-	
-	
+	// ㅗㅓ허ㅏㅗㅎ
+
 }
