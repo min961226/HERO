@@ -23,6 +23,16 @@ public interface MngBasicInformationService {
 
 	int insertPremiumRate(MngInsuranceRateDTO insuranceRate);
 
+	int insertDepartment(MngDepartmentHistoryDTO departmentDTO);
+
+	int insertLogDepartment(MngDepartmentHistoryDTO departmentDTO);
+
+	int selectDepartmentNo(MngDepartmentHistoryDTO departmentDTO);
+
+	List<MngDepartmentHistoryDTO> selectDepartment(int companyNo);
+
+	MngDepartmentHistoryDTO selectOneDepartment(int departmentNum);
+
 
 
 

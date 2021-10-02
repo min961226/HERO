@@ -2,7 +2,9 @@ package com.nextLevel.hero.mngBasicInformation.controller;
 
 import java.lang.ProcessBuilder.Redirect;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,9 +18,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.nextLevel.hero.main.model.service.MainService;
 import com.nextLevel.hero.member.model.dto.MemberDTO;
 import com.nextLevel.hero.member.model.dto.UserImpl;
@@ -67,9 +73,77 @@ public class MngBasicInformationController {
 	}
 	
 	@GetMapping("/department")
-	public String mngDepartment() {
-		return "mngBasicInformation/department";
+	public ModelAndView mngDepartment(ModelAndView mv,@AuthenticationPrincipal UserImpl user) {
+		List<MngDepartmentHistoryDTO> departmentList = mngBasicInformationService.selectDepartment(user.getCompanyNo());
+		System.out.println(departmentList);
+		System.out.println("부서 목록 조회");
+
+		mv.addObject("departmentList",departmentList);
+		mv.setViewName("mngBasicInformation/department");
+		
+		return mv;
 	}
+	
+	@GetMapping(value="departmentList", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String getDepartmentList(@AuthenticationPrincipal UserImpl user) {
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		
+		List<MngDepartmentHistoryDTO> departmentList = mngBasicInformationService.selectDepartment(user.getCompanyNo());
+		System.out.println(departmentList);
+		
+		return gson.toJson(departmentList);
+	}
+	
+	@GetMapping(value="editDepartment", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String getDepartment(@AuthenticationPrincipal UserImpl user, @RequestParam String seletedDepartmentNo) {
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		int departmentNum = Integer.parseInt(seletedDepartmentNo);
+		System.out.println(departmentNum);
+		Map<String, Object> map = new HashMap<>();
+		MngDepartmentHistoryDTO selectedDepartment = mngBasicInformationService.selectOneDepartment(departmentNum);
+		List<MngDepartmentHistoryDTO> departmentList = mngBasicInformationService.selectDepartment(user.getCompanyNo());
+		System.out.println(selectedDepartment);
+		System.out.println(departmentList);
+		map.put("selectedDepartment", selectedDepartment);
+		map.put("departmentList", departmentList);
+
+		System.out.println(map);
+		return gson.toJson(map);
+	}
+	
+	
+	@PostMapping("/department")
+	public ModelAndView insertDepartment(ModelAndView mv,@AuthenticationPrincipal UserImpl user, MngDepartmentHistoryDTO departmentDTO,RedirectAttributes rttr) {
+		
+		departmentDTO.setCompanyNo(user.getCompanyNo());
+		System.out.println(departmentDTO.getUpperDepartment());
+		
+		mngBasicInformationService.insertDepartment(departmentDTO);
+		int departmentNo = mngBasicInformationService.selectDepartmentNo(departmentDTO);
+		departmentDTO.setDepartmentNo(departmentNo);
+		mngBasicInformationService.insertLogDepartment(departmentDTO);
+		
+		mv.setViewName("redirect:/mngBasicInformation/department");
+		
+		return mv;
+	}
+	
 	@GetMapping("/departmentHistory")
 	public ModelAndView mngDepartmentHistory(ModelAndView mv,@AuthenticationPrincipal UserImpl user) {
 		

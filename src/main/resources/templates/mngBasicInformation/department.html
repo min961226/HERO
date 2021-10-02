@@ -20,552 +20,487 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
-							<div class="content-page">
-								<div class="content">
+							<!-- tasks panel -->
+							<div class="row">
+								<div class="col-xl-9">
+									<div class="row">
+										<div class="col">
+											<div class="card">
+												<div class="card-body">
+													<!-- cta -->
+													<div class="row">
+														<div class="form-check float-start">
+															<h4 class="header-title mt-0">
+																부서 목록
+																<div class="dropdown float-end">
+																	<button type="button" class="btn btn-warning"
+																		id="departmentList" data-bs-toggle="modal"
+																		data-bs-target="#centermodal">부서 추가</button>
+																</div>
+															</h4>
+														</div>
+														<hr class="my-2" />
+													</div>
+													<div class="row mt-3">
+														<div class="col">
+															<div class="tasks border"
+																th:each="dept:${departmentList}">
+																<h5 class="mt-0 task-header header-title"
+																	th:text="${dept.departmentName}"></h5>
+																<div id="task-list-two" class="task-list-items">
+																	<!-- Task Item -->
+																	<div class="card border mb-0">
+																		<div class="card-body p-3">
+																			<div class="dropdown float-end">
+																				<a href="#"
+																					class="dropdown-toggle text-muted arrow-none"
+																					data-bs-toggle="dropdown" aria-expanded="false">
+																					<i class="uil uil-ellipsis-v fs-14"></i>
+																				</a>
+																				<div class="dropdown-menu dropdown-menu-end">
+																					<!-- item-->
+																					<a class="dropdown-item" type="submit"
+																						id="editDepartment"
+																						th:value="${dept.departmentNo}"
+																						data-bs-toggle="modal" data-bs-target="#editModal">
+																						<i class="uil uil-edit-alt me-2"></i>수정 <input
+																						th:value="${dept.departmentNo}"
+																						th:text="${dept.departmentNo}" id="departmentNo">
+																					</a>
+																					<!-- item-->
+																					<a href="javascript:void(0);" class="dropdown-item">
+																						<i class="uil uil-user-plus me-2"></i>Add People
+																					</a>
+																					<div class="dropdown-divider"></div>
+																					<!-- item-->
+																					<a href="javascript:void(0);"
+																						class="dropdown-item text-danger"> <i
+																						class="uil uil-trash me-2"></i>삭제하기
+																					</a>
+																				</div>
+																			</div>
+																			<h6 class="mt-0 mb-2 fs-15">
+																				<a href="#" class="text-body">Write a release
+																					note</a>
+																			</h6>
+																			<span class="badge badge-soft-info">부서번호 : </span> <span
+																				class="badge badge-soft-success"
+																				th:text="${dept.departmentNo}"></span>
 
-									<!-- Start Content-->
-										<!-- end page title -->
 
-										<div class="row">
-											<div class="col-12">
-												<div class="card">
-													<div class="card-body">
-														<div class="row align-items-center">
-															<div class="col">
-																<label class="fw-bold d-inline-flex me-2"> <i
-																	class="icon-dual icon-xs me-2"
-																	data-feather="hard-drive"></i>Project :
-																</label>
-																<div class="dropdown d-inline-flex">
-																	<a class="fw-bold dropdown-toggle" href="#"
-																		role="button" id="dropdownMenuLink"
-																		data-bs-toggle="dropdown" aria-haspopup="true"
-																		aria-expanded="false"> Shreyu Design <i
-																		class='uil uil-angle-down fs-16 align-middle'></i>
-																	</a>
-
-																	<div class="dropdown-menu"
-																		aria-labelledby="dropdownMenuLink">
-																		<a class="dropdown-item" href="#"> <i
-																			class="icon-dual icon-xs me-2"
-																			data-feather="hard-drive"></i>Shreyu Design
-																		</a> <a class="dropdown-item" href="#"> <i
-																			class="icon-dual icon-xs me-2"
-																			data-feather="briefcase"></i>Development
-																		</a>
-																		<div class="dropdown-divider"></div>
-																		<a class="dropdown-item" href="#"> <i
-																			class="icon-dual icon-xs me-2"
-																			data-feather="folder-plus"></i>Shreyu Angular
-																		</a> <a class="dropdown-item" href="#"> <i
-																			class="icon-dual icon-xs me-2"
-																			data-feather="folder-plus"></i>Shreyu React
-																		</a>
+																			<p class="mb-0 mt-4">
+																				<span class="text-nowrap align-middle fs-13 me-2">
+																					<i class="uil uil-user text-muted me-1"></i>11
+																				</span> <span class="text-nowrap align-middle fs-13">
+																					<i class="uil uil-check-square me-1 text-muted"></i>4/11
+																				</span> <small class="float-end text-muted"
+																					th:text="${dept.departmentCreateDate}"></small>
+																			</p>
+																		</div>
+																		<!-- end card-body -->
 																	</div>
+																	<!-- Task Item End -->
 																</div>
 															</div>
-															<div class="col text-end">
-																<button  type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#centermodal">부서 추가</button>
-															</div>
+															<!-- start other tasks -->
 														</div>
 													</div>
-													<!-- end card body-->
-												</div>
-												<!-- end card -->
-											</div>
-											<!-- end col-12 -->
-										</div>
-
-										<div class="row">
-											<div class="col-12">
-												<div class="board">
-													<div class="tasks border">
-														<h5 class="mt-0 task-header header-title">
-															Todo <span class="fs-13">(3)</span>
-														</h5>
-
-														<div id="task-list-one" class="task-list-items">
-															<!-- Task Item -->
-															<div class="card border mb-0">
-																<div class="card-body p-3">
-																	<div class="dropdown float-end">
-																		<a href="#"
-																			class="dropdown-toggle text-muted arrow-none"
-																			data-bs-toggle="dropdown" aria-expanded="false">
-																			<i class="uil uil-ellipsis-v fs-14"></i>
-																		</a>
-																		<div class="dropdown-menu dropdown-menu-end">
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-edit-alt me-2"></i>Edit
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-user-plus me-2"></i>Add People
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-warning"> <i
-																				class="uil uil-exit me-2"></i>Leave
-																			</a>
-																			<div class="dropdown-divider"></div>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-danger"> <i
-																				class="uil uil-trash me-2"></i>Delete
-																			</a>
-																		</div>
-																	</div>
-																	<h6 class="mt-0 mb-2 fs-15">
-																		<a href="#" class="text-body">iOS App home page</a>
-																	</h6>
-
-																	<span class="badge badge-soft-danger">High</span>
-
-																	<p class="mb-0 mt-4">
-																		<img src="assets/images/users/avatar-5.jpg"
-																			alt="user-img" class="avatar-xs rounded-circle me-2" />
-
-																		<span class="text-nowrap align-middle fs-13 me-2">
-																			<i class="uil uil-comments-alt text-muted me-1"></i>7
-																		</span> <span class="text-nowrap align-middle fs-13">
-																			<i class="uil uil-check-square me-1 text-muted"></i>1/4
-																		</span> <small class="float-end text-muted">18 Jul
-																			2019</small>
-																	</p>
-																</div>
-																<!-- end card-body -->
-															</div>
-															<!-- Task Item End -->
-
-															<!-- Task Item -->
-															<div class="card border mb-0">
-																<div class="card-body p-3">
-																	<div class="dropdown float-end">
-																		<a href="#"
-																			class="dropdown-toggle text-muted arrow-none"
-																			data-bs-toggle="dropdown" aria-expanded="false">
-																			<i class="uil uil-ellipsis-v fs-14"></i>
-																		</a>
-																		<div class="dropdown-menu dropdown-menu-end">
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-edit-alt me-2"></i>Edit
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-user-plus me-2"></i>Add People
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-warning"> <i
-																				class="uil uil-exit me-2"></i>Leave
-																			</a>
-																			<div class="dropdown-divider"></div>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-danger"> <i
-																				class="uil uil-trash me-2"></i>Delete
-																			</a>
-																		</div>
-																	</div>
-																	<h6 class="mt-0 mb-2 fs-15">
-																		<a href="#" class="text-body">Topnav layout design</a>
-																	</h6>
-
-																	<span class="badge badge-soft-success">Low</span>
-
-																	<p class="mb-0 mt-4">
-																		<img src="assets/images/users/avatar-6.jpg"
-																			alt="user-img" class="avatar-xs rounded-circle me-2" />
-
-																		<span class="text-nowrap align-middle fs-13 me-2">
-																			<i class="uil uil-comments-alt text-muted me-1"></i>11
-																		</span> <span class="text-nowrap align-middle fs-13">
-																			<i class="uil uil-check-square me-1 text-muted"></i>3/7
-																		</span> <small class="float-end text-muted">19 Jul
-																			2019</small>
-																	</p>
-																</div>
-																<!-- end card-body -->
-															</div>
-															<!-- Task Item End -->
-
-															<!-- Task Item -->
-															<div class="card border mb-0">
-																<div class="card-body p-3">
-																	<div class="dropdown float-end">
-																		<a href="#"
-																			class="dropdown-toggle text-muted arrow-none"
-																			data-bs-toggle="dropdown" aria-expanded="false">
-																			<i class="uil uil-ellipsis-v fs-14"></i>
-																		</a>
-																		<div class="dropdown-menu dropdown-menu-end">
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-edit-alt me-2"></i>Edit
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-user-plus me-2"></i>Add People
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-warning"> <i
-																				class="uil uil-exit me-2"></i>Leave
-																			</a>
-																			<div class="dropdown-divider"></div>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-danger"> <i
-																				class="uil uil-trash me-2"></i>Delete
-																			</a>
-																		</div>
-																	</div>
-																	<h6 class="mt-0 mb-2 fs-15">
-																		<a href="#" class="text-body">Invite Greeva to
-																			team</a>
-																	</h6>
-
-																	<span class="badge badge-soft-warning">Medium</span>
-
-																	<p class="mb-0 mt-4">
-																		<img src="assets/images/users/avatar-2.jpg"
-																			alt="user-img" class="avatar-xs rounded-circle me-2" />
-
-																		<span class="text-nowrap align-middle fs-13 me-2">
-																			<i class="uil uil-comments-alt text-muted me-1"></i>10
-																		</span> <span class="text-nowrap align-middle fs-13">
-																			<i class="uil uil-check-square me-1 text-muted"></i>1/1
-																		</span> <small class="float-end text-muted">14 Jul
-																			2019</small>
-																	</p>
-																</div>
-																<!-- end card-body -->
-															</div>
-															<!-- Task Item End -->
-														</div>
-													</div>
-
-													<div class="tasks border">
-														<h5 class="mt-0 task-header header-title">
-															In Progress <span class="fs-13">(2)</span>
-														</h5>
-														<div id="task-list-two" class="task-list-items">
-															<!-- Task Item -->
-															<div class="card border mb-0">
-																<div class="card-body p-3">
-																	<div class="dropdown float-end">
-																		<a href="#"
-																			class="dropdown-toggle text-muted arrow-none"
-																			data-bs-toggle="dropdown" aria-expanded="false">
-																			<i class="uil uil-ellipsis-v fs-14"></i>
-																		</a>
-																		<div class="dropdown-menu dropdown-menu-end">
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-edit-alt me-2"></i>Edit
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-user-plus me-2"></i>Add People
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-warning"> <i
-																				class="uil uil-exit me-2"></i>Leave
-																			</a>
-																			<div class="dropdown-divider"></div>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-danger"> <i
-																				class="uil uil-trash me-2"></i>Delete
-																			</a>
-																		</div>
-																	</div>
-																	<h6 class="mt-0 mb-2 fs-15">
-																		<a href="#" class="text-body">Write a release note</a>
-																	</h6>
-
-																	<span class="badge badge-soft-success">Low</span>
-
-																	<p class="mb-0 mt-4">
-																		<img src="assets/images/users/avatar-2.jpg"
-																			alt="user-img" class="avatar-xs rounded-circle me-2" />
-
-																		<span class="text-nowrap align-middle fs-13 me-2">
-																			<i class="uil uil-comments-alt text-muted me-1"></i>11
-																		</span> <span class="text-nowrap align-middle fs-13">
-																			<i class="uil uil-check-square me-1 text-muted"></i>4/11
-																		</span> <small class="float-end text-muted">22 Jul
-																			2019</small>
-																	</p>
-																</div>
-																<!-- end card-body -->
-															</div>
-															<!-- Task Item End -->
-
-															<!-- Task Item -->
-															<div class="card border mb-0">
-																<div class="card-body p-3">
-																	<div class="dropdown float-end">
-																		<a href="#"
-																			class="dropdown-toggle text-muted arrow-none"
-																			data-bs-toggle="dropdown" aria-expanded="false">
-																			<i class="uil uil-ellipsis-v fs-14"></i>
-																		</a>
-																		<div class="dropdown-menu dropdown-menu-end">
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-edit-alt me-2"></i>Edit
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-user-plus me-2"></i>Add People
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-warning"> <i
-																				class="uil uil-exit me-2"></i>Leave
-																			</a>
-																			<div class="dropdown-divider"></div>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-danger"> <i
-																				class="uil uil-trash me-2"></i>Delete
-																			</a>
-																		</div>
-																	</div>
-																	<h6 class="mt-0 mb-2 fs-15">
-																		<a href="#" class="text-body">Enable analytics
-																			tracking</a>
-																	</h6>
-
-																	<span class="badge badge-soft-info">Normal</span>
-
-																	<p class="mb-0 mt-4">
-																		<img src="assets/images/users/avatar-7.jpg"
-																			alt="user-img" class="avatar-xs rounded-circle me-2" />
-
-																		<span class="text-nowrap align-middle fs-13 me-2">
-																			<i class="uil uil-comments-alt text-muted me-1"></i>2
-																		</span> <span class="text-nowrap align-middle fs-13">
-																			<i class="uil uil-check-square me-1 text-muted"></i>1/3
-																		</span> <small class="float-end text-muted">21 Jul
-																			2019</small>
-																	</p>
-																</div>
-																<!-- end card-body -->
-															</div>
-															<!-- Task Item End -->
-														</div>
-													</div>
-
-													<div class="tasks border">
-														<h5 class="mt-0 task-header header-title">
-															Review <span class="fs-13">(2)</span>
-														</h5>
-														<div id="task-list-three" class="task-list-items">
-															<!-- Task Item -->
-															<div class="card border mb-0">
-																<div class="card-body p-3">
-																	<div class="dropdown float-end">
-																		<a href="#"
-																			class="dropdown-toggle text-muted arrow-none"
-																			data-bs-toggle="dropdown" aria-expanded="false">
-																			<i class="uil uil-ellipsis-v fs-14"></i>
-																		</a>
-																		<div class="dropdown-menu dropdown-menu-end">
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-edit-alt me-2"></i>Edit
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-user-plus me-2"></i>Add People
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-warning"> <i
-																				class="uil uil-exit me-2"></i>Leave
-																			</a>
-																			<div class="dropdown-divider"></div>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-danger"> <i
-																				class="uil uil-trash me-2"></i>Delete
-																			</a>
-																		</div>
-																	</div>
-																	<h6 class="mt-0 mb-2 fs-15">
-																		<a href="#" class="text-body">Kanban board design</a>
-																	</h6>
-
-																	<span class="badge badge-soft-danger">High</span>
-
-																	<p class="mb-0 mt-4">
-																		<img src="assets/images/users/avatar-3.jpg"
-																			alt="user-img" class="avatar-xs rounded-circle me-2" />
-
-																		<span class="text-nowrap align-middle fs-13 me-2">
-																			<i class="uil uil-comments-alt text-muted me-1"></i>101
-																		</span> <span class="text-nowrap align-middle fs-13">
-																			<i class="uil uil-check-square me-1 text-muted"></i>11/32
-																		</span> <small class="float-end text-muted">22 Jul
-																			2019</small>
-																	</p>
-																</div>
-																<!-- end card-body -->
-															</div>
-															<!-- Task Item End -->
-
-															<!-- Task Item -->
-															<div class="card border mb-0">
-																<div class="card-body p-3">
-																	<div class="dropdown float-end">
-																		<a href="#"
-																			class="dropdown-toggle text-muted arrow-none"
-																			data-bs-toggle="dropdown" aria-expanded="false">
-																			<i class="uil uil-ellipsis-v fs-14"></i>
-																		</a>
-																		<div class="dropdown-menu dropdown-menu-end">
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-edit-alt me-2"></i>Edit
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-user-plus me-2"></i>Add People
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-warning"> <i
-																				class="uil uil-exit me-2"></i>Leave
-																			</a>
-																			<div class="dropdown-divider"></div>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-danger"> <i
-																				class="uil uil-trash me-2"></i>Delete
-																			</a>
-																		</div>
-																	</div>
-																	<h6 class="mt-0 mb-2 fs-15">
-																		<a href="#" class="text-body">Implement HTML email
-																			template</a>
-																	</h6>
-
-																	<span class="badge badge-soft-info">Normal</span>
-
-																	<p class="mb-0 mt-4">
-																		<img src="assets/images/users/avatar-4.jpg"
-																			alt="user-img" class="avatar-xs rounded-circle me-2" />
-
-																		<span class="text-nowrap align-middle fs-13 me-2">
-																			<i class="uil uil-comments-alt text-muted me-1"></i>14
-																		</span> <span class="text-nowrap align-middle fs-13">
-																			<i class="uil uil-check-square me-1 text-muted"></i>3/5
-																		</span> <small class="float-end text-muted">19 Jul
-																			2019</small>
-																	</p>
-																</div>
-																<!-- end card-body -->
-															</div>
-															<!-- Task Item End -->
-														</div>
-													</div>
-
-													<div class="tasks border">
-														<h5 class="mt-0 task-header header-title">
-															Done <span class="fs-13">(1)</span>
-														</h5>
-														<div id="task-list-four" class="task-list-items">
-															<!-- Task Item -->
-															<div class="card border mb-0">
-																<div class="card-body p-3">
-																	<div class="dropdown float-end">
-																		<a href="#"
-																			class="dropdown-toggle text-muted arrow-none"
-																			data-bs-toggle="dropdown" aria-expanded="false">
-																			<i class="uil uil-ellipsis-v fs-14"></i>
-																		</a>
-																		<div class="dropdown-menu dropdown-menu-end">
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-edit-alt me-2"></i>Edit
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);" class="dropdown-item">
-																				<i class="uil uil-user-plus me-2"></i>Add People
-																			</a>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-warning"> <i
-																				class="uil uil-exit me-2"></i>Leave
-																			</a>
-																			<div class="dropdown-divider"></div>
-																			<!-- item-->
-																			<a href="javascript:void(0);"
-																				class="dropdown-item text-danger"> <i
-																				class="uil uil-trash me-2"></i>Delete
-																			</a>
-																		</div>
-																	</div>
-																	<h6 class="mt-0 mb-2 fs-15">
-																		<a href="#" class="text-body">Dashboard design</a>
-																	</h6>
-
-																	<span class="badge badge-soft-danger">High</span>
-
-																	<p class="mb-0 mt-4">
-																		<img src="assets/images/users/avatar-7.jpg"
-																			alt="user-img" class="avatar-xs rounded-circle me-2" />
-
-																		<span class="text-nowrap align-middle fs-13 me-2">
-																			<i class="uil uil-comments-alt text-muted me-1"></i>121
-																		</span> <span class="text-nowrap align-middle fs-13">
-																			<i class="uil uil-check-square me-1 text-muted"></i>24/24
-																		</span> <small class="float-end text-muted">21 Jul
-																			2019</small>
-																	</p>
-																</div>
-																<!-- end card-body -->
-															</div>
-															<!-- Task Item End -->
-														</div>
-													</div>
+													<!-- end row -->
 												</div>
 											</div>
 										</div>
-
 									</div>
-									<!-- container -->
-
 								</div>
-								<!-- content -->
+
+								<!-- task details -->
+								<div class="col-xl-3">
+									<div class="card">
+										<div class="card-body">
+											<div class="row">
+												<div class="col">
+													<div class="dropdown float-end">
+														<a href="#" class="dropdown-toggle arrow-none text-muted"
+															data-bs-toggle="dropdown" aria-expanded="false"> <i
+															class='uil uil-ellipsis-h'></i>
+														</a>
+														<div class="dropdown-menu dropdown-menu-end">
+															<!-- item-->
+															<a href="javascript:void(0);" class="dropdown-item">
+																<i class='uil uil-file-upload me-1'></i>Attachment
+															</a>
+															<!-- item-->
+															<a href="javascript:void(0);" class="dropdown-item">
+																<i class='uil uil-edit me-1'></i>Edit
+															</a>
+															<!-- item-->
+															<a href="javascript:void(0);" class="dropdown-item">
+																<i class='uil uil-file-copy-alt me-1'></i>Mark as
+																Duplicate
+															</a>
+															<div class="dropdown-divider"></div>
+															<!-- item-->
+															<a href="javascript:void(0);"
+																class="dropdown-item text-danger"> <i
+																class='uil uil-trash-alt me-1'></i>Delete
+															</a>
+														</div>
+														<!-- end dropdown menu-->
+													</div>
+													<!-- end dropdown-->
+
+													<div class="form-check float-start">
+														<input type="checkbox" class="form-check-input"
+															id="completedCheck"> <label
+															class="form-check-label" for="completedCheck">
+															Mark as completed </label>
+													</div>
+													<!-- end form-checkbox-->
+												</div>
+											</div>
+
+											<hr class="my-2" />
+
+											<div class="row">
+												<div class="col">
+													<h4 class="mt-0">Draft the new contract document for
+														sales team</h4>
+
+													<div class="row">
+														<div class="col-6">
+															<!-- assignee -->
+															<p class="mt-2 mb-1 text-muted">Assigned To</p>
+															<div class="d-flex">
+																<img src="assets/images/users/avatar-9.jpg" alt="Arya S"
+																	class="rounded-circle me-2" height="24" />
+																<div class="flex-grow-1">
+																	<h5 class="mt-1 fs-14">Arya Stark</h5>
+																</div>
+															</div>
+															<!-- end assignee -->
+														</div>
+														<!-- end col -->
+
+														<div class="col-6">
+															<!-- start due date -->
+															<p class="mt-2 mb-1 text-muted">Due Date</p>
+															<div class="d-flex">
+																<i class='uil uil-schedule text-success me-1'></i>
+																<div class="flex-grow-1">
+																	<h5 class="mt-1 fs-14">Today 10am</h5>
+																</div>
+															</div>
+															<!-- end due date -->
+														</div>
+														<!-- end col -->
+													</div>
+													<!-- end row -->
+
+													<!-- task description -->
+													<div class="row mt-3">
+														<div class="col">
+															<div id="bubble-editor" style="height: 150px;">
+																<p>This is a task description with markup support</p>
+																<p>
+																	<br>
+																</p>
+																<ul>
+																	<li>Select a text to reveal the toolbar.</li>
+																	<li>Edit rich document on-the-fly, so elastic!</li>
+																</ul>
+																<p>
+																	<br>
+																</p>
+																<p>End of air-mode area</p>
+															</div>
+															<!-- end Snow-editor-->
+														</div>
+														<!-- end col -->
+													</div>
+													<!-- end task description -->
+
+													<!-- start sub tasks/checklists -->
+													<h5 class="mt-4 mb-2 fs-15">Checklists/Sub-tasks</h5>
+													<div class="form-check mt-1">
+														<input type="checkbox" class="form-check-input"
+															id="checklist1"> <label
+															class="form-check-label strikethrough" for="checklist1">
+															Find out the old contract documents </label>
+													</div>
+
+													<div class="form-check mt-1">
+														<input type="checkbox" class="form-check-input"
+															id="checklist2"> <label
+															class="form-check-label strikethrough" for="checklist2">
+															Organize meeting sales associates to understand need in
+															detail </label>
+													</div>
+
+													<div class="form-check mt-1">
+														<input type="checkbox" class="form-check-input"
+															id="checklist3"> <label
+															class="form-check-label strikethrough" for="checklist3">
+															Make sure to cover every small details </label>
+													</div>
+													<!-- end sub tasks/checklists -->
+
+													<!-- start attachments -->
+													<h5 class="mt-4 mb-2 fs-16">Attachments</h5>
+													<div class="card mb-2 shadow-none border">
+														<div class="p-1 px-2">
+															<div class="row align-items-center">
+																<div class="col-auto">
+																	<img src="assets/images/projects/project-1.jpg"
+																		class="avatar-sm rounded" alt="file-image">
+																</div>
+																<div class="col ps-0">
+																	<a href="javascript:void(0);"
+																		class="text-muted fw-bold">sales-assets.zip</a>
+																	<p class="mb-0">2.3 MB</p>
+																</div>
+																<div class="col-auto">
+																	<!-- Button -->
+																	<a href="javascript:void(0);" data-bs-toggle="tooltip"
+																		data-bs-placement="bottom" title="Download"
+																		class="btn btn-link text-muted btn-lg p-0"> <i
+																		class='uil uil-cloud-download fs-14'></i>
+																	</a> <a href="javascript:void(0);" data-bs-toggle="tooltip"
+																		data-bs-placement="bottom" title="Delete"
+																		class="btn btn-link text-danger btn-lg p-0"> <i
+																		class='uil uil-multiply fs-14'></i>
+																	</a>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="card mb-2 shadow-none border">
+														<div class="p-1 px-2">
+															<div class="row align-items-center">
+																<div class="col-auto">
+																	<img src="assets/images/projects/project-2.jpg"
+																		class="avatar-sm rounded" alt="file-image">
+																</div>
+																<div class="col ps-0">
+																	<a href="javascript:void(0);"
+																		class="text-muted fw-bold">new-contarcts.docx</a>
+																	<p class="mb-0">1.25 MB</p>
+																</div>
+																<div class="col-auto">
+																	<!-- Button -->
+																	<a href="javascript:void(0);" data-bs-toggle="tooltip"
+																		data-bs-placement="bottom" title="Download"
+																		class="btn btn-link text-muted btn-lg p-0"> <i
+																		class='uil uil-cloud-download fs-14'></i>
+																	</a> <a href="javascript:void(0);" data-bs-toggle="tooltip"
+																		data-bs-placement="bottom" title="Delete"
+																		class="btn btn-link text-danger btn-lg p-0"> <i
+																		class='uil uil-multiply fs-14'></i>
+																	</a>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- end col -->
+											</div>
+											<!-- end row-->
+										</div>
+										<!-- end card-body -->
+									</div>
+									<!-- end card-->
+								</div>
+								<!-- end col -->
 							</div>
 						</div>
+						<!-- container -->
 					</div>
 				</div>
-				<div th:include="common/footer.html"></div>
 			</div>
 		</div>
-		 <div class="modal fade" id="centermodal" tabindex="-1" role="dialog" aria-labelledby="myCenterModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header" style="background-color: gray">
-                                                        <h5 class="modal-title" id="myCenterModalLabel" style="font-size: 20px"><b>부서 추가</b></h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <h5>Overflowing text to show scroll behavior</h5>
-                                                        <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                                                        <p class="mb-0">Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                                                    </div>
-                                                </div><!-- /.modal-content -->
-                                            </div><!-- /.modal-dialog -->
-                                        </div><!-- /.modal -->
-		<script>
+		<div th:include="common/footer.html"></div>
+	</div>
+	<!-- 부서 수정 모달 -->
+	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+		aria-labelledby="myCenterModalLabel1" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: gray">
+					<h5 class="modal-title" id="myCenterModalLabel1"
+						style="font-size: 20px">
+						<b>부서 수정</b>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<code style="float: right">* 표기는 필수 입력항목입니다.</code>
+					<br> <label style="margin: 10px;">부서명 <span
+						style="color: red">*</span></label> <br> <input class="form-control"
+						type="text" placeholder="부서명" name="selectedDeptName"
+						id="selectedDeptName" required="required"> <br> <label
+						style="margin: 10px;">상위 부서명</label> <br> <select
+						class="form-select" id="selectedUpperDept"
+						name="selectedUpperDept">
+						<option></option>
+
+					</select> <br> <label style="margin: 10px;">부서 생성일<span
+						style="color: red">*</span></label> <br> <input class="form-control"
+						type="date" placeholder="부서 생성일" name="selectedCreateDate"
+						id="selectedCreateDate"> <br> <label
+						style="margin: 10px;">부서 연락처</label> <br> <input
+						class="form-control" type="text" placeholder="부서 연락처"
+						name="selectedDeptPhone" id="selectedDeptPhone"> <br>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success width-xs"
+						id="updateDepartment">수정</button>
+					<button type="reset" class="btn btn-warning width-xs"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- 부서 수정 모달 끝 -->
+
+	<!-- 모달창 시작 -->
+	<div class="modal fade" id="centermodal" tabindex="-1" role="dialog"
+		aria-labelledby="myCenterModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: gray">
+					<h5 class="modal-title" id="myCenterModalLabel"
+						style="font-size: 20px">
+						<b>부서 추가</b>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<code style="float: right">* 표기는 필수 입력항목입니다.</code>
+					<br> <label style="margin: 10px;">부서명 <span
+						style="color: red">*</span></label> <br> <input class="form-control"
+						type="text" placeholder="부서명" name="departmentName"
+						id="departmentName" required="required"> <br> <label
+						style="margin: 10px;">상위 부서명</label> <br> <select
+						class="form-select" id="upperDepartment" name="upperDepartment">
+						<option></option>
+
+					</select> <br> <label style="margin: 10px;">부서 생성일<span
+						style="color: red">*</span></label> <br> <input class="form-control"
+						type="date" placeholder="부서 생성일" name="departmentCreatedDate"
+						id="departmentCreateDate"> <br> <label
+						style="margin: 10px;">부서 연락처</label> <br> <input
+						class="form-control" type="text" placeholder="부서 연락처"
+						name="departmentPhone" id="departmentPhone"> <br>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success width-xs"
+						id="createDepartment">등록</button>
+					<button type="reset" class="btn btn-warning width-xs"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<!-- 모달창 종료 -->
+	<script>
+	
+	$('a[id="editDepartment"]').click(function() {
+	const deptNo = $('#departmentNo').val();
+	const selectedDeptNo = $('#departmentName').text(deptNo);
+	console.log(deptNo);
+	console.log(selectedDeptNo);
+	       $.ajax({
+	           url: "editDepartment",
+	    	  data: {   "seletedDepartmentNo" : value },
+	       success: function(data, status, xhr) {
+	    	   
+						const $selected = $("#selectedUpperDept");
+						const $selectedDepartmentName = $("#selectedDeptName"); 
+						$selected.html("");
+						$selectedDepartmentName.html("");
+						
+						$selectup = $("<option>").text("=================== 상위 부서명 ===================").val("");
+						$selected.append($selectup);
+						
+						for(let index in data["departmentList"]) {
+							$input = $("<option>").text(data["departmentList"][index].departmentName).val(data["departmentList"][index].departmentNo);
+							$selected.append($input);
+						}
+							$selectedName = $selectedDepartmentName.text(data["selectedDepartment"].departmentName).val(data["selectedDepartment"].departmentName);
+						
+						
+					},
+					error: function(xhr, status, error) {
+						console.log(error);
+					}
+	       });
+	});
+	
+	$("#departmentList").click(function() {
+	       $.ajax({
+	           url: "departmentList",
+	       success: function(data, status, xhr) {
+						
+						const $option = $("#upperDepartment");
+						$option.html("");
+						$select = $("<option>").text("=================== 상위 부서명 ===================").val("");
+						$option.append($select);
+						
+						for(let index in data) {
+							$deptName = $("<option>").text(data[index].departmentName).val(data[index].departmentNo);
+							
+							$option.append($deptName);
+						}
+						
+					},
+					error: function(xhr, status, error) {
+						console.log(error);
+					}
+	       });
+	});
+	
+		  $("#createDepartment").click(function() {
+		       $.ajax({
+		    	   type: "POST",
+		           url: "/mngBasicInformation/department",
+		           data: {
+		        	   "departmentName" : $('#departmentName').val(),
+		        	   "upperDepartment" : $('#upperDepartment').val(),
+		        	   "departmentCreateDate" : $('#departmentCreateDate').val(),
+		        	   "departmentPhone" : $('#departmentPhone').val()},
+		           success: function(data, status, xhr) {
+		        	   
+		           		Swal.fire({
+		       			  position: 'center',
+		       			  icon: 'success',
+		       			  title: '부서 생성에 성공하였습니다.',
+		       			  showConfirmButton: false,
+		       			  timer: 1500,
+		       			  width: 600
+		       		}).then((result) => {
+			        	   location.reload();
+		       				})
+		           }, error: function(xhr){
+		        	   Swal.fire({
+			       			  position: 'center',
+			       			  icon: 'error',
+			       			  title: '부서명 혹은 부서생성일자를 기입해주세요.',
+			       			  showConfirmButton: false,
+			       			  timer: 1500,
+			       			  width: 600
+			       		}).then((result) => {
+				        	   location.href="#";
+			       				})
+		           }
+		       });
+		  });
+		             
+		        	  
 		const $addNewDept = document.getElementById("addNewDept");
 		$addNewDept.onclick = function() {
 				location.href = ""

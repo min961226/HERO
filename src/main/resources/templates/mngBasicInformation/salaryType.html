@@ -4,6 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+<link rel="stylesheet"
+	th:href="@{/libs/smartwizard/css/smart_wizard_theme_arrows.min.css}"
+	type="text/css" />
 </head>
 <body>
 	<div id="wrapper">
@@ -20,6 +23,103 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div class="col-lg-6">
+								<div class="card">
+									<div class="card-body">
+										<h4 class="header-title mt-0 mb-1">Arrows in Header</h4>
+										<p class="sub-header">Example of arrows wizard</p>
+										<div id="smartwizard-arrows">
+											<ul>
+												<li><a href="#sw-arrows-step-1">Account<small
+														class="d-block fw-normal">Step description</small></a></li>
+												<li><a href="#sw-arrows-step-2">Profile<small
+														class="d-block fw-normal">Step description</small></a></li>
+												<li><a href="#sw-arrows-step-3">Finish<small
+														class="d-block fw-normal">Step description</small></a></li>
+											</ul>
+
+											<div class="p-3">
+												<div id="sw-arrows-step-1">
+													<div class="row">
+														<div class="col-12">
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-userName">User
+																	name</label> <input type="text" class="form-control"
+																	id="sw-arrows-userName"
+																	placeholder="Enter User name...">
+
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-password">
+																	Password</label> <input type="password" id="sw-arrows-password"
+																	class="form-control" placeholder="Enter Password...">
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-confirm">Re
+																	Password</label> <input type="password" id="sw-arrows-confirm"
+																	class="form-control" placeholder="Enter Re Password...">
+															</div>
+														</div>
+														<!-- end col -->
+													</div>
+													<!-- end row -->
+												</div>
+												<div id="sw-arrows-step-2">
+													<div class="row">
+														<div class="col-12">
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-first-name">First
+																	name</label> <input type="text" id="sw-arrows-first-name"
+																	class="form-control" placeholder="Enter First name...">
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-last-name">Last
+																	name</label> <input type="text" id="sw-arrows-last-name"
+																	class="form-control" placeholder="Enter Last name...">
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-email">Email</label>
+																<input type="email" id="sw-arrows-email"
+																	class="form-control" placeholder="Enter Email...">
+															</div>
+														</div>
+														<!-- end col -->
+													</div>
+													<!-- end row -->
+												</div>
+												<div id="sw-arrows-step-3">
+													<div class="row">
+														<div class="col-12">
+															<div class="text-center">
+																<div class="mb-3">
+																	<i class="uil uil-check-square text-success h2"></i>
+																</div>
+																<h3>Thank you !</h3>
+																<p class="w-75 mb-2 mx-auto text-muted">Quisque nec
+																	turpis at urna dictum luctus. Suspendisse convallis
+																	dignissim eros at volutpat. In egestas mattis dui.
+																	Aliquam mattis dictum aliquet.</p>
+																<div class="mb-3">
+																	<div class="form-check d-inline-block">
+																		<input type="checkbox" class="form-check-input"
+																			id="sm-arrows-customCheck"> <label
+																			class="form-check-label" for="sm-arrows-customCheck">I
+																			agree with the Terms and Conditions</label>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<!-- end col -->
+													</div>
+													<!-- end row -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- end card -->
+							</div>
+							<!-- end col -->
 						</div>
 					</div>
 				</div>
@@ -27,5 +127,7 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script th:src="@{/libs/smartwizard/js/jquery.smartWizard.min.js}"></script>
+	<script th:src="@{/js/pages/form-wizard.init.js}"></script>
 </body>
 </html>

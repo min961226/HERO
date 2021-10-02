@@ -60,6 +60,35 @@ public class MngBasicInformationServiceImpl implements MngBasicInformationServic
 		return mngBasicInformationMapper.insertPremiumRate(insuranceRate);
 	}
 
+	@Override
+	public List<MngDepartmentHistoryDTO> selectDepartment(int companyNo) {
+		return mngBasicInformationMapper.selectDepartment(companyNo);
+	}
+	
+	@Override
+	@Transactional
+	public int insertDepartment(MngDepartmentHistoryDTO departmentDTO) {
+		return mngBasicInformationMapper.insertDepartment(departmentDTO);
+	}
+
+	@Override
+	@Transactional
+	public int insertLogDepartment(MngDepartmentHistoryDTO departmentDTO) {
+		return mngBasicInformationMapper.insertLogDepartment(departmentDTO);
+	}
+
+	@Override
+	public int selectDepartmentNo(MngDepartmentHistoryDTO departmentDTO) {
+		return mngBasicInformationMapper.selectDepartmentNo(departmentDTO);
+	}
+
+
+	@Override
+	public MngDepartmentHistoryDTO selectOneDepartment(int departmentNum) {
+		return mngBasicInformationMapper.selectOneDepartment(departmentNum);
+	}
+
+
 
 
 
