@@ -18,7 +18,6 @@ import com.nextLevel.hero.member.model.dto.FindPwdDTO;
 import com.nextLevel.hero.member.model.dto.MailDTO;
 import com.nextLevel.hero.member.model.dto.MemberDTO;
 import com.nextLevel.hero.member.model.dto.MemberRoleDTO;
-import com.nextLevel.hero.member.model.dto.RankAuthDTO;
 import com.nextLevel.hero.member.model.dto.UserImpl;
 
 
