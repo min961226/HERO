@@ -37,6 +37,7 @@
 		<result property="departmentCreateDate" column="DEPARTMENT_CREATE_DATE"/>
 		<result property="departmentPhone" column="DEPARTMENT_PHONE"/>
 		<result property="upperDepartment" column="UPPER_DEPARTMENT"/>
+		<result property="upperDepartmentName" column="UPPER_DEPARTMENT_NAME"/>
 	</resultMap>
 	
 	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO" id="departmentHistoryResultMap">
@@ -78,6 +79,14 @@
 		<result property="businessCode" column="BUSINESS_CODE"/>
 		<result property="detailTypeOfBusiness" column="DETAIL_TYPE_OF_BUSINESS"/>
 		<result property="industryRate" column="INDUSTRY_RATE"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngMemberDepartmentDTO" id="memberDepartmentResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="koreanName" column="KOREAN_NAME"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="jobName" column="JOB_NAME"/>
 	</resultMap>
 	
 	<select id="selectMember" resultMap="loginMemberResultMap">
@@ -147,6 +156,7 @@
 			   A.*
 		  FROM TBL_DEPARTMENT_UPDATE A
 		 WHERE A.COMPANY_NO = #{ companyNo }
+		 ORDER BY COMPANY_NO,UPDATED_HISTORY_NO DESC
 	</select>
 	
 	<insert id="insertPremiumRate" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngInsuranceRateDTO">
@@ -210,8 +220,15 @@
 	<select id="selectOneDepartment" resultMap="departmentResultMap">
 		SELECT
 			   A.*
+			 ,(SELECT  B.DEPARTMENT_NAME 
+                 FROM TBL_DEPARTMENT B
+                WHERE B.DEPARTMENT_NO = (SELECT UPPER_DEPARTMENT 
+                                           FROM TBL_DEPARTMENT 
+                                          WHERE DEPARTMENT_NO = #{departmentNum})
+                                         ) AS UPPER_DEPARTMENT_NAME 
 		  FROM TBL_DEPARTMENT A
-		 WHERE A.DEPARTMENT_NO = #{ departmentNum }
+		 WHERE A.DEPARTMENT_NO = #{departmentNum}
+		   AND A.COMPANY_NO = #{companyNo}
 	</select>
 	<insert id="insertDepartment" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO">
 		INSERT
@@ -267,5 +284,87 @@
 		, #{ upperDepartment , jdbcType=INTEGER }
 		)
 	</insert>
+	<update id="updateDepartment" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO">
+		UPDATE TBL_DEPARTMENT
+		   SET DEPARTMENT_NAME = #{ departmentName }
+		     , DEPARTMENT_CREATE_DATE = #{ departmentCreateDate }
+		     , DEPARTMENT_PHONE = #{ departmentPhone }
+		     , UPPER_DEPARTMENT = #{ upperDepartment }
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND DEPARTMENT_NO = #{ departmentNo } 
+	</update>
+	<insert id="insertUpdateLogDepartment" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO">
+		INSERT
+		  INTO TBL_DEPARTMENT_UPDATE
+		(
+		  COMPANY_NO
+		, UPDATED_HISTORY_NO
+		, DEPARTMENT_NO
+		, DEPARTMENT_NAME
+		, DEPARTMENT_CREATE_DATE
+		, DEPARTMENT_PHONE
+		, DEPARTMENT_UPDATED_DATE
+		, UPDATED_CATEGORY
+		, UPPER_DEPARTMENT
+		)
+		VALUES
+		(
+		  #{ companyNo }
+		, SEQ_DEPARTMENT_LOG_NO.NEXTVAL
+		, #{ departmentNo }
+		, #{ departmentName }
+		, #{ departmentCreateDate }
+		, #{ departmentPhone , jdbcType=VARCHAR }
+		, SYSDATE
+		, '수정'
+		, #{ upperDepartment , jdbcType=INTEGER }
+		)
+	</insert>
+	<select id="selectMemberDepartment" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngMemberDepartmentDTO" resultMap="memberDepartmentResultMap">
+		SELECT
+			   A.KOREAN_NAME
+			 , B.DEPARTMENT_NAME
+			 , A.MEMBER_NO
+             , C.JOB_NAME
+		  FROM TBL_EMPLOYEE A, TBL_DEPARTMENT B , TBL_JOB C
+		 WHERE A.DEPARTMENT_NO = B.DEPARTMENT_NO
+           AND A.JOB_NO = C.JOB_NO
+		   AND A.DEPARTMENT_NO = #{ departmentNo }
+           AND A.COMPANY_NO = #{ companyNo }
+	</select>
+	<delete id="deleteDepartment">
+		DELETE 
+		  FROM TBL_DEPARTMENT
+		 WHERE COMPANY_NO = #{companyNo}
+		   AND DEPARTMENT_NO = #{departmentNum}
+	</delete>
+	<insert id="insertDeleteLogDepartment" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO">
+		INSERT
+		  INTO TBL_DEPARTMENT_UPDATE
+		(
+		  COMPANY_NO
+		, UPDATED_HISTORY_NO
+		, DEPARTMENT_NO
+		, DEPARTMENT_NAME
+		, DEPARTMENT_CREATE_DATE
+		, DEPARTMENT_PHONE
+		, DEPARTMENT_UPDATED_DATE
+		, UPDATED_CATEGORY
+		, UPPER_DEPARTMENT
+		)
+		VALUES
+		(
+		  #{ companyNo }
+		, SEQ_DEPARTMENT_LOG_NO.NEXTVAL
+		, #{ departmentNo }
+		, #{ departmentName }
+		, #{ departmentCreateDate }
+		, #{ departmentPhone , jdbcType=VARCHAR }
+		, SYSDATE
+		, '삭제'
+		, #{ upperDepartment , jdbcType=INTEGER }
+		)
+	</insert>
+	
 	
 </mapper>

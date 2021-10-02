@@ -15,12 +15,13 @@ public class MngDepartmentHistoryDTO implements Serializable{
 	private String updatedCategory;
 	private String departmentDetail;
 	private Integer upperDepartment;
+	private String upperDepartmentName;
 	
 	public MngDepartmentHistoryDTO() {}
 
-	public MngDepartmentHistoryDTO(int companyNo, int updatedHistoryNo, int memberNo, int departmentNo,
-			String departmentName, Date departmentCreateDate, String departmentPhone, Date departmentUpdatedDate,
-			String updatedCategory, String departmentDetail, Integer upperDepartment) {
+	public MngDepartmentHistoryDTO(int companyNo, int updatedHistoryNo, int departmentNo, String departmentName,
+			Date departmentCreateDate, String departmentPhone, Date departmentUpdatedDate, String updatedCategory,
+			String departmentDetail, Integer upperDepartment, String upperDepartmentName) {
 		super();
 		this.companyNo = companyNo;
 		this.updatedHistoryNo = updatedHistoryNo;
@@ -32,6 +33,7 @@ public class MngDepartmentHistoryDTO implements Serializable{
 		this.updatedCategory = updatedCategory;
 		this.departmentDetail = departmentDetail;
 		this.upperDepartment = upperDepartment;
+		this.upperDepartmentName = upperDepartmentName;
 	}
 
 	public int getCompanyNo() {
@@ -49,7 +51,6 @@ public class MngDepartmentHistoryDTO implements Serializable{
 	public void setUpdatedHistoryNo(int updatedHistoryNo) {
 		this.updatedHistoryNo = updatedHistoryNo;
 	}
-
 
 	public int getDepartmentNo() {
 		return departmentNo;
@@ -115,20 +116,24 @@ public class MngDepartmentHistoryDTO implements Serializable{
 		this.upperDepartment = upperDepartment;
 	}
 
+	public String getUpperDepartmentName() {
+		return upperDepartmentName;
+	}
+
+	public void setUpperDepartmentName(String upperDepartmentName) {
+		this.upperDepartmentName = upperDepartmentName;
+	}
+
 	@Override
 	public String toString() {
 		return "MngDepartmentHistoryDTO [companyNo=" + companyNo + ", updatedHistoryNo=" + updatedHistoryNo
-				+ ", departmentNo=" + departmentNo + ", departmentName=" + departmentName
-				+ ", departmentCreateDate=" + departmentCreateDate + ", departmentPhone=" + departmentPhone
-				+ ", departmentUpdatedDate=" + departmentUpdatedDate + ", updatedCategory=" + updatedCategory
-				+ ", departmentDetail=" + departmentDetail + ", upperDepartment=" + upperDepartment + "]";
+				+ ", departmentNo=" + departmentNo + ", departmentName=" + departmentName + ", departmentCreateDate="
+				+ departmentCreateDate + ", departmentPhone=" + departmentPhone + ", departmentUpdatedDate="
+				+ departmentUpdatedDate + ", updatedCategory=" + updatedCategory + ", departmentDetail="
+				+ departmentDetail + ", upperDepartment=" + upperDepartment + ", upperDepartmentName="
+				+ upperDepartmentName + "]";
 	}
 
-
-	
-	
-	
-	
 	
 	
 }

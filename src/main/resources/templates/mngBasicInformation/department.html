@@ -13,7 +13,7 @@
 				<div class="container-fluid">
 					<!-- start page title -->
 					<div class="row">
-						<div class="col-12">
+						<div class="col-9">
 							<br>
 							<div class="page-title-box">
 								<h3 class="page-title">부서 관리</h3>
@@ -22,7 +22,7 @@
 							<!-- 여기서부터 본문 생성 -->
 							<!-- tasks panel -->
 							<div class="row">
-								<div class="col-xl-9">
+								<div class="col-xl-12">
 									<div class="row">
 										<div class="col">
 											<div class="card">
@@ -44,13 +44,13 @@
 													<div class="row mt-3">
 														<div class="col">
 															<div class="tasks border"
-																th:each="dept:${departmentList}">
+																th:each="dept,num:${departmentList}">
 																<h5 class="mt-0 task-header header-title"
 																	th:text="${dept.departmentName}"></h5>
-																<div id="task-list-two" class="task-list-items">
+																<div class="task-list-items">
 																	<!-- Task Item -->
 																	<div class="card border mb-0">
-																		<div class="card-body p-3">
+																		<div class="card-body p-2">
 																			<div class="dropdown float-end">
 																				<a href="#"
 																					class="dropdown-toggle text-muted arrow-none"
@@ -60,39 +60,37 @@
 																				<div class="dropdown-menu dropdown-menu-end">
 																					<!-- item-->
 																					<a class="dropdown-item" type="submit"
-																						id="editDepartment"
+																						th:id="'editDepartment' + ${num.count}"
 																						th:value="${dept.departmentNo}"
 																						data-bs-toggle="modal" data-bs-target="#editModal">
 																						<i class="uil uil-edit-alt me-2"></i>수정 <input
 																						th:value="${dept.departmentNo}"
-																						th:text="${dept.departmentNo}" id="departmentNo">
-																					</a>
-																					<!-- item-->
-																					<a href="javascript:void(0);" class="dropdown-item">
-																						<i class="uil uil-user-plus me-2"></i>Add People
+																						th:id="departmentNo" hidden="hidden">
 																					</a>
 																					<div class="dropdown-divider"></div>
 																					<!-- item-->
-																					<a href="javascript:void(0);"
+																					<a	th:id="'deleteDepartment' + ${num.count}"
 																						class="dropdown-item text-danger"> <i
-																						class="uil uil-trash me-2"></i>삭제하기
+																						class="uil uil-trash me-2"></i>삭제하기<input
+																						th:value="${dept.departmentNo}"
+																						th:id="deleteDepartmentNo" hidden="hidden">
+																						
 																					</a>
 																				</div>
 																			</div>
-																			<h6 class="mt-0 mb-2 fs-15">
-																				<a href="#" class="text-body">Write a release
-																					note</a>
-																			</h6>
-																			<span class="badge badge-soft-info">부서번호 : </span> <span
+																			<span class="badge badge-soft-warning">부서명 : </span>
+																			<span class="badge badge-soft-success"
+																				th:text="${dept.departmentName}"></span> <br> <span
+																				class="badge badge-soft-info">부서번호 : </span> <span
 																				class="badge badge-soft-success"
 																				th:text="${dept.departmentNo}"></span>
 
 
 																			<p class="mb-0 mt-4">
-																				<span class="text-nowrap align-middle fs-13 me-2">
+																				<span class="text-nowrap align-middle fs-13 me-2" th:id="listMember" data-bs-toggle="modal" data-bs-target="#listModal">
+																				<input th:value="${dept.departmentNo}"
+																						th:id="memberDepartmentNo" hidden="hidden">
 																					<i class="uil uil-user text-muted me-1"></i>11
-																				</span> <span class="text-nowrap align-middle fs-13">
-																					<i class="uil uil-check-square me-1 text-muted"></i>4/11
 																				</span> <small class="float-end text-muted"
 																					th:text="${dept.departmentCreateDate}"></small>
 																			</p>
@@ -111,204 +109,6 @@
 										</div>
 									</div>
 								</div>
-
-								<!-- task details -->
-								<div class="col-xl-3">
-									<div class="card">
-										<div class="card-body">
-											<div class="row">
-												<div class="col">
-													<div class="dropdown float-end">
-														<a href="#" class="dropdown-toggle arrow-none text-muted"
-															data-bs-toggle="dropdown" aria-expanded="false"> <i
-															class='uil uil-ellipsis-h'></i>
-														</a>
-														<div class="dropdown-menu dropdown-menu-end">
-															<!-- item-->
-															<a href="javascript:void(0);" class="dropdown-item">
-																<i class='uil uil-file-upload me-1'></i>Attachment
-															</a>
-															<!-- item-->
-															<a href="javascript:void(0);" class="dropdown-item">
-																<i class='uil uil-edit me-1'></i>Edit
-															</a>
-															<!-- item-->
-															<a href="javascript:void(0);" class="dropdown-item">
-																<i class='uil uil-file-copy-alt me-1'></i>Mark as
-																Duplicate
-															</a>
-															<div class="dropdown-divider"></div>
-															<!-- item-->
-															<a href="javascript:void(0);"
-																class="dropdown-item text-danger"> <i
-																class='uil uil-trash-alt me-1'></i>Delete
-															</a>
-														</div>
-														<!-- end dropdown menu-->
-													</div>
-													<!-- end dropdown-->
-
-													<div class="form-check float-start">
-														<input type="checkbox" class="form-check-input"
-															id="completedCheck"> <label
-															class="form-check-label" for="completedCheck">
-															Mark as completed </label>
-													</div>
-													<!-- end form-checkbox-->
-												</div>
-											</div>
-
-											<hr class="my-2" />
-
-											<div class="row">
-												<div class="col">
-													<h4 class="mt-0">Draft the new contract document for
-														sales team</h4>
-
-													<div class="row">
-														<div class="col-6">
-															<!-- assignee -->
-															<p class="mt-2 mb-1 text-muted">Assigned To</p>
-															<div class="d-flex">
-																<img src="assets/images/users/avatar-9.jpg" alt="Arya S"
-																	class="rounded-circle me-2" height="24" />
-																<div class="flex-grow-1">
-																	<h5 class="mt-1 fs-14">Arya Stark</h5>
-																</div>
-															</div>
-															<!-- end assignee -->
-														</div>
-														<!-- end col -->
-
-														<div class="col-6">
-															<!-- start due date -->
-															<p class="mt-2 mb-1 text-muted">Due Date</p>
-															<div class="d-flex">
-																<i class='uil uil-schedule text-success me-1'></i>
-																<div class="flex-grow-1">
-																	<h5 class="mt-1 fs-14">Today 10am</h5>
-																</div>
-															</div>
-															<!-- end due date -->
-														</div>
-														<!-- end col -->
-													</div>
-													<!-- end row -->
-
-													<!-- task description -->
-													<div class="row mt-3">
-														<div class="col">
-															<div id="bubble-editor" style="height: 150px;">
-																<p>This is a task description with markup support</p>
-																<p>
-																	<br>
-																</p>
-																<ul>
-																	<li>Select a text to reveal the toolbar.</li>
-																	<li>Edit rich document on-the-fly, so elastic!</li>
-																</ul>
-																<p>
-																	<br>
-																</p>
-																<p>End of air-mode area</p>
-															</div>
-															<!-- end Snow-editor-->
-														</div>
-														<!-- end col -->
-													</div>
-													<!-- end task description -->
-
-													<!-- start sub tasks/checklists -->
-													<h5 class="mt-4 mb-2 fs-15">Checklists/Sub-tasks</h5>
-													<div class="form-check mt-1">
-														<input type="checkbox" class="form-check-input"
-															id="checklist1"> <label
-															class="form-check-label strikethrough" for="checklist1">
-															Find out the old contract documents </label>
-													</div>
-
-													<div class="form-check mt-1">
-														<input type="checkbox" class="form-check-input"
-															id="checklist2"> <label
-															class="form-check-label strikethrough" for="checklist2">
-															Organize meeting sales associates to understand need in
-															detail </label>
-													</div>
-
-													<div class="form-check mt-1">
-														<input type="checkbox" class="form-check-input"
-															id="checklist3"> <label
-															class="form-check-label strikethrough" for="checklist3">
-															Make sure to cover every small details </label>
-													</div>
-													<!-- end sub tasks/checklists -->
-
-													<!-- start attachments -->
-													<h5 class="mt-4 mb-2 fs-16">Attachments</h5>
-													<div class="card mb-2 shadow-none border">
-														<div class="p-1 px-2">
-															<div class="row align-items-center">
-																<div class="col-auto">
-																	<img src="assets/images/projects/project-1.jpg"
-																		class="avatar-sm rounded" alt="file-image">
-																</div>
-																<div class="col ps-0">
-																	<a href="javascript:void(0);"
-																		class="text-muted fw-bold">sales-assets.zip</a>
-																	<p class="mb-0">2.3 MB</p>
-																</div>
-																<div class="col-auto">
-																	<!-- Button -->
-																	<a href="javascript:void(0);" data-bs-toggle="tooltip"
-																		data-bs-placement="bottom" title="Download"
-																		class="btn btn-link text-muted btn-lg p-0"> <i
-																		class='uil uil-cloud-download fs-14'></i>
-																	</a> <a href="javascript:void(0);" data-bs-toggle="tooltip"
-																		data-bs-placement="bottom" title="Delete"
-																		class="btn btn-link text-danger btn-lg p-0"> <i
-																		class='uil uil-multiply fs-14'></i>
-																	</a>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="card mb-2 shadow-none border">
-														<div class="p-1 px-2">
-															<div class="row align-items-center">
-																<div class="col-auto">
-																	<img src="assets/images/projects/project-2.jpg"
-																		class="avatar-sm rounded" alt="file-image">
-																</div>
-																<div class="col ps-0">
-																	<a href="javascript:void(0);"
-																		class="text-muted fw-bold">new-contarcts.docx</a>
-																	<p class="mb-0">1.25 MB</p>
-																</div>
-																<div class="col-auto">
-																	<!-- Button -->
-																	<a href="javascript:void(0);" data-bs-toggle="tooltip"
-																		data-bs-placement="bottom" title="Download"
-																		class="btn btn-link text-muted btn-lg p-0"> <i
-																		class='uil uil-cloud-download fs-14'></i>
-																	</a> <a href="javascript:void(0);" data-bs-toggle="tooltip"
-																		data-bs-placement="bottom" title="Delete"
-																		class="btn btn-link text-danger btn-lg p-0"> <i
-																		class='uil uil-multiply fs-14'></i>
-																	</a>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<!-- end col -->
-											</div>
-											<!-- end row-->
-										</div>
-										<!-- end card-body -->
-									</div>
-									<!-- end card-->
-								</div>
-								<!-- end col -->
 							</div>
 						</div>
 						<!-- container -->
@@ -317,6 +117,46 @@
 			</div>
 		</div>
 		<div th:include="common/footer.html"></div>
+	</div>
+	<!-- 부서 인원 모달 -->
+	<div class="modal fade" id="listModal" tabindex="-1" role="dialog"
+		aria-labelledby="myCenterModalLabel1" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: gray">
+					<h5 class="modal-title" id="myCenterModalLabel1"
+						style="font-size: 20px">
+						<b>부서 인원 명단</b>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table
+						class="table table-striped dt-responsive nowrap w-100 text-center" id="tableMember">
+						<thead>
+							<tr>
+								<th>부서명</th>
+								<th>사번</th>
+								<th>직책</th>
+								<th>성명</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>							
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="reset" class="btn btn-warning width-xs"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
 	</div>
 	<!-- 부서 수정 모달 -->
 	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
@@ -334,7 +174,8 @@
 				<div class="modal-body">
 					<code style="float: right">* 표기는 필수 입력항목입니다.</code>
 					<br> <label style="margin: 10px;">부서명 <span
-						style="color: red">*</span></label> <br> <input class="form-control"
+						style="color: red">*</span></label> <input type="text" id="selectedDeptNo"
+						hidden="hidden"> <br> <input class="form-control"
 						type="text" placeholder="부서명" name="selectedDeptName"
 						id="selectedDeptName" required="required"> <br> <label
 						style="margin: 10px;">상위 부서명</label> <br> <select
@@ -408,38 +249,159 @@
 	<!-- /.modal -->
 	<!-- 모달창 종료 -->
 	<script>
-	
-	$('a[id="editDepartment"]').click(function() {
-	const deptNo = $('#departmentNo').val();
-	const selectedDeptNo = $('#departmentName').text(deptNo);
+	$("[id^=deleteDepartment]").click(function() {
+		const deptNo = $(this).find('#deleteDepartmentNo').val();
 	console.log(deptNo);
-	console.log(selectedDeptNo);
-	       $.ajax({
-	           url: "editDepartment",
-	    	  data: {   "seletedDepartmentNo" : value },
+	Swal.fire({
+		  title: '삭제하시겠습니까?',
+		  text: '부서내의 모든 내용이 삭제됩니다.',
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#25c2e3',
+		  cancelButtonColor: '#43d39e',
+		  confirmButtonText: '예',
+		  cancelButtonText: '아니오'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+			           url: "deleteDepartment",
+			    	  data: {   "seletedDepartmentNo" : deptNo },
+			       success: function(data, status, xhr) {
+			    	   
+			    	   Swal.fire({
+			       			  position: 'center',
+			       			  icon: 'success',
+			       			  title: '부서 삭제에 성공하였습니다.',
+			       			  showConfirmButton: false,
+			       			  timer: 1500,
+			       			  width: 600
+			       		}).then((result) => {
+				        	   location.reload();
+			       				})
+			           }, error: function(xhr){
+			        	   Swal.fire({
+				       			  position: 'center',
+				       			  icon: 'error',
+				       			  title: '부서 삭제에 실패하였습니다.',
+				       			  showConfirmButton: false,
+				       			  timer: 1500,
+				       			  width: 600
+				       		}).then((result) => {
+					        	   location.reload();
+				       				})
+			           }
+			       });
+			  } else if (result.isDenied) {
+			  }
+		})
+	});
+	
+	$("[id^=listMember]").click(function() {
+		const deptNo = $(this).find('#memberDepartmentNo').val();
+	console.log(deptNo);
+	     $.ajax({
+	           url: "memberDepartment",
+	    	  data: {   "seletedDepartmentNo" : deptNo },
 	       success: function(data, status, xhr) {
 	    	   
-						const $selected = $("#selectedUpperDept");
-						const $selectedDepartmentName = $("#selectedDeptName"); 
-						$selected.html("");
-						$selectedDepartmentName.html("");
-						
-						$selectup = $("<option>").text("=================== 상위 부서명 ===================").val("");
-						$selected.append($selectup);
-						
-						for(let index in data["departmentList"]) {
-							$input = $("<option>").text(data["departmentList"][index].departmentName).val(data["departmentList"][index].departmentNo);
-							$selected.append($input);
-						}
-							$selectedName = $selectedDepartmentName.text(data["selectedDepartment"].departmentName).val(data["selectedDepartment"].departmentName);
-						
-						
+	    	   const $table = $("#tableMember tbody");
+				$table.html("");
+				
+				for(let index in data) {
+					$tr = $("<tr>");
+					$departmentNameTd = $("<td>").text(data[index].departmentName);
+					$memberNoTd = $("<td>").text(data[index].memberNo);
+					$jobNameTd = $("<td>").text(data[index].jobName);
+					$koreanNameTd = $("<td>").text(data[index].koreanName);
+					
+					$tr.append($departmentNameTd);
+					$tr.append($memberNoTd);
+					$tr.append($jobNameTd);
+					$tr.append($koreanNameTd);
+					
+					$table.append($tr);
+				}
+							
 					},
 					error: function(xhr, status, error) {
 						console.log(error);
 					}
 	       });
 	});
+	
+	
+	$("[id^=editDepartment]").click(function() {
+		const deptNo = $(this).find('#departmentNo').val();
+	console.log(deptNo);
+	     $.ajax({
+	           url: "editDepartment",
+	    	  data: {   "seletedDepartmentNo" : deptNo },
+	       success: function(data, status, xhr) {
+	    	   
+						const $selected = $("#selectedUpperDept");
+						const $selectedDepartmentNo = $("#selectedDeptNo");
+						const $selectedDepartmentName = $("#selectedDeptName"); 
+						const $selectedCreatedDate = $("#selectedCreateDate");
+						const $selectedDeptPhoneNo = $("#selectedDeptPhone");
+						$selected.html("");
+						$selectedDepartmentName.html("");
+						$selectedDeptPhoneNo.html("");
+						
+						$selectup = $("<option>").text("현재 상위 부서 : " +data["selectedDepartment"].upperDepartmentName).val(data["selectedDepartment"].upperDepartment);
+						$selected.append($selectup);
+						
+						for(let index in data["departmentList"]) {
+							$input = $("<option>").text(data["departmentList"][index].departmentName).val(data["departmentList"][index].departmentNo);
+							$selected.append($input);
+						}
+							$selectedNo = $selectedDepartmentNo.text(data["selectedDepartment"].departmentNo).val(data["selectedDepartment"].departmentNo);
+							$selectedName = $selectedDepartmentName.text(data["selectedDepartment"].departmentName).val(data["selectedDepartment"].departmentName);
+							$selectedDate = $selectedCreatedDate.val(data["selectedDepartment"].departmentCreateDate.slice(0, 10));
+							$selectedPhone = $selectedDeptPhoneNo.text(data["selectedDepartment"].departmentPhone).val(data["selectedDepartment"].departmentPhone);
+							
+					},
+					error: function(xhr, status, error) {
+						console.log(error);
+					}
+	       });
+	});
+	
+	$("#updateDepartment").click(function() {
+	       $.ajax({
+	    	   type: "POST",
+	           url: "/mngBasicInformation/updateDepartment",
+	           data: {
+	        	   "departmentNo" : $('#selectedDeptNo').val(),
+	        	   "departmentName" : $('#selectedDeptName').val(),
+	        	   "upperDepartment" : $('#selectedUpperDept').val(),
+	        	   "departmentCreateDate" : $('#selectedCreateDate').val(),
+	        	   "departmentPhone" : $('#selectedDeptPhone').val()},
+	           success: function(data, status, xhr) {
+	        	   
+	           		Swal.fire({
+	       			  position: 'center',
+	       			  icon: 'success',
+	       			  title: '부서 수정에 성공하였습니다.',
+	       			  showConfirmButton: false,
+	       			  timer: 1500,
+	       			  width: 600
+	       		}).then((result) => {
+		        	   location.reload();
+	       				})
+	           }, error: function(xhr){
+	        	   Swal.fire({
+		       			  position: 'center',
+		       			  icon: 'error',
+		       			  title: '부서명 혹은 부서생성일자를 기입해주세요.',
+		       			  showConfirmButton: false,
+		       			  timer: 1500,
+		       			  width: 600
+		       		}).then((result) => {
+			        	   location.href="#";
+		       				})
+	           }
+	       });
+	  });
 	
 	$("#departmentList").click(function() {
 	       $.ajax({
@@ -448,8 +410,8 @@
 						
 						const $option = $("#upperDepartment");
 						$option.html("");
-						$select = $("<option>").text("=================== 상위 부서명 ===================").val("");
-						$option.append($select);
+						$list = $("<option>").text("=================== 상위 부서명 ===================").val("");
+						$option.append($list);
 						
 						for(let index in data) {
 							$deptName = $("<option>").text(data[index].departmentName).val(data[index].departmentNo);
