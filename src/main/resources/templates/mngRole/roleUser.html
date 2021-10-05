@@ -164,10 +164,11 @@ input[type=radio] {
 									</div>
 									<div class="body-role">
 										<div class="noRole" align="center" style="display: none">
-											<form action="/mngRole/updateRoleAuth" method="post">
+											<form action="/mngRole/updateUserRoleAuth" method="post">
 												<img src="/images/mngRole/NoRole.jpg" class="NoRoleImg">
 												<h2>생성된 권한이 없습니다. 권한을 부여하시겠습니까?</h2>
-												<input type="hidden" name="rank" id="rank" />
+												<input type="hidden" name="name" id="name" />
+												<input type="hidden" name="memberNo" id="memberNo" />
 												<div class="right" align="right">
 													<input type="submit" class="btn btn-success" value="생성"
 														id="create_auth">
@@ -179,7 +180,7 @@ input[type=radio] {
 											<input type="checkbox" class="cbx_chkAll">&emsp; <label
 												class="label">전체선택</label>
 
-											<form action="/mngRole/rankRoleDept" method="post">
+											<form action="/mngRole/userRoleDept" method="post">
 											
 												<div class="bodyselectRole">
 													<input type="checkbox" class="chk" value="2" name="authoryityNoArg[0].authoryityNo"> &emsp; 	
@@ -204,7 +205,8 @@ input[type=radio] {
 													<label class="label">급상여 이체/승인</label><br>
 													<p class="explanation">급상여 이체 승인</p>
 													
-													<input type="hidden" name="rankName" id="rankName" />
+													<input type="hidden" name="idNo" id="idNo" />
+													<input type="hidden" name="userName" id="userName" />
 													<div align="right">
 														<button type="submit" class="btn btn-success" value="생성" align="right">수정</button>
 													</div>
@@ -250,20 +252,24 @@ input[type=radio] {
 			var information = $(this);
 			var tr = information.parent().parent();
 			var td = tr.children();
-
-			rank = td.eq(1).text();
-
-			document.getElementById("rank").value = rank;
-			document.getElementById("rankName").value = rank;
-
+			
+			memberNo = td.eq(1).text();
+			userName = td.eq(2).text();
+			
+			document.getElementById("name").value = userName;
+			document.getElementById("userName").value = userName;
+			document.getElementById("memberNo").value = memberNo;
+			
 			$.ajax({
-				url : "role_auth",
-				type : 'GET',
+				url : "user_auth",
+				type : 'POST',
 				data : {
-					rank : rank
+					memberNo: memberNo, userName: userName
 				},
 				success : function(data) {
 					 	
+						document.getElementById("idNo").value = data[0].idNo;
+						
 						if(data[0].tblUserAuth == "Y") {
 							
 							$(".yesRole").show();

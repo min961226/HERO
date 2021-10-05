@@ -10,6 +10,7 @@ import com.nextLevel.hero.mngRole.model.dao.MngRoleMapper;
 import com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRoleDTO;
+import com.nextLevel.hero.mngRole.model.dto.MngUserAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngUserDTO;
 
 @Service("mngRoleService")
@@ -29,7 +30,7 @@ public class MngRoleServiceImpl implements MngRoleService {
 		return mngRoleMapper.selectRank(companyNO);
 	}
 	
-	/* 직급 권한 보유 조회 */
+	/* 직급 권한 ajax 조회 */
 	@Override
 	public List<MngRankAuthDTO> selectRankAuth(int companyNo, String rank) {
 		
@@ -37,10 +38,7 @@ public class MngRoleServiceImpl implements MngRoleService {
 		
 		rankAuth.addAll(mngRoleMapper.selectAuthority(rankAuth.get(0).getSalaryStepByRank(), companyNo));
 		
-		System.out.println("--------------------");
-		System.out.println("--------------------");
 
-		System.out.println("--------------------");
 		System.out.println(rankAuth);
 		
 		return rankAuth;
@@ -90,10 +88,46 @@ public class MngRoleServiceImpl implements MngRoleService {
 		return result;
 	}
 
+	/* 사용자별 권한 */
 	@Override
 	public List<MngUserDTO> selectUser(int companyNo) {
 		
 		return mngRoleMapper.selectUser(companyNo);
+	}
+
+	/* 사원 권한 ajax 조회 */
+	@Override
+	public List<MngUserAuthDTO> selectUserAuth(String userName, String memberNo, int companyNo) {
+		
+		List<MngUserAuthDTO> userAuth =  mngRoleMapper.selectUserAuth(userName, memberNo, companyNo);
+		
+		userAuth.addAll(mngRoleMapper.selectUserAuthority(userAuth.get(0).getIdNo()));
+		
+		return userAuth;
+	}
+	
+	/* 사원 권한 생성 */
+	@Override
+	@Transactional
+	public int updateUserRoleAuth(MngUserAuthDTO mngUserAuthDTO) {
+		
+		return mngRoleMapper.updateUserRoleAuth(mngUserAuthDTO);
+	}
+	
+	/* insert전 delete*/
+	@Override
+	@Transactional
+	public int deleteUserAuth(MngUserAuthDTO mngUserAuthDTO) {
+		
+		return mngRoleMapper.deleteUserAuth(mngUserAuthDTO);
+	}
+	
+	/* 사원 권한 수정 */
+	@Override
+	@Transactional
+	public int insertUserAuth(MngUserAuthDTO mngUserAuthDTO) {
+		
+		return mngRoleMapper.insertUserAuth(mngUserAuthDTO);
 	}
 	
 	

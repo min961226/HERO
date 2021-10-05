@@ -1,5 +1,7 @@
 package com.nextLevel.hero.mngRole.model.dto;
 
+import java.util.List;
+
 public class MngUserDTO {
 	
 	private int companyNo;

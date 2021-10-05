@@ -20,6 +20,66 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div class="card">
+								<div class="card-body">
+									<div align="center">
+									<label style="margin:10px;" align="center">대상기간</label><input type="month" style="margin:10px; height:30px;">
+									<select style="width:155px; height:30px;" id="searchCondition" name="searchCondition">
+										<option value="searchDeptName" selected="selected">부서명</option>
+										<option value="searchMemberName" >성 명</option>
+									</select>
+									<input type="text" style="margin:10px; height:30px;" id="searchValue" name="searchValue">
+									<button type="submit" class="btn btn-outline-primary" id="searchBtn">검 색</button>
+									<button type="submit" class="btn btn-primary btn-lg" style="float: right; margin:10px;">&emsp;다운로드&emsp;</button>
+										
+									</div>
+								<br><br>
+									<table class="table table-striped dt-responsive nowrap w-80 text-center">
+										<tr>
+											<td width="10%">날짜</td>
+											<td>날짜</td>
+										</tr>
+										<tr>
+											<td>이름</td>
+											<td>요일</td>
+										</tr>
+										<tr>
+											<td>사번</td>
+											<td>출석</td>
+										</tr>
+										<tr>
+											<td>부서</td>
+											<td>출석</td>
+										</tr>
+										<tr>
+											<td colspan = "3">지각</td>
+										</tr>
+									</table><br>
+									<table class="table table-striped dt-responsive nowrap w-80 text-center">
+										<tr>
+											<td width="10%">날짜</td>
+											<td>날짜</td>
+										</tr>
+										<tr>
+											<td>이름</td>
+											<td>요일</td>
+										</tr>
+										<tr>
+											<td>사번</td>
+											<td>출석</td>
+										</tr>
+										<tr>
+											<td>부서</td>
+											<td>출석</td>
+										</tr>
+										<tr>
+											<td colspan = "3">지각</td>
+										</tr>
+									</table>
+								
+								</div>
+							</div>
+
 						</div>
 					</div>
 				</div>
