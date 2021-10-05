@@ -145,7 +145,7 @@
 																<input type="text" class="form-control" id="simpleinput" name="businessCode" th:value="${companyInfo.businessCode}" hidden="hidden">
 															</div>
 															<div class="col-lg-3">
-																<button type="button" class="btn btn-info">업종
+																<button type="button" class="btn btn-info" onclick="javascript:openWindowPop('/mngBasicInformation/businessList', 'businessList');">업종
 																	검색</button>
 															</div>
 														</div>
@@ -222,6 +222,10 @@ window.onload = function(){
             }
         }).open();
     });
+}
+function openWindowPop(url, name){
+    var options = 'top=500, left=100, width=600, height=600, status=no, menubar=no, toolbar=no, resizable=yes';
+    window.open(url, name, options);
 }
 </script>
 </body>

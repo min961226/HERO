@@ -79,20 +79,24 @@
 																				</div>
 																			</div>
 																			<span class="badge badge-soft-warning">부서명 : </span>
-																			<span class="badge badge-soft-success"
-																				th:text="${dept.departmentName}"></span> <br> <span
-																				class="badge badge-soft-info">부서번호 : </span> <span
-																				class="badge badge-soft-success"
-																				th:text="${dept.departmentNo}"></span>
+																			<span class="badge badge-soft-danger"
+																				th:text="${dept.departmentName}"></span>
+																				<br>
+																				<span class="badge badge-soft-warning">부서번호 : </span>
+																				<span class="badge badge-soft-danger" th:text="${dept.departmentNo}"></span>
+																				<br>
+																				<span class="badge badge-soft-warning">부서 연락처 : </span>
+																				<span class="badge badge-soft-danger" th:text="${dept.departmentPhone}"></span>
 
 
 																			<p class="mb-0 mt-4">
 																				<span class="text-nowrap align-middle fs-13 me-2" th:id="listMember" data-bs-toggle="modal" data-bs-target="#listModal">
 																				<input th:value="${dept.departmentNo}"
 																						th:id="memberDepartmentNo" hidden="hidden">
-																					<i class="uil uil-user text-muted me-1"></i>11
-																				</span> <small class="float-end text-muted"
-																					th:text="${dept.departmentCreateDate}"></small>
+																					<i class="uil uil-user text-muted me-1"></i><a th:text="${dept.memberCount}"></a>
+																				</span>
+																				<span style="float: right"><small>부서 생성일 :&nbsp;&nbsp;</small><small class="float-end text-muted"
+																					th:text="${dept.departmentCreateDate}"></small></span> 
 																			</p>
 																		</div>
 																		<!-- end card-body -->
@@ -102,6 +106,9 @@
 															</div>
 															<!-- start other tasks -->
 														</div>
+														<span align="right">
+																<code >* </code><i class="uil uil-user text-muted me-1"></i><a>클릭시 부서 내에 인원을 조회할 수 있습니다.</a>
+														</span>
 													</div>
 													<!-- end row -->
 												</div>
@@ -303,24 +310,37 @@
 	           url: "memberDepartment",
 	    	  data: {   "seletedDepartmentNo" : deptNo },
 	       success: function(data, status, xhr) {
-	    	   
-	    	   const $table = $("#tableMember tbody");
-				$table.html("");
-				
-				for(let index in data) {
-					$tr = $("<tr>");
-					$departmentNameTd = $("<td>").text(data[index].departmentName);
-					$memberNoTd = $("<td>").text(data[index].memberNo);
-					$jobNameTd = $("<td>").text(data[index].jobName);
-					$koreanNameTd = $("<td>").text(data[index].koreanName);
+	    	   if(data == 0){
+	    		   Swal.fire({
+		       			  position: 'center',
+		       			  icon: 'success',
+		       			  title: '부서에 해당되는 인원이 없습니다.',
+		       			  showConfirmButton: false,
+		       			  timer: 1500,
+		       			  width: 600
+		       		}).then((result) => {
+			        	   location.reload();
+		       				})
+	    	   }else{
+	    		   const $table = $("#tableMember tbody");
+					$table.html("");
 					
-					$tr.append($departmentNameTd);
-					$tr.append($memberNoTd);
-					$tr.append($jobNameTd);
-					$tr.append($koreanNameTd);
-					
-					$table.append($tr);
-				}
+					for(let index in data) {
+						$tr = $("<tr>");
+						$departmentNameTd = $("<td>").text(data[index].departmentName);
+						$memberNoTd = $("<td>").text(data[index].memberNo);
+						$jobNameTd = $("<td>").text(data[index].jobName);
+						$koreanNameTd = $("<td>").text(data[index].koreanName);
+						
+						$tr.append($departmentNameTd);
+						$tr.append($memberNoTd);
+						$tr.append($jobNameTd);
+						$tr.append($koreanNameTd);
+						
+						$table.append($tr);
+					}
+	    	   }
+	    	  
 							
 					},
 					error: function(xhr, status, error) {

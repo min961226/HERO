@@ -27,8 +27,11 @@
 										<div class="card-body">
 											<h4 class="header-title mt-0 mb-1">
 												보험 요율 수정
-												<h4 class="header-title mt-0 mb-1" align="right">직원 수 :
-												</h4>
+												<span style="float: right">
+												<a>직원 수 :&nbsp;</a>
+												<a class="header-title mt-0 mb-1" align="right" th:text="${memberCount}"></a>
+												<a>명</a>
+												</span>
 											</h4>
 											<input name="companyNo" hidden="hidden" th:value="${insuranceRate.companyNo}">
 											<input name="businessCode" hidden="hidden" th:value="${insuranceRate.businessCode}">
@@ -349,7 +352,7 @@
 							</div>
 							</form>
 										<button type="button" class="btn btn-warning" id="calc" name="calc"
-											style="float: right;" onclick="calc()">계산하기</button>
+											 style="float: left; margin-left:30%; width: 640px" onclick="calc()">계산하기</button>
 						</div>
 					</div>
 				</div>
@@ -358,6 +361,7 @@
 		</div>
 	</div>
 	<script>
+	
 		function askAgain() {
 
 			var yn;
@@ -366,7 +370,14 @@
 			if (yn === "계산완료") {
 				return true;
 			} else {
-				alert("계산하기 버튼을 클릭하여 주세요.")
+				 Swal.fire({
+	       			  position: 'center',
+	       			  icon: 'error',
+	       			  title: '계산하기 버튼을 눌러주세요',
+	       			  showConfirmButton: false,
+	       			  timer: 1500,
+	       			  width: 600
+	       		})
 				return false;
 			}
 		}
@@ -446,8 +457,8 @@
 	 		document.getElementById('employerPensionRate').value = (document.getElementById('nationalPensionRate').value)/2;
 	 		document.getElementById('workersHealthRate').value = (document.getElementById('healthRate').value)/2;
 	 		document.getElementById('employerHealthRate').value = (document.getElementById('healthRate').value)/2;
-	 		document.getElementById('workersLongTermCareRate').value = (document.getElementById('longTermCareRate').value)/2;
-	 		document.getElementById('employerLongTermCareRate').value = (document.getElementById('longTermCareRate').value)/2;
+	 		document.getElementById('workersLongTermCareRate').value = (document.getElementById('longTermCareRate').value);
+	 		document.getElementById('employerLongTermCareRate').value = (document.getElementById('longTermCareRate').value);
 	 		document.getElementById('workersUnempRate').value = (document.getElementById('unempBenefitRate').value)/2;
 	 		document.getElementById('employerUnempRate').value = (document.getElementById('unempBenefitRate').value)/2;
 			document.getElementById('industrialInsuranceRate').value = parseFloat(document.getElementById('industryRate').value) + parseFloat(document.getElementById('commuteAccidentRate').value)

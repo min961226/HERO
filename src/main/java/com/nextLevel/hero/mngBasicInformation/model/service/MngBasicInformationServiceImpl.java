@@ -8,10 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nextLevel.hero.member.model.dto.MemberDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dao.MngBasicInformationMapper;
+import com.nextLevel.hero.mngBasicInformation.model.dto.BusinessDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO;
+import com.nextLevel.hero.mngBasicInformation.model.dto.MngBonusDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngInsuranceRateDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngMemberDepartmentDTO;
+import com.nextLevel.hero.mngBasicInformation.model.dto.MngSalaryCriteriaDTO;
+import com.nextLevel.hero.mngBasicInformation.model.dto.MngVacationTypeDTO;
 
 @Service("mngBasicInformationService")
 public class MngBasicInformationServiceImpl implements MngBasicInformationService {
@@ -116,6 +120,66 @@ public class MngBasicInformationServiceImpl implements MngBasicInformationServic
 	@Transactional
 	public int insertDeleteLogDepartment(MngDepartmentHistoryDTO departmentDTO) {
 		return mngBasicInformationMapper.insertDeleteLogDepartment(departmentDTO);
+	}
+
+	@Override
+	public int selectMemberCount(int companyNo) {
+		return mngBasicInformationMapper.selectMemberCount(companyNo);
+	}
+
+	@Override
+	@Transactional
+	public int insertVacationType(MngVacationTypeDTO mngVacationTypeDTO) {
+		return mngBasicInformationMapper.insertVacationType(mngVacationTypeDTO);
+	}
+
+	@Override
+	public List<MngVacationTypeDTO> selectVacationTypeList(int companyNo) {
+		return mngBasicInformationMapper.selectVacationTypeList(companyNo);
+	}
+
+	@Override
+	public MngVacationTypeDTO selectOneVacationType(int companyNo, int vacationNo) {
+		return mngBasicInformationMapper.selectOneVacationType(companyNo,vacationNo);
+	}
+
+	@Override
+	@Transactional
+	public int updateVacationType(MngVacationTypeDTO mngVacationTypeDTO) {
+		return mngBasicInformationMapper.updateVacationType(mngVacationTypeDTO);
+	}
+
+	@Override
+	@Transactional
+	public int deleteVacationType(int companyNo, int vacationNo) {
+		return mngBasicInformationMapper.deleteVacationType(companyNo,vacationNo);
+	}
+
+	@Override
+	public List<BusinessDTO> getSearchList(BusinessDTO businessDTO) {
+		return mngBasicInformationMapper.selectSearchList(businessDTO);
+	}
+
+	@Override
+	@Transactional
+	public int insertSalaryCriteria(MngSalaryCriteriaDTO salaryCriteriaDTO) {
+		return mngBasicInformationMapper.insertSalaryCriteria(salaryCriteriaDTO);
+	}
+
+	@Override
+	public List<MngSalaryCriteriaDTO> selectSalaryList(int companyNo) {
+		return mngBasicInformationMapper.selectSalaryList(companyNo);
+	}
+
+	@Override
+	public List<MngBonusDTO> selectBonusList(int companyNo) {
+		return mngBasicInformationMapper.selectBonusList(companyNo);
+	}
+
+	@Override
+	@Transactional
+	public int insertBonusType(MngBonusDTO bonusDTO) {
+		return mngBasicInformationMapper.insertBonusType(bonusDTO);
 	}
 
 

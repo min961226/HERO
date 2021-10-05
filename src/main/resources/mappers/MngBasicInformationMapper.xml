@@ -38,6 +38,7 @@
 		<result property="departmentPhone" column="DEPARTMENT_PHONE"/>
 		<result property="upperDepartment" column="UPPER_DEPARTMENT"/>
 		<result property="upperDepartmentName" column="UPPER_DEPARTMENT_NAME"/>
+		<result property="memberCount" column="MEMBER_COUNT"/>
 	</resultMap>
 	
 	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO" id="departmentHistoryResultMap">
@@ -88,7 +89,52 @@
 		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="jobName" column="JOB_NAME"/>
 	</resultMap>
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngVacationTypeDTO" id="vacationTypeResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="vacationNo" column="VACATION_NO"/>
+		<result property="vacationCategory" column="VACATION_CATEGORY"/>
+		<result property="vacationName" column="VACATION_NAME"/>
+		<result property="vacationSettingWay" column="VACATION_SETTING_WAY"/>
+		<result property="vacationDate" column="VACATION_DATE"/>
+		<result property="paidVacationYn" column="PAID_VACATION_YN"/>
+		<result property="settingGender" column="SETTING_GENDER"/>
+	</resultMap>
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.BusinessDTO" id="businessListResultMap">
+		<id property="idx" column="BUSINESS_CODE"/>
+		<result property="businessName" column="TYPE_OF_BUSINESS"/>
+		<result property="businessDetail" column="DETAIL_TYPE_OF_BUSINESS"/>
+		<result property="industryRate" column="INDUSTRY_RATE"/>
+	</resultMap>
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngSalaryCriteriaDTO" id="salaryListResultMap">
+	<id property="companyNo" column="COMPANY_NO"/>
+		<result property="salaryNo" column="SALARY_NO"/>
+		<result property="salaryName" column="SALARY_NAME"/>
+		<result property="regularlyYn" column="REGULARLY_YN"/>
+		<result property="payPeriod" column="PAY_PERIOD"/>
+		<result property="deductionYn" column="DEDUCTION_YN"/>
+		<result property="annualSalaryYn" column="ANNUAL_SALARY_YN"/>
+		<result property="payHiredMonthYn" column="PAYHIRED_MONTH_YN"/>
+		<result property="paymentMonthYn" column="PAYMENT_MONTH_YN"/>
+		<result property="target" column="TARGET"/>
+		<result property="salaryAmount" column="SALARY_AMOUNT"/>
+		<result property="useStatus" column="USE_STATUS"/>
+	</resultMap>
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngBonusDTO" id="bonusListResultMap">
+	<id property="companyNo" column="COMPANY_NO"/>
+		<result property="bonusNo" column="BONUS_NO"/>
+		<result property="bonusName" column="BONUS_NAME"/>
+		<result property="regularlyYn" column="REGULARLY_YN"/>
+		<result property="payPeriod" column="PAY_PERIOD"/>
+		<result property="bonusAmount" column="BONUS_AMOUNT"/>
+		<result property="useYn" column="USE_YN"/>
+	</resultMap>
 	
+	<select id="selectMemberCount" resultType="_int">
+		SELECT
+       		   COUNT(*)
+  		  FROM TBL_EMPLOYEE
+ 		 WHERE COMPANY_NO = #{companyNo}
+	</select>
 	<select id="selectMember" resultMap="loginMemberResultMap">
 		select
 			   *
@@ -146,10 +192,17 @@
 		)
 	</insert>
 	<select id="selectDepartment" resultMap="departmentResultMap">
-		SELECT
-			   A.*
-		  FROM TBL_DEPARTMENT A
-		 WHERE A.COMPANY_NO = #{ companyNo }
+		   SELECT 
+        	   A.COMPANY_NO
+             , A.DEPARTMENT_NO
+             , A.DEPARTMENT_NAME
+             , A.DEPARTMENT_CREATE_DATE
+             , A.DEPARTMENT_PHONE
+             , A.UPPER_DEPARTMENT
+             , NVL(cnt,0) AS MEMBER_COUNT
+		  FROM TBL_DEPARTMENT A,( SELECT DEPARTMENT_NO, COUNT(*) AS cnt FROM TBL_EMPLOYEE WHERE COMPANY_NO = #{companyNo} GROUP BY DEPARTMENT_NO ) B
+		 WHERE A.COMPANY_NO = #{companyNo}
+           AND A.DEPARTMENT_NO = B.DEPARTMENT_NO(+)
 	</select>
 	<select id="selectDepartmentHistory" resultMap="departmentHistoryResultMap">
 		SELECT
@@ -192,7 +245,6 @@
 		, #{ businessCode }
 		)
 	</insert>
-	
 	
 	<select id="selectInsuranceHistory" resultMap="insuranceResultMap">
 		SELECT
@@ -365,6 +417,110 @@
 		, #{ upperDepartment , jdbcType=INTEGER }
 		)
 	</insert>
+	<insert id="insertVacationType" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngVacationTypeDTO">
+		INSERT
+		  INTO TBL_VACATION_CATEGORY
+		VALUES
+		(
+		  #{ companyNo }
+		, SEQ_VACATION_NO.NEXTVAL
+		, #{ vacationCategory }
+		, #{ vacationName }
+		, #{ vacationSettingWay }
+		, #{ vacationDate }
+		, #{ paidVacationYn }
+		, #{ settingGender }
+		)
+	</insert>
+	<select id="selectVacationTypeList" resultMap="vacationTypeResultMap">
+		SELECT
+			   A.*
+		  FROM TBL_VACATION_CATEGORY A
+		 WHERE COMPANY_NO = #{ companyNo }
+		 ORDER BY A.VACATION_CATEGORY,A.VACATION_NO
+	</select>
+	<select id="selectOneVacationType" resultMap="vacationTypeResultMap">
+		SELECT
+			   A.*
+		  FROM TBL_VACATION_CATEGORY A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		   AND A.VACATION_NO = #{ vacationNo }
+	</select>
+	<update id="updateVacationType" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngVacationTypeDTO">
+		UPDATE TBL_VACATION_CATEGORY A
+		   SET A.VACATION_CATEGORY = #{ vacationCategory }
+		   	 , A.VACATION_NAME = #{ vacationName }
+		   	 , A.VACATION_SETTING_WAY = #{ vacationSettingWay }
+		   	 , A.VACATION_DATE = #{ vacationDate }
+		   	 , A.PAID_VACATION_YN = #{ paidVacationYn }
+		   	 , A.SETTING_GENDER  = #{ settingGender }
+		 WHERE A.VACATION_NO = #{ vacationNo }
+		   and A.COMPANY_NO = #{ companyNo }
+	</update>
+	<delete id="deleteVacationType">
+		DELETE
+		  FROM TBL_VACATION_CATEGORY
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND VACATION_NO = #{ vacationNo }
+	</delete>
+	<select id="selectSearchList" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.BusinessDTO" resultMap="businessListResultMap">
+		SELECT 
+			   BUSINESS_CODE
+			 , TYPE_OF_BUSINESS
+			 , DETAIL_TYPE_OF_BUSINESS 
+			 , INDUSTRY_RATE
+		  FROM TBL_BUSINESS
+		 WHERE TYPE_OF_BUSINESS || DETAIL_TYPE_OF_BUSINESS LIKE '%'||#{keyword}||'%'
+	</select>
+	<select id="selectSalaryList" resultMap="salaryListResultMap">
+		SELECT
+			   *
+		  FROM TBL_SALARY_CRITERIA
+		 WHERE COMPANY_NO = #{ companyNo }
+		 ORDER BY USE_STATUS DESC,SALARY_NO ASC 
+	</select>
+	<select id="selectBonusList" resultMap="bonusListResultMap">
+		SELECT
+			   *
+		  FROM TBL_BONUS
+		 WHERE COMPANY_NO = #{ companyNo }
+		 ORDER BY USE_YN DESC,BONUS_NO ASC 
+		 
+	</select>
 	
+	
+	<insert id="insertSalaryCriteria" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngSalaryCriteriaDTO">
+		INSERT
+		  INTO TBL_SALARY_CRITERIA
+		VALUES
+		(
+		  #{ companyNo }
+		, SEQ_SALARY_CRITERIA_NO.NEXTVAL
+		, #{ salaryName }
+		, #{ regularlyYn }
+		, #{ payPeriod }
+		, #{ salaryAmount }
+		, #{ deductionYn }
+		, #{ annualSalaryYn }
+		, #{ payHiredMonthYn }
+		, #{ paymentMonthYn }
+		, 'Y'
+		, #{ target }
+		)
+	</insert>
+	<insert id="insertBonusType" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngBonusDTO">
+		INSERT
+		  INTO TBL_BONUS
+		VALUES
+		(
+		  #{ companyNo }
+		, SEQ_BONUS_NO.NEXTVAL
+		, #{ bonusName }
+		, #{ regularlyYn }
+		, #{ payPeriod }
+		, #{ bonusAmount }
+		, 'Y'
+		)
+	</insert>
 	
 </mapper>

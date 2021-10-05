@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.User;
@@ -15,8 +17,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,11 +33,16 @@ import com.google.gson.GsonBuilder;
 import com.nextLevel.hero.main.model.service.MainService;
 import com.nextLevel.hero.member.model.dto.MemberDTO;
 import com.nextLevel.hero.member.model.dto.UserImpl;
+import com.nextLevel.hero.mngBasicInformation.model.dto.BusinessDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO;
+import com.nextLevel.hero.mngBasicInformation.model.dto.MngBonusDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngInsuranceRateDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngMemberDepartmentDTO;
+import com.nextLevel.hero.mngBasicInformation.model.dto.MngSalaryCriteriaDTO;
+import com.nextLevel.hero.mngBasicInformation.model.dto.MngVacationTypeDTO;
 import com.nextLevel.hero.mngBasicInformation.model.service.MngBasicInformationService;
+import com.nextLevel.hero.mngVacation.model.dto.MngVacationDTO;
 
 @Controller
 @RequestMapping("/mngBasicInformation")
@@ -45,6 +55,25 @@ public class MngBasicInformationController {
 		this.mngBasicInformationService = mngBasicInformationService;
 	}
 
+	@GetMapping("/businessList")
+	public ModelAndView businessList(ModelAndView mv) {
+		
+		mv.setViewName("mngBasicInformation/businessList");
+		return mv;
+	}
+	
+	@GetMapping(value="/getSearchList", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public List<BusinessDTO> getSearchList(@RequestParam String keyword,Model model) throws Exception{
+		
+		
+		System.out.println(keyword);
+		
+		BusinessDTO businessDTO = new BusinessDTO();
+		businessDTO.setKeyword(keyword);
+		List<BusinessDTO> list = mngBasicInformationService.getSearchList(businessDTO);
+		return list;
+	}
 	
 	@GetMapping("/company")
 	public ModelAndView mngCompany(@AuthenticationPrincipal UserImpl user,ModelAndView mv) {
@@ -174,6 +203,8 @@ public class MngBasicInformationController {
 		System.out.println(departmentDTO);
 		mngBasicInformationService.deleteDepartment(departmentNum,user.getCompanyNo());
 		
+		
+		
 		mv.setViewName("mngBasicInformation/department");
 		return mv;
 	}
@@ -202,8 +233,14 @@ public class MngBasicInformationController {
 		System.out.println(departmentDTO);
 		departmentDTO.setCompanyNo(user.getCompanyNo());
 		
-		mngBasicInformationService.updateDepartment(departmentDTO);
-		mngBasicInformationService.insertUpdateLogDepartment(departmentDTO);
+		int result1 = mngBasicInformationService.updateDepartment(departmentDTO);
+		int result2 = mngBasicInformationService.insertUpdateLogDepartment(departmentDTO);
+		
+		if(result1 + result2 >1) {
+            rttr.addFlashAttribute("successMessage", "부서 수정을 완료하였습니다");
+        }else {
+            rttr.addFlashAttribute("failedMessage", "부서 수정을 실패하였습니다");
+        }
 		
 		mv.setViewName("redirect:/mngBasicInformation/department");
 		return mv;
@@ -222,8 +259,11 @@ public class MngBasicInformationController {
 	@GetMapping("/premiumRate")
 	public ModelAndView mngPremiumRate(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
 		MngInsuranceRateDTO insuranceRate = mngBasicInformationService.selectInsurance(user.getCompanyNo());
+		int memberCount = mngBasicInformationService.selectMemberCount(user.getCompanyNo());
 		System.out.println(insuranceRate);
 		System.out.println(insuranceRate.getAsbestosDamagechargeRate());
+		
+		mv.addObject("memberCount",memberCount);
 		mv.addObject("insuranceRate",insuranceRate);
 		mv.setViewName("mngBasicInformation/premiumRate");
 		return mv;
@@ -231,8 +271,14 @@ public class MngBasicInformationController {
 	@PostMapping("/premiumRate")
 	public ModelAndView updatePremiumRate(ModelAndView mv,RedirectAttributes rttr,MngInsuranceRateDTO insuranceRate) {
 		
-		mngBasicInformationService.insertPremiumRate(insuranceRate);
-		rttr.addFlashAttribute("successMessage", "보험 요율 수정에 성공하였습니다!");
+		int result = mngBasicInformationService.insertPremiumRate(insuranceRate);
+		
+		if(result >0) {
+            rttr.addFlashAttribute("successMessage", "보험 요율 수정에 성공하였습니다.");
+        }else {
+            rttr.addFlashAttribute("failedMessage", "보험 요율 수정에 실패하였습니다.");
+        }
+		
 		mv.setViewName("redirect:/mngBasicInformation/premiumRate");
 		return mv;
 	}
@@ -247,12 +293,144 @@ public class MngBasicInformationController {
 		return mv;
 	}
 	@GetMapping("/vacationType")
-	public String mngVacationType() {
-		return "mngBasicInformation/vacationType";
+	public ModelAndView mngVacationType(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
+		List<MngVacationTypeDTO> mngVacationTypeList = mngBasicInformationService.selectVacationTypeList(user.getCompanyNo());
+		
+		System.out.println(mngVacationTypeList);
+		
+		mv.addObject("vacationTypeList",mngVacationTypeList);
+		mv.setViewName("mngBasicInformation/vacationType");
+		return mv;
 	}
+	
+	@PostMapping(value = "insertVacationType")
+	public ModelAndView insertVacationType(ModelAndView mv, @AuthenticationPrincipal UserImpl user, MngVacationTypeDTO mngVacationTypeDTO,RedirectAttributes rttr) {
+		
+		/* 세션에 저장된 회사 번호를 가져와서 DTO에 담아줌 */
+		mngVacationTypeDTO.setCompanyNo(user.getCompanyNo());
+		/* DTO 값을 담아서 서비스로 이동 */
+		int result = mngBasicInformationService.insertVacationType(mngVacationTypeDTO);
+		
+		if(result >0) {
+			rttr.addFlashAttribute("successMessage", "휴가 종류 추가를 완료하였습니다");				//성공시
+		}else {
+			rttr.addFlashAttribute("failedMessage", "휴가 종류 추가에 실패하였습니다");				//실패시
+		}
+		mv.setViewName("redirect:/mngBasicInformation/vacationType");							//가야할 페이지
+		
+		System.out.println(mngVacationTypeDTO);
+		return mv;
+	}
+	
+	@PostMapping("/updateVacationType")
+	public ModelAndView updateVacationType(ModelAndView mv, @AuthenticationPrincipal UserImpl user,MngVacationTypeDTO mngVacationTypeDTO,RedirectAttributes rttr) {
+		mngVacationTypeDTO.setCompanyNo(user.getCompanyNo());
+		
+		System.out.println("휴가 종류 수정 :" + mngVacationTypeDTO);
+		int result = mngBasicInformationService.updateVacationType(mngVacationTypeDTO);
+		
+		if(result >0) {
+			rttr.addFlashAttribute("successMessage", "휴가 종류 수정을 완료하였습니다");
+		}else {
+			rttr.addFlashAttribute("failedMessage", "휴가 종류 수정에 실패하였습니다");
+		}
+		mv.setViewName("redirect:/mngBasicInformation/vacationType");
+		return mv;
+	}
+	
+	
+	
+	@GetMapping(value="editVacationType", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String selectOneVacationType(@AuthenticationPrincipal UserImpl user, @RequestParam String selectedVacationNo) {
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		
+		int vacationNo = Integer.parseInt(selectedVacationNo);
+		MngVacationTypeDTO vacationType = mngBasicInformationService.selectOneVacationType(user.getCompanyNo(),vacationNo);
+		
+		return gson.toJson(vacationType);
+	}
+	
+	@GetMapping(value="deleteVacation", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public ModelAndView deleteVacationType(ModelAndView mv, @AuthenticationPrincipal UserImpl user, @RequestParam String selectedVacationNo) {
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		System.out.println(selectedVacationNo);
+		/* ajax로 넘어온 휴가 종류 번호를 int 로 parsing */ 
+		int vacationNo = Integer.parseInt(selectedVacationNo);
+		
+		mngBasicInformationService.deleteVacationType(user.getCompanyNo(),vacationNo);
+		
+		mv.setViewName("/mngBasicInformation/vacationType");
+		
+		return mv;
+	}
+	
 	@GetMapping("/salaryType")
-	public String mngSalaryType() {
-		return "mngBasicInformation/salaryType";
+	public ModelAndView mngSalaryType(ModelAndView mv,@AuthenticationPrincipal UserImpl user) {
+		
+		int companyNo = user.getCompanyNo();
+		
+		List<MngSalaryCriteriaDTO> salaryList = mngBasicInformationService.selectSalaryList(companyNo);
+		List<MngBonusDTO> bonusList = mngBasicInformationService.selectBonusList(companyNo);
+		
+		mv.addObject("salaryList", salaryList);
+		mv.addObject("bonusList", bonusList);
+		mv.setViewName("/mngBasicInformation/salaryType");
+		return mv;
+	}
+	
+	@PostMapping("/insertSalaryCriteria")
+	public ModelAndView mngSalaryCriteria(ModelAndView mv,@AuthenticationPrincipal UserImpl user,MngSalaryCriteriaDTO salaryCriteriaDTO, RedirectAttributes rttr) {
+		
+		System.out.println(salaryCriteriaDTO);
+		salaryCriteriaDTO.setCompanyNo(user.getCompanyNo());
+		
+		int result = mngBasicInformationService.insertSalaryCriteria(salaryCriteriaDTO);
+		
+		if(result >0) {
+			rttr.addFlashAttribute("successMessage", "급여 종류 추가를 완료하였습니다");
+		}else {
+			rttr.addFlashAttribute("failedMessage", "급여 종류 추가에 실패하였습니다");
+		}
+		System.out.println(salaryCriteriaDTO);
+		System.out.println("급여 추가 값전송함");
+		mv.setViewName("redirect:/mngBasicInformation/salaryType");							//가야할 페이지
+
+		return mv;
+	}
+	
+	@PostMapping("/insertBonus")
+	public ModelAndView mngBonusType(ModelAndView mv,@AuthenticationPrincipal UserImpl user,MngBonusDTO bonusDTO, RedirectAttributes rttr) {
+		
+		System.out.println(bonusDTO);
+		bonusDTO.setCompanyNo(user.getCompanyNo());
+		int result = mngBasicInformationService.insertBonusType(bonusDTO);
+		
+		if(result >0) {
+			rttr.addFlashAttribute("successMessage", "상여 종류 추가를 완료하였습니다");
+		}else {
+			rttr.addFlashAttribute("failedMessage", "상여 종류 추가에 실패하였습니다");
+		}
+		System.out.println(bonusDTO);
+		System.out.println("급여 추가 값전송함");
+		mv.setViewName("redirect:/mngBasicInformation/salaryType");							//가야할 페이지
+
+		return mv;
 	}
 	
 	
