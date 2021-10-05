@@ -66,8 +66,12 @@ public class MngVacationController {
 		System.out.println(mngHolidayDTO);
 		
 //		return gson.toJson(mngHolidayDTO); 
-
+		
 	}
+	
+	
+	
+	
 
 	@GetMapping("/vacationList")
 	public String mngVacationList() {
