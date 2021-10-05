@@ -45,6 +45,22 @@ public class SalaryController {
 		return mv;
 	}
 	
+	/* 직원 계좌 인증 */
+	@GetMapping("/authAccount")
+	protected void authAccount() {
+		
+	}
+	
+	
+	/* 직원 본인 계좌 등록 */
+	@PostMapping("/applyAccount")
+	public ModelAndView applyAccount() {
+		
+		return null;
+	}
+	
+	
+	
 	/* 직원 본인 급여명세서 조회 */
 	@GetMapping("/list")
 	public String salaryList() {

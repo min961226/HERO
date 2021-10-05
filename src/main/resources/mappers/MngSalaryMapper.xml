@@ -51,14 +51,26 @@
 		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="memberName" column="MEMBER_NAME"/>
 		<result property="hireDate" column="HIRE_DATE"/>
-		<result property="healthCoverDate" column="HEALTH_INSURANCE_COVERAGE_DATE"/>
-		<result property="healthSal" column="MONTHLY_HEALTH_AVERAGE_SALARY"/>
+		<result property="healthCoverDate" column="HEALTH_INS_START_DATE"/>
+		<result property="healthSal" column="HEALTH_INS_SALARY"/>
 		<result property="healthInsFee" column="HEALTH_INSURANCE_FEE"/>
 		<result property="longtermFee" column="LONG_TERM_CARE_FEE"/>
-		<result property="pensionCoverDate" column="NATIONAL_PENSION_COVERAGE_DATE"/>
-		<result property="pensionSal" column="MONTHLY_PENSION_AVERAGE_SALARY"/>
+		<result property="pensionCoverDate" column="PENSION_INS_START_DATE"/>
+		<result property="pensionSal" column="PENSION_INS_SALARY"/>
 		<result property="pensionFee" column="PENSION_INSURANCE_FEE"/>
 	</resultMap> 
+	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.FourInsRateDTO" id="insRateResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="divNo" column="DIV_NO"/>
+		<result property="insRateStartDate" column="INSURANCE_RATE_START_DATE"/>
+		<result property="workersPensionRate" column="WORKERS_PENSION_RATE"/>
+		<result property="workersHealthRate" column="WORKERS_HEALTH_RATE"/>
+		<result property="workersLongTermCareRate" column="WORKERS_LONG_TERM_CARE_RATE"/>
+		<result property="workersUnempRate" column="WORKERS_UNEMP_RATE"/>
+		<result property="under150EmpRate" column="UNDER150_EMP_INSURANCE"/>
+		<result property="industryRate" column="INDUSTRY_RATE"/>
+	</resultMap>
 	
 	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO" id="memberAccountResultMap">
 		<id property="companyNo" column="COMPANY_NO"/>
@@ -241,62 +253,119 @@
              , A.MEMBER_NO
              , A.KOREAN_NAME AS MEMBER_NAME
              , A.HIRE_DATE
-             , B.HEALTH_INSURANCE_COVERAGE_DATE
-             , B.MONTHLY_HEALTH_AVERAGE_SALARY
+             , B.HEALTH_INS_START_DATE
+             , B.HEALTH_INS_SALARY
              , B.HEALTH_INSURANCE_FEE
              , B.LONG_TERM_CARE_FEE
-             , B.NATIONAL_PENSION_COVERAGE_DATE
-             , B.MONTHLY_PENSION_AVERAGE_SALARY
+             , B.PENSION_INS_START_DATE
+             , B.PENSION_INS_SALARY
              , B.PENSION_INSURANCE_FEE
           FROM TBL_EMPLOYEE A
           JOIN TBL_PERSONAL_INSURANCE_FEE B ON (A.MEMBER_NO = B.MEMBER_NO)         
          WHERE A.COMPANY_NO = #{ companyNo }
-           AND (A.MEMBER_NO, B.HEALTH_INSURANCE_COVERAGE_DATE, B.NATIONAL_PENSION_COVERAGE_DATE) IN (SELECT 
-                                                                                                            A1.MEMBER_NO
-                                                                                                          , MAX(B1.HEALTH_INSURANCE_COVERAGE_DATE)AS HEALTH_INSURANCE_COVERAGE_DATE
-                                                                                                          , MAX(B1.NATIONAL_PENSION_COVERAGE_DATE)AS NATIONAL_PENSION_COVERAGE_DATE
+           AND (A.MEMBER_NO, B.HEALTH_INS_START_DATE, B.PENSION_INS_START_DATE) IN (SELECT 
+                                                                                            A1.MEMBER_NO
+                                                                                          , MAX(B1.HEALTH_INS_START_DATE)AS HEALTH_INS_START_DATE
+                                                                                          , MAX(B1.PENSION_INS_START_DATE)AS PENSION_INS_START_DATE
                                             
                                                                                                        FROM TBL_EMPLOYEE A1
                                                                                                        JOIN TBL_PERSONAL_INSURANCE_FEE B1 ON (A1.MEMBER_NO = B1.MEMBER_NO)
                                                                                                      <where>
                                                                                                          <if test="(searchDate != null) and '' != searchDate">  
-                                                                                                             B1.HEALTH_INSURANCE_COVERAGE_DATE <![CDATA[<=]]> #{ searchDate } 
-                                                                                                         OR  B1.NATIONAL_PENSION_COVERAGE_DATE <![CDATA[<=]]> #{ searchDate } 
+                                                                                                             B1.HEALTH_INS_START_DATE <![CDATA[<=]]> #{ searchDate } 
+                                                                                                         OR  B1.PENSION_INS_START_DATE <![CDATA[<=]]> #{ searchDate } 
                                                                                                          </if>
                                                                                                          <if test="(searchDate == null) or '' == searchDate">
-                                                                                                             B1.HEALTH_INSURANCE_COVERAGE_DATE <![CDATA[<=]]> SYSDATE 
-                                                                                                         OR  B1.NATIONAL_PENSION_COVERAGE_DATE <![CDATA[<=]]> SYSDATE 
+                                                                                                             B1.HEALTH_INS_START_DATE <![CDATA[<=]]> SYSDATE 
+                                                                                                         OR  B1.PENSION_INS_START_DATE <![CDATA[<=]]> SYSDATE 
                                                                                                          </if>
                                                                                                      </where>
                                                                                                        GROUP BY A1.MEMBER_NO)
 	</select>
 	
+	<select id="selectNewMemberInsFee" resultMap="memberInsFeeResult">
+	    SELECT
+               A.COMPANY_NO
+             , A.MEMBER_NO
+             , A.KOREAN_NAME AS MEMBER_NAME
+             , A.HIRE_DATE
+          FROM TBL_EMPLOYEE A
+          LEFT JOIN TBL_PERSONAL_INSURANCE_FEE B ON (A.MEMBER_NO = B.MEMBER_NO)         
+         WHERE A.COMPANY_NO = #{ companyNo }
+           AND B.HEALTH_INS_SALARY IS NULL
+           AND B.PENSION_INS_SALARY IS NULL
+        <if test="(searchDate != null) and '' != searchDate">  
+           AND A.HIRE_DATE <![CDATA[<=]]> #{ searchDate }
+        </if>     
+	</select>
+	
+	
+	
+	<select id="selectInsRate" parameterType="com.nextLevel.hero.mngSalary.model.dto.FourInsRateDTO" resultMap="insRateResultMap">
+	    SELECT
+	           A.COMPANY_NO
+	         , A.INSURANCE_RATE_START_DATE
+	         , A.WORKERS_PENSION_RATE
+	         , A.WORKERS_HEALTH_RATE
+	         , A.WORKERS_LONG_TERM_CARE_RATE
+	         , A.WORKERS_UNEMP_RATE
+	         , A.UNDER150_EMP_INSURANCE
+	         , A.INDUSTRIAL_INSURANCE_RATE
+	      FROM TBL_INSURANCE_RATE A
+	     WHERE A.COMPANY_NO = #{ companyNo }
+	 	   AND A.INSURANCE_RATE_START_DATE IN (SELECT
+	 	                                              MAX(A1.INSURANCE_RATE_START_DATE)
+	 	                                         FROM TBL_INSURANCE_RATE A1
+	 	                                        WHERE A1.COMPANY_NO = #{ companyNo }      
+	 	                                          AND A1.INSURANCE_RATE_START_DATE <![CDATA[<=]]> #{ searchDate }     
+	 	                                              ) 
+	</select>	
+	
+	<insert id="updateMonthlyInsurance" parameterType="com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO">
+		INSERT
+		  INTO TBL_PERSONAL_INSURANCE_FEE
+	    VALUES
+	    (
+	      #{ companyNo }
+	    , SEQ_PERSONAL_INS_FEE_NO.NEXTVAL  
+	    , #{ memberNo }
+	    , #{ healthCoverDate }
+	    , #{ healthSal }
+	    , #{ healthInsFee }
+	    , #{ longtermFee }
+	    , #{ pensionCoverDate }
+	    , #{ pensionSal }
+	    , #{ pensionFee }
+	    )
+	</insert>
+	
+	
 	
 	<select id="listmngPayrollAccount" resultMap="memberAccountResultMap">
-	SELECT 
-           I.COMPANY_NO
-         , I.MEMBER_NO
-         , I.MEMBER_NAME
-         , I.DEPARTMENT_NAME
-         , I.RANK
-         , I.ACCOUNT_NO
-         , I.BANK_NAME	
-      FROM (SELECT
-                   A.COMPANY_NO
-                 , A.MEMBER_NO
-                 , A.KOREAN_NAME AS MEMBER_NAME
-                 , B.DEPARTMENT_NAME
-                 , F.RANK
-                 , G.ACCOUNT_NO
-                 , H.BANK_NAME
-              FROM TBL_EMPLOYEE A
-              JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
-              JOIN TBL_EMP_SALARY_STEP C ON (A.MEMBER_NO = C.MEMBER_NO)
-              JOIN TBL_RANK_SALARY_STEP F ON (C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK)
-              JOIN TBL_EMP_ACCOUNT G ON (A.MEMBER_NO = G.MEMBER_NO)
-              LEFT JOIN TBL_BANK H ON (G.BANK_CODE = H.BANK_CODE)
-             WHERE C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK
-	        )I
+		SELECT 
+	           I.COMPANY_NO
+	         , I.MEMBER_NO
+	         , I.MEMBER_NAME
+	         , I.DEPARTMENT_NAME
+	         , I.RANK
+	         , I.ACCOUNT_NO
+	         , I.BANK_NAME	
+	      FROM (SELECT
+	                   A.COMPANY_NO
+	                 , A.MEMBER_NO
+	                 , A.KOREAN_NAME AS MEMBER_NAME
+	                 , B.DEPARTMENT_NAME
+	                 , F.RANK
+	                 , G.ACCOUNT_NO
+	                 , H.BANK_NAME
+	              FROM TBL_EMPLOYEE A
+	              JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+	              JOIN TBL_EMP_SALARY_STEP C ON (A.MEMBER_NO = C.MEMBER_NO)
+	              JOIN TBL_RANK_SALARY_STEP F ON (C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK)
+	              JOIN TBL_EMP_ACCOUNT G ON (A.MEMBER_NO = G.MEMBER_NO)
+	              LEFT JOIN TBL_BANK H ON (G.BANK_CODE = H.BANK_CODE)
+	             WHERE C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK
+		        )I
 	</select>
 	
 	

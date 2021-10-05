@@ -4,10 +4,29 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style>
 .thSpan {
 	vertical-align : middle;
 	text-align: center;
+}
+
+.card input:not([name*=Sal]) {
+	text-align: center;
+	vertical-align : middle;
+	background-color: rgba( 255, 255, 255, 0 );
+	border: none;
+	outline: none;
+}
+
+.memberNo, .memberName, .total, 
+.healthInsFee, .longtermFee, .pensionFee {
+	width: 55px;
+}
+
+.hireDate, .healthDate, .healthSal,
+.pensionDate, .pensionSal {
+	width: 85px;
 }
 
 </style>
@@ -28,7 +47,7 @@
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
 							<div>
-								<form action="/mngSalary//nationalHealthInsurancePension" method="get">
+								<form action="/mngSalary/nationalHealthInsurancePension" method="get">
 									<label style="padding:10px;">기준일 </label><input type="date" id="searchDate" name="searchDate"><br>
 									<label style="margin:15px;">검색</label>
 									<select id="searchCondition" name="searchCondition">
@@ -36,55 +55,64 @@
 										<option value="searchMemberName">성 명</option>
 									</select>
 									<input type="text" style="margin:10px;" id="searchValue" name="searchValue">
-									<button type="button" class="btn btn-outline-primary">검 색</button>
+									<button type="submit" class="btn btn-outline-primary">검 색</button>
 								</form>
 							</div>
 							<br>
 							<div class="card">
 								<div class="card-body">
-								<button type="button" class="btn btn-success" style="margin:5px;">수 정</button>
-								<button type="button" class="btn btn-warning" style="margin:5px;">수정완료</button>
-								<table class="table table-bordered mb-0 nowrap w-100 text-center" id="tbl">
-									<thead>
-										<tr>
-											<th rowspan = "2" class="thSpan">구 분</th>											
-											<th rowspan = '2' class="thSpan">사원번호</th>											
-											<th rowspan = '2' class="thSpan">성 명</th>											
-											<th rowspan = '2' class="thSpan">입사일</th>										
-											<th colspan = '6'>건강보험</th>											
-											<th colspan = '3'>국민연금</th>																							
-										</tr>
-										<tr>											
-											<th>설정시작일</th>																																		
-											<th>보수월액</th>																																		
-											<th>경감적용</th>																																		
-											<th>납부 계</th>																																		
-											<th>건강보험</th>																																		
-											<th>장기요양</th>																																		
-											<th>설정시작일</th>																																		
-											<th>보수월액</th>																																		
-											<th>납부 계</th>																																		
-										</tr>
-									</thead>
-										
-									<tbody class="thSpan">
-										<tr th:each="fee, num : ${memInsFeeList}">
-											<td th:text="${num.count}"></td>
-											<td th:text="${fee.memberNo}" class="memberNo"></td>
-											<td th:text="${fee.memberName}" class="memberName"></td>
-											<td th:text="${fee.hireDate}" class="hireDate"></td>
-											<td th:text="${fee.healthCoverDate}" class="healthDate"></td>
-											<td th:text="${#numbers.formatInteger(fee.healthSal, 3, 'COMMA')}" class="healthSal"></td>
-											<td ><button type="button" class="btn btn-soft-success">경감</button></td>
-											<td class="totalHealthFee" th:text="${#numbers.formatInteger(fee.healthInsFee + fee.longtermFee, 3, 'COMMA')}"></td>
-											<td th:text="${#numbers.formatInteger(fee.healthInsFee, 3, 'COMMA')}" class="healthInsFee"></td>
-											<td th:text="${#numbers.formatInteger(fee.longtermFee, 3, 'COMMA')}" class="longtermFee"></td>
-											<td th:text="${fee.pensionCoverDate}" class="pensionDate"></td>
-											<td th:text="${#numbers.formatInteger(fee.pensionSal, 3, 'COMMA')}" class="pensionSal"></td>
-											<td th:text="${#numbers.formatInteger(fee.pensionFee, 3, 'COMMA')}" class="pensionFee"></td>
-										</tr>
-									</tbody>
-								</table>
+								<form action="/mngSalary/updateMonthlyIns" method="POST" id="updateIns">
+									<button type="button" class="btn btn-warning" style="margin:5px;" id="modify">수 정</button>
+									<button type="submit" class="btn btn-info" style="margin:5px; display:none;" id="finModi">수정완료</button>
+									<button type="reset" class="btn btn-success" style="margin:5px; display:none;" id="cancleModi">취소</button>
+									<table class="table table-bordered mb-0 nowrap w-100 text-center" id="tbl">
+										<thead>
+											<tr>
+												<th rowspan = "2" class="thSpan">구 분</th>											
+												<th rowspan = '2' class="thSpan">사원번호</th>											
+												<th rowspan = '2' class="thSpan">성 명</th>											
+												<th rowspan = '2' class="thSpan">입사일</th>										
+												<th colspan = '6'>건강보험</th>											
+												<th colspan = '3'>국민연금</th>																							
+											</tr>
+											<tr>											
+												<th>설정시작일</th>																																		
+												<th>보수월액</th>																																		
+												<th>경감적용</th>																																		
+												<th>납부 계</th>																																		
+												<th>건강보험</th>																																		
+												<th>장기요양</th>																																		
+												<th>설정시작일</th>																																		
+												<th>보수월액</th>																																		
+												<th>납부 계</th>																																		
+											</tr>
+										</thead>
+											
+										<tbody class="thSpan" id="td">
+											<tr th:each="fee,feeStat : ${memInsFeeList}" id="tr">
+												<td th:text="${feeStat.index + 1}"></td>
+												<td><input type="text" readonly th:value="${fee.memberNo}" class="memberNo" th:name="'memInsFeeList['+${feeStat.index} +'].memberNo'"></td>
+												<td><input type="text" readonly th:value="${fee.memberName}" class="memberName" th:name="'memInsFeeList['+${feeStat.index} +'].memberName'"></td>
+												<td><input type="text" readonly th:value="${fee.hireDate}" class="hireDate" th:name="'memInsFeeList['+${feeStat.index} +'].hireDate'"></td>
+												<td><input type="text" readonly th:value="${fee.healthCoverDate}" class="healthDate" th:name="'memInsFeeList['+${feeStat.index} +'].healthCoverDate'"></td>
+												<td><input type="text" readonly th:value="${fee.healthSal}" 
+													class="healthSal" th:name="'memInsFeeList['+${feeStat.index} +'].healthSal'" th:id="${'healthSal' + feeStat.index}"></td>
+												<td><button type="button" th:id="${'reducebtn' + feeStat.index}" class="btn btn-soft-secondary" disabled="disabled">경감</button></td>
+												<td><input type="text" readonly class="total" th:value="${fee.healthInsFee + fee.longtermFee}"></td>
+												<td><input type="text" readonly th:value="${fee.healthInsFee}" 
+													class="healthInsFee" th:name="'memInsFeeList['+${feeStat.index} +'].healthInsFee'"></td>
+												<td><input type="text" readonly th:value="${fee.longtermFee}" th:id="${'longterm' + feeStat.index}"
+													class="longtermFee" th:name="'memInsFeeList['+${feeStat.index} +'].longtermFee'"></td>
+												<td><input type="text" readonly th:value="${fee.pensionCoverDate}" 
+													class="pensionDate" th:name="'memInsFeeList['+${feeStat.index} +'].pensionCoverDate'"></td>
+												<td><input type="text" readonly th:value="${fee.pensionSal}" 
+													class="pensionSal" th:name="'memInsFeeList['+${feeStat.index} +'].pensionSal'" th:id="${'pensionSal' + feeStat.index}"></td>
+												<td><input type="text" readonly th:value="${fee.pensionFee}" 
+													class="pensionFee" th:name="'memInsFeeList['+${feeStat.index} +'].pensionFee'"></td>
+											</tr>
+										</tbody>
+									</table>
+								</form>
 								</div>
 							</div>
 						</div>
@@ -96,9 +124,123 @@
 	</div>
 	<script>
 	
+	$("#modify").click(function() {
+		
+		$("#finModi").show();
+		$("#cancleModi").show();
+		$("[id^=reducebtn]").prop("disabled", false);
+		$("[id^=reducebtn]").attr("class", "btn btn-soft-info");
+		$("#modify").css("display", "none");
+		$("[name*=Sal]").prop("readonly", false);
+		$(".healthDate").prop("readonly", false);
+		$(".pensionDate").prop("readonly", false);
+		
+	});
+	
+	$("[id^=reducebtn]").click(function() {
+		
+		let longtermTr = $(this).parents("tr").find(".longtermFee");
+		let deductCalc = Math.floor(longtermTr.val() * 0.7 / 10) * 10;
+		let longtermFee = longtermTr.val(deductCalc);
+		
+		let healthFeeTr = $(this).parents("tr").find(".healthInsFee");
+		let totalHealthFeeTr = $(this).parents("tr").find(".total");
+		
+		let totalFeeCalc = parseInt(healthFeeTr.val()) + parseInt(longtermTr.val());
+		
+		const totalHealthFee = totalHealthFeeTr.val(totalFeeCalc);
+		
+		$(this).attr("class", "btn btn-soft-secondary");
+		$(this).prop("disabled", true);
+	});
+
+	$("#cancleModi").click(function() {
+		
+		if($("[id^=reducebtn]").prop("disabled") == true) {			
+			$("[id^=reducebtn]").prop("disabled", false);
+			$("[id^=reducebtn]").attr("class", "btn btn-soft-info");
+			
+		}
+	});
+		
+	$("[name*=healthSal]").change(function() {
+		
+		let healthSalTr = $(this).parents("tr").find(".healthSal");
+		let healthFeeTr = $(this).parents("tr").find(".healthInsFee");
+		let longtermTr = $(this).parents("tr").find(".longtermFee");
+		let totalHealthFeeTr = $(this).parents("tr").find(".total");
+		
+		const searchDate = $(this).parents("tr").find(".healthDate").val();
+		
+		let healthFee = 0;
+		let longtermFee = 0;
+		let total = 0;
+		
+		$.ajax({
+			url:"selectInsRate",
+			method: "GET",
+			data: {searchDate : searchDate},
+			success: function(data) {
+				
+				healthFee = Math.floor(((parseInt(healthSalTr.val()) * (data.workersHealthRate)).toFixed(0)) / 10) * 10;  		
+				longtermFee = Math.floor(((parseInt(healthFee) * (data.workersLongTermCareRate)).toFixed(0)) / 10) * 10;			
+				total = parseInt(healthFee) + parseInt(longtermFee);
+				
+				healthFeeTr.val(healthFee);
+				longtermTr.val(longtermFee);
+				totalHealthFeeTr.val(total);
+			},
+			error: function(xhr) {
+				Swal.fire({
+	     			  position: 'center',
+	     			  icon: 'error',
+	     			  title: '보험료 산출에 실패했습니다. 잠시 후 다시 시도해주세요.',
+	     			  showConfirmButton: false,
+	     			  timer: 1500,
+	     			  width: 600
+	     		}).then((result) => {
+		        	   location.href="#";
+	     				})
+			}
+		});
+	});
 	
 	
+	$("[name*=pensionSal]").change(function() {
+		let pensionSalTr = $(this).parents("tr").find(".pensionSal");
+		let pensionFeeTr = $(this).parents("tr").find(".pensionFee");
+		
+		const searchDate = $(this).parents("tr").find(".pensionDate").val();
+				
+		let pensionFee = 0;
+		
+		$.ajax({
+			url:"selectInsRate",
+			method: "GET",
+			data: {searchDate : searchDate},
+			success: function(data) {
+				
+				pensionFee = Math.floor(((parseInt(pensionSalTr.val()) * (data.workersPensionRate)).toFixed(0)) / 10) * 10;  		
+							
+				pensionFeeTr.val(pensionFee);
 	
+			},
+			error: function(xhr) {
+				Swal.fire({
+	     			  position: 'center',
+	     			  icon: 'error',
+	     			  title: '보험료 산출에 실패했습니다. 잠시 후 다시 시도해주세요.',
+	     			  showConfirmButton: false,
+	     			  timer: 1500,
+	     			  width: 600
+	     		}).then((result) => {
+		        	   location.href="#";
+	     				})
+			}
+		});
+		
+	});
+
 	
 	</script>
 </body>
