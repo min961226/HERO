@@ -58,7 +58,6 @@ public class MemberServiceImpl implements MemberService{
             }
          }
       }
-      System.out.println("----");
       for(int i = 0; i < rankRoleList.size(); i++) {
     	  String rankRole = rankRoleList.get(i).getName();
     	  
@@ -68,14 +67,11 @@ public class MemberServiceImpl implements MemberService{
     	  System.out.println(rankRole);
       }
       
-      System.out.println("-----------");
-      System.out.println(authorities);
       //아이디 pwd 권한을 타입 객체로 만들어 반환
 //      return new User(member.getId(), member.getPwd(), authorities);      //유저 타입 반환
       
       UserImpl user = new UserImpl(member.getNo(), member.getId(), member.getPwd(), authorities);
       user.setDetails(member,companyNo);
-      System.out.println(user);
       return user;
    }
 

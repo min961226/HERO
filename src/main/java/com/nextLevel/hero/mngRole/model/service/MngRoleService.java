@@ -1,10 +1,11 @@
 package com.nextLevel.hero.mngRole.model.service;
 
-import java.util.List; 
+import java.util.List;
 
 import com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRoleDTO;
+import com.nextLevel.hero.mngRole.model.dto.MngUserAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngUserDTO;
 
 public interface MngRoleService {
@@ -22,6 +23,16 @@ public interface MngRoleService {
 	int insertRankAuth(MngRankAuthDTO mngRankAuthDTO);
 
 	List<MngUserDTO> selectUser(int companyNo);
+
+	List<MngUserAuthDTO> selectUserAuth(String userName, String memberNo, int companyNo);
+
+	int updateUserRoleAuth(MngUserAuthDTO mngUserAuthDTO);
+
+	int deleteUserAuth(MngUserAuthDTO mngUserAuthDTO);
+
+	int insertUserAuth(MngUserAuthDTO mngUserAuthDTO);
+
+
 
 
 

@@ -1,6 +1,6 @@
 package com.nextLevel.hero.mngRole.controller;
 
-import java.util.List; 
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +17,7 @@ import com.nextLevel.hero.member.model.dto.UserImpl;
 import com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRoleDTO;
+import com.nextLevel.hero.mngRole.model.dto.MngUserAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngUserDTO;
 import com.nextLevel.hero.mngRole.model.service.MngRoleService;
 
@@ -46,10 +47,10 @@ public class MngRoleController {
 		return mv;
 	}
 
-	/* 직급 리스트 ajax 조회 */
+	/* 직급 권한 ajax 조회 */
 	@GetMapping(value = "role_auth", produces = "application/json; charset=UTF-8")
 	@ResponseBody
-	public List<MngRankAuthDTO> findCategoryList(@AuthenticationPrincipal UserImpl user,
+	public List<MngRankAuthDTO> selectRankAuth(@AuthenticationPrincipal UserImpl user,
 												 @RequestParam("rank") String rank) {
 		int companyNo = user.getCompanyNo();
 		List<MngRankAuthDTO> rankAuth = mngRoleService.selectRankAuth(companyNo, rank);
@@ -63,9 +64,13 @@ public class MngRoleController {
 									   RedirectAttributes rttr) {
 
 		mngRankSalaryDTO.setCompanyNo(user.getCompanyNo());
-		mngRoleService.updateRoleAuth(mngRankSalaryDTO);
+		int result = mngRoleService.updateRoleAuth(mngRankSalaryDTO);
 
-		rttr.addFlashAttribute("successMessage", "권한 생성에 성공하였습니다");
+		if(result >0) {
+			rttr.addFlashAttribute("successMessage", "권한 생성에 성공하였습니다");
+        }else {
+            rttr.addFlashAttribute("failedMessage", "권한 생성에 실패하였습니다");
+        }
 		mv.setViewName("redirect:/mngRole/roleDept");
 
 		return mv;
@@ -73,7 +78,7 @@ public class MngRoleController {
 
 	/* 직급 권한 수정 */
 	@PostMapping("/rankRoleDept")
-	public ModelAndView insertUserAuth(ModelAndView mv, @AuthenticationPrincipal UserImpl user, RedirectAttributes rttr,
+	public ModelAndView insertRankAuth(ModelAndView mv, @AuthenticationPrincipal UserImpl user, RedirectAttributes rttr,
 									   MngRankAuthDTO mngRankAuthDTO) {
 		
 		System.out.println(mngRankAuthDTO);
@@ -84,9 +89,13 @@ public class MngRoleController {
 		/* insert전 delete*/
 		mngRoleService.deleteRankAuth(mngRankAuthDTO);
 		/* 직급 권한 insert */
-		mngRoleService.insertRankAuth(mngRankAuthDTO);
+		int result = mngRoleService.insertRankAuth(mngRankAuthDTO);
 		
-		rttr.addFlashAttribute("successMessage", "권한 수정에 성공하였습니다");
+		if(result >0) {
+			rttr.addFlashAttribute("successMessage", "권한 수정에 성공하였습니다");
+        }else {
+            rttr.addFlashAttribute("failedMessage", "권한 수정에 실패하였습니다");
+        }
 		
 		mv.setViewName("redirect:/mngRole/roleDept");
 
@@ -106,6 +115,65 @@ public class MngRoleController {
 		mv.setViewName("/mngRole/roleUser");
 
 		return mv;
+	}
+	
+	/* 사원 권한 ajax 조회 */
+	@PostMapping(value = "user_auth", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public List<MngUserAuthDTO> selectUserAuth(@AuthenticationPrincipal UserImpl user,
+		  									   @RequestParam("userName") String userName,
+		 								       @RequestParam("memberNo") String memberNo) {
+		int companyNo = user.getCompanyNo(); 
+		
+		List<MngUserAuthDTO> userAuth = mngRoleService.selectUserAuth(userName, memberNo, companyNo);
+		
+		return userAuth;
+	}
+	
+	/* 사원 권한 생성 */
+	@PostMapping("updateUserRoleAuth")
+	public ModelAndView createUserRoleAuth(ModelAndView mv,  @AuthenticationPrincipal UserImpl user, RedirectAttributes rttr, 
+										  @RequestParam String name, @RequestParam String memberNo) {
+		
+		MngUserAuthDTO mngUserAuthDTO = new MngUserAuthDTO();
+		
+		mngUserAuthDTO.setUserName(name);
+		mngUserAuthDTO.setMemberNo(memberNo);
+		mngUserAuthDTO.setCompanyNo(user.getCompanyNo());
+		
+		int result = mngRoleService.updateUserRoleAuth(mngUserAuthDTO);
+		
+		if(result >0) {
+			rttr.addFlashAttribute("successMessage", "권한 생성에 성공하였습니다");
+        }else {
+            rttr.addFlashAttribute("failedMessage", "권한 생성에 실패하였습니다");
+        }
+
+		mv.setViewName("redirect:/mngRole/roleUser");
+		return mv;
+	}
+	
+	/* 사원 권한 수정 */
+	@PostMapping("/userRoleDept")
+	public ModelAndView insertUserAuth(ModelAndView mv, @AuthenticationPrincipal UserImpl user, RedirectAttributes rttr,
+									   MngUserAuthDTO mngUserAuthDTO) {
+		
+		
+		/* insert전 delete*/
+		int result = mngRoleService.deleteUserAuth(mngUserAuthDTO);
+		/* 사원 권한 수정 */
+		result += mngRoleService.insertUserAuth(mngUserAuthDTO);
+		
+		if(result > 1) {
+			rttr.addFlashAttribute("successMessage", "권한 수정에 성공하였습니다");
+        }else {
+            rttr.addFlashAttribute("failedMessage", "권한 수정에 실패하였습니다");
+        }
+		
+		mv.setViewName("redirect:/mngRole/roleUser");
+
+		return mv;
+
 	}
 
 }

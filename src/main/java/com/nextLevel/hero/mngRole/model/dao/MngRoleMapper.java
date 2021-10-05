@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRoleDTO;
+import com.nextLevel.hero.mngRole.model.dto.MngUserAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngUserDTO;
 
 @Mapper
@@ -28,6 +29,18 @@ public interface MngRoleMapper {
 	Collection<? extends MngRankAuthDTO> selectAuthority(int salaryStepByRank, int companyNo);
 
 	List<MngUserDTO> selectUser(int companyNo);
+
+	List<MngUserAuthDTO> selectUserAuth(String userName, String memberNo, int companyNo);
+ 
+	Collection<? extends MngUserAuthDTO> selectUserAuthority(int idNo);
+
+	int updateUserRoleAuth(MngUserAuthDTO mngUserAuthDTO);
+
+	int deleteUserAuth(MngUserAuthDTO mngUserAuthDTO);
+
+	int insertUserAuth(MngUserAuthDTO mngUserAuthDTO);
+
+
 
 
 

@@ -27,7 +27,14 @@
 		<result property="name" column="KOREAN_NAME"/>
 		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="departmentName" column="DEPARTMENT_NAME"/>
-		
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngRole.model.dto.MngUserAuthDTO" id="userMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<id property="idNo" column="ID_NO"/>
+		<id property="authoryityNo" column="AUTHORITY_NO"/>
+		<result property="name" column="KOREAN_NAME"/>
+		<result property="tblUserAuth" column="TBL_USER_AUTH"/>
 	</resultMap>
 	
 	<select id="selectRank" resultMap="rankResultMap">
@@ -36,8 +43,8 @@
   		  FROM TBL_RANK_SALARY_STEP
  		 WHERE COMPANY_NO = 1
  		 ORDER BY 1 ASC
- 		 
 	</select>
+	
 	<select id="selectRankAuth" resultMap="rankAuthMap">
 		SELECT
 			     ROWNUM
@@ -115,6 +122,53 @@
           JOIN TBL_DEPARTMENT B ON(A.DEPARTMENT_NO = B.DEPARTMENT_NO)
          WHERE A.COMPANY_NO = #{ companyNo }
 	</select>
+	
+	<select id="selectUserAuth" resultMap="userMap">
+         SELECT
+               A.TBL_USER_AUTH
+             , A.ID_NO
+          FROM TBL_EMPLOYEE A
+         WHERE A.MEMBER_NO = #{ memberNo }
+           AND A.KOREAN_NAME = #{ userName }
+           AND A.COMPANY_NO = #{ companyNo }
+	</select>
+	
+	<select id="selectUserAuthority" resultMap="userMap">
+		SELECT
+			   AUTHORITY_NO
+		  FROM TBL_USER_AUTH
+		 WHERE ID_NO = #{ idNo }
+	</select>
+	
+	<update id="updateUserRoleAuth" parameterType="com.nextLevel.hero.mngRole.model.dto.MngUserAuthDTO">
+		UPDATE TBL_EMPLOYEE
+		   SET TBL_USER_AUTH = 'Y'
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND KOREAN_NAME = #{ userName }
+		   AND MEMBER_NO = #{ memberNo }
+	</update>
+	
+	<delete id="deleteUserAuth">
+		DELETE
+		  FROM TBL_USER_AUTH
+	 	 WHERE ID_NO = #{ idNo }
+	</delete>
+
+	
+	<insert id="insertUserAuth" parameterType="com.nextLevel.hero.mngRole.model.dto.MngUserAuthDTO">
+		<foreach collection="authoryityNoArg" item="item" open="INSERT ALL" close= "SELECT * FROM SYS.DUAL" separator=" ">
+			INTO TBL_USER_AUTH
+		(
+		  ID_NO
+		, AUTHORITY_NO
+		)
+		VALUES
+		(
+		  #{ idNo }
+		, #{ item.authoryityNo }
+		)
+		</foreach>
+	</insert>
 	
 	
 
