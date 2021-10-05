@@ -1,6 +1,9 @@
 package com.nextLevel.hero.mnghumanResource.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.nextLevel.hero.member.model.dto.UserImpl;
 import com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO;
 import com.nextLevel.hero.mnghumanResource.model.service.MngHumanResourceService;
 
@@ -31,10 +35,18 @@ public class MngHumanResourceController {
 		return "mngHumanResource/memberInsert";
 	}
 
+//	@PostMapping(value = "/memberInsert" , produces = "application/json; chartset=UTF-8")
 	@PostMapping("/memberInsert")
-	public ModelAndView mngMember(ModelAndView mv,RedirectAttributes rttr, MngHumanResourceDTO humanResourceDTO) {
-														
+	public ModelAndView mngMember(ModelAndView mv, RedirectAttributes rttr, MngHumanResourceDTO humanResourceDTO ,@AuthenticationPrincipal UserImpl user) {
+		
+//		String sss= humanResourceDTO.getAddress();					
+//		String ss = request.getParameter("name");
+//		System.out.println("ss : " + ss);
+//		System.out.println("sss : " + sss);
+		
 		System.out.println(humanResourceDTO);
+		
+		int insertMember = mngHumanResourceService.insertMember(humanResourceDTO ,user.getCompanyNo());
 		
 		return mv;
 	}
