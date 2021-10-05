@@ -58,23 +58,20 @@
 	                                                    </div>
 	                                                    <div class="modal-body">
 	                                                    	<div>
-		                                                        <label style="margin:5px; display: none;" id="memberNo" ></label>		                                                       
-		                                                        <label style="margin:10px;">성명 :</label><input type="text"><br>
-		                                                        <label style="margin:10px;">주민등록번호 :</label><input type="text" style="margin:5px;"><br>
-		                                                        <select style="margin:10px;" name="bankList" id="bankList">
-		                                                        	
+		                                                        <label style="display: none;" id="memberNo" ></label>		                                                       
+		                                                        <label style="padding:15px;">성   명 :</label><input type="text" style="margin:5px,25px;"><br>
+		                                                        <label style="padding:15px;">생년월일 :</label><input type="text" 
+		                                                        	style="margin:5px;" placeholder="예) 900101"><br>
+		                                                        <select name="bankList" id="bankList" style="margin:10px;">
+		                                                        	<!-- ajax로 구현 -->
 		                                                        </select>
-		                                                        <input type="text" style="margin:10px;" id="certification">
-		                                                        <button type="button" class="btn btn-info width-xs" id="confirm">계좌인증</button>
+		                                                        <input type="text" style="margin:5px;" id="certification" placeholder="계좌번호를 입력해주세요">
+		                                                        <button type="button" class="btn btn-info width-xs" id="confirm" style="margin:15px;">계좌인증</button>
 	                                                    	</div>	                                                  
 	                                                    </div>
-	                                                   <div class="modal-footer">
-		                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
-		                   									<button type="button" class="btn btn-success width-xs">계좌인증</button>
-	                                                   </div> 
 	                                              </div>
 	                                        </div>
-	                                     </div> <!-- 급여계좌 추가 모달창 종료 -->
+	                                     </div> <!-- 급여계좌 추가 모달창 종료 -->	                                                                                                             
 									</div>
 								</div>
 							</div>
@@ -91,8 +88,7 @@
 				url: "/salary/bankList",
 				method: "POST",
 				success: function(data) {
-					const $bankList = $("#bankList");
-					$bankList.html("");				
+					const $bankList = $("#bankList");			
 					$bankList.append($("<option>").text("은행명"));
 					
 					for(let index in data) {
@@ -111,6 +107,17 @@
 		$("#confirm").click(function() {
 			// 계좌인증 api
 			
+			let tmpPage = window.open("","", "width=800, height=500");
+			tmpPage.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?" 
+					+"response_type=code&"
+					+"client_id=0f2b7f2e-bb90-49a7-9ed3-ae3cf94d9f92&"
+					+"redirect_uri=http://127.0.0.1:8050/salary/authAccount&"
+					+"scope=login inquiry&"
+					+"state=12345678901234567890123456789012&"
+					+"auth_type=0&"
+					//+"account_hold_auth_yn=Y"
+					
+			$("#registAccount").modal('hide');		
 		});
 	
 	

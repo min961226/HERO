@@ -10,12 +10,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nextLevel.hero.mngSalary.model.dao.MngSalaryMapper;
+import com.nextLevel.hero.mngSalary.model.dto.FourInsRateDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
 import com.nextLevel.hero.mngSalary.model.dto.fourInsuranceList;
+import com.nextLevel.hero.mngSalary.model.dto.memInsFeeList;
 
 @Service("mngSalaryService")
 public class MngSalaryServiceImpl implements MngSalaryService {
@@ -34,8 +36,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		List<MngSalaryDTO> salStepList = mngSalaryMapper.listMngAnnualSalary(search);
 		List<MemberMonthlyPayDTO> monthlyList = mngSalaryMapper.listMonthlyPay(search);
 		
-		System.out.println("월 지급금액 체크"+monthlyList);
-		
+				
 		// 호봉 정보와 월 지급항목 합산 후 연 환산 
 		for(int i = 0; i < salStepList.size(); i++) {
 			
@@ -48,8 +49,6 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 				int memNo = monthlyList.get(j).getMemberInfo().getMemberNo();
 				
 				java.sql.Date monStart = monthlyList.get(j).getMonthlyStartDate();
-//				java.sql.Date monEnd = monthlyList.get(j).getMonthlyStartDate();
-//				java.sql.Date removeEnd = monthEndDateList.get(j).getMonthlyStopDate(); 
 
 					
 					/* 연봉 연산 */
@@ -59,7 +58,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 														
 						if(annualSal != 0) {
 							annualSal = (annualSal / 12 +  monthlyPay) * 12;
-							System.out.println("이미 연산 값이 있으면 연 지급 : " + annualSal);
+							
 							if(monStart.compareTo(latestDate) > 0) {
 								latestDate = monStart;
 							} 
@@ -67,7 +66,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 							
 						} else {
 							annualSal = (monthlyPay +  salStepAmount) * 12;
-							System.out.println("연산 값이 없으면 연 지급 : " + annualSal);
+							
 							if(monStart.compareTo(salStart) > 0) {
 								latestDate = monStart;
 							} else {
@@ -87,7 +86,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 			salStepList.get(i).setChangeStartDate(latestDate);
 			
 		}
-		System.out.println("서비스 : " + salStepList);
+		
 		return salStepList;
 	}
 
@@ -182,8 +181,6 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 				}
 			}
 		}
-
-		System.out.println(updateList);
 				
 		int updateFourInsResult = 0;
 		int insertHistoryResult = 0;
@@ -208,17 +205,140 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		}
 				
 		return finalResult;
-	}
+	} // 4대보험 개인별 공제항목 수정 종료
 
 	
 
 	/* 건강, 국민연금 보수월액 및 공제금액 조회 */
 	@Override
 	public List<MemberInsFeeDTO> listMngNationalHealthInsurancePension(MemberInsFeeDTO search) {
+	
+		List<MemberInsFeeDTO> originMemberList = mngSalaryMapper.listMngNationalHealthInsurancePension(search);
+		List<MemberInsFeeDTO> newMemberList = mngSalaryMapper.selectNewMemberInsFee(search);
+			
+		if(newMemberList.size() > 0) {
+			for(MemberInsFeeDTO newMember : newMemberList) {
+				originMemberList.add(newMember);
+			}
+		}		
+	
 		
-		return mngSalaryMapper.listMngNationalHealthInsurancePension(search);
+		
+		
+		return originMemberList;
+	}
+	
+
+	/* 건강, 국민연금 적용 요율 조회 */
+	@Override
+	public FourInsRateDTO selectInsRate(FourInsRateDTO search) {
+		
+		return mngSalaryMapper.selectInsRate(search);
+	}
+	
+	
+	/* 개인별 건강, 국민연금 보수월액 및 보험료 수정 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE,
+			rollbackFor = {Exception.class})
+	public int updateMonthlyInsurance(int companyNo, memInsFeeList insFeeList) {
+		
+		MemberInsFeeDTO search = new MemberInsFeeDTO();
+		search.setCompanyNo(companyNo);
+		
+		List<MemberInsFeeDTO> beforeList = mngSalaryMapper.listMngNationalHealthInsurancePension(search);
+		List<MemberInsFeeDTO> afterList = insFeeList.getMemInsFeeList();
+		
+		List<MemberInsFeeDTO> updateList = new ArrayList<>();
+		
+		
+		for(int i = 0; i < beforeList.size(); i++) {
+			
+			int beforeMemNo = beforeList.get(i).getMemberNo();
+			
+			Integer originHealthSal = beforeList.get(i).getHealthSal();
+			int originlongtermFee = beforeList.get(i).getLongtermFee();
+				
+			Integer originPensionSal = beforeList.get(i).getPensionSal();
+			
+		
+			/* 이번 리스트와 비교 */
+			for(int j = 0; j < afterList.size(); j++) {
+				
+				int afterMemNo = afterList.get(j).getMemberNo();
+				java.sql.Date afterHealthStartDate = afterList.get(j).getHealthCoverDate();
+				Integer afterHealthSal = afterList.get(j).getHealthSal();
+				int afterlongtermFee = afterList.get(j).getLongtermFee();
+				
+				java.sql.Date afterPensionStartDate = afterList.get(j).getPensionCoverDate();			
+				Integer afterPensionSal = afterList.get(j).getPensionSal();
+				int afterPensionFee = afterList.get(j).getPensionFee();
+				
+				MemberInsFeeDTO update = new MemberInsFeeDTO();
+				
+				if((beforeMemNo == afterMemNo) && 
+						(!originHealthSal.equals(afterHealthSal) || (originlongtermFee != afterlongtermFee))
+						|| (!originPensionSal.equals(afterPensionSal))) {
+					
+					update.setCompanyNo(companyNo);
+					update.setMemberNo(afterMemNo);
+					update.setHealthCoverDate(afterHealthStartDate);
+					update.setHealthSal(afterHealthSal);
+					update.setHealthInsFee(afterList.get(j).getHealthInsFee());
+					update.setLongtermFee(afterlongtermFee);
+					update.setPensionCoverDate(afterPensionStartDate);
+					update.setPensionSal(afterPensionSal);
+					update.setPensionFee(afterPensionFee);
+					
+					updateList.add(update);
+					
+				} 
+				
+				if((beforeMemNo == afterMemNo) && (originHealthSal == null) && (originPensionSal == null)) {
+					update.setCompanyNo(companyNo);
+					update.setMemberNo(afterMemNo);
+					update.setHealthCoverDate(afterHealthStartDate);
+					update.setHealthSal(afterHealthSal);
+					update.setHealthInsFee(afterList.get(j).getHealthInsFee());
+					update.setLongtermFee(afterlongtermFee);
+					update.setPensionCoverDate(afterPensionStartDate);
+					update.setPensionSal(afterPensionSal);
+					update.setPensionFee(afterPensionFee);
+					
+					updateList.add(update);
+				}
+			}
+		
+		}
+		
+		int insertResult = 0;
+		int finalResult = 0;
+		
+		
+		if (updateList.size() > 0) {
+			for(MemberInsFeeDTO personal : updateList) {
+				insertResult += mngSalaryMapper.updateMonthlyInsurance(personal);
+			}		
+			
+		} else {
+			finalResult = 0;
+		}
+		
+		
+		if(insertResult > 0  && (insertResult == updateList.size())) {			
+			finalResult = 1;
+		}
+		
+		
+		return finalResult;
 	}
 
+	
+	
+	
+	
+	
+	
 	
 	/* 급여 계좌 조회 */
 	@Override
@@ -229,6 +349,5 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 
 	
 
-	
 	
 }

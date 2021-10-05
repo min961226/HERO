@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.nextLevel.hero.mngSalary.model.dto.FourInsRateDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO;
@@ -30,6 +31,12 @@ public interface MngSalaryMapper {
 	List<MngAccountDTO> listmngPayrollAccount();
 
 	List<MemberMonthlyPayDTO> listMonthlySalary(MngSalaryDTO search);
+
+	FourInsRateDTO selectInsRate(FourInsRateDTO search);
+
+	int updateMonthlyInsurance(MemberInsFeeDTO personal);
+
+	List<MemberInsFeeDTO> selectNewMemberInsFee(MemberInsFeeDTO search);
 
 
 }
