@@ -12,7 +12,7 @@
 			<div class="content">
 				<div class="container-fluid">
 					<!-- start page title -->
-					<div class="row">
+					<div class="row" >
 						<div class="col-12">
 							<br>
 							<div class="page-title-box">
@@ -20,20 +20,20 @@
 							</div>
 							<hr>
 							<div class="row">
-								<div class="col-xl-12">
+								<div class="col-xl-9">
 									<div class="row">
-										<div class="col">
+										<div class="col" >
 											<div class="card">
 												<div class="card-body">
 													<!-- cta -->
 													<div class="row">
 														<div class="form-check float-start">
 															<h4 class="header-title mt-0">
-																휴가 목록
+															<b>법정 필수 휴가</b>
 																<div class="dropdown float-end">
 																	<button type="button" class="btn btn-warning"
 																		id="departmentList" data-bs-toggle="modal"
-																		data-bs-target="#centermodal">부서 추가</button>
+																		data-bs-target="#centermodal">휴가 종류 추가</button>
 																</div>
 															</h4>
 														</div>
@@ -41,10 +41,10 @@
 													</div>
 													<div class="row mt-3">
 														<div class="col">
-															<div class="tasks border"
-																th:each="dept,num:${departmentList}">
+															<div class="tasks border" 
+																th:each="type,num:${vacationTypeList}"th:if="${type.vacationCategory} == '법정 필수 휴가'">
 																<h5 class="mt-0 task-header header-title"
-																	th:text="${dept.departmentName}"></h5>
+																	th:text="${type.vacationName}"></h5>
 																<div class="task-list-items">
 																	<!-- Task Item -->
 																	<div class="card border mb-0">
@@ -58,39 +58,102 @@
 																				<div class="dropdown-menu dropdown-menu-end">
 																					<!-- item-->
 																					<a class="dropdown-item" type="submit"
-																						th:id="'editDepartment' + ${num.count}"
-																						th:value="${dept.departmentNo}"
+																						th:id="'editVacationType' + ${num.count}"
+																						th:value="${type.vacationNo}"
 																						data-bs-toggle="modal" data-bs-target="#editModal">
 																						<i class="uil uil-edit-alt me-2"></i>수정 <input
-																						th:value="${dept.departmentNo}"
-																						th:id="departmentNo" hidden="hidden">
+																						th:value="${type.vacationNo}"
+																						th:id="vacationNo" hidden="hidden">
 																					</a>
 																					<div class="dropdown-divider"></div>
 																					<!-- item-->
-																					<a	th:id="'deleteDepartment' + ${num.count}"
+																					<a	th:id="'deleteVacation' + ${num.count}"
 																						class="dropdown-item text-danger"> <i
 																						class="uil uil-trash me-2"></i>삭제하기<input
-																						th:value="${dept.departmentNo}"
-																						th:id="deleteDepartmentNo" hidden="hidden">
+																						th:value="${type.vacationNo}"
+																						th:id="deleteVacation" hidden="hidden">
 																						
 																					</a>
 																				</div>
 																			</div>
-																			<span class="badge badge-soft-warning">부서명 : </span>
+																			<span class="badge badge-soft-info">휴가 속성 : </span>
 																			<span class="badge badge-soft-success"
-																				th:text="${dept.departmentName}"></span> <br> <span
-																				class="badge badge-soft-info">부서번호 : </span> <span
-																				class="badge badge-soft-success"
-																				th:text="${dept.departmentNo}"></span>
-
-
+																				th:text="${type.vacationCategory}"></span> 
+																				<br> 
+																				<span class="badge badge-soft-info">휴가 지급 방법 : </span> 
+																				<span class="badge badge-soft-success" th:text="${type.vacationSettingWay}" ></span>
+																				<br> 
+																				<span class="badge badge-soft-info">휴가 적용 성별 : </span> 
+																				<span class="badge badge-soft-success" th:text="${type.settingGender}" ></span>
 																			<p class="mb-0 mt-4">
-																				<span class="text-nowrap align-middle fs-13 me-2" th:id="listMember" data-bs-toggle="modal" data-bs-target="#listModal">
-																				<input th:value="${dept.departmentNo}"
-																						th:id="memberDepartmentNo" hidden="hidden">
-																					<i class="uil uil-user text-muted me-1"></i>11
-																				</span> <small class="float-end text-muted"
-																					th:text="${dept.departmentCreateDate}"></small>
+																				<span class="text-nowrap align-middle fs-13 me-2">
+																					<i class="uil uil-clock-ten text-muted me-1"></i><a th:text="${type.vacationDate}"></a>일
+																				</span>
+																				<b class="float-end text-muted" th:if="${type.paidVacationYn} == Y">유급</b>
+																				<b class="float-end text-muted" th:if="${type.paidVacationYn== N}">무급</b>
+																			</p>
+																		</div>
+																		<!-- end card-body -->
+																	</div>
+																	<!-- Task Item End -->
+																</div>
+															</div>
+															<br>
+															<br>
+															<b>회사 휴가</b>
+															<hr>
+															<div class="tasks border" 
+																th:each="type,num:${vacationTypeList}"th:if="${type.vacationCategory} == '회사 휴가'">
+																<h5 class="mt-0 task-header header-title"
+																	th:text="${type.vacationName}"></h5>
+																<div class="task-list-items">
+																	<!-- Task Item -->
+																	<div class="card border mb-0">
+																		<div class="card-body p-2">
+																			<div class="dropdown float-end">
+																				<a href="#"
+																					class="dropdown-toggle text-muted arrow-none"
+																					data-bs-toggle="dropdown" aria-expanded="false">
+																					<i class="uil uil-ellipsis-v fs-14"></i>
+																				</a>
+																				<div class="dropdown-menu dropdown-menu-end">
+																					<!-- item-->
+																					<a class="dropdown-item" type="submit"
+																						th:id="'editVacationType' + ${num.count}"
+																						th:value="${type.vacationNo}"
+																						data-bs-toggle="modal" data-bs-target="#editModal">
+																						<i class="uil uil-edit-alt me-2"></i>수정 <input
+																						th:value="${type.vacationNo}"
+																						th:id="vacationNo" hidden="hidden">
+																					</a>
+																					<div class="dropdown-divider"></div>
+																					<!-- item-->
+																					<a	th:id="'deleteVacation' + ${num.count}"
+																						class="dropdown-item text-danger"> <i
+																						class="uil uil-trash me-2"></i>삭제하기<input
+																						th:value="${type.vacationNo}"
+																						th:id="deleteVacation" hidden="hidden">
+																						
+																					</a>
+																				</div>
+																			</div>
+																			<span class="badge badge-soft-info">휴가 속성 : </span>
+																			<span class="badge badge-soft-success"
+																				th:text="${type.vacationCategory}"></span> 
+																				<br> 
+																				<span class="badge badge-soft-info">휴가 지급 방법 : </span> 
+																				<span class="badge badge-soft-success" th:text="${type.vacationSettingWay}" ></span>
+																				<br> 
+																				<span class="badge badge-soft-info">휴가 적용 성별 : </span> 
+																				<span class="badge badge-soft-success" th:text="${type.settingGender}" ></span>
+																			<p class="mb-0 mt-4">
+																				<span class="text-nowrap align-middle fs-13 me-2">
+																				<input th:value="${type.vacationNo}"
+																						th:id="vacationNo" hidden="hidden">
+																					<i class="uil uil-clock-ten text-muted me-1"></i><a th:text="${type.vacationDate}"></a>일
+																				</span>
+																				<b class="float-end text-muted" th:if="${type.paidVacationYn} == Y">유급</b>
+																				<b class="float-end text-muted" th:if="${type.paidVacationYn} == N">무급</b>
 																			</p>
 																		</div>
 																		<!-- end card-body -->
@@ -100,6 +163,9 @@
 															</div>
 															<!-- start other tasks -->
 														</div>
+														<span align="right">
+																<code >* </code><i class="uil uil-clock-ten text-muted me-1"></i><a>표기는 해당하는 휴가종류의 지급 일수입니다.</a>
+														</span>
 													</div>
 													<!-- end row -->
 												</div>
@@ -108,7 +174,6 @@
 									</div>
 								</div>
 							</div>
-							
 						</div>
 						<!-- container -->
 					</div>
@@ -117,47 +182,9 @@
 		</div>
 		<div th:include="common/footer.html"></div>
 	</div>
-	<!-- 부서 인원 모달 -->
-	<div class="modal fade" id="listModal" tabindex="-1" role="dialog"
-		aria-labelledby="myCenterModalLabel1" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal-header" style="background-color: gray">
-					<h5 class="modal-title" id="myCenterModalLabel1"
-						style="font-size: 20px">
-						<b>부서 인원 명단</b>
-					</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<table
-						class="table table-striped dt-responsive nowrap w-100 text-center" id="tableMember">
-						<thead>
-							<tr>
-								<th>부서명</th>
-								<th>사번</th>
-								<th>직책</th>
-								<th>성명</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>							
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="modal-footer">
-					<button type="reset" class="btn btn-warning width-xs"
-						data-bs-dismiss="modal">닫기</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- 부서 수정 모달 -->
+	<!-- 휴가 수정 모달 -->
+	<form action="/mngBasicInformation/updateVacationType" method="post">
+	
 	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
 		aria-labelledby="myCenterModalLabel1" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
@@ -165,34 +192,63 @@
 				<div class="modal-header" style="background-color: gray">
 					<h5 class="modal-title" id="myCenterModalLabel1"
 						style="font-size: 20px">
-						<b>부서 수정</b>
+						<b>휴가 수정</b>
 					</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
+					<input th:id="selectedVacationNo" name="vacationNo" type="number" hidden="hidden">
 					<code style="float: right">* 표기는 필수 입력항목입니다.</code>
-					<br> <label style="margin: 10px;">부서명 <span
-						style="color: red">*</span></label> <input type="text" id="selectedDeptNo"
-						hidden="hidden"> <br> <input class="form-control"
-						type="text" placeholder="부서명" name="selectedDeptName"
-						id="selectedDeptName" required="required"> <br> <label
-						style="margin: 10px;">상위 부서명</label> <br> <select
-						class="form-select" id="selectedUpperDept"
-						name="selectedUpperDept">
-						<option></option>
-
-					</select> <br> <label style="margin: 10px;">부서 생성일<span
-						style="color: red">*</span></label> <br> <input class="form-control"
-						type="date" placeholder="부서 생성일" name="selectedCreateDate"
-						id="selectedCreateDate"> <br> <label
-						style="margin: 10px;">부서 연락처</label> <br> <input
-						class="form-control" type="text" placeholder="부서 연락처"
-						name="selectedDeptPhone" id="selectedDeptPhone"> <br>
+					<br>
+					<label style="margin: 10px;">휴가명 <span style="color: red">*</span></label>
+					<br> 
+					<input class="form-control"	type="text" placeholder="휴가명" name="vacationName" 
+					id="selectedVacationName" required="required"> 
+					<br>
+                    <label style="margin: 10px;">휴가 지급 일수 <span style="color: red">*</span></label>
+					<br> 
+					<div class="row" style="font-size: 25px;margin-left: 2px; float: center">
+					<input style="width: 150px" class="form-control"type="number" placeholder="휴가 지급 일수" name="vacationDate"
+					id="selectedVacationDate" required="required">&nbsp;일
+					</div>
+					<br>
+					<label style="margin: 10px;">휴가 속성</label>
+					<br>
+					<select	class="form-select" id="selectedVacationCategory" name="vacationCategory">
+					<option></option>
+					</select>
+					<br>
+					<label style="margin: 10px;">휴가 지급 방법</label>
+					<br> 
+                    <div>
+					<input type="radio" id="selectedVacationSettingWay1" name="vacationSettingWay" class="form-check-input" value="신청 시 지급">
+					<label class="form-check-label" for="selectedVacationSettingWay1">신청 시 지급&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedVacationSettingWay2"
+							name="vacationSettingWay" class="form-check-input" value="자동 지급">
+					<label class="form-check-label" for="selectedVacationSettingWay2">자동 지급</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">급여 지급 여부</span></label>
+					<br> 
+                    <div>
+					<input type="radio" id="selectedPaidVacationYn1" name="paidVacationYn" class="form-check-input" value="Y">
+					<label class="form-check-label" for="selectedPaidVacationYn1">유급&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedPaidVacationYn2" name="paidVacationYn" class="form-check-input" value="N">
+					<label class="form-check-label" for="selectedPaidVacationYn2">무급</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">적용 성별</label>
+					<br>
+					<select	class="form-select" id="selectedSettingGender" name="settingGender">
+						<option value="모두">모든 성별</option>
+						<option value="남">남성</option>
+						<option value="여">여성</option>
+					</select>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-success width-xs"
-						id="updateDepartment">수정</button>
+						id="updateVacationType">수정 완료</button>
 					<button type="reset" class="btn btn-warning width-xs"
 						data-bs-dismiss="modal">닫기</button>
 				</div>
@@ -201,9 +257,11 @@
 		</div>
 		<!-- /.modal-dialog -->
 	</div>
-	<!-- 부서 수정 모달 끝 -->
+	</form>
+	<!-- 휴가 수정 모달 끝 -->
 
-	<!-- 모달창 시작 -->
+	<!-- 휴가 추가 모달 시작 -->
+	<form action="insertVacationType" method="post">
 	<div class="modal fade" id="centermodal" tabindex="-1" role="dialog"
 		aria-labelledby="myCenterModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
@@ -211,32 +269,64 @@
 				<div class="modal-header" style="background-color: gray">
 					<h5 class="modal-title" id="myCenterModalLabel"
 						style="font-size: 20px">
-						<b>부서 추가</b>
+						<b>휴가 종류 추가</b>
 					</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<code style="float: right">* 표기는 필수 입력항목입니다.</code>
-					<br> <label style="margin: 10px;">부서명 <span
-						style="color: red">*</span></label> <br> <input class="form-control"
-						type="text" placeholder="부서명" name="departmentName"
-						id="departmentName" required="required"> <br> <label
-						style="margin: 10px;">상위 부서명</label> <br> <select
-						class="form-select" id="upperDepartment" name="upperDepartment">
-						<option></option>
-
-					</select> <br> <label style="margin: 10px;">부서 생성일<span
-						style="color: red">*</span></label> <br> <input class="form-control"
-						type="date" placeholder="부서 생성일" name="departmentCreatedDate"
-						id="departmentCreateDate"> <br> <label
-						style="margin: 10px;">부서 연락처</label> <br> <input
-						class="form-control" type="text" placeholder="부서 연락처"
-						name="departmentPhone" id="departmentPhone"> <br>
+					<br>
+					<label style="margin: 10px;">휴가명 <span style="color: red">*</span></label>
+					<br> 
+					<input class="form-control"	type="text" placeholder="휴가명" name="vacationName" 
+					id="vacationName" required="required"> 
+					<br>
+                    <label style="margin: 10px;">휴가 지급 일수 <span style="color: red">*</span></label>
+					<br> 
+					<div class="row" style="font-size: 25px;margin-left: 2px; float: center">
+					<input style="width: 150px" class="form-control"type="number" placeholder="휴가 지급 일수" name="vacationDate"
+					id="vacationDate" required="required">&nbsp;일
+					</div>
+					<br>
+					<label style="margin: 10px;">휴가 속성</label>
+					<br>
+					<select	class="form-select" id="vacationCategory" name="vacationCategory">
+						<option value="법정 필수 휴가">법정 필수 휴가</option>
+						<option value="회사 휴가">회사 휴가</option>
+					</select>
+					<br>
+					<label style="margin: 10px;">휴가 지급 방법</label>
+					<br> 
+                    <div>
+					<input type="radio" id="vacationSettingWay1" name="vacationSettingWay" class="form-check-input" value="신청 시 지급" checked="checked">
+					<label class="form-check-label" for="vacationSettingWay1">신청 시 지급&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="vacationSettingWay2"
+							name="vacationSettingWay" class="form-check-input" value="자동 지급">
+					<label class="form-check-label" for="vacationSettingWay2">자동 지급</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">급여 지급 여부</span></label>
+					<br> 
+                    <div>
+					<input type="radio" id="paidVacationYn1" name="paidVacationYn" class="form-check-input" value="Y" checked="checked">
+					<label class="form-check-label" for="paidVacationYn1">유급&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="paidVacationYn2"
+							name="paidVacationYn" class="form-check-input" value="N">
+					<label class="form-check-label" for="paidVacationYn2">무급</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">적용 성별</label>
+					<br>
+					<select	class="form-select" id="settingGender" name="settingGender">
+						<option value="모두">모든 성별</option>
+						<option value="남">남성</option>
+						<option value="여">여성</option>
+					</select>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-success width-xs"
-						id="createDepartment">등록</button>
+						id="createVacationType">등록</button>
 					<button type="reset" class="btn btn-warning width-xs"
 						data-bs-dismiss="modal">닫기</button>
 				</div>
@@ -245,15 +335,16 @@
 		</div>
 		<!-- /.modal-dialog -->
 	</div>
+	</form>
 	<!-- /.modal -->
-	<!-- 모달창 종료 -->
+	<!-- 휴가 추가 모달 끝 -->
 	<script>
-	$("[id^=deleteDepartment]").click(function() {
-		const deptNo = $(this).find('#deleteDepartmentNo').val();
-	console.log(deptNo);
+	$("[id^=deleteVacation]").click(function() {
+		const deptNo = $(this).find('#deleteVacation').val();
+		console.log(deptNo);
 	Swal.fire({
 		  title: '삭제하시겠습니까?',
-		  text: '부서내의 모든 내용이 삭제됩니다.',
+		  text: '휴가 종류 내의 모든 정보가 삭제됩니다.',
 		  icon: 'warning',
 		  showCancelButton: true,
 		  confirmButtonColor: '#25c2e3',
@@ -263,14 +354,14 @@
 		}).then((result) => {
 			if (result.isConfirmed) {
 				$.ajax({
-			           url: "deleteDepartment",
-			    	  data: {   "seletedDepartmentNo" : deptNo },
+			           url: "deleteVacation",
+			    	  data: {   "selectedVacationNo" : deptNo },
 			       success: function(data, status, xhr) {
 			    	   
 			    	   Swal.fire({
 			       			  position: 'center',
 			       			  icon: 'success',
-			       			  title: '부서 삭제에 성공하였습니다.',
+			       			  title: '휴가 종류 삭제에 성공하였습니다.',
 			       			  showConfirmButton: false,
 			       			  timer: 1500,
 			       			  width: 600
@@ -281,7 +372,7 @@
 			        	   Swal.fire({
 				       			  position: 'center',
 				       			  icon: 'error',
-				       			  title: '부서 삭제에 실패하였습니다.',
+				       			  title: '휴가 종류 삭제에 실패하였습니다.',
 				       			  showConfirmButton: false,
 				       			  timer: 1500,
 				       			  width: 600
@@ -295,69 +386,58 @@
 		})
 	});
 	
-	$("[id^=listMember]").click(function() {
-		const deptNo = $(this).find('#memberDepartmentNo').val();
-	console.log(deptNo);
+	
+	$("[id^=editVacationType]").click(function() {
+		const vacationNo = $(this).find('#vacationNo').val();
+	console.log(vacationNo);
 	     $.ajax({
-	           url: "memberDepartment",
-	    	  data: {   "seletedDepartmentNo" : deptNo },
+	           url: "editVacationType",
+	    	  data: {   "selectedVacationNo" : vacationNo },
 	       success: function(data, status, xhr) {
 	    	   
-	    	   const $table = $("#tableMember tbody");
-				$table.html("");
-				
-				for(let index in data) {
-					$tr = $("<tr>");
-					$departmentNameTd = $("<td>").text(data[index].departmentName);
-					$memberNoTd = $("<td>").text(data[index].memberNo);
-					$jobNameTd = $("<td>").text(data[index].jobName);
-					$koreanNameTd = $("<td>").text(data[index].koreanName);
-					
-					$tr.append($departmentNameTd);
-					$tr.append($memberNoTd);
-					$tr.append($jobNameTd);
-					$tr.append($koreanNameTd);
-					
-					$table.append($tr);
-				}
-							
-					},
-					error: function(xhr, status, error) {
-						console.log(error);
-					}
-	       });
-	});
-	
-	
-	$("[id^=editDepartment]").click(function() {
-		const deptNo = $(this).find('#departmentNo').val();
-	console.log(deptNo);
-	     $.ajax({
-	           url: "editDepartment",
-	    	  data: {   "seletedDepartmentNo" : deptNo },
-	       success: function(data, status, xhr) {
-	    	   
-						const $selected = $("#selectedUpperDept");
-						const $selectedDepartmentNo = $("#selectedDeptNo");
-						const $selectedDepartmentName = $("#selectedDeptName"); 
-						const $selectedCreatedDate = $("#selectedCreateDate");
-						const $selectedDeptPhoneNo = $("#selectedDeptPhone");
-						$selected.html("");
-						$selectedDepartmentName.html("");
-						$selectedDeptPhoneNo.html("");
+	    	   			const $selectedVacationNo = $('#selectedVacationNo')
+						const $selectedVacationName = $("#selectedVacationName");
+						const $selectedVacationDate = $("#selectedVacationDate");
+						const $selectedVacationCategory = $("#selectedVacationCategory"); 
+						const $selectedPaidVacationYn = $("#selectedPaidVacationYn");
+						const $selectedSettingGender = $("#selectedSettingGender");
+					 	$selectedVacationName.html("");
+					 	$selectedVacationDate.html("");
+					 	$selectedVacationCategory.html("");
+					 	$selectedPaidVacationYn.html("");
+					 	$selectedSettingGender.html("");
+					 	
+						$selectedVacationNo.text(vacationNo).val(vacationNo);
+						$selectup = $("<option>").text("현재 선택 유형 : " + data.vacationCategory).val(data.vacationCategory);
+						$selectup1 = $("<option>").text("법정 필수 휴가").val("법정 필수 휴가");
+						$selectup2 = $("<option>").text("회사 휴가").val("회사 휴가");
+						$selectedVacationCategory.append($selectup);
+						$selectedVacationCategory.append($selectup1);
+						$selectedVacationCategory.append($selectup2); 
 						
-						$selectup = $("<option>").text("현재 상위 부서 : " +data["selectedDepartment"].upperDepartmentName).val(data["selectedDepartment"].upperDepartment);
-						$selected.append($selectup);
-						
-						for(let index in data["departmentList"]) {
-							$input = $("<option>").text(data["departmentList"][index].departmentName).val(data["departmentList"][index].departmentNo);
-							$selected.append($input);
+						if(data.vacationSettingWay == 'Y'){
+							$("input[id='selectedVacationSettingWay1']").attr("checked", true);
+						}else{
+							$("input[id='selectedVacationSettingWay2']").attr("checked", true);
 						}
-							$selectedNo = $selectedDepartmentNo.text(data["selectedDepartment"].departmentNo).val(data["selectedDepartment"].departmentNo);
-							$selectedName = $selectedDepartmentName.text(data["selectedDepartment"].departmentName).val(data["selectedDepartment"].departmentName);
-							$selectedDate = $selectedCreatedDate.val(data["selectedDepartment"].departmentCreateDate.slice(0, 10));
-							$selectedPhone = $selectedDeptPhoneNo.text(data["selectedDepartment"].departmentPhone).val(data["selectedDepartment"].departmentPhone);
-							
+						
+						if(data.paidVacationYn=='Y'){
+							$("input[id='selectedPaidVacationYn1']").attr("checked", true);
+						}else{
+							$("input[id='selectedPaidVacationYn2']").attr("checked", true);
+						}
+						
+						$selectedVacationName1 = $selectedVacationName.text(data.vacationName).val(data.vacationName);
+						$selectedVacationDate1 = $selectedVacationDate.text(data.vacationDate).val(data.vacationDate);
+						$selectedPaidVacationYn.text(data.paidVacationYn).val(data.paidVacationYn);
+						$selectedSettingGender1 = $("<option>").text("현재 선택 성별 : " + data.settingGender).val(data.settingGender);
+						$selectedSettingGender2 = $("<option>").text("모두").val("모두");
+						$selectedSettingGender3 = $("<option>").text("남성").val("남");
+						$selectedSettingGender4 = $("<option>").text("여성").val("여");
+						$selectedSettingGender.append($selectedSettingGender1);
+						$selectedSettingGender.append($selectedSettingGender2);
+						$selectedSettingGender.append($selectedSettingGender3); 
+						$selectedSettingGender.append($selectedSettingGender4); 
 					},
 					error: function(xhr, status, error) {
 						console.log(error);
@@ -365,42 +445,6 @@
 	       });
 	});
 	
-	$("#updateDepartment").click(function() {
-	       $.ajax({
-	    	   type: "POST",
-	           url: "/mngBasicInformation/updateDepartment",
-	           data: {
-	        	   "departmentNo" : $('#selectedDeptNo').val(),
-	        	   "departmentName" : $('#selectedDeptName').val(),
-	        	   "upperDepartment" : $('#selectedUpperDept').val(),
-	        	   "departmentCreateDate" : $('#selectedCreateDate').val(),
-	        	   "departmentPhone" : $('#selectedDeptPhone').val()},
-	           success: function(data, status, xhr) {
-	        	   
-	           		Swal.fire({
-	       			  position: 'center',
-	       			  icon: 'success',
-	       			  title: '부서 수정에 성공하였습니다.',
-	       			  showConfirmButton: false,
-	       			  timer: 1500,
-	       			  width: 600
-	       		}).then((result) => {
-		        	   location.reload();
-	       				})
-	           }, error: function(xhr){
-	        	   Swal.fire({
-		       			  position: 'center',
-		       			  icon: 'error',
-		       			  title: '부서명 혹은 부서생성일자를 기입해주세요.',
-		       			  showConfirmButton: false,
-		       			  timer: 1500,
-		       			  width: 600
-		       		}).then((result) => {
-			        	   location.href="#";
-		       				})
-	           }
-	       });
-	  });
 	
 	$("#departmentList").click(function() {
 	       $.ajax({
@@ -424,49 +468,6 @@
 					}
 	       });
 	});
-	
-		  $("#createDepartment").click(function() {
-		       $.ajax({
-		    	   type: "POST",
-		           url: "/mngBasicInformation/department",
-		           data: {
-		        	   "departmentName" : $('#departmentName').val(),
-		        	   "upperDepartment" : $('#upperDepartment').val(),
-		        	   "departmentCreateDate" : $('#departmentCreateDate').val(),
-		        	   "departmentPhone" : $('#departmentPhone').val()},
-		           success: function(data, status, xhr) {
-		        	   
-		           		Swal.fire({
-		       			  position: 'center',
-		       			  icon: 'success',
-		       			  title: '부서 생성에 성공하였습니다.',
-		       			  showConfirmButton: false,
-		       			  timer: 1500,
-		       			  width: 600
-		       		}).then((result) => {
-			        	   location.reload();
-		       				})
-		           }, error: function(xhr){
-		        	   Swal.fire({
-			       			  position: 'center',
-			       			  icon: 'error',
-			       			  title: '부서명 혹은 부서생성일자를 기입해주세요.',
-			       			  showConfirmButton: false,
-			       			  timer: 1500,
-			       			  width: 600
-			       		}).then((result) => {
-				        	   location.href="#";
-			       				})
-		           }
-		       });
-		  });
-		             
-		        	  
-		const $addNewDept = document.getElementById("addNewDept");
-		$addNewDept.onclick = function() {
-				location.href = ""
-
-		}
 		</script>
 </body>
 </html>

@@ -38,7 +38,10 @@ public class MemberController {
 	public void memberLoginForm() {
 		
 	}
-
+	@GetMapping("/logout")
+	public void memberLogoutForm() {
+		
+	}
 
 	@GetMapping("/findIdForm")
 	public String memberFindIdForm() {

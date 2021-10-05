@@ -44,4 +44,14 @@ public class MainController {
 	public String redirectMain() {
 		return "main/main";
 	}
+	
+	@GetMapping(value = "/logout")
+	public String tologout() {
+		return "member/logout";
+	}
+	
+	@PostMapping(value="/logout")
+	public String redirectlogout() {
+		return "member/logout";
+	}
 }
