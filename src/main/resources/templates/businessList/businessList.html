@@ -58,14 +58,13 @@
 							<code>법인(주민)등록 번호</code>
 						</p>
 
-						<form class="form-horizontal" autocomplete="off" name="search-form">
+						<form class="form-horizontal" action="/businessList/getSearchList" method="post">
 							<div class="row">
 								<div class="col">
 									<div class="input-group">
 										<span class="input-group-text">업종 </span> 
 										<input type="text" class="form-control" name="keyword" id="keyword"/>
-										<button type="submit" class="input-group-text" 	style="width: 60px; margin-top: 0px"
-											onclick="getSearchList()">검색</button>
+										<button type="submit" class="input-group-text" 	style="width: 60px; margin-top: 0px">검색</button>
 									</div>
 									<table
 										class="table table-striped dt-responsive nowrap w-100 text-center"
@@ -78,10 +77,10 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<td></td>
-												<td></td>
-												<td></td>
+											<tr th:each="list:${list}">
+												<th><a id="send" href="" th:text="${list.idx}"></a></th>
+												<th><a id="sendName" href="/basicSetting/basicSetting" th:text="${list.businessName}" th:value="${list.businessName}" onclick="window.close();"></a></th>
+												<th><a id="send" href="" th:text="${list.businessDetail}"></a></th>
 											</tr>
 										</tbody>
 									</table>
@@ -105,18 +104,47 @@
 	<script th:src="@{/js/app.min.js}"></script>
 
 	<script>
+	$("#sendName").click(function() {
+		
+		const val = $('#sendName').val();
+		$.ajax({
+			type : 'post',
+			url : "/basicSetting/basicSetting",
+	 	   data : { "name" : val },
+		success :function(data, status, xhr) {
+				
+				console.log(data);
+				//테이블 초기화
+				console.log("데이터 전송됨");
+				/* if (data.length >= 1) {
+					data.forEach(function(item) {
+						str = '<tr>'
+						str += "<td>" + item.idx + "</td>";
+						str += "<td>" + item.businessName + "</td>";
+						str += "<td>" + item.businessDetail + "</td>";
+						str += "</tr>"
+						$('#tableBusiness').append(str);
+					})
+				} */
+				
+			},
+		error: function(xhr, status, error) {
+			console.log(error);
+		}
+		})
+	});
 		function getSearchList() {
 			$.ajax({
-				type : 'GET',
-				url : "/mngBasicInformation/getSearchList",
+				type : 'POST',
+				url : "/businessList/getSearchList",
 		 	   data : $("form[name=search-form]").serialize(),
-			success :console.log("데이터 갖고옴"),
-				function(data, status, xhr) {
+			success :function(data, status, xhr) {
 					
 					console.log(data);
 					//테이블 초기화
 					$('#tableBusiness > tbody').empty();
-					if (data.length >= 1) {
+					console.log("데이터 전송됨");
+					/* if (data.length >= 1) {
 						data.forEach(function(item) {
 							str = '<tr>'
 							str += "<td>" + item.idx + "</td>";
@@ -125,7 +153,7 @@
 							str += "</tr>"
 							$('#tableBusiness').append(str);
 						})
-					}
+					} */
 				},
 			error: function(xhr, status, error) {
 				console.log(error);

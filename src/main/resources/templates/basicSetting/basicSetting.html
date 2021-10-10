@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+	<link rel="stylesheet" th:href="@{/libs/smartwizard/css/smart_wizard_theme_arrows.min.css}" type="text/css" />
+
+</head>
+
+<body>
+	<div id="wrapper">
+		<div th:include="common/sidebar.html"></div>
+		<div class="content-page">
+			<div class="content">
+				<div class="container-fluid">
+					<!-- start page title -->
+					<div class="row">
+						<div class="col-12">
+							<br>
+							<div class="page-title-box">
+								<h3 class="page-title">초기세팅</h3>
+								<hr>
+							</div>
+							<hr>
+							<!-- 여기서부터 본문 생성 -->
+							<div class="col-lg-8">
+								<div class="card">
+										<p class="sub-header"></p>
+										<div id="smartwizard-arrows">
+											<ul>
+												<li><a href="#sw-arrows-step-1">기업정보<small
+															class="d-block fw-normal"></small></a></li>
+												<li><a href="#sw-arrows-step-2">부서생성<small
+															class="d-block fw-normal"></small></a></li>
+												<li><a href="#sw-arrows-step-3">업종별 보험 요율<small
+															class="d-block fw-normal"></small></a></li>
+												<li><a href="#sw-arrows-step-4">학력<small
+															class="d-block fw-normal"></small></a></li>
+												<li><a href="#sw-arrows-step-5">경력<small
+															class="d-block fw-normal"></small></a></li>
+												<li><a href="#sw-arrows-step-6">가족<small
+															class="d-block fw-normal"></small></a></li>
+											</ul>
+
+											<div class="p-3">
+												<div id="sw-arrows-step-1">
+													<h4 class="header-title mt-0 mb-1">기업 정보</h4>
+													<hr><br>
+													<form class="form-horizontal" method="post" action="/basicSetting/company">
+												<div class="row">
+													<div class="col">
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">기업체명</label>
+															<div class="col-lg-10">
+																<input  type="text" class="form-control" name="companyName" th:value="${companyInfo.companyName}">
+															</div>
+														</div>
+
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">본사
+																주소</label>
+															<div class="col-lg-7">
+																<input type="text" class="form-control" id="companyAddress" name="address" readonly="readonly"th:value="${companyInfo.address}">
+															</div>
+															<div class="col-lg-3">
+																<button type="button" id="address" class="btn btn-info">주소 찾기</button>
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">상세주소</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" id="address_detail" name="addressDetail" th:value="${companyInfo.addressDetail}">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">법인(주민)등록 번호</label>
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="identificationNo1" th:if="${!companyInfo.identificationNo.equals('')}" th:value="${companyInfo.identificationNo.substring(0,6)}">
+																<input class="form-control" id="example-number"
+																	type="text" name="identificationNo1" th:if="${companyInfo.identificationNo.equals('')}" value="">
+															</div>
+															
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="identificationNo2" th:if="${!companyInfo.identificationNo.equals('')}" th:value="${companyInfo.identificationNo.substring(7,14)}">
+																<input class="form-control" id="example-number"
+																	type="text" name="identificationNo2" th:if="${companyInfo.identificationNo.equals('')}" value="">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">본사 연락처</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-number"
+																	type="text" name="phone" th:value="${companyInfo.phone}">
+															</div>
+														</div>
+
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-email">회사 이메일</label>
+															<div class="col-lg-10">
+																<input type="email" id="example-email"
+																	class="form-control"  name="managerEmail" th:value="${companyInfo.managerEmail}">
+															</div>
+														</div>
+														
+
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" align="center">150인
+																우선 기업 여부</label>
+															<div class="col-lg-10">
+																<select class="form-select" name="firstCompanyYn" >
+																	<option th:selected="${companyInfo.firstCompanyYn}=='Y'"  value='Y'>해당</option>
+																	<option th:selected="${companyInfo.firstCompanyYn}=='N'" value='N'>비해당</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="col">
+													<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput" style="height: 40px"></label>
+															<div class="col-lg-10">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">대표자명</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" name="ceoName" th:value="${companyInfo.ceoName}">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput" th:value="${companyInfo.companyName}">업종</label>
+															<div class="col-lg-7">
+																<input type="text" class="form-control" id="keyword" th:value="${companyInfo.businessName} +' : ' + ${companyInfo.businessDetail}" >
+																<input type="text" class="form-control" id="keywordNo" name="businessCode" th:value="${companyInfo.businessCode}" hidden="hidden">
+															</div>
+															<div class="col-lg-3">
+																<button type="button" id="businessListSelect" class="btn btn-info"data-bs-toggle="modal"
+																		data-bs-target="#centermodal">업종
+																	검색</button>
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">사업자 등록 번호</label>
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"	type="text" name="companyRegistrationNo1" th:if="${!companyInfo.companyRegistrationNo.equals('')}"  th:value="${companyInfo.companyRegistrationNo.substring(0,3)}">
+																<input class="form-control" id="example-number"	type="text" name="companyRegistrationNo1" th:if="${companyInfo.companyRegistrationNo.equals('')}"  value="">
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number" type="text" name="companyRegistrationNo2"th:if="${!companyInfo.companyRegistrationNo.equals('')}" th:value="${companyInfo.companyRegistrationNo.substring(4,6)}">
+																<input class="form-control" id="example-number" type="text" name="companyRegistrationNo2"th:if="${companyInfo.companyRegistrationNo.equals('')}" value="">
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"	type="text" name="companyRegistrationNo3"th:if="${!companyInfo.companyRegistrationNo.equals('')}" th:value="${companyInfo.companyRegistrationNo.substring(7,12)}">
+																<input class="form-control" id="example-number"	type="text" name="companyRegistrationNo3"th:if="${companyInfo.companyRegistrationNo.equals('')}" value="">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">팩스 번호</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-number"
+																	type="text" name="fax"th:value="${companyInfo.fax}">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label">홈페이지 주소</label>
+															<div class="col-lg-10">
+																<input class="form-control" type="url" name="website" th:value="${companyInfo.website}">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="example-date">설립일</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-date"
+																	type="date" name="foundingDate" th:value="${companyInfo.foundingDate}">
+															</div>
+														</div>
+
+															<div align="right" >
+															<button type="submit" class="btn btn-info">저장</button>
+														</div>
+													</div>
+												</div>
+											</form>
+												</div>
+												<div id="sw-arrows-step-2">
+													<h4 class="header-title mt-0 mb-1">최상위 부서 생성</h4>
+													<hr><br>
+													<div class="row">
+														<div class="row">
+								<div class="col-xl-12">
+									<div class="row">
+										<div class="col">
+											<div class="card">
+												<div class="card-body">
+													<!-- cta -->
+													<div class="row">
+														<div class="form-check float-start">
+															<h4 class="header-title mt-0">
+																부서 목록
+																<div class="dropdown float-end">
+																	<button type="button" class="btn btn-warning"
+																		id="departmentList" data-bs-toggle="modal"
+																		data-bs-target="#insertDept">부서 추가</button>
+																</div>
+															</h4>
+														</div>
+														<hr class="my-2" />
+													</div>
+													<div class="row mt-3">
+														<div class="col">
+															<div class="tasks border">
+																<h5 class="mt-0 task-header header-title"
+																	th:text="${upperDepartment.departmentName}"></h5>
+																<div class="task-list-items">
+																	<!-- Task Item -->
+																	<div class="card border mb-0">
+																		<div class="card-body p-2">
+																			<span class="badge badge-soft-warning">부서명 : </span>
+																			<span class="badge badge-soft-danger"
+																				th:text="${upperDepartment.departmentName}"></span>
+																				<br>
+																				<span class="badge badge-soft-warning">부서번호 : </span>
+																				<span class="badge badge-soft-danger" th:text="${upperDepartment.departmentNo}"></span>
+																				<br>
+																				<span class="badge badge-soft-warning">부서 연락처 : </span>
+																				<span class="badge badge-soft-danger" th:text="${upperDepartment.departmentPhone}"></span>
+
+
+																			<p class="mb-0 mt-4">
+																				<span class="text-nowrap align-middle fs-13 me-2" th:id="listMember" data-bs-toggle="modal" data-bs-target="#listModal">
+																				<input th:value="${upperDepartment.departmentNo}"
+																						th:id="memberDepartmentNo" hidden="hidden">
+																					<i class="uil uil-user text-muted me-1"></i></a>
+																				</span>
+																				<span style="float: right"><small>부서 생성일 :&nbsp;&nbsp;</small><small class="float-end text-muted"
+																					th:text="${upperDepartment.departmentCreateDate}"></small></span> 
+																			</p>
+																		</div>
+																		<!-- end card-body -->
+																	</div>
+																	<!-- Task Item End -->
+																</div>
+															</div>
+															<!-- start other tasks -->
+														</div>
+													</div>
+													<!-- end row -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+													</div> <!-- end row -->
+												</div>
+												<div id="sw-arrows-step-3">
+													<h4 class="header-title mt-0 mb-1">업종별 보험 요율</h4>
+													<hr><br>
+													<div class="row">
+														<div class="col-12">
+															<div class="mb-3">
+																<label class="col-lg-2 col-form-label">보험 요율 양식 다운로드</label>
+																<div class="col-lg-4">
+																	<button type="button" id="businessListDown" class="btn btn-outline-info" >보험요율 양식 다운로드</button>
+																		
+																</div>
+															</div>
+															<div class="mb-3">
+																<label class="col-lg-2 col-form-label">보험 요율 업로드</label>
+																<div class="col-lg-4">
+																	<input class="form-control" id="example-date" type="file" name="businessUpload">
+																		
+																</div>
+															</div>
+														</div> <!-- end col -->
+													</div> <!-- end row -->
+												</div>
+												<div id="sw-arrows-step-4">
+													<h4 class="header-title mt-0 mb-1">학 력</h4>
+													<hr><br>
+													<div class="row">
+														<div class="col-12">
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-first-name">First name</label>
+																<input type="text" id="sw-arrows-first-name" class="form-control" placeholder="Enter First name...">
+																	
+																	
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-last-name">Last name</label>
+																<input type="text" id="sw-arrows-last-name" class="form-control" placeholder="Enter Last name...">
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-email">Email</label>
+																<input type="email" id="sw-arrows-email" class="form-control" placeholder="Enter Email...">
+															</div>
+														</div> <!-- end col -->
+													</div> <!-- end row -->
+												</div>
+												<div id="sw-arrows-step-5">
+													<h4 class="header-title mt-0 mb-1">경 력</h4>
+													<hr><br>
+													<div class="row">
+														<div class="col-12">
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-first-name">근무 기간</label>
+																<input type="text" id="sw-arrows-first-name" class="form-control" placeholder="Enter First name...">
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-last-name">직 위</label>
+																<input type="text" id="sw-arrows-last-name" class="form-control" placeholder="Enter Last name...">
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-email">직장명</label>
+																<input type="email" id="sw-arrows-email" class="form-control" placeholder="Enter Email...">
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-email">담당 부서</label>
+																<input type="email" id="sw-arrows-email" class="form-control" placeholder="Enter Email...">
+															</div>
+														</div> <!-- end col -->
+													</div> <!-- end row -->
+												</div>
+												<div id="sw-arrows-step-6">
+													<h4 class="header-title mt-0 mb-1">가 족</h4>
+													<hr><br>
+													<div class="row">
+														<div class="col-12">
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-first-name">First name</label>
+																<input type="text" id="sw-arrows-first-name" class="form-control" placeholder="Enter First name...">
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-last-name">Last name</label>
+																<input type="text" id="sw-arrows-last-name" class="form-control" placeholder="Enter Last name...">
+															</div>
+															<div class="mb-3">
+																<label class="form-label" for="sw-arrows-email">Email</label>
+																<input type="email" id="sw-arrows-email" class="form-control" placeholder="Enter Email...">
+												</div>
+														</div> <			!-- end col -->
+													</div> <!-- end row -->
+												</div>
+											</div>
+										</div>
+										
+								</div>
+								<!-- end card -->
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- end card-body -->
+			</div>
+			<!-- end card-->
+		</div>
+		<!-- end col -->
+	</div>
+	<div th:include="common/footer.html"></div>
+		<!-- 부서 추가 -->
+	<form action="/basicSetting/insertUpperDept" method="post">
+	<div class="modal fade" id="insertDept" tabindex="-1" role="dialog"
+		aria-labelledby="myCenterModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: gray">
+					<h5 class="modal-title" id="myCenterModalLabel"
+						style="font-size: 20px">
+						<b>최상위 부서 추가</b>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<code style="float: right">* 표기는 필수 입력항목입니다.</code>
+					<br> <label style="margin: 10px;">최상위 부서명 <span
+						style="color: red">*</span></label> <br> <input class="form-control"
+						type="text" placeholder="최상위 부서명" name="departmentName"
+						id="departmentName" required="required"> 
+						 <br> <label style="margin: 10px;">부서 생성일<span
+						style="color: red">*</span></label> <br> <input class="form-control"
+						type="date" placeholder="부서 생성일" name="departmentCreateDate"
+						id="departmentCreateDate"> <br> <label
+						style="margin: 10px;">부서 연락처</label> <br> <input
+						class="form-control" type="text" placeholder="부서 연락처"
+						name="departmentPhone" id="departmentPhone"> <br>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success width-xs"
+						id="createDepartment">등록</button>
+					<button type="reset" class="btn btn-warning width-xs"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	</form>
+	<!-- /.modal -->
+	<!-- 모달창 시작 -->
+	<div class="modal fade" id="centermodal" tabindex="-1" role="dialog"
+		aria-labelledby="myCenterModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: gray">
+					<h5 class="modal-title" id="myCenterModalLabel"
+						style="font-size: 20px">
+						<b>업종 검색</b>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					 <label	style="margin: 10px;">업종 코드&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;업종명&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;업종(세부)</label> <br> <select
+						class="form-select" id="businessList" name="businessList">
+						<option></option>
+
+					</select> 
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success width-xs" data-bs-dismiss="modal"
+						id="selectBusiness">선택</button>
+				
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<!-- 모달창 종료 -->
+<script>
+window.onload = function(){
+    document.getElementById("address").addEventListener("click", function(){ //주소입력칸을 클릭하면
+        //카카오 지도 발생
+        new daum.Postcode({
+            oncomplete: function(data) { //선택시 입력값 세팅
+                document.getElementById("companyAddress").value = data.address; // 주소 넣기
+                document.querySelector("input[name=addressDetail]").focus(); //상세입력 포커싱
+            }
+        }).open();
+    });
+}
+
+$('#businessListSelect').click(function() {
+	const keyword = $('#keyword').val();
+console.log(keyword);
+     $.ajax({
+           url: "selectBusinessList",
+    	  data: {   "keyword" : keyword },
+       success: function(data, status, xhr) {
+    	   
+					const $businessList = $("#businessList");
+					$businessList.html("");
+					
+					for(let index in data) {
+						$input = $("<option>").text(data[index].businessName +" : "+ data[index].businessDetail).val(data[index].idx);
+						$businessList.append($input);
+					}
+						
+				},
+				error: function(xhr, status, error) {
+					console.log(error);
+				}
+       });
+});
+$('#selectBusiness').click(function() {
+	const $value = $('#businessList').val();
+	const $name = $('#businessList option:selected').text();
+	const $keyword = $("#keyword");
+	const $keywordNo = $("#keywordNo");
+	$keyword.html("");
+	$keywordNo.html("");
+	
+	console.log($value);
+	console.log($name);
+	$keyword.val($name);
+	$keywordNo.val($value);
+});
+
+$('#businessListDown').click(function() {
+	location.href="/download";
+});
+
+</script>
+</body>
+</html>

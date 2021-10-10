@@ -87,12 +87,12 @@
 																for="example-number">법인(주민)등록 번호</label>
 															<div class="col-lg-2">
 																<input class="form-control" id="example-number"
-																	type="text" name="identificationNo1" th:value="${companyInfo.identificationNo.substring(0,5)}">
+																	type="text" name="identificationNo1" th:value="${companyInfo.identificationNo.substring(0,6)}">
 															</div>
 															_
 															<div class="col-lg-2">
 																<input class="form-control" id="example-number"
-																	type="text" name="identificationNo2" th:value="${companyInfo.identificationNo.substring(6,12)}">
+																	type="text" name="identificationNo2" th:value="${companyInfo.identificationNo.substring(7,14)}">
 															</div>
 														</div>
 														
@@ -141,11 +141,12 @@
 														<div class="mb-3 row">
 															<label class="col-lg-2 col-form-label" for="simpleinput" th:value="${companyInfo.companyName}">업종</label>
 															<div class="col-lg-7">
-																<input type="text" class="form-control" id="simpleinput" th:value="${companyInfo.businessName}" >
-																<input type="text" class="form-control" id="simpleinput" name="businessCode" th:value="${companyInfo.businessCode}" hidden="hidden">
+																<input type="text" class="form-control" id="keyword" th:value="${companyInfo.businessName} +' : ' + ${companyInfo.businessDetail}" >
+																<input type="text" class="form-control" id="keywordNo" name="businessCode" th:value="${companyInfo.businessCode}" hidden="hidden">
 															</div>
 															<div class="col-lg-3">
-																<button type="button" class="btn btn-info" onclick="javascript:openWindowPop('/mngBasicInformation/businessList', 'businessList');">업종
+																<button type="button" id="businessListSelect" class="btn btn-info"data-bs-toggle="modal"
+																		data-bs-target="#centermodal">업종
 																	검색</button>
 															</div>
 														</div>
@@ -209,6 +210,37 @@
 				</div>
 			</div>
 			<div th:include="common/footer.html"></div>
+			<div class="modal fade" id="centermodal" tabindex="-1" role="dialog"
+		aria-labelledby="myCenterModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: gray">
+					<h5 class="modal-title" id="myCenterModalLabel"
+						style="font-size: 20px">
+						<b>업종 검색</b>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					 <label	style="margin: 10px;">업종 코드&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;업종명&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;업종(세부)</label> <br> <select
+						class="form-select" id="businessList" name="businessList">
+						<option></option>
+
+					</select> 
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success width-xs" data-bs-dismiss="modal"
+						id="selectBusiness">선택</button>
+				
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<!-- 모달창 종료 -->
 		</div>
 	</div>
 		<script>
@@ -223,10 +255,42 @@ window.onload = function(){
         }).open();
     });
 }
-function openWindowPop(url, name){
-    var options = 'top=500, left=100, width=600, height=600, status=no, menubar=no, toolbar=no, resizable=yes';
-    window.open(url, name, options);
-}
+
+$('#businessListSelect').click(function() {
+	const keyword = $('#keyword').val();
+console.log(keyword);
+     $.ajax({
+           url: "selectBusinessList",
+    	  data: {   "keyword" : keyword },
+       success: function(data, status, xhr) {
+    	   
+					const $businessList = $("#businessList");
+					$businessList.html("");
+					
+					for(let index in data) {
+						$input = $("<option>").text(data[index].businessName +" : "+ data[index].businessDetail).val(data[index].idx);
+						$businessList.append($input);
+					}
+						
+				},
+				error: function(xhr, status, error) {
+					console.log(error);
+				}
+       });
+});
+$('#selectBusiness').click(function() {
+	const $value = $('#businessList').val();
+	const $name = $('#businessList option:selected').text();
+	const $keyword = $("#keyword");
+	const $keywordNo = $("#keywordNo");
+	$keyword.html("");
+	$keywordNo.html("");
+	
+	console.log($value);
+	console.log($name);
+	$keyword.val($name);
+	$keywordNo.val($value);
+});
 </script>
 </body>
 </html>

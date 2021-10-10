@@ -27,6 +27,7 @@
 		<result property="foundingDate" column="FOUNDING_DATE"/>
 		<result property="businessCode" column="BUSINESS_CODE"/>
 		<result property="businessName" column="TYPE_OF_BUSINESS"/>
+		<result property="businessDetail" column="DETAIL_TYPE_OF_BUSINESS"/>
 		<result property="firstCompanyYn" column="FIRST_COMPANY_YN"/>
 	</resultMap>
 	
@@ -145,6 +146,7 @@
 		SELECT
 			   A.*
 			 , B.TYPE_OF_BUSINESS
+			 , B.DETAIL_TYPE_OF_BUSINESS
 		  FROM TBL_COMPANY A,TBL_BUSINESS B
 		 WHERE A.BUSINESS_CODE = B.BUSINESS_CODE
 		   AND COMPANY_NO = #{ companyNo }
@@ -522,5 +524,56 @@
 		, 'Y'
 		)
 	</insert>
+	<delete id="deleteSalaryType">
+		DELETE
+		  FROM TBL_SALARY_CRITERIA
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND SALARY_NO = #{ salNo }
+	</delete>
+	<delete id="deleteBonusType">
+		DELETE
+		  FROM TBL_BONUS
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND BONUS_NO = #{ bonusNo }
+	</delete>
+	<select id="selectOneSalaryType" resultMap="salaryListResultMap">
+		SELECT
+			   A.*
+		  FROM TBL_SALARY_CRITERIA A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		   AND A.SALARY_NO = #{ salaryNo }
+	</select>
+	<update id="updateSalaryType" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngSalaryCriteriaDTO">
+		UPDATE TBL_SALARY_CRITERIA
+		   SET SALARY_NAME = #{ salaryName }
+		     , REGULARLY_YN = #{ regularlyYn }
+		     , PAY_PERIOD = #{ payPeriod }
+		     , SALARY_AMOUNT = #{ salaryAmount }
+		     , DEDUCTION_YN = #{ deductionYn }
+		     , ANNUAL_SALARY_YN = #{ annualSalaryYn }
+		     , PAYHIRED_MONTH_YN = #{ payHiredMonthYn }
+		     , PAYMENT_MONTH_YN = #{ paymentMonthYn }
+		     , USE_STATUS = #{ useStatus }
+		     , TARGET = #{ target }
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND SALARY_NO = #{ salaryNo } 
+	</update>
+	<select id="selectOneBonusType" resultMap="bonusListResultMap">
+		SELECT
+			   *
+		  FROM TBL_BONUS
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND BONUS_NO = #{ bonusNo }
+	</select>
 	
+	<update id="updateBonusType" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngBonusDTO">
+		UPDATE TBL_BONUS
+		   SET BONUS_NAME = #{ bonusName }
+		     , REGULARLY_YN = #{ regularlyYn }
+		     , PAY_PERIOD = #{ payPeriod }
+		     , BONUS_AMOUNT = #{ bonusAmount }
+		     , USE_YN = #{ useYn }
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND BONUS_NO = #{ bonusNo } 
+	</update>
 </mapper>

@@ -75,6 +75,18 @@ public interface MngBasicInformationMapper {
 
 	int insertBonusType(MngBonusDTO bonusDTO);
 
+	int deleteSalaryType(int companyNo, int salNo);
+
+	int deleteBonusType(int companyNo, int bonusNo);
+
+	MngSalaryCriteriaDTO selectOneSalaryType(int companyNo, int salaryNo);
+
+	int updateSalaryType(MngSalaryCriteriaDTO salaryCriteriaDTO);
+
+	MngBonusDTO selectOneBonusType(int companyNo, int bonusNo);
+
+	int updateBonusType(MngBonusDTO bonusDTO);
+
 
 
 

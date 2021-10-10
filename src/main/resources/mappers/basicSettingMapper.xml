@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nextLevel.hero.basicSetting.model.dao.BasicSettingMapper">
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO" id="departmentResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="departmentNo" column="DEPARTMENT_NO"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="departmentCreateDate" column="DEPARTMENT_CREATE_DATE"/>
+		<result property="departmentPhone" column="DEPARTMENT_PHONE"/>
+		<result property="upperDepartment" column="UPPER_DEPARTMENT"/>
+	</resultMap>
+	<insert id="insertOrUpdateBasicSettingCompany" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO">
+		MERGE INTO TBL_COMPANY
+		USING DUAL
+		   ON (COMPANY_NO = #{ companyNo } )
+		 WHEN MATCHED THEN
+ 	   UPDATE 
+ 	      SET COMPANY_NAME = #{ companyName }
+            , CEO_NAME = #{ ceoName }
+            , HEAD_QUARTER_ADDRESS = #{ address }
+            , HEAD_QUARTER_PHONE = #{ phone }
+            , FAX = #{ fax }
+            , COMPANY_REGISTRATION_NO = #{ companyRegistrationNo }
+            , IDENTIFICATION_NO =  #{ identificationNo }
+            , MANAGER_EMAIL = #{ managerEmail }
+            , WEBSITE =  #{ website }
+            , FOUNDING_DATE = #{ foundingDate }
+            , FIRST_COMPANY_YN = #{ firstCompanyYn }
+            , ADDRESS_DETAIL = #{ addressDetail }
+            , BUSINESS_CODE = #{ businessCode }
+		 WHEN NOT MATCHED THEN
+	   INSERT
+	   (
+	     COMPANY_NO
+	   , COMPANY_NAME
+	   , CEO_NAME
+	   , HEAD_QUARTER_ADDRESS
+	   , HEAD_QUARTER_PHONE
+	   , FAX
+	   , COMPANY_REGISTRATION_NO
+	   , IDENTIFICATION_NO
+	   , MANAGER_EMAIL
+	   , WEBSITE
+	   , FOUNDING_DATE
+	   , FIRST_COMPANY_YN
+	   , ADDRESS_DETAIL
+	   , BUSINESS_CODE
+	   ) 
+       VALUES
+       (
+         #{ companyNo }
+       , #{ companyName }
+       , #{ ceoName }
+       , #{ address }
+       , #{ phone }
+       , #{ fax }
+       , #{ companyRegistrationNo }
+       , #{ identificationNo }
+       , #{ managerEmail }
+       , #{ website }
+       , #{ foundingDate }
+       , #{ firstCompanyYn }
+       , #{ addressDetail }
+       , #{ businessCode }
+       )
+	</insert>
+	<insert id="insertUpperDept" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO">
+       MERGE INTO TBL_DEPARTMENT A
+		USING DUAL
+		   ON ( COMPANY_NO = #{companyNo}  AND UPPER_DEPARTMENT = 0 )
+		 WHEN MATCHED THEN
+ 	   UPDATE 
+ 	      SET A.DEPARTMENT_NAME =  #{ departmentName }
+		    , A.DEPARTMENT_CREATE_DATE = #{ departmentCreateDate }
+		    , A.DEPARTMENT_PHONE =  #{ departmentPhone , jdbcType=VARCHAR }
+		 WHEN NOT MATCHED THEN
+	   INSERT
+	   (
+          A.COMPANY_NO
+		, A.DEPARTMENT_NO 
+		, A.DEPARTMENT_NAME
+		, A.DEPARTMENT_CREATE_DATE
+		, A.DEPARTMENT_PHONE
+		, A.UPPER_DEPARTMENT
+	   )
+       VALUES
+       (
+          1
+        , SEQ_DEPARTMENT_NO.NEXTVAL
+		, #{ departmentName }
+		, #{ departmentCreateDate }
+		, #{ departmentPhone , jdbcType=VARCHAR }
+        , 0
+       )
+	</insert>
+	
+	<select id="selectOneUpperDepartment" resultMap="departmentResultMap">
+		SELECT
+			   *
+		  FROM TBL_DEPARTMENT
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND UPPER_DEPARTMENT = 0
+	</select>
+</mapper>

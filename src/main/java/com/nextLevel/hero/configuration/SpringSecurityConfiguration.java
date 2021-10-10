@@ -64,10 +64,13 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/mngPay/paySalaryAndBonus").hasAnyRole("PAY", "ADMIN")
 				.antMatchers("/mngRole/**").hasAnyRole("ROLE", "ADMIN")
 				.antMatchers("/mngBasicInformation/**").hasAnyRole("ROLE", "ADMIN")
+				.antMatchers("/basicSetting/**").hasAnyRole("ROLE", "BASIC")
+				.antMatchers("/businessList/businessList/**").permitAll()
 				.anyRequest().permitAll()  //누구나 접근가능
 			.and()
 				.formLogin()				
 				.loginPage("/member/login")
+				.failureUrl("/error/loginError")
 				.successForwardUrl("/main")		//로그인이성공하면 포워딩
 			.and()
 				.logout()
@@ -78,6 +81,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.and()
 				.exceptionHandling()
 				.accessDeniedPage("/error/403");
+		    
 	
 			http.sessionManagement()
 		    .maximumSessions(1)

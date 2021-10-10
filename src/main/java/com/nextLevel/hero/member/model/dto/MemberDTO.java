@@ -20,7 +20,7 @@ public class MemberDTO {
 	private List<MemberRoleDTO> memberRoleList;			//회원별권한리스트
 	
 	public MemberDTO() {}
-	
+
 	public MemberDTO(int no, int companyNo, String id, String pwd, String tempPwdYn, String name, Date registDatetime,
 			Date accSecessionDatetime, String accSecessionYn, int salaryStepByRank,
 			List<MemberRoleDTO> memberRoleList) {
@@ -133,6 +133,8 @@ public class MemberDTO {
 				+ accSecessionDatetime + ", accSecessionYn=" + accSecessionYn + ", salaryStepByRank=" + salaryStepByRank
 				+ ", memberRoleList=" + memberRoleList + "]";
 	}
+
+	
 
 	
 	
