@@ -25,7 +25,7 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
-							<div class="col-lg-8">
+							<div class="col-lg-9">
 								<div class="card">
 										<p class="sub-header"></p>
 										<div id="smartwizard-arrows">
@@ -36,11 +36,13 @@
 															class="d-block fw-normal"></small></a></li>
 												<li><a href="#sw-arrows-step-3">업종별 보험 요율<small
 															class="d-block fw-normal"></small></a></li>
-												<li><a href="#sw-arrows-step-4">학력<small
+												<li><a href="#sw-arrows-step-4">휴가생성<small
 															class="d-block fw-normal"></small></a></li>
-												<li><a href="#sw-arrows-step-5">경력<small
+												<li><a href="#sw-arrows-step-5">급여생성<small
 															class="d-block fw-normal"></small></a></li>
-												<li><a href="#sw-arrows-step-6">가족<small
+												<li><a href="#sw-arrows-step-6">보험 요율<small
+															class="d-block fw-normal"></small></a></li>
+												<li><a href="#sw-arrows-step-7">초기 세팅 완료<small
 															class="d-block fw-normal"></small></a></li>
 											</ul>
 
@@ -289,69 +291,588 @@
 													</div> <!-- end row -->
 												</div>
 												<div id="sw-arrows-step-4">
-													<h4 class="header-title mt-0 mb-1">학 력</h4>
+													<h4 class="header-title mt-0 mb-1">휴가 생성</h4>
 													<hr><br>
 													<div class="row">
-														<div class="col-12">
-															<div class="mb-3">
-																<label class="form-label" for="sw-arrows-first-name">First name</label>
-																<input type="text" id="sw-arrows-first-name" class="form-control" placeholder="Enter First name...">
-																	
-																	
+								<div class="col-xl-9">
+									<div class="row">
+										<div class="col" >
+											<div class="card">
+												<div class="card-body">
+													<!-- cta -->
+													<div class="row">
+														<div class="form-check float-start">
+															<h4 class="header-title mt-0">
+															<b>법정 필수 휴가</b>
+																<div class="dropdown float-end">
+																	<button type="button" class="btn btn-warning"
+																		id="departmentList" data-bs-toggle="modal"
+																		data-bs-target="#insertVacation">휴가 종류 추가</button>
+																</div>
+															</h4>
+														</div>
+														<hr class="my-2" />
+													</div>
+													<div class="row mt-3">
+														<div class="col">
+															<div class="tasks border" 
+																th:each="type,num:${vacationTypeList}"th:if="${type.vacationCategory} == '법정 필수 휴가'">
+																<h5 class="mt-0 task-header header-title"
+																	th:text="${type.vacationName}"></h5>
+																<div class="task-list-items">
+																	<!-- Task Item -->
+																	<div class="card border mb-0">
+																		<div class="card-body p-2">
+																			<span class="badge badge-soft-info">휴가 속성 : </span>
+																			<span class="badge badge-soft-success"
+																				th:text="${type.vacationCategory}"></span> 
+																				<br> 
+																				<span class="badge badge-soft-info">휴가 지급 방법 : </span> 
+																				<span class="badge badge-soft-success" th:text="${type.vacationSettingWay}" ></span>
+																				<br> 
+																				<span class="badge badge-soft-info">휴가 적용 성별 : </span> 
+																				<span class="badge badge-soft-success" th:text="${type.settingGender}" ></span>
+																			<p class="mb-0 mt-4">
+																				<span class="text-nowrap align-middle fs-13 me-2">
+																					<i class="uil uil-clock-ten text-muted me-1"></i><a th:text="${type.vacationDate}"></a>일
+																				</span>
+																				<b class="float-end text-muted" th:if="${type.paidVacationYn} == Y">유급</b>
+																				<b class="float-end text-muted" th:if="${type.paidVacationYn== N}">무급</b>
+																			</p>
+																		</div>
+																		<!-- end card-body -->
+																	</div>
+																	<!-- Task Item End -->
+																</div>
 															</div>
-															<div class="mb-3">
-																<label class="form-label" for="sw-arrows-last-name">Last name</label>
-																<input type="text" id="sw-arrows-last-name" class="form-control" placeholder="Enter Last name...">
+															<br>
+															<br>
+															<b>회사 휴가</b>
+															<hr>
+															<div class="tasks border" 
+																th:each="type,num:${vacationTypeList}"th:if="${type.vacationCategory} == '회사 휴가'">
+																<h5 class="mt-0 task-header header-title"
+																	th:text="${type.vacationName}"></h5>
+																<div class="task-list-items">
+																	<!-- Task Item -->
+																	<div class="card border mb-0">
+																		<div class="card-body p-2">
+																			<span class="badge badge-soft-info">휴가 속성 : </span>
+																			<span class="badge badge-soft-success"
+																				th:text="${type.vacationCategory}"></span> 
+																				<br> 
+																				<span class="badge badge-soft-info">휴가 지급 방법 : </span> 
+																				<span class="badge badge-soft-success" th:text="${type.vacationSettingWay}" ></span>
+																				<br> 
+																				<span class="badge badge-soft-info">휴가 적용 성별 : </span> 
+																				<span class="badge badge-soft-success" th:text="${type.settingGender}" ></span>
+																			<p class="mb-0 mt-4">
+																				<span class="text-nowrap align-middle fs-13 me-2">
+																				<input th:value="${type.vacationNo}"
+																						th:id="vacationNo" hidden="hidden">
+																					<i class="uil uil-clock-ten text-muted me-1"></i><a th:text="${type.vacationDate}"></a>일
+																				</span>
+																				<b class="float-end text-muted" th:if="${type.paidVacationYn} == Y">유급</b>
+																				<b class="float-end text-muted" th:if="${type.paidVacationYn} == N">무급</b>
+																			</p>
+																		</div>
+																		<!-- end card-body -->
+																	</div>
+																	<!-- Task Item End -->
+																</div>
 															</div>
-															<div class="mb-3">
-																<label class="form-label" for="sw-arrows-email">Email</label>
-																<input type="email" id="sw-arrows-email" class="form-control" placeholder="Enter Email...">
-															</div>
-														</div> <!-- end col -->
-													</div> <!-- end row -->
+															<!-- start other tasks -->
+														</div>
+														<span align="right">
+																<code >* </code><i class="uil uil-clock-ten text-muted me-1"></i><a>표기는 해당하는 휴가종류의 지급 일수입니다.</a>
+														</span>
+													</div>
+													<!-- end row -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 												</div>
 												<div id="sw-arrows-step-5">
-													<h4 class="header-title mt-0 mb-1">경 력</h4>
+													<h4 class="header-title mt-0 mb-1">급여 생성</h4>
 													<hr><br>
 													<div class="row">
-														<div class="col-12">
-															<div class="mb-3">
-																<label class="form-label" for="sw-arrows-first-name">근무 기간</label>
-																<input type="text" id="sw-arrows-first-name" class="form-control" placeholder="Enter First name...">
+								<div class="col-xl-9">
+									<div class="row">
+										<div class="col" >
+											<div class="card">
+												<div class="card-body">
+													<!-- cta -->
+													<div class="row">
+														<div class="form-check float-start">
+															<h4 class="header-title mt-0">
+															<b>급여 종류</b>
+																<div class="dropdown float-end">
+																	<button type="button" class="btn btn-warning"
+																		data-bs-toggle="modal"
+																		data-bs-target="#insertSalary">급여 종류 추가</button>
+																</div>
+															</h4>
+														</div>
+														<hr class="my-2" />
+													</div>
+													<div class="row mt-3">
+														<div class="col">
+															<div class="tasks border" 
+																th:each="sal,num:${salaryList}">
+																<h5 class="mt-0 task-header header-title"
+																	th:text="${sal.salaryName}"></h5>
+																<div class="task-list-items">
+																	<!-- Task Item -->
+																	<div class="card border mb-0">
+																		<div class="card-body p-2">
+																				<span class="badge badge-soft-dark">급여 번호 : </span> 
+																				<span class="badge badge-soft-secondary" th:text="${sal.salaryNo}" ></span>
+																				<br>
+																				<span class="badge badge-soft-dark">지급 방식 : </span>
+																				<span class="badge badge-soft-secondary" th:text="${sal.regularlyYn}"></span> 
+																				<br> 
+																				<span class="badge badge-soft-dark">지급 시기 : </span> 
+																				<span class="badge badge-soft-secondary" th:text="${sal.payPeriod}" ></span>
+																				<br> 
+																				<span class="badge badge-soft-dark">비·과세여부 : </span> 
+																				<span class="badge badge-soft-secondary" th:text="${sal.deductionYn}" ></span>
+																				<br> 
+																				<span class="badge badge-soft-dark">연봉 포함 여부 : </span> 
+																				<span class="badge badge-soft-secondary" th:text="${sal.annualSalaryYn}" ></span>
+																				<br> 
+																				<span class="badge badge-soft-dark">입사월 지급 : </span> 
+																				<span class="badge badge-soft-secondary" th:text="${sal.payHiredMonthYn}" ></span>
+																				<br> 
+																				<span class="badge badge-soft-dark">퇴사월 지급 : </span> 
+																				<span class="badge badge-soft-secondary" th:text="${sal.paymentMonthYn}" ></span>
+																				<br> 
+																				<span class="badge badge-soft-dark">대상 : </span> 
+																				<span class="badge badge-soft-secondary" th:text="${sal.target}" ></span>
+																			<p class="mb-0 mt-4">
+																				<span class="text-nowrap align-middle fs-13 me-2">
+																					<i class="uil uil-bill text-muted me-1"></i><a th:text="${sal.salaryAmount}"></a>원
+																				</span>
+																				<b class="float-end text-muted" th:if="${sal.useStatus} == Y" >사용중</b>
+																				<b class="float-end text-muted" th:if="${sal.useStatus} == N">사용안함</b>
+																			</p>
+																		</div>
+																		<!-- end card-body -->
+																	</div>
+																	<!-- Task Item End -->
+																</div>
 															</div>
-															<div class="mb-3">
-																<label class="form-label" for="sw-arrows-last-name">직 위</label>
-																<input type="text" id="sw-arrows-last-name" class="form-control" placeholder="Enter Last name...">
+															<br>
+															<br>
+															<div class="row">
+																<div class="form-check float-start">
+																<h4 class="header-title mt-0">
+																<b>상여 종류</b>
+																	<div class="dropdown float-end">
+																	<button type="button" class="btn btn-warning"
+																		 data-bs-toggle="modal"
+																		data-bs-target="#bonusmodal">상여 종류 추가</button>
+																	</div>
+																</h4>
 															</div>
-															<div class="mb-3">
-																<label class="form-label" for="sw-arrows-email">직장명</label>
-																<input type="email" id="sw-arrows-email" class="form-control" placeholder="Enter Email...">
+															<hr class="my-2" />
 															</div>
-															<div class="mb-3">
-																<label class="form-label" for="sw-arrows-email">담당 부서</label>
-																<input type="email" id="sw-arrows-email" class="form-control" placeholder="Enter Email...">
+															<div class="tasks border" 
+																th:each="bonus,num:${bonusList}">
+																<h5 class="mt-0 task-header header-title"
+																	th:text="${bonus.bonusName}"></h5>
+																<div class="task-list-items">
+																	<!-- Task Item -->
+																	<div class="card border mb-0">
+																		<div class="card-body p-2">
+																			<span class="badge badge-soft-dark">상여 번호 : </span> 
+																				<span class="badge badge-soft-secondary" th:text="${bonus.bonusNo}" ></span>
+																				<br>
+																				<span class="badge badge-soft-dark">지급 방식 : </span>
+																				<span class="badge badge-soft-secondary" th:text="${bonus.regularlyYn}"></span> 
+																				<br> 
+																				<span class="badge badge-soft-dark">지급 시기 : </span> 
+																				<span class="badge badge-soft-secondary" th:text="${bonus.payPeriod}" ></span>
+																			<p class="mb-0 mt-4">
+																				<span class="text-nowrap align-middle fs-13 me-2">
+																					<i class="uil uil-bill text-muted me-1"></i><a th:text="${bonus.bonusAmount}"></a>원
+																				</span>
+																				<b class="float-end text-muted" th:if="${bonus.useYn} == Y">사용중</b>
+																				<b class="float-end text-muted" th:if="${bonus.useYn} == N">사용안함</b>
+																			</p>
+																		</div>
+																		<!-- end card-body -->
+																	</div>
+																	<!-- Task Item End -->
+																</div>
 															</div>
-														</div> <!-- end col -->
-													</div> <!-- end row -->
+															<!-- start other tasks -->
+														</div>
+														<span align="right">
+																<code >* </code><i class="uil uil-bill text-muted me-1"></i><a>표기는 해당하는 급·상여의 지급 금액입니다.</a>
+														</span>
+													</div>
+													<!-- end row -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 												</div>
 												<div id="sw-arrows-step-6">
-													<h4 class="header-title mt-0 mb-1">가 족</h4>
+													<h4 class="header-title mt-0 mb-1">보험 요율</h4>
+													<hr><br>
+													<div class="row">
+						<div class="col-12">
+							<!-- 여기서부터 본문 생성 -->
+							<form class="form-horizontal" action="/basicSetting/insertInsuranceRate" method="POST" onsubmit="return askAgain();">
+							<div class="row">
+								<div class="col-lg-10">
+									<div class="card">
+										<div class="card-body">
+											<input name="companyNo" hidden="hidden" th:value="${insuranceRate.companyNo}">
+											<input name="businessCode" hidden="hidden" th:value="${insuranceRate.businessCode}">
+											<div class="table-responsive">
+												<table class="table table-bordered mb-0" align="center"
+													style="vertical-align: middle"  onchange="valChange()">
+													<thead align="center">
+														<tr>
+															<th scope="col">구 분</th>
+															<th scope="col">기 준</th>
+															<th scope="col">보험 요율</th>
+															<th scope="col">근로자</th>
+															<th scope="col">사업주</th>
+															<th scope="col">비고</th>
+														</tr>
+													</thead>
+													<tbody align="center">
+														<tr>
+															<th scope="row">국민연금</th>
+															<td>기준 월 소득액</td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="nationalPensionRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" required="required"
+																		th:value="${insuranceRate.nationalPensionRate}"
+																		id="nationalPensionRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="workersPensionRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" readonly="readonly"
+																		th:value="${insuranceRate.workersPensionRate}"
+																		id="workersPensionRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="employerPensionRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" readonly="readonly"
+																		th:value="${insuranceRate.employerPensionRate}"
+																		id="employerPensionRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+															<td rowspan="3">10원 미만 단수 버림</td>
+														</tr>
+														<tr>
+															<th scope="row" rowspan="2">건강보험</th>
+															<td>건강 보험료</td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="healthRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" required="required"
+																		th:value="${insuranceRate.healthRate}" id="healthRate" step="0.0001">
+																	<span class="input-group-text">%</span>
+																</div></td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="workersHealthRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" readonly="readonly"
+																		th:value="${insuranceRate.workersHealthRate}"
+																		id="workersHealthRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="employerHealthRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" readonly="readonly"
+																		th:value="${insuranceRate.employerHealthRate}"
+																		id="employerHealthRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+														</tr>
+														<tr>
+															<td>장기 요양 보험료</td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="longTermCareRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" required="required"
+																		th:value="${insuranceRate.longTermCareRate}"
+																		id="longTermCareRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="workersLongTermCareRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" readonly="readonly"
+																		th:value="${insuranceRate.workersLongTermCareRate}"
+																		id="workersLongTermCareRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="employerLongTermCareRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" readonly="readonly"
+																		th:value="${insuranceRate.employerLongTermCareRate}"
+																		id="employerLongTermCareRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+														</tr>
+														<tr>
+															<th scope="row" rowspan="5">고용보험</th>
+															<td>실업 급여</td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="unempBenefitRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" required
+																		th:value="${insuranceRate.unempBenefitRate}"
+																		id="unempBenefitRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="workersUnempRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" readonly="readonly"
+																		th:value="${insuranceRate.workersUnempRate}"
+																		id="workersUnempRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="employerUnempRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" readonly="readonly"
+																		th:value="${insuranceRate.employerUnempRate}"
+																		id="employerUnempRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+															<td rowspan="5">고용안전 개발 능력 사업</td>
+														</tr>
+														<tr>
+															<td>150인 미만</td>
+															<td colspan="2" rowspan="4"></td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="under150EmpRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" required="required"
+																		th:value="${insuranceRate.under150EmpRate}"
+																		id="under150EmpRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+														</tr>
+														<tr>
+															<td>150인 이상 우선 지원 대상</td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="over150PriorityEmpRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" required="required"
+																		th:value="${insuranceRate.over150PriorityEmpRate}"
+																		id="over150PriorityEmpRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+														</tr>
+														<tr>
+															<td>150 ~ 1000인 미만</td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="under1000EmpRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" required="required"
+																		th:value="${insuranceRate.under1000EmpRate}"
+																		id="under1000EmpRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+														</tr>
+														<tr>
+															<td>1000인 이상 및 지자체</td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="over1000EmpRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" required="required"
+																		th:value="${insuranceRate.over1000EmpRate}"
+																		id="over1000EmpRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-10">
+									<div class="card">
+										<div class="card-body">
+											<h4 class="header-title mt-0 mb-1">
+												업종 산재 요율 <br>
+											</h4>
+											<div class="mb-3 row"></div>
+											<div class="table-responsive">
+												<table class="table table-bordered mb-0" align="center"
+													style="vertical-align: middle" onchange="valChange()">
+													<thead align="center">
+														<tr>
+															<th scope="col" colspan="3">구 분</th>
+															<th scope="col">보험 요율</th>
+														</tr>
+													</thead>
+													<tbody align="center">
+														<tr>
+															<th scope="row" rowspan="2">산재 요율</th>
+															<td>업종</td>
+															<td th:text="${insuranceRate.detailTypeOfBusiness}"></td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="industryRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" readonly="readonly"
+																		th:value="${insuranceRate.industryRate}"
+																		id="industryRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+														</tr>
+														<tr>
+															<td>출 · 퇴근 재해 요율</td>
+															<td>전 업종 동일 요율 적용</td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="commuteAccidentRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px"
+																		th:value="${insuranceRate.commuteAccidentRate}"
+																		id="commuteAccidentRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+														</tr>
+														<tr>
+															<th scope="row" colspan="2">임금 채권 부담금 비율</th>
+															<td align="center">
+																<div th:switch="${insuranceRate.wageBondChargesYn}">
+																	<div th:case="Y">
+																	<input type="radio" id="wageBondChargesYn1"
+																		name="wageBondChargesYn" class="form-check-input" value="Y" checked="checked">
+																	<label class="form-check-label" for="wageBondChargesYn1">해당&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;</label>
+																	<input type="radio" id="wageBondChargesYn2"
+																		name="wageBondChargesYn" class="form-check-input" value="N">
+																	<label class="form-check-label" for="wageBondChargesYn2">비해당</label>
+																	</div>
+																	<div th:case="N">
+																	<input type="radio" id="wageBondChargesYn1"
+																		name="wageBondChargesYn" class="form-check-input" value="Y">
+																	<label class="form-check-label" for="wageBondChargesYn1">해당&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;</label>
+																	<input type="radio" id="wageBondChargesYn2"
+																		name="wageBondChargesYn" class="form-check-input" value="N" checked="checked">
+																	<label class="form-check-label" for="wageBondChargesYn2">비해당</label>
+																	</div>
+																</div>
+															</td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="wageBondChargesRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" required="required"
+																		th:value="${insuranceRate.wageBondChargesRate}"
+																		id="wageBondChargesRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+														</tr>
+														<tr>
+															<th scope="row" colspan="2">석면 피해 구제 부담금</th>
+															<td align="center">
+																<div  th:switch="${insuranceRate.asbestosDamagechargeYn}">
+																<div th:case="Y">
+																	<input type="radio" id="asbestosDamagechargeYn3"
+																		name="asbestosDamagechargeYn" class="form-check-input"value="Y" checked="checked">
+																	<label class="form-check-label" for="customRadio3">해당&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;</label>
+																	<input type="radio" id="asbestosDamagechargeYn4" 
+																		name="asbestosDamagechargeYn" class="form-check-input" value="N">
+																	<label class="form-check-label" for="customRadio4">비해당</label>
+																</div>
+																<div th:case="N">
+																<input type="radio" id="asbestosDamagechargeYn3"
+																		name="asbestosDamagechargeYn" class="form-check-input"value="Y">
+																	<label class="form-check-label" for="customRadio3">해당&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;</label>
+																	<input type="radio" id="asbestosDamagechargeYn4" 
+																		name="asbestosDamagechargeYn" class="form-check-input" value="N"checked="checked">
+																	<label class="form-check-label" for="customRadio4" >비해당</label>
+																</div>
+																</div>
+															</td>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="asbestosDamagechargeRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px"
+																		th:value="${insuranceRate.asbestosDamagechargeRate}"
+																		id="asbestosDamagechargeRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+														</tr>
+														<tr>
+															<th scope="row" colspan="3">산재 보험 요율</th>
+															<td><div class="input-group">
+																	<input type="number" class="form-control" name="industrialInsuranceRate"
+																		aria-describedby="inputGroupPrepend"
+																		style="width: 10px" readonly="readonly"
+																		th:value="${insuranceRate.industrialInsuranceRate}"
+																		id="industrialInsuranceRate" step="0.0001"> <span
+																		class="input-group-text">%</span>
+																</div></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									 <div class="mb-3 row">
+                                                        <label class="col-lg-2 col-form-label" for="example-date">현재 보험율 시작</label>
+                                                        <div class="col-lg-4">
+                                                            <input class="form-control" id="example-date" type="date"  readonly="readonly" th:value="${insuranceRate.insuranceRateStartDate}">
+                                                        </div>
+                                                        <label class="col-lg-2 col-form-label" for="example-date">보험율 적용 예정일</label>
+                                                        <div class="col-lg-4">
+                                                            <input class="form-control" id="currDate" name="insuranceRateStartDate" type="date">
+                                                        </div>
+                                                    </div>
+									<button type="button" class="btn btn-success" id="cancel"
+										style="float: right; margin-left: 10px">취소</button>
+									<button type="submit" class="btn btn-info" id="modi"
+										style="float: right;">저장</button>
+								</div>
+							</div>
+							</form>
+										<button type="button" class="btn btn-warning" id="calc" name="calc"
+											 style="float: left; margin-left:30%; width: 640px" onclick="calc()">계산하기</button>
+						</div>
+					</div>
+												</div>
+												<div id="sw-arrows-step-7">
+													<h4 class="header-title mt-0 mb-1">초기 세팅 완료</h4>
 													<hr><br>
 													<div class="row">
 														<div class="col-12">
-															<div class="mb-3">
-																<label class="form-label" for="sw-arrows-first-name">First name</label>
-																<input type="text" id="sw-arrows-first-name" class="form-control" placeholder="Enter First name...">
-															</div>
-															<div class="mb-3">
-																<label class="form-label" for="sw-arrows-last-name">Last name</label>
-																<input type="text" id="sw-arrows-last-name" class="form-control" placeholder="Enter Last name...">
-															</div>
-															<div class="mb-3">
-																<label class="form-label" for="sw-arrows-email">Email</label>
-																<input type="email" id="sw-arrows-email" class="form-control" placeholder="Enter Email...">
-												</div>
-														</div> <			!-- end col -->
+															<div class="card-body">
+                                        <h4 class="header-title mt-0 mb-1">모든 초기 세팅이 완료되었습니다.</h4>
+                                        <p class="sub-header">예를 누를경우 정상적인 사용자 페이지로 이동하며 기존에 초기세팅에 기입했던 정보는 기초자료 페이지에서 수정하실 수 있습니다.</p>
+
+                                        <form class="needs-validation" action="/basicSetting/finish" method="get">
+                                            <button type="submit" class="btn btn-info" id="modi"
+										style="float: right;">초기세팅 완료 하기</button>
+                                        </form>
+
+                                    </div> <!-- end card-body-->
+                                </div>
+														</div> <!-- end col -->
 													</div> <!-- end row -->
 												</div>
 											</div>
@@ -415,6 +936,246 @@
 	</div>
 	</form>
 	<!-- /.modal -->
+	<!-- 휴가 추가 모달 시작 -->
+	<form action="/basicSetting/insertVacationType" method="post">
+	<div class="modal fade" id="insertVacation" tabindex="-1" role="dialog"
+		aria-labelledby="myCenterModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: gray">
+					<h5 class="modal-title" id="myCenterModalLabel"
+						style="font-size: 20px">
+						<b>휴가 종류 추가</b>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<code style="float: right">* 표기는 필수 입력항목입니다.</code>
+					<br>
+					<label style="margin: 10px;">휴가명 <span style="color: red">*</span></label>
+					<br> 
+					<input class="form-control"	type="text" placeholder="휴가명" name="vacationName" 
+					id="vacationName" required="required"> 
+					<br>
+                    <label style="margin: 10px;">휴가 지급 일수 <span style="color: red">*</span></label>
+					<br> 
+					<div class="row" style="font-size: 25px;margin-left: 2px; float: center">
+					<input style="width: 150px" class="form-control"type="number" placeholder="휴가 지급 일수" name="vacationDate"
+					id="vacationDate" required="required">&nbsp;일
+					</div>
+					<br>
+					<label style="margin: 10px;">휴가 속성</label>
+					<br>
+					<select	class="form-select" id="vacationCategory" name="vacationCategory">
+						<option value="법정 필수 휴가">법정 필수 휴가</option>
+						<option value="회사 휴가">회사 휴가</option>
+					</select>
+					<br>
+					<label style="margin: 10px;">휴가 지급 방법</label>
+					<br> 
+                    <div>
+					<input type="radio" id="vacationSettingWay1" name="vacationSettingWay" class="form-check-input" value="신청 시 지급" checked="checked">
+					<label class="form-check-label" for="vacationSettingWay1">신청 시 지급&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="vacationSettingWay2"
+							name="vacationSettingWay" class="form-check-input" value="자동 지급">
+					<label class="form-check-label" for="vacationSettingWay2">자동 지급</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">급여 지급 여부</span></label>
+					<br> 
+                    <div>
+					<input type="radio" id="paidVacationYn1" name="paidVacationYn" class="form-check-input" value="Y" checked="checked">
+					<label class="form-check-label" for="paidVacationYn1">유급&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="paidVacationYn2"
+							name="paidVacationYn" class="form-check-input" value="N">
+					<label class="form-check-label" for="paidVacationYn2">무급</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">적용 성별</label>
+					<br>
+					<select	class="form-select" id="settingGender" name="settingGender">
+						<option value="모두">모든 성별</option>
+						<option value="남">남성</option>
+						<option value="여">여성</option>
+					</select>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success width-xs"
+						id="createVacationType">등록</button>
+					<button type="reset" class="btn btn-warning width-xs"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	</form>
+	
+	<form action="/basicSetting/insertSalary" method="post">
+	<div class="modal fade" id="insertSalary" tabindex="-1" role="dialog"
+		aria-labelledby="myCenterModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: gray">
+					<h5 class="modal-title" id="myCenterModalLabel"
+						style="font-size: 20px">
+						<b>급여 종류 추가</b>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<code style="float: right">* 표기는 필수 입력항목입니다.</code>
+					<br>
+					<label style="margin: 10px;">급여 이름 <span style="color: red">*</span></label>
+					<br> 
+					<input class="form-control"	type="text" placeholder="급여 이름" name="salaryName" 
+					id="salaryName" required="required"> 
+					<br>
+                    <label style="margin: 10px;">급여 지급 금액 <span style="color: red">*</span></label>
+					<br> 
+					<div class="row" style="font-size: 25px;margin-left: 2px; float: center">
+					<input style="width: 150px" class="form-control"type="number" placeholder="급여 지급 금액" name="salaryAmount"
+					id="salaryAmount" required="required">&nbsp;￦
+					</div>
+					<br>
+					<label style="margin: 10px;">급여 지급 방법</label>
+					<br> 
+                    <div>
+					<input type="radio" id="regularlyYn1" name="regularlyYn" class="form-check-input" value="매월" checked="checked">
+					<label class="form-check-label" for="regularlyYn1">정기&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="regularlyYn2" name="regularlyYn" class="form-check-input" value="일시">
+					<label class="form-check-label" for="regularlyYn2">일시</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">급여 지급 시기</label>
+					<br> 
+                    <div>
+					<input type="radio" id="payPeriod1" name="payPeriod" class="form-check-input" value="매월" checked="checked">
+					<label class="form-check-label" for="payPeriod1">매월&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="payPeriod2" name="payPeriod" class="form-check-input" value="매년">
+					<label class="form-check-label" for="payPeriod2">매년</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">비 · 과세 여부</label>
+					<br> 
+                    <div>
+					<input type="radio" id="deductionYn1" name="deductionYn" class="form-check-input" value="비과세" checked="checked">
+					<label class="form-check-label" for="deductionYn1">비과세&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="deductionYn2" name="deductionYn" class="form-check-input" value="과세">
+					<label class="form-check-label" for="deductionYn2">과세</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">연봉 포함 여부</label>
+					<br> 
+                    <div>
+					<input type="radio" id="annualSalaryYn1" name="annualSalaryYn" class="form-check-input" value="연봉에미포함" checked="checked">
+					<label class="form-check-label" for="annualSalaryYn1">연봉에 미포함&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="annualSalaryYn2" name="annualSalaryYn" class="form-check-input" value="연봉에포함">
+					<label class="form-check-label" for="annualSalaryYn2">연봉에 포함</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">입사월에 지급</label>
+					<br> 
+                    <div>
+					<input type="radio" id="payHiredMonthYn1" name="payHiredMonthYn" class="form-check-input" value="일할계산후" checked="checked">
+					<label class="form-check-label" for="payHiredMonthYn1">일할 계산 후&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="payHiredMonthYn2" name="payHiredMonthYn" class="form-check-input" value="전액">
+					<label class="form-check-label" for="payHiredMonthYn2">전액</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">퇴사월에 지급</label>
+					<br> 
+                    <div>
+					<input type="radio" id="paymentMonthYn1" name="paymentMonthYn" class="form-check-input" value="일할계산후" checked="checked">
+					<label class="form-check-label" for="paymentMonthYn1">일할 계산 후&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="paymentMonthYn2" name="paymentMonthYn" class="form-check-input" value="전액">
+					<label class="form-check-label" for="paymentMonthYn2">전액</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">급여 지급 대상</span></label>
+					<br> 
+                    <div>
+					<input type="radio" id="target1" name="target" class="form-check-input" value="전직원" checked="checked">
+					<label class="form-check-label" for="target1">전 직원&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="target2" name="target" class="form-check-input" value="특정직원">
+					<label class="form-check-label" for="target2">특정 직원</label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success width-xs">등록</button>
+					<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	</form>
+	<!-- /.modal -->
+	<!-- 급여 추가 모달 끝 -->
+	
+	<!-- 상여 추가 모달 시작 -->
+	<form action="/basicSetting/insertBonus" method="post">
+	<div class="modal fade" id="bonusmodal" tabindex="-1" role="dialog"
+		aria-labelledby="myCenterModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: gray">
+					<h5 class="modal-title" id="myCenterModalLabel"
+						style="font-size: 20px">
+						<b>상여 종류 추가</b>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<code style="float: right">* 표기는 필수 입력항목입니다.</code>
+					<br>
+					<label style="margin: 10px;">상여 이름 <span style="color: red">*</span></label>
+					<br> 
+					<input class="form-control"	type="text" placeholder="상여 이름" name="bonusName" 
+					id="bonusName" required="required"> 
+					<br>
+                    <label style="margin: 10px;">상여 지급 금액 <span style="color: red">*</span></label>
+					<br> 
+					<div class="row" style="font-size: 25px;margin-left: 2px; float: center">
+					<input style="width: 150px" class="form-control"type="number" placeholder="상여 지급 금액" name="bonusAmount"
+					id="bonusAmount" required="required">&nbsp;￦
+					</div>
+					<br>
+					<label style="margin: 10px;">상여 지급 방법</label>
+					<br> 
+                    <div>
+					<input type="radio" id="regularlyYn1" name="regularlyYn" class="form-check-input" value="매월" checked="checked">
+					<label class="form-check-label" for="regularlyYn1">정기&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="regularlyYn2" name="regularlyYn" class="form-check-input" value="일시">
+					<label class="form-check-label" for="regularlyYn2">일시</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">상여 지급 시기</label>
+					<br> 
+                    <div>
+					<input type="radio" id="payPeriod1" name="payPeriod" class="form-check-input" value="매월" checked="checked">
+					<label class="form-check-label" for="payPeriod1">매월&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="payPeriod2" name="payPeriod" class="form-check-input" value="매년">
+					<label class="form-check-label" for="payPeriod2">매년</label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success width-xs">등록</button>
+					<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	</form>
+	<!-- /.modal -->
+	<!-- 상여 추가 모달 끝 -->
 	<!-- 모달창 시작 -->
 	<div class="modal fade" id="centermodal" tabindex="-1" role="dialog"
 		aria-labelledby="myCenterModalLabel" aria-hidden="true">
@@ -499,6 +1260,126 @@ $('#selectBusiness').click(function() {
 $('#businessListDown').click(function() {
 	location.href="/download";
 });
+
+
+function askAgain() {
+
+	var yn;
+	yn = document.getElementById('calc').innerHTML;
+
+	if (yn === "계산완료") {
+		return true;
+	} else {
+		 Swal.fire({
+   			  position: 'center',
+   			  icon: 'error',
+   			  title: '계산하기 버튼을 눌러주세요',
+   			  showConfirmButton: false,
+   			  timer: 1500,
+   			  width: 600
+   		})
+		return false;
+	}
+}
+
+	document.getElementById('currDate').value= new Date().toISOString().slice(0, 10);
+
+const PensionRate = document.getElementById('nationalPensionRate').value;
+const workersPensionRate = document.getElementById('workersPensionRate').value;
+const employerPensionRate = document.getElementById('employerPensionRate').value;
+const healthRate = document.getElementById('healthRate').value;
+const workersHealthRate = document.getElementById('workersHealthRate').value;
+const employerHealthRate = document.getElementById('employerHealthRate').value;
+const longTermCareRate = document.getElementById('longTermCareRate').value;
+const workersLongTermCareRate = document.getElementById('workersLongTermCareRate').value;
+const employerLongTermCareRate = document.getElementById('employerLongTermCareRate').value;
+const unempBenefitRate = document.getElementById('unempBenefitRate').value;
+const workersUnempRate = document.getElementById('workersUnempRate').value;
+const employerUnempRate = document.getElementById('employerUnempRate').value;
+const under150EmpRate = document.getElementById('under150EmpRate').value;
+const over150PriorityEmpRate = document.getElementById('over150PriorityEmpRate').value;
+const under1000EmpRate = document.getElementById('under1000EmpRate').value;
+const over1000EmpRate = document.getElementById('over1000EmpRate').value;
+const commuteAccidentRate = document.getElementById('commuteAccidentRate').value;
+const wageBondChargesRate = document.getElementById('wageBondChargesRate').value;
+const asbestosDamagechargeRate = document.getElementById('asbestosDamagechargeRate').value;
+const industrialInsuranceRate = document.getElementById('industrialInsuranceRate').value;
+const industryRate = document.getElementById('industryRate').value;
+
+document.getElementById('nationalPensionRate').value = (PensionRate * 100)
+		.toFixed(2);
+document.getElementById('workersPensionRate').value = (workersPensionRate * 100)
+		.toFixed(2);
+document.getElementById('employerPensionRate').value = (employerPensionRate * 100)
+		.toFixed(2);
+document.getElementById('healthRate').value = (healthRate * 100)
+		.toFixed(2);
+document.getElementById('workersHealthRate').value = (workersHealthRate * 100)
+		.toFixed(2);
+document.getElementById('employerHealthRate').value = (employerHealthRate * 100)
+		.toFixed(2);
+document.getElementById('longTermCareRate').value = (longTermCareRate * 100)
+		.toFixed(2);
+document.getElementById('workersLongTermCareRate').value = (workersLongTermCareRate * 100)
+		.toFixed(2);
+document.getElementById('employerLongTermCareRate').value = (employerLongTermCareRate * 100)
+		.toFixed(2);
+document.getElementById('unempBenefitRate').value = (unempBenefitRate * 100)
+		.toFixed(2);
+document.getElementById('workersUnempRate').value = (workersUnempRate * 100)
+		.toFixed(2);
+document.getElementById('employerUnempRate').value = (employerUnempRate * 100)
+		.toFixed(2);
+document.getElementById('under150EmpRate').value = (under150EmpRate * 100)
+		.toFixed(2);
+document.getElementById('over150PriorityEmpRate').value = (over150PriorityEmpRate * 100)
+		.toFixed(2);
+document.getElementById('under1000EmpRate').value = (under1000EmpRate * 100)
+		.toFixed(2);
+document.getElementById('over1000EmpRate').value = (over1000EmpRate * 100)
+		.toFixed(2);
+document.getElementById('commuteAccidentRate').value = (commuteAccidentRate * 100)
+		.toFixed(2);
+document.getElementById('wageBondChargesRate').value = (wageBondChargesRate * 100)
+		.toFixed(2);
+document.getElementById('asbestosDamagechargeRate').value = (asbestosDamagechargeRate * 100)
+		.toFixed(2);
+document.getElementById('industrialInsuranceRate').value = (industrialInsuranceRate * 100)
+		.toFixed(2);
+document.getElementById('industryRate').value = (industryRate * 100)
+		.toFixed(2);
+
+function calc(){
+	
+		document.getElementById("calc").innerHTML="계산완료";
+		document.getElementById("calc").style.background="#25c2e3";
+		document.getElementById('workersPensionRate').value = (document.getElementById('nationalPensionRate').value)/2;
+		document.getElementById('employerPensionRate').value = (document.getElementById('nationalPensionRate').value)/2;
+		document.getElementById('workersHealthRate').value = (document.getElementById('healthRate').value)/2;
+		document.getElementById('employerHealthRate').value = (document.getElementById('healthRate').value)/2;
+		document.getElementById('workersLongTermCareRate').value = (document.getElementById('longTermCareRate').value);
+		document.getElementById('employerLongTermCareRate').value = (document.getElementById('longTermCareRate').value);
+		document.getElementById('workersUnempRate').value = (document.getElementById('unempBenefitRate').value)/2;
+		document.getElementById('employerUnempRate').value = (document.getElementById('unempBenefitRate').value)/2;
+	document.getElementById('industrialInsuranceRate').value = parseFloat(document.getElementById('industryRate').value) + parseFloat(document.getElementById('commuteAccidentRate').value)
+															 + parseFloat(document.getElementById('wageBondChargesRate').value) + parseFloat(document.getElementById('asbestosDamagechargeRate').value);
+		const var1 = document.querySelector('input[name="wageBondChargesYn"]:checked').value;
+		const var2 = document.querySelector('input[name="asbestosDamagechargeYn"]:checked').value;
+	 if(var1 === "Y" && var2 ==="Y"){
+		}else if(var1 === "N" && var2 ==="Y"){
+			document.getElementById('industrialInsuranceRate').value -=  parseFloat(document.getElementById('wageBondChargesRate').value);
+		}else if(var1 === "Y" && var2 ==="N"){
+			document.getElementById('industrialInsuranceRate').value -= parseFloat(document.getElementById('asbestosDamagechargeRate').value);
+		}else{
+			document.getElementById('industrialInsuranceRate').value -= (parseFloat(document.getElementById('wageBondChargesRate').value) + parseFloat(document.getElementById('asbestosDamagechargeRate').value));
+		}
+		}
+
+function valChange(){
+		document.getElementById("calc").innerHTML="계산하기";
+		document.getElementById("calc").style.background="#ffbe0b";
+	}
+
 
 </script>
 </body>

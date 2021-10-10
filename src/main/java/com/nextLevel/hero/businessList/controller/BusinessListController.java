@@ -19,7 +19,7 @@ import com.nextLevel.hero.basicSetting.model.service.BasicSettingService;
 import com.nextLevel.hero.businessList.model.service.BusinessListService;
 import com.nextLevel.hero.member.model.dto.UserImpl;
 import com.nextLevel.hero.mngBasicInformation.model.dto.BusinessDTO;
-import com.nextLevel.hero.mngBasicInformation.model.service.MngBasicInformationService;
+import com.nextLevel.hero.mngBasicInformation.service.MngBasicInformationService;
 
 
 @Controller

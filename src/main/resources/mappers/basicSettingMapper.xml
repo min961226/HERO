@@ -9,6 +9,12 @@
 		<result property="departmentPhone" column="DEPARTMENT_PHONE"/>
 		<result property="upperDepartment" column="UPPER_DEPARTMENT"/>
 	</resultMap>
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.BusinessDTO" id="businessResultMap">
+		<id property="idx" column="BUSINESS_CODE"/>
+		<result property="businessDetail" column="DETAIL_TYPE_OF_BUSINESS"/>
+		<result property="industryRate" column="INDUSTRY_RATE"/>
+	</resultMap>
+	
 	<insert id="insertOrUpdateBasicSettingCompany" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO">
 		MERGE INTO TBL_COMPANY
 		USING DUAL
@@ -85,7 +91,7 @@
 	   )
        VALUES
        (
-          1
+          #{ companyNo }
         , SEQ_DEPARTMENT_NO.NEXTVAL
 		, #{ departmentName }
 		, #{ departmentCreateDate }
@@ -101,4 +107,103 @@
 		 WHERE COMPANY_NO = #{ companyNo }
 		   AND UPPER_DEPARTMENT = 0
 	</select>
+	<select id="selectBusinessInfo" resultMap="businessResultMap" >
+		SELECT
+			   B.BUSINESS_CODE
+			 , B.DETAIL_TYPE_OF_BUSINESS
+			 , B.INDUSTRY_RATE
+		  FROM TBL_COMPANY A,TBL_BUSINESS B 
+		 WHERE A.BUSINESS_CODE = B.BUSINESS_CODE
+		   AND COMPANY_NO = #{ companyNo}
+	</select>
+
+	<insert id="insertInsuranceRate" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngInsuranceRateDTO">
+		INSERT
+		  INTO TBL_INSURANCE_RATE
+		VALUES 
+		(
+		  #{ companyNo }
+		, SEQ_INSURANCE_NO.NEXTVAL
+		, #{ insuranceRateStartDate }
+		, #{ nationalPensionRate }*0.01
+		, #{ workersPensionRate }*0.01
+		, #{ employerPensionRate }*0.01
+		, #{ healthRate }*0.01
+		, #{ workersHealthRate }*0.01
+		, #{ employerHealthRate }*0.01
+		, #{ longTermCareRate }*0.01
+		, #{ workersLongTermCareRate }*0.01
+		, #{ employerLongTermCareRate }*0.01
+		, #{ unempBenefitRate }*0.01
+		, #{ workersUnempRate }*0.01
+		, #{ employerUnempRate }*0.01
+		, #{ under150EmpRate }*0.01
+		, #{ over150PriorityEmpRate }*0.01
+		, #{ under1000EmpRate }*0.01
+		, #{ over1000EmpRate }*0.01
+		, #{ commuteAccidentRate }*0.01
+		, #{ wageBondChargesYn }
+		, #{ wageBondChargesRate }*0.01
+		, #{ asbestosDamagechargeYn }
+		, #{ asbestosDamagechargeRate }*0.01
+		, #{ industrialInsuranceRate }*0.01
+		, #{ businessCode }
+		)
+	</insert>
+	
+	<update id="finishBasicSetting">
+		UPDATE TBL_USER_AUTH
+		   SET AUTHORITY_NO = 1
+		WHERE ID_NO = #{ userId }
+		  AND AUTHORITY_NO = 999
+	</update>
+	<insert id="insertUserAuth">
+		INSERT ALL
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 2
+		)
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 3
+		)
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 4
+		)
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 5
+		)
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 6
+		)
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 7
+		)
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 8
+		)
+		SELECT
+			   *
+		  FROM DUAL
+		
+	</insert>
 </mapper>

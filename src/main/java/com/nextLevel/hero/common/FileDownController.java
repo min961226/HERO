@@ -42,10 +42,5 @@ public class FileDownController {
 		}
 	}
 	
-	@RequestMapping(value = "/addExcel", method = RequestMethod.POST)
-	public ResponseEntity<? extends BasicResponse> addExcel(HttpServletRequest request,
-			HttpServletResponse response, MultipartFile file) {
 
-		return ResponseEntity.ok().body(service.insertExcel(file));
-	};
 }

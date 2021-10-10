@@ -41,7 +41,7 @@ import com.nextLevel.hero.mngBasicInformation.model.dto.MngInsuranceRateDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngMemberDepartmentDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngSalaryCriteriaDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngVacationTypeDTO;
-import com.nextLevel.hero.mngBasicInformation.model.service.MngBasicInformationService;
+import com.nextLevel.hero.mngBasicInformation.service.MngBasicInformationService;
 import com.nextLevel.hero.mngVacation.model.dto.MngVacationDTO;
 
 @Controller

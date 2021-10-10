@@ -1,4 +1,4 @@
-package com.nextLevel.hero.mngBasicInformation.model.service;
+package com.nextLevel.hero.mngBasicInformation.service;
 
 import java.util.List;
 
