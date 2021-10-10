@@ -1,26 +1,37 @@
 package com.nextLevel.hero.basicSetting.controller;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nextLevel.hero.basicSetting.model.dto.ExcelBusiness;
 import com.nextLevel.hero.basicSetting.model.service.BasicSettingService;
 import com.nextLevel.hero.member.model.dto.UserImpl;
 import com.nextLevel.hero.mngBasicInformation.model.dto.BusinessDTO;
@@ -274,5 +285,56 @@ public class BasicSettingController {
 		mv.setViewName("redirect:/member/login");
 		return mv;
 	}
+	
+	 @PostMapping("/uploadInsurance")
+	  public ModelAndView readExcel(ModelAndView mv, @RequestParam("file") MultipartFile file,RedirectAttributes rttr)
+	      throws IOException { // 2
+
+	    List<ExcelBusiness> dataList = new ArrayList<>();
+
+	    String extension = FilenameUtils.getExtension(file.getOriginalFilename()); // 3
+
+	    if (!extension.equals("xlsx") && !extension.equals("xls")) {
+	      throw new IOException("엑셀파일만 업로드 해주세요.");
+	    }
+
+	    Workbook workbook = null;
+
+	    if (extension.equals("xlsx")) {
+	      workbook = new XSSFWorkbook(file.getInputStream());
+	    } else if (extension.equals("xls")) {
+	      workbook = new HSSFWorkbook(file.getInputStream());
+	    }
+
+	    Sheet worksheet = workbook.getSheetAt(0);
+
+	    for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) { // 4
+
+	      Row row = worksheet.getRow(i);
+
+	      ExcelBusiness data = new ExcelBusiness();
+
+	      data.setBusinessCode((int) row.getCell(0).getNumericCellValue());
+	      data.setIndustryRate((int) row.getCell(1).getNumericCellValue());
+	      data.setTypeOfBusiness(row.getCell(2).getStringCellValue());
+	      data.setDetailTypeOfBusiness(row.getCell(3).getStringCellValue());
+
+	      System.out.println(data.getBusinessCode());
+	      System.out.println(data.getIndustryRate());
+	      System.out.println(data.getTypeOfBusiness());
+	      System.out.println(data.getDetailTypeOfBusiness());
+	      dataList.add(data);
+	    }
+	    System.out.println("엑셀 데이터 값" + dataList);
+	    int result = basicSettingService.insertBusinessList(dataList);
+	    if (result > 0) {
+			rttr.addFlashAttribute("successMessage", "업종 요율 업로드를 완료하였습니다.");
+		} else {
+			rttr.addFlashAttribute("failedMessage", "이미 업로드 하였거나 업로드에 실패하였습니다.");
+		}
+	    mv.setViewName("redirect:/basicSetting/basicSetting");
+		return mv;
+
+	  }
 
 }

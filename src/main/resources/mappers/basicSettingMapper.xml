@@ -206,4 +206,23 @@
 		  FROM DUAL
 		
 	</insert>
+	
+	<insert id="insertBusinessList" parameterType="java.util.List">
+		<foreach item="item" index="index" collection="list" separator=" " open="INSERT ALL " close="SELECT * FROM DUAL">
+		  INTO TBL_BUSINESS
+		(
+		  BUSINESS_CODE
+		, TYPE_OF_BUSINESS
+		, DETAIL_TYPE_OF_BUSINESS
+		, INDUSTRY_RATE
+		)
+		VALUES
+		(
+ 		  #{item.businessCode}
+		, #{item.typeOfBusiness}
+		, #{item.detailTypeOfBusiness}
+		, #{item.industryRate}
+		)
+		</foreach>
+	</insert>
 </mapper>

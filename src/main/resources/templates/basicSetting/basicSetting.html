@@ -30,11 +30,11 @@
 										<p class="sub-header"></p>
 										<div id="smartwizard-arrows">
 											<ul>
-												<li><a href="#sw-arrows-step-1">기업정보<small
+												<li><a href="#sw-arrows-step-1">업종별 보험 요율<small
 															class="d-block fw-normal"></small></a></li>
-												<li><a href="#sw-arrows-step-2">부서생성<small
+												<li><a href="#sw-arrows-step-2">기업정보<small
 															class="d-block fw-normal"></small></a></li>
-												<li><a href="#sw-arrows-step-3">업종별 보험 요율<small
+												<li><a href="#sw-arrows-step-3">부서생성<small
 															class="d-block fw-normal"></small></a></li>
 												<li><a href="#sw-arrows-step-4">휴가생성<small
 															class="d-block fw-normal"></small></a></li>
@@ -48,7 +48,33 @@
 
 											<div class="p-3">
 												<div id="sw-arrows-step-1">
-													<h4 class="header-title mt-0 mb-1">기업 정보</h4>
+												<h4 class="header-title mt-0 mb-1">업종별 보험 요율</h4>
+													<hr><br>
+													<div class="row">
+														<div class="col-12">
+															<div class="mb-3">
+																<label class="col-lg-2 col-form-label">보험 요율 양식 다운로드</label>
+																<div class="col-lg-4">
+																	<button type="button" id="businessListDown" class="btn btn-outline-info" >보험요율 양식 다운로드</button>
+																		
+																</div>
+															</div>
+															<div class="mb-3">
+																<label class="col-lg-2 col-form-label">보험 요율 업로드</label>
+																<div class="col-lg-4">
+																	<form action="/basicSetting/uploadInsurance" method="POST" enctype="multipart/form-data">
+																		<input class="form-control" id="example-date" type="file" name="file">
+																		<br>
+																		<button type="submit" class="btn btn-info" id="modi" style="float: right;">업로드</button>
+																	</form>
+																</div>
+															</div>
+														</div> <!-- end col -->
+													</div> <!-- end row -->
+													
+												</div>
+												<div id="sw-arrows-step-2">
+												<h4 class="header-title mt-0 mb-1">기업 정보</h4>
 													<hr><br>
 													<form class="form-horizontal" method="post" action="/basicSetting/company">
 												<div class="row">
@@ -194,8 +220,9 @@
 													</div>
 												</div>
 											</form>
+													
 												</div>
-												<div id="sw-arrows-step-2">
+												<div id="sw-arrows-step-3">
 													<h4 class="header-title mt-0 mb-1">최상위 부서 생성</h4>
 													<hr><br>
 													<div class="row">
@@ -266,28 +293,6 @@
 							</div>
 
 
-													</div> <!-- end row -->
-												</div>
-												<div id="sw-arrows-step-3">
-													<h4 class="header-title mt-0 mb-1">업종별 보험 요율</h4>
-													<hr><br>
-													<div class="row">
-														<div class="col-12">
-															<div class="mb-3">
-																<label class="col-lg-2 col-form-label">보험 요율 양식 다운로드</label>
-																<div class="col-lg-4">
-																	<button type="button" id="businessListDown" class="btn btn-outline-info" >보험요율 양식 다운로드</button>
-																		
-																</div>
-															</div>
-															<div class="mb-3">
-																<label class="col-lg-2 col-form-label">보험 요율 업로드</label>
-																<div class="col-lg-4">
-																	<input class="form-control" id="example-date" type="file" name="businessUpload">
-																		
-																</div>
-															</div>
-														</div> <!-- end col -->
 													</div> <!-- end row -->
 												</div>
 												<div id="sw-arrows-step-4">

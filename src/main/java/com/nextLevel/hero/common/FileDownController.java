@@ -25,7 +25,7 @@ public class FileDownController {
 	
 	@GetMapping("/download")
 	public ResponseEntity<Object> download() {
-		String path = "C:/HERO/businessList.csv";
+		String path = "C:/HERO/HERO/src/main/resources/static/download/test.txt";
 		
 		try {
 			Path filePath = Paths.get(path);
