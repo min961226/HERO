@@ -6,8 +6,10 @@ import com.nextLevel.hero.mngSalary.model.dto.FourInsRateDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO;
+import com.nextLevel.hero.mngSalary.model.dto.MngBonusListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
+import com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO;
 import com.nextLevel.hero.mngSalary.model.dto.fourInsuranceList;
 import com.nextLevel.hero.mngSalary.model.dto.memInsFeeList;
 
@@ -28,6 +30,16 @@ public interface MngSalaryService {
 	int updateFourInsuranceList(int companyNo, fourInsuranceList deductList);
 
 	int updateMonthlyInsurance(int companyNo, memInsFeeList insFeeList);
+
+	List<MngBonusListDTO> selectBonusCategory(int companyNo);
+
+	String checkCreate(SalaryAndBonusDTO search);
+
+	List<SalaryAndBonusDTO> insertSalary(SalaryAndBonusDTO search);
+
+	List<SalaryAndBonusDTO> insertBonus(SalaryAndBonusDTO search);
+
+	List<SalaryAndBonusDTO> selectSalOrBonusList(SalaryAndBonusDTO search);
 
 
 
