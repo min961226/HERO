@@ -109,6 +109,8 @@
 													class="pensionSal" th:name="'memInsFeeList['+${feeStat.index} +'].pensionSal'" th:id="${'pensionSal' + feeStat.index}"></td>
 												<td><input type="text" readonly th:value="${fee.pensionFee}" 
 													class="pensionFee" th:name="'memInsFeeList['+${feeStat.index} +'].pensionFee'"></td>
+												<td style="display: none"><input type="text"  th:name="'memInsFeeList['+${feeStat.index} +'].divNo'" 
+													th:id="${'divNo' + feeStat.index}" th:value="${fee.divNum}"></td>	
 											</tr>
 										</tbody>
 									</table>
@@ -169,6 +171,7 @@
 		let healthFeeTr = $(this).parents("tr").find(".healthInsFee");
 		let longtermTr = $(this).parents("tr").find(".longtermFee");
 		let totalHealthFeeTr = $(this).parents("tr").find(".total");
+		let divNo = $(this).parents("tr").find("[id^=divNo]");
 		
 		const searchDate = $(this).parents("tr").find(".healthDate").val();
 		
@@ -189,6 +192,7 @@
 				healthFeeTr.val(healthFee);
 				longtermTr.val(longtermFee);
 				totalHealthFeeTr.val(total);
+				divNo.val(data.divNo);
 			},
 			error: function(xhr) {
 				Swal.fire({
@@ -209,6 +213,7 @@
 	$("[name*=pensionSal]").change(function() {
 		let pensionSalTr = $(this).parents("tr").find(".pensionSal");
 		let pensionFeeTr = $(this).parents("tr").find(".pensionFee");
+		let divNo = $(this).parents("tr").find("[id^=divNo]");
 		
 		const searchDate = $(this).parents("tr").find(".pensionDate").val();
 				
@@ -223,7 +228,7 @@
 				pensionFee = Math.floor(((parseInt(pensionSalTr.val()) * (data.workersPensionRate)).toFixed(0)) / 10) * 10;  		
 							
 				pensionFeeTr.val(pensionFee);
-	
+				divNo.val(data.divNo);
 			},
 			error: function(xhr) {
 				Swal.fire({

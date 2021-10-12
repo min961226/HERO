@@ -1,6 +1,8 @@
 package com.nextLevel.hero.mngSalary.model.service;
 
-import static org.junit.Assert.assertEquals;
+
+
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,7 @@ import com.nextLevel.hero.configuration.HeroApplication;
 import com.nextLevel.hero.mngSalary.model.dao.MngSalaryMapper;
 import com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
+import com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -26,7 +29,7 @@ public class MngServiceTest {
 	private MngSalaryMapper mngSalaryMapper;
 	
 	private MemberInsFeeDTO testDTO;
-	private MngDeductFourInsDTO insDTO;
+	private SalaryAndBonusDTO insDTO;
 	
 	@BeforeAll
 	public static void test() {
@@ -35,24 +38,16 @@ public class MngServiceTest {
 
 	@BeforeEach
 	public void init() {
-		this.insDTO = new MngDeductFourInsDTO();
-		this.insDTO.setMemberNo(15001);
+		this.insDTO = new SalaryAndBonusDTO();
 		this.insDTO.setCompanyNo(1);
-		this.insDTO.setIdNo(5);
-		this.insDTO.setDivNo(2);
-		this.insDTO.setHealthYn("Y");
-		this.insDTO.setPensionYn("Y");
-		this.insDTO.setUnemployeeYn("Y");
-		this.insDTO.setIndustryYn("N");
+		this.insDTO.setSearchPayDate("2021-10-10");
+		this.insDTO.setSearchingValidateDate("20211001");
+		this.insDTO.setCategory("급여");
+		this.insDTO.setYear("2021");
+		this.insDTO.setMonth("09");
 	}
 	
 	
-	@Test
-	public void testUpdate() {
-		int result = mngSalaryMapper.updateFourInsuranceList(insDTO);
-		
-		assertEquals(1, result);
-	}
 	
 	
 	

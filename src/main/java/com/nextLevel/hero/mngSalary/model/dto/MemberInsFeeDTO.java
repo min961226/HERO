@@ -10,6 +10,8 @@ public class MemberInsFeeDTO {
 	private int companyNo;
 	private int memberNo;
 	private String memberName;
+	private String divNo;
+	private int divNum;
 	private java.sql.Date hireDate;
 	private String departmentName;
 	private java.sql.Date healthCoverDate;
@@ -23,8 +25,8 @@ public class MemberInsFeeDTO {
 	public MemberInsFeeDTO() {}
 
 	public MemberInsFeeDTO(String searchDate, String searchCondition, String searchValue, int companyNo, int memberNo,
-			String memberName, Date hireDate, String departmentName, Date healthCoverDate, int healthSal,
-			int healthInsFee, int longtermFee, Date pensionCoverDate, int pensionSal, int pensionFee) {
+			String memberName, String divNo, int divNum, Date hireDate, String departmentName, Date healthCoverDate,
+			int healthSal, int healthInsFee, int longtermFee, Date pensionCoverDate, int pensionSal, int pensionFee) {
 		super();
 		this.searchDate = searchDate;
 		this.searchCondition = searchCondition;
@@ -32,6 +34,8 @@ public class MemberInsFeeDTO {
 		this.companyNo = companyNo;
 		this.memberNo = memberNo;
 		this.memberName = memberName;
+		this.divNo = divNo;
+		this.divNum = divNum;
 		this.hireDate = hireDate;
 		this.departmentName = departmentName;
 		this.healthCoverDate = healthCoverDate;
@@ -89,6 +93,22 @@ public class MemberInsFeeDTO {
 
 	public void setMemberName(String memberName) {
 		this.memberName = memberName;
+	}
+
+	public String getDivNo() {
+		return divNo;
+	}
+
+	public void setDivNo(String divNo) {
+		this.divNo = divNo;
+	}
+
+	public int getDivNum() {
+		return divNum;
+	}
+
+	public void setDivNum(int divNum) {
+		this.divNum = divNum;
 	}
 
 	public java.sql.Date getHireDate() {
@@ -167,12 +187,11 @@ public class MemberInsFeeDTO {
 	public String toString() {
 		return "MemberInsFeeDTO [searchDate=" + searchDate + ", searchCondition=" + searchCondition + ", searchValue="
 				+ searchValue + ", companyNo=" + companyNo + ", memberNo=" + memberNo + ", memberName=" + memberName
-				+ ", hireDate=" + hireDate + ", departmentName=" + departmentName + ", healthCoverDate="
-				+ healthCoverDate + ", healthSal=" + healthSal + ", healthInsFee=" + healthInsFee + ", longtermFee="
-				+ longtermFee + ", pensionCoverDate=" + pensionCoverDate + ", pensionSal=" + pensionSal
-				+ ", pensionFee=" + pensionFee + "]";
+				+ ", divNo=" + divNo + ", divNum=" + divNum + ", hireDate=" + hireDate + ", departmentName="
+				+ departmentName + ", healthCoverDate=" + healthCoverDate + ", healthSal=" + healthSal
+				+ ", healthInsFee=" + healthInsFee + ", longtermFee=" + longtermFee + ", pensionCoverDate="
+				+ pensionCoverDate + ", pensionSal=" + pensionSal + ", pensionFee=" + pensionFee + "]";
 	}
 
-	
 	
 }
