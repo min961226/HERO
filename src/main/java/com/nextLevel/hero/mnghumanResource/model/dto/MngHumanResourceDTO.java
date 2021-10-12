@@ -21,7 +21,10 @@ public class MngHumanResourceDTO implements Serializable{
 	private String email;
 	private char gender;
 	private String national;
-	private java.util.Date entDate; 
+	private java.util.Date entDate;
+	private char tblUserAuth;
+	private String jobName;								
+	private String departmentName;		
 	
 	private int idNo;								//TBL_MEMBER 맴버 테이블
 	private String memberId;						
@@ -30,7 +33,6 @@ public class MngHumanResourceDTO implements Serializable{
 //	private String memberName;								
 	private java.util.Date hireDate;								
 	private char accSecessionYn;
-	private char basicSettingYn;
 	
 	private java.util.Date appointmentDate;               //TBL_APPOINTMENT 발령 테이블
 	private String personalAppointmentCategory; 
@@ -67,15 +69,16 @@ public class MngHumanResourceDTO implements Serializable{
 	
 	public MngHumanResourceDTO() {}
 
+
 	public MngHumanResourceDTO(int companyNo, int memberNo, int jobNo, int departmentNo, String koreanName, String ssn,
 			String englishName, String speciality, String familyOriginAddress, String address, String phone, String tel,
-			String departmentPhone, String email, char gender, String national, Date entDate, int idNo, String memberId,
-			String memberPassword, char tempPwdYn, Date hireDate, char accSecessionYn, char basicSettingYn,
-			Date appointmentDate, String personalAppointmentCategory, String veteranStatus, String relationship,
-			int veteranNo, char militaryServiceStatus, char militaryKind, String rankIng, Date militaryStartDate,
-			Date militaryEndDate, Date graduatedDate, String nativeSchool, char graduatedStatus, String relationShip2,
-			char familyGender, int familyAge, String job, Date employeementPeriod, String position, String companyName,
-			String department) {
+			String departmentPhone, String email, char gender, String national, Date entDate, char tblUserAuth,
+			String jobName, String departmentName, int idNo, String memberId, String memberPassword, char tempPwdYn,
+			Date hireDate, char accSecessionYn, Date appointmentDate, String personalAppointmentCategory,
+			String veteranStatus, String relationship, int veteranNo, char militaryServiceStatus, char militaryKind,
+			String rankIng, Date militaryStartDate, Date militaryEndDate, Date graduatedDate, String nativeSchool,
+			char graduatedStatus, String relationShip2, char familyGender, int familyAge, String job,
+			Date employeementPeriod, String position, String companyName, String department) {
 		super();
 		this.companyNo = companyNo;
 		this.memberNo = memberNo;
@@ -94,13 +97,15 @@ public class MngHumanResourceDTO implements Serializable{
 		this.gender = gender;
 		this.national = national;
 		this.entDate = entDate;
+		this.tblUserAuth = tblUserAuth;
+		this.jobName = jobName;
+		this.departmentName = departmentName;
 		this.idNo = idNo;
 		this.memberId = memberId;
 		this.memberPassword = memberPassword;
 		this.tempPwdYn = tempPwdYn;
 		this.hireDate = hireDate;
 		this.accSecessionYn = accSecessionYn;
-		this.basicSettingYn = basicSettingYn;
 		this.appointmentDate = appointmentDate;
 		this.personalAppointmentCategory = personalAppointmentCategory;
 		this.veteranStatus = veteranStatus;
@@ -124,365 +129,476 @@ public class MngHumanResourceDTO implements Serializable{
 		this.department = department;
 	}
 
+
 	public int getCompanyNo() {
 		return companyNo;
 	}
+
 
 	public void setCompanyNo(int companyNo) {
 		this.companyNo = companyNo;
 	}
 
+
 	public int getMemberNo() {
 		return memberNo;
 	}
+
 
 	public void setMemberNo(int memberNo) {
 		this.memberNo = memberNo;
 	}
 
+
 	public int getJobNo() {
 		return jobNo;
 	}
+
 
 	public void setJobNo(int jobNo) {
 		this.jobNo = jobNo;
 	}
 
+
 	public int getDepartmentNo() {
 		return departmentNo;
 	}
+
 
 	public void setDepartmentNo(int departmentNo) {
 		this.departmentNo = departmentNo;
 	}
 
+
 	public String getKoreanName() {
 		return koreanName;
 	}
+
 
 	public void setKoreanName(String koreanName) {
 		this.koreanName = koreanName;
 	}
 
+
 	public String getSsn() {
 		return ssn;
 	}
+
 
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
 	}
 
+
 	public String getEnglishName() {
 		return englishName;
 	}
+
 
 	public void setEnglishName(String englishName) {
 		this.englishName = englishName;
 	}
 
+
 	public String getSpeciality() {
 		return speciality;
 	}
+
 
 	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
 	}
 
+
 	public String getFamilyOriginAddress() {
 		return familyOriginAddress;
 	}
+
 
 	public void setFamilyOriginAddress(String familyOriginAddress) {
 		this.familyOriginAddress = familyOriginAddress;
 	}
 
+
 	public String getAddress() {
 		return address;
 	}
+
 
 	public void setAddress(String address) {
 		this.address = address;
 	}
 
+
 	public String getPhone() {
 		return phone;
 	}
+
 
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
+
 	public String getTel() {
 		return tel;
 	}
+
 
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
 
+
 	public String getDepartmentPhone() {
 		return departmentPhone;
 	}
+
 
 	public void setDepartmentPhone(String departmentPhone) {
 		this.departmentPhone = departmentPhone;
 	}
 
+
 	public String getEmail() {
 		return email;
 	}
+
 
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
+
 	public char getGender() {
 		return gender;
 	}
+
 
 	public void setGender(char gender) {
 		this.gender = gender;
 	}
 
+
 	public String getNational() {
 		return national;
 	}
+
 
 	public void setNational(String national) {
 		this.national = national;
 	}
 
+
 	public java.util.Date getEntDate() {
 		return entDate;
 	}
+
 
 	public void setEntDate(java.util.Date entDate) {
 		this.entDate = entDate;
 	}
 
+
+	public char getTblUserAuth() {
+		return tblUserAuth;
+	}
+
+
+	public void setTblUserAuth(char tblUserAuth) {
+		this.tblUserAuth = tblUserAuth;
+	}
+
+
+	public String getJobName() {
+		return jobName;
+	}
+
+
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
+	}
+
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+
 	public int getIdNo() {
 		return idNo;
 	}
+
 
 	public void setIdNo(int idNo) {
 		this.idNo = idNo;
 	}
 
+
 	public String getMemberId() {
 		return memberId;
 	}
+
 
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
 
+
 	public String getMemberPassword() {
 		return memberPassword;
 	}
+
 
 	public void setMemberPassword(String memberPassword) {
 		this.memberPassword = memberPassword;
 	}
 
+
 	public char getTempPwdYn() {
 		return tempPwdYn;
 	}
+
 
 	public void setTempPwdYn(char tempPwdYn) {
 		this.tempPwdYn = tempPwdYn;
 	}
 
+
 	public java.util.Date getHireDate() {
 		return hireDate;
 	}
+
 
 	public void setHireDate(java.util.Date hireDate) {
 		this.hireDate = hireDate;
 	}
 
+
 	public char getAccSecessionYn() {
 		return accSecessionYn;
 	}
+
 
 	public void setAccSecessionYn(char accSecessionYn) {
 		this.accSecessionYn = accSecessionYn;
 	}
 
-	public char getBasicSettingYn() {
-		return basicSettingYn;
-	}
-
-	public void setBasicSettingYn(char basicSettingYn) {
-		this.basicSettingYn = basicSettingYn;
-	}
 
 	public java.util.Date getAppointmentDate() {
 		return appointmentDate;
 	}
 
+
 	public void setAppointmentDate(java.util.Date appointmentDate) {
 		this.appointmentDate = appointmentDate;
 	}
+
 
 	public String getPersonalAppointmentCategory() {
 		return personalAppointmentCategory;
 	}
 
+
 	public void setPersonalAppointmentCategory(String personalAppointmentCategory) {
 		this.personalAppointmentCategory = personalAppointmentCategory;
 	}
+
 
 	public String getVeteranStatus() {
 		return veteranStatus;
 	}
 
+
 	public void setVeteranStatus(String veteranStatus) {
 		this.veteranStatus = veteranStatus;
 	}
+
 
 	public String getRelationship() {
 		return relationship;
 	}
 
+
 	public void setRelationship(String relationship) {
 		this.relationship = relationship;
 	}
+
 
 	public int getVeteranNo() {
 		return veteranNo;
 	}
 
+
 	public void setVeteranNo(int veteranNo) {
 		this.veteranNo = veteranNo;
 	}
+
 
 	public char getMilitaryServiceStatus() {
 		return militaryServiceStatus;
 	}
 
+
 	public void setMilitaryServiceStatus(char militaryServiceStatus) {
 		this.militaryServiceStatus = militaryServiceStatus;
 	}
+
 
 	public char getMilitaryKind() {
 		return militaryKind;
 	}
 
+
 	public void setMilitaryKind(char militaryKind) {
 		this.militaryKind = militaryKind;
 	}
+
 
 	public String getRankIng() {
 		return rankIng;
 	}
 
+
 	public void setRankIng(String rankIng) {
 		this.rankIng = rankIng;
 	}
+
 
 	public java.util.Date getMilitaryStartDate() {
 		return militaryStartDate;
 	}
 
+
 	public void setMilitaryStartDate(java.util.Date militaryStartDate) {
 		this.militaryStartDate = militaryStartDate;
 	}
+
 
 	public java.util.Date getMilitaryEndDate() {
 		return militaryEndDate;
 	}
 
+
 	public void setMilitaryEndDate(java.util.Date militaryEndDate) {
 		this.militaryEndDate = militaryEndDate;
 	}
+
 
 	public java.util.Date getGraduatedDate() {
 		return graduatedDate;
 	}
 
+
 	public void setGraduatedDate(java.util.Date graduatedDate) {
 		this.graduatedDate = graduatedDate;
 	}
+
 
 	public String getNativeSchool() {
 		return nativeSchool;
 	}
 
+
 	public void setNativeSchool(String nativeSchool) {
 		this.nativeSchool = nativeSchool;
 	}
+
 
 	public char getGraduatedStatus() {
 		return graduatedStatus;
 	}
 
+
 	public void setGraduatedStatus(char graduatedStatus) {
 		this.graduatedStatus = graduatedStatus;
 	}
+
 
 	public String getRelationShip() {
 		return relationShip;
 	}
 
+
 	public void setRelationShip(String relationShip) {
 		this.relationShip = relationShip;
 	}
+
 
 	public char getFamilyGender() {
 		return familyGender;
 	}
 
+
 	public void setFamilyGender(char familyGender) {
 		this.familyGender = familyGender;
 	}
+
 
 	public int getFamilyAge() {
 		return familyAge;
 	}
 
+
 	public void setFamilyAge(int familyAge) {
 		this.familyAge = familyAge;
 	}
+
 
 	public String getJob() {
 		return job;
 	}
 
+
 	public void setJob(String job) {
 		this.job = job;
 	}
+
 
 	public java.util.Date getEmployeementPeriod() {
 		return employeementPeriod;
 	}
 
+
 	public void setEmployeementPeriod(java.util.Date employeementPeriod) {
 		this.employeementPeriod = employeementPeriod;
 	}
+
 
 	public String getPosition() {
 		return position;
 	}
 
+
 	public void setPosition(String position) {
 		this.position = position;
 	}
+
 
 	public String getCompanyName() {
 		return companyName;
 	}
 
+
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
+
 
 	public String getDepartment() {
 		return department;
 	}
 
+
 	public void setDepartment(String department) {
 		this.department = department;
 	}
+
 
 	@Override
 	public String toString() {
@@ -491,18 +607,18 @@ public class MngHumanResourceDTO implements Serializable{
 				+ englishName + ", speciality=" + speciality + ", familyOriginAddress=" + familyOriginAddress
 				+ ", address=" + address + ", phone=" + phone + ", tel=" + tel + ", departmentPhone=" + departmentPhone
 				+ ", email=" + email + ", gender=" + gender + ", national=" + national + ", entDate=" + entDate
+				+ ", tblUserAuth=" + tblUserAuth + ", jobName=" + jobName + ", departmentName=" + departmentName
 				+ ", idNo=" + idNo + ", memberId=" + memberId + ", memberPassword=" + memberPassword + ", tempPwdYn="
-				+ tempPwdYn + ", hireDate=" + hireDate + ", accSecessionYn=" + accSecessionYn + ", basicSettingYn="
-				+ basicSettingYn + ", appointmentDate=" + appointmentDate + ", personalAppointmentCategory="
-				+ personalAppointmentCategory + ", veteranStatus=" + veteranStatus + ", relationship=" + relationship
-				+ ", veteranNo=" + veteranNo + ", militaryServiceStatus=" + militaryServiceStatus + ", militaryKind="
-				+ militaryKind + ", rankIng=" + rankIng + ", militaryStartDate=" + militaryStartDate
-				+ ", militaryEndDate=" + militaryEndDate + ", graduatedDate=" + graduatedDate + ", nativeSchool="
-				+ nativeSchool + ", graduatedStatus=" + graduatedStatus + ", relationShip=" + relationShip
-				+ ", familyGender=" + familyGender + ", familyAge=" + familyAge + ", job=" + job
-				+ ", employeementPeriod=" + employeementPeriod + ", position=" + position + ", companyName="
-				+ companyName + ", department=" + department + "]";
+				+ tempPwdYn + ", hireDate=" + hireDate + ", accSecessionYn=" + accSecessionYn + ", appointmentDate="
+				+ appointmentDate + ", personalAppointmentCategory=" + personalAppointmentCategory + ", veteranStatus="
+				+ veteranStatus + ", relationship=" + relationship + ", veteranNo=" + veteranNo
+				+ ", militaryServiceStatus=" + militaryServiceStatus + ", militaryKind=" + militaryKind + ", rankIng="
+				+ rankIng + ", militaryStartDate=" + militaryStartDate + ", militaryEndDate=" + militaryEndDate
+				+ ", graduatedDate=" + graduatedDate + ", nativeSchool=" + nativeSchool + ", graduatedStatus="
+				+ graduatedStatus + ", relationShip=" + relationShip + ", familyGender=" + familyGender + ", familyAge="
+				+ familyAge + ", job=" + job + ", employeementPeriod=" + employeementPeriod + ", position=" + position
+				+ ", companyName=" + companyName + ", department=" + department + "]";
 	}
 
-	
+
 }
