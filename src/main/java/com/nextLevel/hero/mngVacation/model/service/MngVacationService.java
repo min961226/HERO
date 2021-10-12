@@ -2,6 +2,7 @@ package com.nextLevel.hero.mngVacation.model.service;
 
 import java.util.List;
 
+import com.nextLevel.hero.mngVacation.model.dto.AnnualVacationControlDTO;
 import com.nextLevel.hero.mngVacation.model.dto.MngHolidayDTO;
 
 public interface MngVacationService {
@@ -10,9 +11,10 @@ public interface MngVacationService {
 
 	int insertPublicHoliday(MngHolidayDTO mngHolidayDTO);
 
-	/*
-	 * 휴일 insert List<MngHolidayDTO> insertPublicHoliday(int companyNo1);
-	 */
+	int holidayDelete(int companyNo, int holidayNo);
+
+
+	List<AnnualVacationControlDTO> annualList(int vacationCode);
 
 	/*
 	 * 휴일 insert public int holidayModalInsert(MngHolidayDTO mngHolidayDTO);

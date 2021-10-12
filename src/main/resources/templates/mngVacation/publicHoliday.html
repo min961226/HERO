@@ -95,7 +95,7 @@
 											<td th:text="${holiday.title}" class="title"></td>
 											<td th:text="${holiday.holidayStatus}" class="holidayStatus"></td>
 											<td th:id="'holidayDetail' + ${holiday.holidayNo}"><button type="button" class="btn btn-soft-success width-xs" 
-												data-bs-toggle="modal" data-bs-target="#detailHoliday">상세보기</button></td>
+												data-bs-toggle="modal" data-bs-target="#detailHoliday" th:value="${holiday.holidayNo}" th:id="datailView">상세보기</button></td>
 										</tr>
 									</tbody>
 								</table>
@@ -105,6 +105,7 @@
 							
 							<!-- 모달창 집어넣기 -->
 							<!-- 상세보기 모달창 -->
+								<form action="/mngVacation/holidayDelete" method="post">
 									<div class="modal fade" id="detailHoliday" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-md">
                                              <div class="modal-content">
@@ -120,18 +121,21 @@
 	                                                        <label style="margin:10px;">날짜 :</label><label id="holidayDate1" style="margin:5px;"></label><br>
 	                                                        <label style="margin:10px;">제목 :</label><label id="title1" style="margin:5px;"></label><br>
 	                                                        <label style="margin:10px;">휴일여부 :</label><label id="holidayStatus1" style="margin:5px;"></label><br>
+	                                                        <input th:id="selectedHolidayNo" name="selectedHolidayNo">
                                                     	</div>
                                                     	<br>
                                                     	
                                                     </div>
                                                    <div class="modal-footer">
 	                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
-	                   									<button type="button" class="btn btn-success width-xs">삭제</button>
+	                   									<!-- 삭제 -->
+	                   									 <button type="submit" class="btn btn-success width-xs">삭제</button>
 	                   									<!-- 버튼에 이벤트-->
                                                    </div> 
                                               </div>
                                         </div>
-                                     </div> 
+                                     </div>
+                                  </form>    
                                      <!-- 상세보기 모달창 종료 -->
 							</div>
 					</div>
@@ -193,6 +197,9 @@
 			const title = $(this).siblings(".title").text();
 			const holidayStatus = $(this).siblings(".holidayStatus").text();
 			
+			/* 휴일번호 확인 */
+			const selectedHolidayNo = $("#selectedHolidayNo").text(holidayNo).val(holidayNo);
+			
 			const holiNo = $("#holiNo").text(holidayNo);
 			const calendar1 = $("#calendar1").text(calendar);
 			const holidayDate1 = $("#holidayDate1").text(holidayDate);
@@ -201,11 +208,57 @@
 			
 	});
 	
-	
-	
-	
-	
 	</script>
+	
+	<script>
+	$("[id^=holidayDelete]").click(function() {
+		const holiNo = $(this).find('#holidayDelete').val();
+		console.log(holiNo);
+	Swal.fire({
+		  title: '삭제하시겠습니까?',
+		  text: '휴일이 삭제됩니다.',
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#25c2e3',
+		  cancelButtonColor: '#43d39e',
+		  confirmButtonText: '예',
+		  cancelButtonText: '아니오'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+			           url: "holidayDelete",
+			    	  data: {   "" : holiNo },
+			       success: function(data, status, xhr) {
+			    	   
+			    	   Swal.fire({
+			       			  position: 'center',
+			       			  icon: 'success',
+			       			  title: '휴일 삭제에 성공하였습니다.',
+			       			  showConfirmButton: false,
+			       			  timer: 1500,
+			       			  width: 600
+			       		}).then((result) => {
+				        	   location.reload();
+			       				})
+			           }, error: function(xhr){
+			        	   Swal.fire({
+				       			  position: 'center',
+				       			  icon: 'error',
+				       			  title: '휴일 삭제에 실패하였습니다.',
+				       			  showConfirmButton: false,
+				       			  timer: 1500,
+				       			  width: 600
+				       		}).then((result) => {
+					        	   location.reload();
+				       				})
+			           }
+			       });
+			  } else if (result.isDenied) {
+			  }
+		})
+	});
+	</script>
+	
 	
 	
 </body>
