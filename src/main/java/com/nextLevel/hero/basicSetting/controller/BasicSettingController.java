@@ -43,7 +43,7 @@ import com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngInsuranceRateDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngSalaryCriteriaDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngVacationTypeDTO;
-import com.nextLevel.hero.mngBasicInformation.service.MngBasicInformationService;
+import com.nextLevel.hero.mngBasicInformation.model.service.MngBasicInformationService;
 
 @Controller
 @RequestMapping("/basicSetting")
