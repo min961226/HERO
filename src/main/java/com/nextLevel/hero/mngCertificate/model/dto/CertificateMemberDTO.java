@@ -4,45 +4,36 @@ import java.util.Date;
 
 public class CertificateMemberDTO {
 					
-	private int requestNo;									//요청 번호		
-	private int memberNo;									//사번			TBL_REQUEST_CERTIFICATION 조인 회사번호로
-	private String memberName;								//이름			TBL_REQUEST_CERTIFICATION 조인 회사번호로
-	private String departmentName;							//부서명			TBL_DEPARTMENT 조인 회사번호로
-	private String rank;									//직급 			TBL_RNAK_SALARY_STEP 조인 회사번호로
-	private java.util.Date requestDate;						//신청일자			TBL_REQUEST_CERTIFICATION 조인 회사번호로
-	private java.util.Date successedDate;					//처리일자			TBL_REQUEST_CERTIFICATION 조인 회사번호로
-	private String issueStatus;								//발급상태
-	private String certificationPurpose;					//용도
-	private int certificationNo;							//증명서번호
-	private int companyNo;									//회사번호
-	private int departmentNo;								//부서번호
+	private int idNo;
+	private int memberNo;
+	private String memberName;
+	private String jobName;
+	private String departmentName;
+	private String memberId;
+	private java.util.Date hireDate;
+	private java.util.Date accSecessionDatetime;
 	
 	CertificateMemberDTO(){}
 
-	public CertificateMemberDTO(int requestNo, int memberNo, String memberName, String departmentName, String rank,
-			Date requestDate, Date successedDate, String issueStatus, String certificationPurpose, int certificationNo,
-			int companyNo, int departmentNo) {
+	public CertificateMemberDTO(int idNo, int memberNo, String memberName, String jobName, String departmentName,
+			String memberId, Date hireDate, Date accSecessionDatetime) {
 		super();
-		this.requestNo = requestNo;
+		this.idNo = idNo;
 		this.memberNo = memberNo;
 		this.memberName = memberName;
+		this.jobName = jobName;
 		this.departmentName = departmentName;
-		this.rank = rank;
-		this.requestDate = requestDate;
-		this.successedDate = successedDate;
-		this.issueStatus = issueStatus;
-		this.certificationPurpose = certificationPurpose;
-		this.certificationNo = certificationNo;
-		this.companyNo = companyNo;
-		this.departmentNo = departmentNo;
+		this.memberId = memberId;
+		this.hireDate = hireDate;
+		this.accSecessionDatetime = accSecessionDatetime;
 	}
 
-	public int getRequestNo() {
-		return requestNo;
+	public int getIdNo() {
+		return idNo;
 	}
 
-	public void setRequestNo(int requestNo) {
-		this.requestNo = requestNo;
+	public void setIdNo(int idNo) {
+		this.idNo = idNo;
 	}
 
 	public int getMemberNo() {
@@ -61,6 +52,14 @@ public class CertificateMemberDTO {
 		this.memberName = memberName;
 	}
 
+	public String getJobName() {
+		return jobName;
+	}
+
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
+	}
+
 	public String getDepartmentName() {
 		return departmentName;
 	}
@@ -69,77 +68,35 @@ public class CertificateMemberDTO {
 		this.departmentName = departmentName;
 	}
 
-	public String getRank() {
-		return rank;
+	public String getMemberId() {
+		return memberId;
 	}
 
-	public void setRank(String rank) {
-		this.rank = rank;
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 
-	public java.util.Date getRequestDate() {
-		return requestDate;
+	public java.util.Date getHireDate() {
+		return hireDate;
 	}
 
-	public void setRequestDate(java.util.Date requestDate) {
-		this.requestDate = requestDate;
+	public void setHireDate(java.util.Date hireDate) {
+		this.hireDate = hireDate;
 	}
 
-	public java.util.Date getSuccessedDate() {
-		return successedDate;
+	public java.util.Date getAccSecessionDatetime() {
+		return accSecessionDatetime;
 	}
 
-	public void setSuccessedDate(java.util.Date successedDate) {
-		this.successedDate = successedDate;
-	}
-
-	public String getIssueStatus() {
-		return issueStatus;
-	}
-
-	public void setIssueStatus(String issueStatus) {
-		this.issueStatus = issueStatus;
-	}
-
-	public String getCertificationPurpose() {
-		return certificationPurpose;
-	}
-
-	public void setCertificationPurpose(String certificationPurpose) {
-		this.certificationPurpose = certificationPurpose;
-	}
-
-	public int getCertificationNo() {
-		return certificationNo;
-	}
-
-	public void setCertificationNo(int certificationNo) {
-		this.certificationNo = certificationNo;
-	}
-
-	public int getCompanyNo() {
-		return companyNo;
-	}
-
-	public void setCompanyNo(int companyNo) {
-		this.companyNo = companyNo;
-	}
-
-	public int getDepartmentNo() {
-		return departmentNo;
-	}
-
-	public void setDepartmentNo(int departmentNo) {
-		this.departmentNo = departmentNo;
+	public void setAccSecessionDatetime(java.util.Date accSecessionDatetime) {
+		this.accSecessionDatetime = accSecessionDatetime;
 	}
 
 	@Override
 	public String toString() {
-		return "CertificateMemberDTO [requestNo=" + requestNo + ", memberNo=" + memberNo + ", memberName=" + memberName
-				+ ", departmentName=" + departmentName + ", rank=" + rank + ", requestDate=" + requestDate
-				+ ", successedDate=" + successedDate + ", issueStatus=" + issueStatus + ", certificationPurpose="
-				+ certificationPurpose + ", certificationNo=" + certificationNo + ", companyNo=" + companyNo
-				+ ", departmentNo=" + departmentNo + "]";
+		return "CertificateMemberDTO [idNo=" + idNo + ", memberNo=" + memberNo + ", memberName=" + memberName
+				+ ", jobName=" + jobName + ", departmentName=" + departmentName + ", memberId=" + memberId
+				+ ", hireDate=" + hireDate + ", accSecessionDatetime=" + accSecessionDatetime + "]";
 	}
 
 }

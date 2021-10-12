@@ -1,5 +1,7 @@
  package com.nextLevel.hero.mngCertificate.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,9 @@ public class MngCertificateServiceImpl implements MngCertificateService {
 	}
 
 	@Override
-	public CertificateMemberDTO findAllMember() {
-		return mngCertificateMapper.findAllMember();
+	public List<CertificateMemberDTO> findAllMember(int companyNo) {
+		return mngCertificateMapper.selectfindAllMember(companyNo);
 	}
+
+
 }
