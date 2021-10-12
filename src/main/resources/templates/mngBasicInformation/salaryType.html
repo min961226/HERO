@@ -62,20 +62,20 @@
 																				<div class="dropdown-menu dropdown-menu-end">
 																					<!-- item-->
 																					<a class="dropdown-item" type="submit"
-																						th:id="'editVacationType' + ${num.count}"
+																						th:id="'editSalaryType' + ${num.count}"
 																						th:value="${sal.salaryNo}"
 																						data-bs-toggle="modal" data-bs-target="#editModal">
 																						<i class="uil uil-edit-alt me-2"></i>수정 <input
 																						th:value="${sal.salaryNo}"
-																						th:id="vacationNo" hidden="hidden">
+																						th:id="salaryNo" hidden="hidden">
 																					</a>
 																					<div class="dropdown-divider"></div>
 																					<!-- item-->
-																					<a	th:id="'deleteVacation' + ${num.count}"
+																					<a	th:id="'deleteSalary' + ${num.count}"
 																						class="dropdown-item text-danger"> <i
 																						class="uil uil-trash me-2"></i>삭제하기<input
 																						th:value="${sal.salaryNo}"
-																						th:id="deleteVacation" hidden="hidden">
+																						th:id="deleteSalary" hidden="hidden">
 																						
 																					</a>
 																				</div>
@@ -100,6 +100,9 @@
 																				<br> 
 																				<span class="badge badge-soft-dark">퇴사월 지급 : </span> 
 																				<span class="badge badge-soft-secondary" th:text="${sal.paymentMonthYn}" ></span>
+																				<br> 
+																				<span class="badge badge-soft-dark">대상 : </span> 
+																				<span class="badge badge-soft-secondary" th:text="${sal.target}" ></span>
 																			<p class="mb-0 mt-4">
 																				<span class="text-nowrap align-middle fs-13 me-2">
 																					<i class="uil uil-bill text-muted me-1"></i><a th:text="${sal.salaryAmount}"></a>원
@@ -145,25 +148,25 @@
 																				<div class="dropdown-menu dropdown-menu-end">
 																					<!-- item-->
 																					<a class="dropdown-item" type="submit"
-																						th:id="'editVacationType' + ${num.count}"
+																						th:id="'editBonusType' + ${num.count}"
 																						th:value="${bonus.bonusNo}"
-																						data-bs-toggle="modal" data-bs-target="#editModal">
+																						data-bs-toggle="modal" data-bs-target="#editBonusModal">
 																						<i class="uil uil-edit-alt me-2"></i>수정 <input
 																						th:value="${bonus.bonusNo}"
-																						th:id="vacationNo" hidden="hidden">
+																						th:id="bonusNo" hidden="hidden">
 																					</a>
 																					<div class="dropdown-divider"></div>
 																					<!-- item-->
-																					<a	th:id="'deleteVacation' + ${num.count}"
+																					<a	th:id="'deleteBonus' + ${num.count}"
 																						class="dropdown-item text-danger"> <i
 																						class="uil uil-trash me-2"></i>삭제하기<input
 																						th:value="${bonus.bonusNo}"
-																						th:id="deleteVacation" hidden="hidden">
+																						th:id="deleteBonus" hidden="hidden">
 																						
 																					</a>
 																				</div>
 																			</div>
-																			<span class="badge badge-soft-dark">급여 번호 : </span> 
+																			<span class="badge badge-soft-dark">상여 번호 : </span> 
 																				<span class="badge badge-soft-secondary" th:text="${bonus.bonusNo}" ></span>
 																				<br>
 																				<span class="badge badge-soft-dark">지급 방식 : </span>
@@ -202,8 +205,8 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
-		<!-- 휴가 수정 모달 시작 -->
-	<form action="/mngBasicInformation/updateVacationType" method="post">
+		<!-- 급여 수정 모달 시작 -->
+	<form action="/mngBasicInformation/updateSalaryType" method="post">
 	
 	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
 		aria-labelledby="myCenterModalLabel1" aria-hidden="true">
@@ -212,59 +215,97 @@
 				<div class="modal-header" style="background-color: gray">
 					<h5 class="modal-title" id="myCenterModalLabel1"
 						style="font-size: 20px">
-						<b>휴가 수정</b>
+						<b>급여 수정</b>
 					</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<input th:id="selectedVacationNo" name="vacationNo" type="number" hidden="hidden">
+					<input th:id="selectedSalaryNo" name="salaryNo" type="number" hidden="hidden">
 					<code style="float: right">* 표기는 필수 입력항목입니다.</code>
 					<br>
-					<label style="margin: 10px;">휴가명 <span style="color: red">*</span></label>
+					<label style="margin: 10px;">급여 이름 <span style="color: red">*</span></label>
 					<br> 
-					<input class="form-control"	type="text" placeholder="휴가명" name="vacationName" 
-					id="selectedVacationName" required="required"> 
+					<input class="form-control"	type="text" placeholder="급여 이름" name="salaryName" 	id="selectedSalaryName" required="required"> 
 					<br>
-                    <label style="margin: 10px;">휴가 지급 일수 <span style="color: red">*</span></label>
+                    <label style="margin: 10px;">급여 지급 금액 <span style="color: red">*</span></label>
 					<br> 
 					<div class="row" style="font-size: 25px;margin-left: 2px; float: center">
-					<input style="width: 150px" class="form-control"type="number" placeholder="휴가 지급 일수" name="vacationDate"
-					id="selectedVacationDate" required="required">&nbsp;일
+					<input style="width: 150px" class="form-control"type="number" placeholder="급여 지급 금액" name="salaryAmount"
+					id="selectedSalaryAmount" required="required">&nbsp;￦
 					</div>
 					<br>
-					<label style="margin: 10px;">휴가 속성</label>
-					<br>
-					<select	class="form-select" id="selectedVacationCategory" name="vacationCategory">
-					<option></option>
-					</select>
-					<br>
-					<label style="margin: 10px;">휴가 지급 방법</label>
+					<label style="margin: 10px;">급여 지급 방법</label>
 					<br> 
                     <div>
-					<input type="radio" id="selectedVacationSettingWay1" name="vacationSettingWay" class="form-check-input" value="신청 시 지급">
-					<label class="form-check-label" for="selectedVacationSettingWay1">신청 시 지급&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
-					<input type="radio" id="selectedVacationSettingWay2"
-							name="vacationSettingWay" class="form-check-input" value="자동 지급">
-					<label class="form-check-label" for="selectedVacationSettingWay2">자동 지급</label>
+					<input type="radio" id="selectedRegularlyYn1" name="regularlyYn" class="form-check-input" value="매월">
+					<label class="form-check-label" for="selectedRegularlyYn1">정기(매월)&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedRegularlyYn2" name="regularlyYn" class="form-check-input" value="일시">
+					<label class="form-check-label" for="selectedRegularlyYn2">일시</label>
 					</div>
 					<br>
-					<label style="margin: 10px;">급여 지급 여부</span></label>
+					<label style="margin: 10px;">급여 지급 시기</label>
 					<br> 
                     <div>
-					<input type="radio" id="selectedPaidVacationYn1" name="paidVacationYn" class="form-check-input" value="Y">
-					<label class="form-check-label" for="selectedPaidVacationYn1">유급&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
-					<input type="radio" id="selectedPaidVacationYn2" name="paidVacationYn" class="form-check-input" value="N">
-					<label class="form-check-label" for="selectedPaidVacationYn2">무급</label>
+					<input type="radio" id="selectedPayPeriod1" name="payPeriod" class="form-check-input" value="매월">
+					<label class="form-check-label" for="selectedPayPeriod1">매월&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedPayPeriod2" name="payPeriod" class="form-check-input" value="매년">
+					<label class="form-check-label" for="selectedPayPeriod2">매년</label>
 					</div>
 					<br>
-					<label style="margin: 10px;">적용 성별</label>
+					<label style="margin: 10px;">비 · 과세 여부</label>
+					<br> 
+                    <div>
+					<input type="radio" id="selectedDeductionYn1" name="deductionYn" class="form-check-input" value="비과세">
+					<label class="form-check-label" for="selectedDeductionYn1">비과세&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedDeductionYn2" name="deductionYn" class="form-check-input" value="과세">
+					<label class="form-check-label" for="selectedDeductionYn2">과세</label>
+					</div>
 					<br>
-					<select	class="form-select" id="selectedSettingGender" name="settingGender">
-						<option value="모두">모든 성별</option>
-						<option value="남">남성</option>
-						<option value="여">여성</option>
-					</select>
+					<label style="margin: 10px;">연봉 포함 여부</label>
+					<br> 
+                    <div>
+					<input type="radio" id="selectedAnnualSalaryYn1" name="annualSalaryYn" class="form-check-input" value="연봉에미포함">
+					<label class="form-check-label" for="selectedAnnualSalaryYn1">연봉에 미포함&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedAnnualSalaryYn2" name="annualSalaryYn" class="form-check-input" value="연봉에포함">
+					<label class="form-check-label" for="selectedAnnualSalaryYn2">연봉에 포함</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">입사월에 지급</label>
+					<br> 
+                    <div>
+					<input type="radio" id="selectedPayHiredMonthYn1" name="payHiredMonthYn" class="form-check-input" value="일할계산후">
+					<label class="form-check-label" for="selectedPayHiredMonthYn1">일할 계산 후&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedPayHiredMonthYn2" name="payHiredMonthYn" class="form-check-input" value="전액">
+					<label class="form-check-label" for="selectedPayHiredMonthYn2">전액</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">퇴사월에 지급</label>
+					<br> 
+                    <div>
+					<input type="radio" id="selectedPaymentMonthYn1" name="paymentMonthYn" class="form-check-input" value="일할계산후">
+					<label class="form-check-label" for="selectedPaymentMonthYn1">일할 계산 후&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedPaymentMonthYn2" name="paymentMonthYn" class="form-check-input" value="전액">
+					<label class="form-check-label" for="selectedPaymentMonthYn2">전액</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">급여 지급 대상</span></label>
+					<br> 
+                    <div>
+					<input type="radio" id="selectedTarget1" name="target" class="form-check-input" value="전직원">
+					<label class="form-check-label" for="selectedTarget1">전 직원&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedTarget2" name="target" class="form-check-input" value="특정직원">
+					<label class="form-check-label" for="selectedTarget2">특정 직원</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">사용 여부</label>
+					<br> 
+					<div>
+					<input type="radio" id="selectedUseStatus1" name="useStatus" class="form-check-input" value="Y">
+					<label class="form-check-label" for="selectedUseStatus1">사용&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedUseStatus2" name="useStatus" class="form-check-input" value="N">
+					<label class="form-check-label" for="selectedUseStatus2">사용 안함</label>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-success width-xs"
@@ -278,8 +319,77 @@
 		<!-- /.modal-dialog -->
 	</div>
 	</form>
-	<!-- 휴가 수정 모달 끝 -->
-
+	<!-- 급여 수정 모달 끝 -->
+	<!-- 상여 수정 모달 시작 -->
+	<form action="/mngBasicInformation/updateBonus" method="post">
+	
+	<div class="modal fade" id="editBonusModal" tabindex="-1" role="dialog"
+		aria-labelledby="myCenterModalLabel1" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: gray">
+					<h5 class="modal-title" id="myCenterModalLabel1"
+						style="font-size: 20px">
+						<b>상여 수정</b>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<input th:id="selectedBonusNo" name="bonusNo" type="number" hidden="hidden">
+					<code style="float: right">* 표기는 필수 입력항목입니다.</code>
+					<br>
+					<label style="margin: 10px;">상여 이름 <span style="color: red">*</span></label>
+					<br> 
+					<input class="form-control"	type="text" placeholder="상여 이름" name="bonusName" 	id="selectedBonusName" required="required"> 
+					<br>
+                    <label style="margin: 10px;">상여 지급 금액 <span style="color: red">*</span></label>
+					<br> 
+					<div class="row" style="font-size: 25px;margin-left: 2px; float: center">
+					<input style="width: 150px" class="form-control"type="number" placeholder="상여 지급 금액" name="bonusAmount"
+					id="selectedBonusAmount" required="required">&nbsp;￦
+					</div>
+					<br>
+					<label style="margin: 10px;">상여 지급 방법</label>
+					<br> 
+                    <div>
+					<input type="radio" id="selectedRegularlyYn1" name="regularlyYn" class="form-check-input" value="매월">
+					<label class="form-check-label" for="selectedRegularlyYn1">정기(매월)&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedRegularlyYn2" name="regularlyYn" class="form-check-input" value="일시">
+					<label class="form-check-label" for="selectedRegularlyYn2">일시</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">상여 지급 시기</label>
+					<br> 
+                    <div>
+					<input type="radio" id="selectedPayPeriod1" name="payPeriod" class="form-check-input" value="매월">
+					<label class="form-check-label" for="selectedPayPeriod1">매월&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedPayPeriod2" name="payPeriod" class="form-check-input" value="매년">
+					<label class="form-check-label" for="selectedPayPeriod2">매년</label>
+					</div>
+					<br>
+					<label style="margin: 10px;">사용 여부</label>
+					<br> 
+					<div>
+					<input type="radio" id="selectedUseYn1" name="useYn" class="form-check-input" value="Y">
+					<label class="form-check-label" for="selectedUseYn1">사용&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="radio" id="selectedUseYn2" name="useYn" class="form-check-input" value="N">
+					<label class="form-check-label" for="selectedUseYn2">사용 안함</label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success width-xs"
+						id="updateVacationType">수정 완료</button>
+					<button type="reset" class="btn btn-warning width-xs"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	</form>
+	<!-- 상여 수정 모달 끝 -->
 	<!-- 급여 추가 모달 시작 -->
 	<form action="/mngBasicInformation/insertSalaryCriteria" method="post">
 	<div class="modal fade" id="centermodal" tabindex="-1" role="dialog"
@@ -330,7 +440,7 @@
 					<label style="margin: 10px;">비 · 과세 여부</label>
 					<br> 
                     <div>
-					<input type="radio" id="deductionYn" name="deductionYn" class="form-check-input" value="비과세" checked="checked">
+					<input type="radio" id="deductionYn1" name="deductionYn" class="form-check-input" value="비과세" checked="checked">
 					<label class="form-check-label" for="deductionYn1">비과세&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</label>
 					<input type="radio" id="deductionYn2" name="deductionYn" class="form-check-input" value="과세">
 					<label class="form-check-label" for="deductionYn2">과세</label>
@@ -445,12 +555,12 @@
 	<!-- /.modal -->
 	<!-- 상여 추가 모달 끝 -->
 	<script>
-	$("[id^=deleteVacation]").click(function() {
-		const deptNo = $(this).find('#deleteVacation').val();
-		console.log(deptNo);
+	$("[id^=deleteSalary]").click(function() {
+		const salNo = $(this).find('#deleteSalary').val();
+		console.log(salNo);
 	Swal.fire({
 		  title: '삭제하시겠습니까?',
-		  text: '휴가 종류 내의 모든 정보가 삭제됩니다.',
+		  text: '급여 종류 내의 모든 정보가 삭제됩니다.',
 		  icon: 'warning',
 		  showCancelButton: true,
 		  confirmButtonColor: '#25c2e3',
@@ -460,14 +570,14 @@
 		}).then((result) => {
 			if (result.isConfirmed) {
 				$.ajax({
-			           url: "deleteVacation",
-			    	  data: {   "selectedVacationNo" : deptNo },
+			           url: "deleteSalary",
+			    	  data: {   "selectedSalaryNo" : salNo },
 			       success: function(data, status, xhr) {
 			    	   
 			    	   Swal.fire({
 			       			  position: 'center',
 			       			  icon: 'success',
-			       			  title: '휴가 종류 삭제에 성공하였습니다.',
+			       			  title: '급여 종류 삭제에 성공하였습니다.',
 			       			  showConfirmButton: false,
 			       			  timer: 1500,
 			       			  width: 600
@@ -478,7 +588,54 @@
 			        	   Swal.fire({
 				       			  position: 'center',
 				       			  icon: 'error',
-				       			  title: '휴가 종류 삭제에 실패하였습니다.',
+				       			  title: '급여 종류 삭제에 실패하였습니다.',
+				       			  showConfirmButton: false,
+				       			  timer: 1500,
+				       			  width: 600
+				       		}).then((result) => {
+					        	   location.reload();
+				       				})
+			           }
+			       });
+			  } else if (result.isDenied) {
+			  }
+		})
+	});
+	
+	$("[id^=deleteBonus]").click(function() {
+		const bonusNo = $(this).find('#deleteBonus').val();
+		console.log(bonusNo);
+	Swal.fire({
+		  title: '삭제하시겠습니까?',
+		  text: '상여 종류 내의 모든 정보가 삭제됩니다.',
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#25c2e3',
+		  cancelButtonColor: '#43d39e',
+		  confirmButtonText: '예',
+		  cancelButtonText: '아니오'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+			           url: "deleteBonus",
+			    	  data: {   "selectedBonusNo" : bonusNo },
+			       success: function(data, status, xhr) {
+			    	   
+			    	   Swal.fire({
+			       			  position: 'center',
+			       			  icon: 'success',
+			       			  title: '상여 종류 삭제에 성공하였습니다.',
+			       			  showConfirmButton: false,
+			       			  timer: 1500,
+			       			  width: 600
+			       		}).then((result) => {
+				        	   location.reload();
+			       				})
+			           }, error: function(xhr){
+			        	   Swal.fire({
+				       			  position: 'center',
+				       			  icon: 'error',
+				       			  title: '상여 종류 삭제에 실패하였습니다.',
 				       			  showConfirmButton: false,
 				       			  timer: 1500,
 				       			  width: 600
@@ -493,57 +650,77 @@
 	});
 	
 	
-	$("[id^=editVacationType]").click(function() {
-		const vacationNo = $(this).find('#vacationNo').val();
-	console.log(vacationNo);
+	$("[id^=editSalaryType]").click(function() {
+		const salaryNo = $(this).find('#salaryNo').val();
+	console.log(salaryNo);
 	     $.ajax({
-	           url: "editVacationType",
-	    	  data: {   "selectedVacationNo" : vacationNo },
+	           url: "editSalaryType",
+	    	  data: {   "selectedSalaryNo" : salaryNo },
 	       success: function(data, status, xhr) {
 	    	   
-	    	   			const $selectedVacationNo = $('#selectedVacationNo')
-						const $selectedVacationName = $("#selectedVacationName");
-						const $selectedVacationDate = $("#selectedVacationDate");
-						const $selectedVacationCategory = $("#selectedVacationCategory"); 
-						const $selectedPaidVacationYn = $("#selectedPaidVacationYn");
-						const $selectedSettingGender = $("#selectedSettingGender");
-					 	$selectedVacationName.html("");
-					 	$selectedVacationDate.html("");
-					 	$selectedVacationCategory.html("");
-					 	$selectedPaidVacationYn.html("");
-					 	$selectedSettingGender.html("");
+	    	   			const $selectedSalaryNo = $('#selectedSalaryNo')
+						const $selectedSalaryName = $("#selectedSalaryName");
+						const $selectedSalaryAmount = $("#selectedSalaryAmount");
+					 	$selectedSalaryName.html("");
+					 	$selectedSalaryAmount.html("");
 					 	
-						$selectedVacationNo.text(vacationNo).val(vacationNo);
-						$selectup = $("<option>").text("현재 선택 유형 : " + data.vacationCategory).val(data.vacationCategory);
-						$selectup1 = $("<option>").text("법정 필수 휴가").val("법정 필수 휴가");
-						$selectup2 = $("<option>").text("회사 휴가").val("회사 휴가");
-						$selectedVacationCategory.append($selectup);
-						$selectedVacationCategory.append($selectup1);
-						$selectedVacationCategory.append($selectup2); 
+						$selectedSalaryNo.text(salaryNo).val(salaryNo);
 						
-						if(data.vacationSettingWay == 'Y'){
-							$("input[id='selectedVacationSettingWay1']").attr("checked", true);
+						if(data.regularlyYn == 'Y'){
+							$("input[id='selectedRegularlyYn1']").attr("checked", true);
 						}else{
-							$("input[id='selectedVacationSettingWay2']").attr("checked", true);
+							$("input[id='selectedRegularlyYn2']").attr("checked", true);
+						}
+						if(data.regularlyYn == '매월'){
+							$("input[id='selectedRegularlyYn1']").attr("checked", true);
+						}else{
+							$("input[id='selectedRegularlyYn2']").attr("checked", true);
 						}
 						
-						if(data.paidVacationYn=='Y'){
-							$("input[id='selectedPaidVacationYn1']").attr("checked", true);
+						if(data.payPeriod=='매월'){
+							$("input[id='selectedPayPeriod1']").attr("checked", true);
 						}else{
-							$("input[id='selectedPaidVacationYn2']").attr("checked", true);
+							$("input[id='selectedPayPeriod2']").attr("checked", true);
 						}
 						
-						$selectedVacationName1 = $selectedVacationName.text(data.vacationName).val(data.vacationName);
-						$selectedVacationDate1 = $selectedVacationDate.text(data.vacationDate).val(data.vacationDate);
-						$selectedPaidVacationYn.text(data.paidVacationYn).val(data.paidVacationYn);
-						$selectedSettingGender1 = $("<option>").text("현재 선택 성별 : " + data.settingGender).val(data.settingGender);
-						$selectedSettingGender2 = $("<option>").text("모두").val("모두");
-						$selectedSettingGender3 = $("<option>").text("남성").val("남");
-						$selectedSettingGender4 = $("<option>").text("여성").val("여");
-						$selectedSettingGender.append($selectedSettingGender1);
-						$selectedSettingGender.append($selectedSettingGender2);
-						$selectedSettingGender.append($selectedSettingGender3); 
-						$selectedSettingGender.append($selectedSettingGender4); 
+						if(data.deductionYn == '비과세'){
+							$("input[id='selectedDeductionYn1']").attr("checked", true);
+						}else{
+							$("input[id='selectedDeductionYn2']").attr("checked", true);
+						}
+						
+						if(data.annualSalaryYn == '연봉에미포함'){
+							$("input[id='selectedAnnualSalaryYn1']").attr("checked", true);
+						}else{
+							$("input[id='selectedAnnualSalaryYn2']").attr("checked", true);
+						}
+						
+						if(data.payHiredMonthYn == '일할계산후'){
+							$("input[id='selectedPayHiredMonthYn1']").attr("checked", true);
+						}else{
+							$("input[id='selectedPayHiredMonthYn2']").attr("checked", true);
+						}
+						
+						if(data.paymentMonthYn == '일할계산후'){
+							$("input[id='selectedPaymentMonthYn1']").attr("checked", true);
+						}else{
+							$("input[id='selectedPaymentMonthYn2']").attr("checked", true);
+						}
+						
+						if(data.target == '전직원'){
+							$("input[id='selectedTarget1']").attr("checked", true);
+						}else{
+							$("input[id='selectedTarget2']").attr("checked", true);
+						}
+						
+						if(data.useStatus == 'Y'){
+							$("input[id='selectedUseStatus1']").attr("checked", true);
+						}else{
+							$("input[id='selectedUseStatus2']").attr("checked", true);
+						}
+						
+						$selectedSalaryName1 = $selectedSalaryName.text(data.salaryName).val(data.salaryName);
+						$selectedSalaryAmount1 = $selectedSalaryAmount.text(data.salaryAmount).val(data.salaryAmount);
 					},
 					error: function(xhr, status, error) {
 						console.log(error);
@@ -551,6 +728,54 @@
 	       });
 	});
 	
+	$("[id^=editBonusType]").click(function() {
+		const bonusNo = $(this).find('#bonusNo').val();
+	console.log(bonusNo);
+	     $.ajax({
+	           url: "editBonusType",
+	    	  data: {   "selectedBonusNo" : bonusNo },
+	       success: function(data, status, xhr) {
+	    	   
+	    	   			const $selectedBonusNo = $('#selectedBonusNo')
+						const $selectedBonusName = $("#selectedBonusName");
+						const $selectedBonusAmount = $("#selectedBonusAmount");
+					 	$selectedBonusName.html("");
+					 	$selectedBonusAmount.html("");
+					 	
+						$selectedBonusName1 = $selectedBonusName.text(data.bonusName).val(data.bonusName);
+						$selectedBonusAmount1 = $selectedBonusAmount.text(data.bonusAmount).val(data.bonusAmount);
+						$selectedBonusNo.text(bonusNo).val(bonusNo);
+						
+						if(data.regularlyYn == 'Y'){
+							$("input[id='selectedRegularlyYn1']").attr("checked", true);
+						}else{
+							$("input[id='selectedRegularlyYn2']").attr("checked", true);
+						}
+						if(data.regularlyYn == '매월'){
+							$("input[id='selectedRegularlyYn1']").attr("checked", true);
+						}else{
+							$("input[id='selectedRegularlyYn2']").attr("checked", true);
+						}
+						
+						if(data.payPeriod=='매월'){
+							$("input[id='selectedPayPeriod1']").attr("checked", true);
+						}else{
+							$("input[id='selectedPayPeriod2']").attr("checked", true);
+						}
+						
+						
+						if(data.useYn == 'Y'){
+							$("input[id='selectedUseYn1']").attr("checked", true);
+						}else{
+							$("input[id='selectedUseYn2']").attr("checked", true);
+						}
+						
+					},
+					error: function(xhr, status, error) {
+						console.log(error);
+					}
+	       });
+	});
 	
 		</script>
 </body>

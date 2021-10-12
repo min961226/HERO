@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nextLevel.hero.basicSetting.model.dao.BasicSettingMapper">
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO" id="departmentResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="departmentNo" column="DEPARTMENT_NO"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="departmentCreateDate" column="DEPARTMENT_CREATE_DATE"/>
+		<result property="departmentPhone" column="DEPARTMENT_PHONE"/>
+		<result property="upperDepartment" column="UPPER_DEPARTMENT"/>
+	</resultMap>
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.BusinessDTO" id="businessResultMap">
+		<id property="idx" column="BUSINESS_CODE"/>
+		<result property="businessDetail" column="DETAIL_TYPE_OF_BUSINESS"/>
+		<result property="industryRate" column="INDUSTRY_RATE"/>
+	</resultMap>
+	
+	<insert id="insertOrUpdateBasicSettingCompany" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO">
+		MERGE INTO TBL_COMPANY
+		USING DUAL
+		   ON (COMPANY_NO = #{ companyNo } )
+		 WHEN MATCHED THEN
+ 	   UPDATE 
+ 	      SET COMPANY_NAME = #{ companyName }
+            , CEO_NAME = #{ ceoName }
+            , HEAD_QUARTER_ADDRESS = #{ address }
+            , HEAD_QUARTER_PHONE = #{ phone }
+            , FAX = #{ fax }
+            , COMPANY_REGISTRATION_NO = #{ companyRegistrationNo }
+            , IDENTIFICATION_NO =  #{ identificationNo }
+            , MANAGER_EMAIL = #{ managerEmail }
+            , WEBSITE =  #{ website }
+            , FOUNDING_DATE = #{ foundingDate }
+            , FIRST_COMPANY_YN = #{ firstCompanyYn }
+            , ADDRESS_DETAIL = #{ addressDetail }
+            , BUSINESS_CODE = #{ businessCode }
+		 WHEN NOT MATCHED THEN
+	   INSERT
+	   (
+	     COMPANY_NO
+	   , COMPANY_NAME
+	   , CEO_NAME
+	   , HEAD_QUARTER_ADDRESS
+	   , HEAD_QUARTER_PHONE
+	   , FAX
+	   , COMPANY_REGISTRATION_NO
+	   , IDENTIFICATION_NO
+	   , MANAGER_EMAIL
+	   , WEBSITE
+	   , FOUNDING_DATE
+	   , FIRST_COMPANY_YN
+	   , ADDRESS_DETAIL
+	   , BUSINESS_CODE
+	   ) 
+       VALUES
+       (
+         #{ companyNo }
+       , #{ companyName }
+       , #{ ceoName }
+       , #{ address }
+       , #{ phone }
+       , #{ fax }
+       , #{ companyRegistrationNo }
+       , #{ identificationNo }
+       , #{ managerEmail }
+       , #{ website }
+       , #{ foundingDate }
+       , #{ firstCompanyYn }
+       , #{ addressDetail }
+       , #{ businessCode }
+       )
+	</insert>
+	<insert id="insertUpperDept" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO">
+       MERGE INTO TBL_DEPARTMENT A
+		USING DUAL
+		   ON ( COMPANY_NO = #{companyNo}  AND UPPER_DEPARTMENT = 0 )
+		 WHEN MATCHED THEN
+ 	   UPDATE 
+ 	      SET A.DEPARTMENT_NAME =  #{ departmentName }
+		    , A.DEPARTMENT_CREATE_DATE = #{ departmentCreateDate }
+		    , A.DEPARTMENT_PHONE =  #{ departmentPhone , jdbcType=VARCHAR }
+		 WHEN NOT MATCHED THEN
+	   INSERT
+	   (
+          A.COMPANY_NO
+		, A.DEPARTMENT_NO 
+		, A.DEPARTMENT_NAME
+		, A.DEPARTMENT_CREATE_DATE
+		, A.DEPARTMENT_PHONE
+		, A.UPPER_DEPARTMENT
+	   )
+       VALUES
+       (
+          #{ companyNo }
+        , SEQ_DEPARTMENT_NO.NEXTVAL
+		, #{ departmentName }
+		, #{ departmentCreateDate }
+		, #{ departmentPhone , jdbcType=VARCHAR }
+        , 0
+       )
+	</insert>
+	
+	<select id="selectOneUpperDepartment" resultMap="departmentResultMap">
+		SELECT
+			   *
+		  FROM TBL_DEPARTMENT
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND UPPER_DEPARTMENT = 0
+	</select>
+	<select id="selectBusinessInfo" resultMap="businessResultMap" >
+		SELECT
+			   B.BUSINESS_CODE
+			 , B.DETAIL_TYPE_OF_BUSINESS
+			 , B.INDUSTRY_RATE
+		  FROM TBL_COMPANY A,TBL_BUSINESS B 
+		 WHERE A.BUSINESS_CODE = B.BUSINESS_CODE
+		   AND COMPANY_NO = #{ companyNo}
+	</select>
+
+	<insert id="insertInsuranceRate" parameterType="com.nextLevel.hero.mngBasicInformation.model.dto.MngInsuranceRateDTO">
+		INSERT
+		  INTO TBL_INSURANCE_RATE
+		VALUES 
+		(
+		  #{ companyNo }
+		, SEQ_INSURANCE_NO.NEXTVAL
+		, #{ insuranceRateStartDate }
+		, #{ nationalPensionRate }*0.01
+		, #{ workersPensionRate }*0.01
+		, #{ employerPensionRate }*0.01
+		, #{ healthRate }*0.01
+		, #{ workersHealthRate }*0.01
+		, #{ employerHealthRate }*0.01
+		, #{ longTermCareRate }*0.01
+		, #{ workersLongTermCareRate }*0.01
+		, #{ employerLongTermCareRate }*0.01
+		, #{ unempBenefitRate }*0.01
+		, #{ workersUnempRate }*0.01
+		, #{ employerUnempRate }*0.01
+		, #{ under150EmpRate }*0.01
+		, #{ over150PriorityEmpRate }*0.01
+		, #{ under1000EmpRate }*0.01
+		, #{ over1000EmpRate }*0.01
+		, #{ commuteAccidentRate }*0.01
+		, #{ wageBondChargesYn }
+		, #{ wageBondChargesRate }*0.01
+		, #{ asbestosDamagechargeYn }
+		, #{ asbestosDamagechargeRate }*0.01
+		, #{ industrialInsuranceRate }*0.01
+		, #{ businessCode }
+		)
+	</insert>
+	
+	<update id="finishBasicSetting">
+		UPDATE TBL_USER_AUTH
+		   SET AUTHORITY_NO = 1
+		WHERE ID_NO = #{ userId }
+		  AND AUTHORITY_NO = 999
+	</update>
+	<insert id="insertUserAuth">
+		INSERT ALL
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 2
+		)
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 3
+		)
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 4
+		)
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 5
+		)
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 6
+		)
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 7
+		)
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ userId }
+		, 8
+		)
+		SELECT
+			   *
+		  FROM DUAL
+		
+	</insert>
+	
+	<insert id="insertBusinessList" parameterType="java.util.List">
+		<foreach item="item" index="index" collection="list" separator=" " open="INSERT ALL " close="SELECT * FROM DUAL">
+		  INTO TBL_BUSINESS
+		(
+		  BUSINESS_CODE
+		, TYPE_OF_BUSINESS
+		, DETAIL_TYPE_OF_BUSINESS
+		, INDUSTRY_RATE
+		)
+		VALUES
+		(
+ 		  #{item.businessCode}
+		, #{item.typeOfBusiness}
+		, #{item.detailTypeOfBusiness}
+		, #{item.industryRate}
+		)
+		</foreach>
+	</insert>
+	
+	<insert id="insertIncomeTax" parameterType="java.util.List">
+		<foreach item="item" index="index" collection="list" separator=" " open="INSERT ALL " close="SELECT * FROM DUAL">
+		  INTO TBL_INCOME_TAX
+		(
+		  COMPANY_NO
+		, DIV_NO
+		, MIN_SALARY
+		, MAX_SALARY
+		, INCOME_TAX
+		, SETTING_DATE
+		, START_DATE
+		)
+		VALUES
+		(
+ 		  #{item.companyNo}
+		, #{item.divNo}
+		, #{item.salaryMin}
+		, #{item.salaryMax}
+		, #{item.salaryTax}
+		, SYSDATE
+		, #{item.startDate}
+		)
+		</foreach>
+	</insert>
+	<insert id="insertRankSalary" parameterType="java.util.List">
+		<foreach item="item" index="index" collection="list" separator=" " open="INSERT ALL " close="SELECT * FROM DUAL">
+		  INTO TBL_RANK_SALARY_STEP
+		(
+		  COMPANY_NO
+		, SALARY_STEP_BY_RANK
+		, RANK
+		, SALARY_STEP
+		, START_DATE
+		, AMOUNT
+		, TBL_USER_AUTH
+		)
+		VALUES
+		(
+ 		  #{item.companyNo}
+		, #{item.num}
+		, #{item.jobName}
+		, #{item.jobRank}
+		, #{item.startDate}
+		, #{item.annualSalary}
+		, 'N'
+		)
+		</foreach>
+	</insert>
+	
+	
+</mapper>

@@ -24,6 +24,7 @@
 	type="text/css" id="app-dark-stylesheet" disabled />
 
 
+
 <!-- icons -->
 <link th:href="@{/css/icons.min.css}" rel="stylesheet" type="text/css" />
 </head>
@@ -411,6 +412,13 @@
 				<div id="sidebar-menu">
 
 					<ul id="side-menu">
+						<th:block sec:authorize="hasRole('BASIC')">
+							<li class="menu-title mt-2">회사 정보</li>
+						
+							<li><a href="/basicSetting/basicSetting"> <i
+									data-feather="users"></i> <span> 초기 세팅 </span>
+							</a></li>
+						</th:block>
 						<th:block sec:authorize="hasRole('SYSTEM')">
 							<li><a href="/systemManager/userList"> <i
 									data-feather="users"></i> <span> 계정 생성 목록 </span>
@@ -644,7 +652,7 @@
 
 	<!-- Left Sidebar End -->
 	<script th:src="@{/js/vendor.min.js}"></script>
-
+	
 	<!-- optional plugins -->
 	<script th:src="@{/libs/moment/min/moment.min.js}"></script>
 	<script th:src="@{/libs/apexcharts/apexcharts.min.js}"></script>
@@ -652,7 +660,7 @@
 
 	<!-- page js -->
 	<script th:src="@{/libs/smartwizard/js/jquery.smartWizard.min.js}"></script>
-    <script th:src="@{/js/pages/form-wizard.init.js}"></script>
+	<script th:src="@{/js/pages/form-wizard.init.js}"></script>
 	<script th:src="@{/js/pages/dashboard.init.js}"></script>
 	<script th:src="@{/js/app.min.js}"></script>
 </body>

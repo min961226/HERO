@@ -19,6 +19,15 @@ public class MngDepartmentHistoryDTO implements Serializable{
 	private Integer memberCount;
 	
 	public MngDepartmentHistoryDTO() {}
+	
+	public MngDepartmentHistoryDTO(int companyNo,String departmentName,Date departmentCreateDate, String departmentPhone) {
+		super();
+		this.companyNo = companyNo;
+		this.departmentName = departmentName;
+		this.departmentCreateDate = departmentCreateDate;
+		this.departmentPhone = departmentPhone;
+	}
+	
 
 	public MngDepartmentHistoryDTO(int companyNo, int updatedHistoryNo, int departmentNo, String departmentName,
 			Date departmentCreateDate, String departmentPhone, Date departmentUpdatedDate, String updatedCategory,

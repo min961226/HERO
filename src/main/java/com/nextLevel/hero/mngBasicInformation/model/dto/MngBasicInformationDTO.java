@@ -25,6 +25,7 @@ public class MngBasicInformationDTO implements Serializable{
 	private char firstCompanyYn;
 	private int businessCode;
 	private String businessName;
+	private String businessDetail;
 	
 	public MngBasicInformationDTO() {}
 
@@ -32,7 +33,7 @@ public class MngBasicInformationDTO implements Serializable{
 			String addressDetail, String phone, String fax, String companyRegistrationNo, String companyRegistrationNo1,
 			String companyRegistrationNo2, String companyRegistrationNo3, String identificationNo,
 			String identificationNo1, String identificationNo2, String managerEmail, String website, Date foundingDate,
-			char firstCompanyYn, int businessCode, String businessName) {
+			char firstCompanyYn, int businessCode, String businessName, String businessDetail) {
 		super();
 		this.companyNo = companyNo;
 		this.companyName = companyName;
@@ -54,6 +55,7 @@ public class MngBasicInformationDTO implements Serializable{
 		this.firstCompanyYn = firstCompanyYn;
 		this.businessCode = businessCode;
 		this.businessName = businessName;
+		this.businessDetail = businessDetail;
 	}
 
 	public int getCompanyNo() {
@@ -216,6 +218,14 @@ public class MngBasicInformationDTO implements Serializable{
 		this.businessName = businessName;
 	}
 
+	public String getBusinessDetail() {
+		return businessDetail;
+	}
+
+	public void setBusinessDetail(String businessDetail) {
+		this.businessDetail = businessDetail;
+	}
+
 	@Override
 	public String toString() {
 		return "MngBasicInformationDTO [companyNo=" + companyNo + ", companyName=" + companyName + ", ceoName="
@@ -226,8 +236,9 @@ public class MngBasicInformationDTO implements Serializable{
 				+ ", identificationNo1=" + identificationNo1 + ", identificationNo2=" + identificationNo2
 				+ ", managerEmail=" + managerEmail + ", website=" + website + ", foundingDate=" + foundingDate
 				+ ", firstCompanyYn=" + firstCompanyYn + ", businessCode=" + businessCode + ", businessName="
-				+ businessName + "]";
+				+ businessName + ", businessDetail=" + businessDetail + "]";
 	}
 
+	
 
 }

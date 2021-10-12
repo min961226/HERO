@@ -41,7 +41,7 @@ import com.nextLevel.hero.mngBasicInformation.model.dto.MngInsuranceRateDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngMemberDepartmentDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngSalaryCriteriaDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngVacationTypeDTO;
-import com.nextLevel.hero.mngBasicInformation.model.service.MngBasicInformationService;
+import com.nextLevel.hero.mngBasicInformation.service.MngBasicInformationService;
 import com.nextLevel.hero.mngVacation.model.dto.MngVacationDTO;
 
 @Controller
@@ -54,26 +54,8 @@ public class MngBasicInformationController {
 	public MngBasicInformationController(MngBasicInformationService mngBasicInformationService) {
 		this.mngBasicInformationService = mngBasicInformationService;
 	}
-
-	@GetMapping("/businessList")
-	public ModelAndView businessList(ModelAndView mv) {
-		
-		mv.setViewName("mngBasicInformation/businessList");
-		return mv;
-	}
 	
-	@GetMapping(value="/getSearchList", produces="application/json; charset=UTF-8")
-	@ResponseBody
-	public List<BusinessDTO> getSearchList(@RequestParam String keyword,Model model) throws Exception{
-		
-		
-		System.out.println(keyword);
-		
-		BusinessDTO businessDTO = new BusinessDTO();
-		businessDTO.setKeyword(keyword);
-		List<BusinessDTO> list = mngBasicInformationService.getSearchList(businessDTO);
-		return list;
-	}
+	
 	
 	@GetMapping("/company")
 	public ModelAndView mngCompany(@AuthenticationPrincipal UserImpl user,ModelAndView mv) {
@@ -82,6 +64,27 @@ public class MngBasicInformationController {
 		mv.addObject("companyInfo", companyInfo);
 		mv.setViewName("mngBasicInformation/company");
 		return mv;
+	}
+	
+	@GetMapping(value="selectBusinessList", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String getBusiness(@AuthenticationPrincipal UserImpl user, @RequestParam String keyword) {
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		
+		BusinessDTO businessDTO = new BusinessDTO();
+		businessDTO.setKeyword(keyword);
+		List<BusinessDTO> list = mngBasicInformationService.getSearchList(businessDTO);
+		
+		System.out.println(keyword);
+
+		return gson.toJson(list);
 	}
 	
 	@PostMapping("/company")
@@ -247,10 +250,12 @@ public class MngBasicInformationController {
 	}
 	
 	@GetMapping("/departmentHistory")
-	public ModelAndView mngDepartmentHistory(ModelAndView mv,@AuthenticationPrincipal UserImpl user) {
+	public ModelAndView mngDepartmentHistory(ModelAndView mv,@AuthenticationPrincipal UserImpl user,HttpServletRequest request) {
 		
 		List<MngDepartmentHistoryDTO> departmentHistory = mngBasicInformationService.selectDepartmentHistory(user.getCompanyNo());
 		
+		request.getParameter("searchCondition");
+		request.getParameter("searchValue");
 		mv.addObject("departmentHistory",departmentHistory);
 		mv.setViewName("mngBasicInformation/departmentHistory");
 		
@@ -433,6 +438,122 @@ public class MngBasicInformationController {
 		return mv;
 	}
 	
+	@GetMapping(value="deleteSalary", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public ModelAndView deleteSalaryCriteria(ModelAndView mv, @AuthenticationPrincipal UserImpl user, @RequestParam String selectedSalaryNo) {
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		
+		System.out.println(selectedSalaryNo);
+		/* ajax로 넘어온 급여 종류 번호를 int 로 parsing */ 
+		int salNo = Integer.parseInt(selectedSalaryNo);
+		
+		mngBasicInformationService.deleteSalaryType(user.getCompanyNo(),salNo);
+		
+		mv.setViewName("/mngBasicInformation/salaryType");
+		
+		return mv;
+	}
 	
+	@GetMapping(value="deleteBonus", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public ModelAndView deleteBonusType(ModelAndView mv, @AuthenticationPrincipal UserImpl user, @RequestParam String selectedBonusNo) {
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		
+		System.out.println(selectedBonusNo);
+		/* ajax로 넘어온 상여 종류 번호를 int 로 parsing */ 
+		int bonusNo = Integer.parseInt(selectedBonusNo);
+		
+		mngBasicInformationService.deleteBonusType(user.getCompanyNo(),bonusNo);
+		
+		mv.setViewName("/mngBasicInformation/salaryType");
+		
+		return mv;
+	}
+	
+	@GetMapping(value="editSalaryType", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String selectOneSalaryType(@AuthenticationPrincipal UserImpl user, @RequestParam String selectedSalaryNo) {
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		
+		int salaryNo = Integer.parseInt(selectedSalaryNo);
+		MngSalaryCriteriaDTO salaryType = mngBasicInformationService.selectOneSalaryType(user.getCompanyNo(),salaryNo);
+		System.out.println(salaryType);
+		return gson.toJson(salaryType);
+	}
+	
+	@GetMapping(value="editBonusType", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String selectOneBonusType(@AuthenticationPrincipal UserImpl user, @RequestParam String selectedBonusNo) {
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		
+		int bonusNo = Integer.parseInt(selectedBonusNo);
+		MngBonusDTO bonusType = mngBasicInformationService.selectOneBonusType(user.getCompanyNo(),bonusNo);
+		
+		return gson.toJson(bonusType);
+	}
+	
+	@PostMapping("/updateSalaryType")
+	public ModelAndView updateSalaryCriteria(ModelAndView mv,@AuthenticationPrincipal UserImpl user,MngSalaryCriteriaDTO salaryCriteriaDTO, RedirectAttributes rttr) {
+		
+		System.out.println(salaryCriteriaDTO);
+		salaryCriteriaDTO.setCompanyNo(user.getCompanyNo());
+		int result = mngBasicInformationService.updateSalaryType(salaryCriteriaDTO);
+		
+		if(result >0) {
+			rttr.addFlashAttribute("successMessage", "급여 종류 수정을 완료하였습니다");
+		}else {
+			rttr.addFlashAttribute("failedMessage", "급여 종류 수정에 실패하였습니다");
+		}
+		System.out.println("급여 수정 값전송함");
+		mv.setViewName("redirect:/mngBasicInformation/salaryType");							//가야할 페이지
+
+		return mv;
+	}
+	
+	@PostMapping("/updateBonus")
+	public ModelAndView updateBonusType(ModelAndView mv,@AuthenticationPrincipal UserImpl user,MngBonusDTO bonusDTO, RedirectAttributes rttr) {
+		
+		System.out.println(bonusDTO);
+		bonusDTO.setCompanyNo(user.getCompanyNo());
+		int result = mngBasicInformationService.updateBonusType(bonusDTO);
+		
+		if(result >0) {
+			rttr.addFlashAttribute("successMessage", "급여 종류 수정을 완료하였습니다");
+		}else {
+			rttr.addFlashAttribute("failedMessage", "급여 종류 수정에 실패하였습니다");
+		}
+		System.out.println("상여 수정 값전송함");
+		mv.setViewName("redirect:/mngBasicInformation/salaryType");							//가야할 페이지
+		
+		return mv;
+	}
 	
 }

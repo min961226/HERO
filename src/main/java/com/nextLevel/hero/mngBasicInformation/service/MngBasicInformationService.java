@@ -1,4 +1,4 @@
-package com.nextLevel.hero.mngBasicInformation.model.service;
+package com.nextLevel.hero.mngBasicInformation.service;
 
 import java.util.List;
 
@@ -69,6 +69,18 @@ public interface MngBasicInformationService {
 	List<MngBonusDTO> selectBonusList(int companyNo);
 
 	int insertBonusType(MngBonusDTO bonusDTO);
+
+	int deleteSalaryType(int companyNo, int salNo);
+
+	int deleteBonusType(int companyNo, int bonusNo);
+
+	MngSalaryCriteriaDTO selectOneSalaryType(int companyNo, int salaryNo);
+
+	int updateSalaryType(MngSalaryCriteriaDTO salaryCriteriaDTO);
+
+	MngBonusDTO selectOneBonusType(int companyNo, int bonusNo);
+
+	int updateBonusType(MngBonusDTO bonusDTO);
 
 
 

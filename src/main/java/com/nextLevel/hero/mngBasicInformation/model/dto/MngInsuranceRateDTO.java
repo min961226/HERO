@@ -36,6 +36,49 @@ public class MngInsuranceRateDTO implements Serializable {
 	private BigDecimal industryRate;
 	
 	public MngInsuranceRateDTO() {}
+	
+	
+
+	public MngInsuranceRateDTO(int companyNo, Date insuranceRateStartDate, BigDecimal nationalPensionRate,
+			BigDecimal workersPensionRate, BigDecimal employerPensionRate, BigDecimal healthRate,
+			BigDecimal workersHealthRate, BigDecimal employerHealthRate, BigDecimal longTermCareRate,
+			BigDecimal workersLongTermCareRate, BigDecimal employerLongTermCareRate, BigDecimal unempBenefitRate,
+			BigDecimal workersUnempRate, BigDecimal employerUnempRate, BigDecimal under150EmpRate,
+			BigDecimal over150PriorityEmpRate, BigDecimal under1000EmpRate, BigDecimal over1000EmpRate,
+			BigDecimal commuteAccidentRate, char wageBondChargesYn, BigDecimal wageBondChargesRate,
+			char asbestosDamagechargeYn, BigDecimal asbestosDamagechargeRate, BigDecimal industrialInsuranceRate,
+			int businessCode, String detailTypeOfBusiness, BigDecimal industryRate) {
+		super();
+		this.companyNo = companyNo;
+		this.insuranceRateStartDate = insuranceRateStartDate;
+		this.nationalPensionRate = nationalPensionRate;
+		this.workersPensionRate = workersPensionRate;
+		this.employerPensionRate = employerPensionRate;
+		this.healthRate = healthRate;
+		this.workersHealthRate = workersHealthRate;
+		this.employerHealthRate = employerHealthRate;
+		this.longTermCareRate = longTermCareRate;
+		this.workersLongTermCareRate = workersLongTermCareRate;
+		this.employerLongTermCareRate = employerLongTermCareRate;
+		this.unempBenefitRate = unempBenefitRate;
+		this.workersUnempRate = workersUnempRate;
+		this.employerUnempRate = employerUnempRate;
+		this.under150EmpRate = under150EmpRate;
+		this.over150PriorityEmpRate = over150PriorityEmpRate;
+		this.under1000EmpRate = under1000EmpRate;
+		this.over1000EmpRate = over1000EmpRate;
+		this.commuteAccidentRate = commuteAccidentRate;
+		this.wageBondChargesYn = wageBondChargesYn;
+		this.wageBondChargesRate = wageBondChargesRate;
+		this.asbestosDamagechargeYn = asbestosDamagechargeYn;
+		this.asbestosDamagechargeRate = asbestosDamagechargeRate;
+		this.industrialInsuranceRate = industrialInsuranceRate;
+		this.businessCode = businessCode;
+		this.detailTypeOfBusiness = detailTypeOfBusiness;
+		this.industryRate = industryRate;
+	}
+
+
 
 	public MngInsuranceRateDTO(int companyNo, int divNo, Date insuranceRateStartDate, BigDecimal nationalPensionRate,
 			BigDecimal workersPensionRate, BigDecimal employerPensionRate, BigDecimal healthRate,

@@ -1,5 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nextLevel.hero.SYSTEM.model.dao.SystemManagerMapper">
-
+<resultMap type="com.nextLevel.hero.SYSTEM.model.dto.NewMemberDTO" id="controlClientResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="managerName" column="MANAGER_NAME"/>
+		<result property="managerPhone" column="MANAGER_PHONE"/>
+		<result property="managerEmail" column="MANAGER_EMAIL"/>
+		<result property="managerRank" column="MANAGER_RANKING"/>
+		<result property="address" column="COMPANY_ADDRESS"/>
+		<result property="managerDept" column="MANAGER_DEPARTMENT"/>
+		<result property="ceoName" column="CEO_NAME"/>
+		<result property="companyRegistrationNo" column="COMPANY_REGISTRATION_NO"/>
+		<result property="companyPhone" column="COMPANY_PHONE"/>
+		<result property="startDate" column="ID_START_DATE"/>
+		<result property="addressDetail" column="COMPANY_ADDRESS_DETAIL"/>
+	</resultMap>
+	<select id="selectMemberIdList" resultType="String">
+		SELECT
+			   MEMBER_ID
+		  FROM TBL_MEMBER
+	</select>
+	<insert id="insertControlClient" parameterType="com.nextLevel.hero.SYSTEM.model.dto.NewMemberDTO">
+		INSERT
+		  INTO TBL_CONTROL_CLIENT
+		(
+		  COMPANY_NO
+		, COMPANY_NAME
+		, MANAGER_NAME
+		, MANAGER_PHONE
+		, MANAGER_EMAIL
+		, MANAGER_RANKING
+		, COMPANY_ADDRESS
+		, MANAGER_DEPARTMENT
+		, CEO_NAME
+		, COMPANY_REGISTRATION_NO
+		, COMPANY_PHONE
+		, ID_START_DATE
+		, COMPANY_ADDRESS_DETAIL
+		)
+		VALUES
+		(
+		  SEQ_COMPANY_NO.NEXTVAL
+		, #{ companyName }
+		, #{ managerName }
+		, #{ managerPhone }
+		, #{ managerEmail }
+		, #{ managerRank }
+		, #{ address }
+		, #{ managerDept }
+		, #{ ceoName }
+		, #{ companyRegistrationNo }
+		, #{ managerPhone }
+		, SYSDATE
+		, #{ addressDetail }
+		)
+	</insert>
+	<select id="selectLastCompanyNo" resultType="_int">
+		SELECT
+		       SEQ_COMPANY_NO.CURRVAL
+		  FROM USER_SEQUENCES
+		 WHERE SEQUENCE_NAME = 'SEQ_COMPANY_NO'
+	</select>
+	<insert id="insertNewMember" parameterType="com.nextLevel.hero.SYSTEM.model.dto.NewMemberDTO">
+		INSERT
+		  INTO TBL_MEMBER
+		(
+		  ID_NO
+		, MEMBER_ID
+		, MEMBER_PASSWORD
+		, TEMP_PWD_YN
+		, MEMBER_NAME
+		, HIRE_DATE
+		, ACC_SECESSION_DATETIME
+		, ACC_SECESSION_YN
+		)
+		VALUES
+		(
+		  SEQ_ID_NO.NEXTVAL
+		, #{ memberId }
+		, #{ memberPasswordCheck }
+		, DEFAULT
+		, #{ memberName }
+		, SYSDATE
+		, DEFAULT
+		, 'N'
+		)
+	</insert>
+	<select id="selectLastIdNo" resultType="_int">
+		SELECT
+		       SEQ_ID_NO.CURRVAL
+		  FROM USER_SEQUENCES
+		 WHERE SEQUENCE_NAME = 'SEQ_ID_NO'
+	</select>
+	<insert id="insertMemberCompany">
+		INSERT
+		  INTO TBL_MEMBER_COMPANY
+		VALUES
+		(
+		  #{ companyNo }
+		, #{ idNo }
+		)
+	</insert>
+	<insert id="insertMemberAuth">
+		INSERT
+		  INTO TBL_USER_AUTH
+		VALUES
+		(
+		  #{ idNo }
+		, 999
+		)
+	</insert>
+	<select id="selectControlClientList" resultMap="controlClientResultMap">
+		SELECT
+			   *
+		  FROM TBL_CONTROL_CLIENT
+	</select>
 </mapper>

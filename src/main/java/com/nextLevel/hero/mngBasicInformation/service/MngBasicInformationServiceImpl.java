@@ -1,4 +1,4 @@
-package com.nextLevel.hero.mngBasicInformation.model.service;
+package com.nextLevel.hero.mngBasicInformation.service;
 
 import java.util.List;
 
@@ -180,6 +180,41 @@ public class MngBasicInformationServiceImpl implements MngBasicInformationServic
 	@Transactional
 	public int insertBonusType(MngBonusDTO bonusDTO) {
 		return mngBasicInformationMapper.insertBonusType(bonusDTO);
+	}
+
+	@Override
+	@Transactional
+	public int deleteSalaryType(int companyNo, int salNo) {
+		return mngBasicInformationMapper.deleteSalaryType(companyNo,salNo);
+	}
+
+	@Override
+	@Transactional
+	public int deleteBonusType(int companyNo, int bonusNo) {
+		return mngBasicInformationMapper.deleteBonusType(companyNo,bonusNo);
+	}
+
+	@Override
+	@Transactional
+	public MngSalaryCriteriaDTO selectOneSalaryType(int companyNo, int salaryNo) {
+		return mngBasicInformationMapper.selectOneSalaryType(companyNo,salaryNo);
+	}
+
+	@Override
+	@Transactional
+	public int updateSalaryType(MngSalaryCriteriaDTO salaryCriteriaDTO) {
+		return mngBasicInformationMapper.updateSalaryType(salaryCriteriaDTO);
+	}
+
+	@Override
+	public MngBonusDTO selectOneBonusType(int companyNo, int bonusNo) {
+		return mngBasicInformationMapper.selectOneBonusType(companyNo,bonusNo);
+	}
+
+	@Override
+	@Transactional
+	public int updateBonusType(MngBonusDTO bonusDTO) {
+		return mngBasicInformationMapper.updateBonusType(bonusDTO);
 	}
 
 
