@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nextLevel.hero.basicSetting.model.dao.BasicSettingMapper;
 import com.nextLevel.hero.basicSetting.model.dto.ExcelBusiness;
+import com.nextLevel.hero.basicSetting.model.dto.ExcelIncomeTax;
+import com.nextLevel.hero.basicSetting.model.dto.ExcelRankSalary;
 import com.nextLevel.hero.mngBasicInformation.model.dto.BusinessDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO;
@@ -70,6 +72,18 @@ public class BasicSettingServiceImpl implements BasicSettingService {
 	@Transactional
 	public int insertBusinessList(List<ExcelBusiness> dataList) {
 		return basicSettingMapper.insertBusinessList(dataList);
+	}
+
+	@Override
+	@Transactional
+	public int insertIncomeTax(List<ExcelIncomeTax> dataList) {
+		return basicSettingMapper.insertIncomeTax(dataList);
+	}
+
+	@Override
+	@Transactional
+	public int insertRankSalary(List<ExcelRankSalary> dataList) {
+		return basicSettingMapper.insertRankSalary(dataList);
 	}
 	
 	

@@ -21,13 +21,14 @@
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
 								<div>
-								<label style="padding:10px;">변경일 </label><input type="date"><br>
+								<form id="searchForm" action="/mngBasicInformation/departmentHistory" method="get">
 								<label style="margin:15px;">검색</label>
-								<select>
+								<select name="searchCondition">
 									<option value="deptName">부서명</option>
 									<option value="memberName">종류</option>
 								</select>
-								<input type="text" style="margin:10px;"><button type="button" class="btn btn-outline-primary">검 색</button>
+								<input type="text" name="searchValue" style="margin:10px;"><button type="submit" class="btn btn-outline-primary">검 색</button>
+								</form>
 							</div>
 							<br>
 							<div class="card">

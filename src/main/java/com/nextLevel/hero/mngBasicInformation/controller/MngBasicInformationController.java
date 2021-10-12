@@ -250,10 +250,12 @@ public class MngBasicInformationController {
 	}
 	
 	@GetMapping("/departmentHistory")
-	public ModelAndView mngDepartmentHistory(ModelAndView mv,@AuthenticationPrincipal UserImpl user) {
+	public ModelAndView mngDepartmentHistory(ModelAndView mv,@AuthenticationPrincipal UserImpl user,HttpServletRequest request) {
 		
 		List<MngDepartmentHistoryDTO> departmentHistory = mngBasicInformationService.selectDepartmentHistory(user.getCompanyNo());
 		
+		request.getParameter("searchCondition");
+		request.getParameter("searchValue");
 		mv.addObject("departmentHistory",departmentHistory);
 		mv.setViewName("mngBasicInformation/departmentHistory");
 		

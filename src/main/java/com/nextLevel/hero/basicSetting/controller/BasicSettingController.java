@@ -32,6 +32,8 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nextLevel.hero.basicSetting.model.dto.ExcelBusiness;
+import com.nextLevel.hero.basicSetting.model.dto.ExcelIncomeTax;
+import com.nextLevel.hero.basicSetting.model.dto.ExcelRankSalary;
 import com.nextLevel.hero.basicSetting.model.service.BasicSettingService;
 import com.nextLevel.hero.member.model.dto.UserImpl;
 import com.nextLevel.hero.mngBasicInformation.model.dto.BusinessDTO;
@@ -329,6 +331,104 @@ public class BasicSettingController {
 	    int result = basicSettingService.insertBusinessList(dataList);
 	    if (result > 0) {
 			rttr.addFlashAttribute("successMessage", "업종 요율 업로드를 완료하였습니다.");
+		} else {
+			rttr.addFlashAttribute("failedMessage", "이미 업로드 하였거나 업로드에 실패하였습니다.");
+		}
+	    mv.setViewName("redirect:/basicSetting/basicSetting");
+		return mv;
+
+	  }
+	 
+	 @PostMapping("/uploadIncomeTax")
+	  public ModelAndView uploadIncomeTaxExcel(ModelAndView mv, @RequestParam("file") MultipartFile file,RedirectAttributes rttr,@AuthenticationPrincipal UserImpl user)
+	      throws IOException { // 2
+
+	    List<ExcelIncomeTax> dataList = new ArrayList<>();
+
+	    String extension = FilenameUtils.getExtension(file.getOriginalFilename()); // 3
+
+	    if (!extension.equals("xlsx") && !extension.equals("xls")) {
+	      throw new IOException("엑셀파일만 업로드 해주세요.");
+	    }
+
+	    Workbook workbook = null;
+
+	    if (extension.equals("xlsx")) {
+	      workbook = new XSSFWorkbook(file.getInputStream());
+	    } else if (extension.equals("xls")) {
+	      workbook = new HSSFWorkbook(file.getInputStream());
+	    }
+
+	    Sheet worksheet = workbook.getSheetAt(0);
+
+	    for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) { // 4
+
+	      Row row = worksheet.getRow(i);
+
+	      ExcelIncomeTax data = new ExcelIncomeTax();
+
+	      data.setCompanyNo(user.getCompanyNo());
+	      data.setDivNo((int) row.getCell(0).getNumericCellValue());
+	      data.setSalaryMin((int) row.getCell(1).getNumericCellValue());
+	      data.setSalaryMax((int) row.getCell(2).getNumericCellValue());
+	      data.setSalaryTax((int) row.getCell(3).getNumericCellValue());
+	      data.setStartDate( row.getCell(4).getDateCellValue());
+
+	      dataList.add(data);
+	    }
+	    System.out.println("엑셀 데이터 값" + dataList);
+	    int result = basicSettingService.insertIncomeTax(dataList);
+	    if (result > 0) {
+			rttr.addFlashAttribute("successMessage", "근로소득간이세액 업로드를 완료하였습니다.");
+		} else {
+			rttr.addFlashAttribute("failedMessage", "이미 업로드 하였거나 업로드에 실패하였습니다.");
+		}
+	    mv.setViewName("redirect:/basicSetting/basicSetting");
+		return mv;
+
+	  }
+	 
+	 @PostMapping("/uploadRankSalary")
+	  public ModelAndView uploadRankSalary(ModelAndView mv, @RequestParam("file") MultipartFile file,RedirectAttributes rttr,@AuthenticationPrincipal UserImpl user)
+	      throws IOException { // 2
+
+	    List<ExcelRankSalary> dataList = new ArrayList<>();
+
+	    String extension = FilenameUtils.getExtension(file.getOriginalFilename()); // 3
+
+	    if (!extension.equals("xlsx") && !extension.equals("xls")) {
+	      throw new IOException("엑셀파일만 업로드 해주세요.");
+	    }
+
+	    Workbook workbook = null;
+
+	    if (extension.equals("xlsx")) {
+	      workbook = new XSSFWorkbook(file.getInputStream());
+	    } else if (extension.equals("xls")) {
+	      workbook = new HSSFWorkbook(file.getInputStream());
+	    }
+
+	    Sheet worksheet = workbook.getSheetAt(0);
+
+	    for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) { // 4
+
+	      Row row = worksheet.getRow(i);
+
+	      ExcelRankSalary data = new ExcelRankSalary();
+
+	      data.setCompanyNo(user.getCompanyNo());
+	      data.setAnnualSalary((int) row.getCell(0).getNumericCellValue());
+	      data.setStartDate(row.getCell(1).getDateCellValue());
+	      data.setNum((int) row.getCell(2).getNumericCellValue());
+	      data.setJobName(row.getCell(3).getStringCellValue());
+	      data.setJobRank((int) row.getCell(4).getNumericCellValue());
+
+	      dataList.add(data);
+	    }
+	    System.out.println("엑셀 데이터 값" + dataList);
+	    int result = basicSettingService.insertRankSalary(dataList);
+	    if (result > 0) {
+			rttr.addFlashAttribute("successMessage", "호봉 별 급여 업로드를 완료하였습니다.");
 		} else {
 			rttr.addFlashAttribute("failedMessage", "이미 업로드 하였거나 업로드에 실패하였습니다.");
 		}

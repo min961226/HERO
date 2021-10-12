@@ -225,4 +225,55 @@
 		)
 		</foreach>
 	</insert>
+	
+	<insert id="insertIncomeTax" parameterType="java.util.List">
+		<foreach item="item" index="index" collection="list" separator=" " open="INSERT ALL " close="SELECT * FROM DUAL">
+		  INTO TBL_INCOME_TAX
+		(
+		  COMPANY_NO
+		, DIV_NO
+		, MIN_SALARY
+		, MAX_SALARY
+		, INCOME_TAX
+		, SETTING_DATE
+		, START_DATE
+		)
+		VALUES
+		(
+ 		  #{item.companyNo}
+		, #{item.divNo}
+		, #{item.salaryMin}
+		, #{item.salaryMax}
+		, #{item.salaryTax}
+		, SYSDATE
+		, #{item.startDate}
+		)
+		</foreach>
+	</insert>
+	<insert id="insertRankSalary" parameterType="java.util.List">
+		<foreach item="item" index="index" collection="list" separator=" " open="INSERT ALL " close="SELECT * FROM DUAL">
+		  INTO TBL_RANK_SALARY_STEP
+		(
+		  COMPANY_NO
+		, SALARY_STEP_BY_RANK
+		, RANK
+		, SALARY_STEP
+		, START_DATE
+		, AMOUNT
+		, TBL_USER_AUTH
+		)
+		VALUES
+		(
+ 		  #{item.companyNo}
+		, #{item.num}
+		, #{item.jobName}
+		, #{item.jobRank}
+		, #{item.startDate}
+		, #{item.annualSalary}
+		, 'N'
+		)
+		</foreach>
+	</insert>
+	
+	
 </mapper>

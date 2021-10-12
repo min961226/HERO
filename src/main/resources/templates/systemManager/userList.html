@@ -20,6 +20,56 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div>
+								<form id="searchForm" action="/mngBasicInformation/departmentHistory" method="get">
+								<label style="margin:15px;">검색</label>
+								<select name="searchCondition">
+									<option value="deptName">부서명</option>
+									<option value="memberName">종류</option>
+								</select>
+								<input type="text" name="searchValue" style="margin:10px;"><button type="submit" class="btn btn-outline-primary">검 색</button>
+								</form>
+							</div>
+							<br>
+							<div class="card">
+								<div class="card-body">
+								<table class="table table-striped dt-responsive nowrap w-100 text-center">
+									<thead>
+										<tr>
+											<th>회사 번호</th>											
+											<th>대표자명</th>											
+											<th>회사명</th>											
+											<th>사업자 등록 번호</th>											
+											<th>담당자 부서</th>											
+											<th>담당자 직급</th>											
+											<th>담당자명</th>											
+											<th>담당자 연락처</th>											
+											<th>담당자 이메일</th>											
+											<th>회사 주소</th>											
+											<th>회사 연락처</th>											
+											<th>계정 생성일</th>											
+										</tr>
+									</thead>
+										
+									<tbody>
+										<tr th:each="client : ${clientList}">
+											<td th:text="${client.companyNo}"></td>
+											<td th:text="${client.ceoName}"></td>
+											<td th:text="${client.companyName}"></td>
+											<td th:text="${client.companyRegistrationNo}"></td>
+											<td th:text="${client.managerDept}"></td>
+											<td th:text="${client.managerRank}"></td>
+											<td th:text="${client.managerName}"></td>
+											<td th:text="${client.managerPhone}"></td>
+											<td th:text="${client.managerEmail}"></td>
+											<td th:text="${client.address}+' '+${client.addressDetail}"></td>
+											<td th:text="${client.companyPhone}"></td>
+											<td th:text="${client.startDate}"></td>
+										</tr>
+									</tbody>
+								</table>
+							   </div>
+							</div>
 						</div>
 					</div>
 				</div>

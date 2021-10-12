@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.nextLevel.hero.basicSetting.model.dto.ExcelBusiness;
+import com.nextLevel.hero.basicSetting.model.dto.ExcelIncomeTax;
+import com.nextLevel.hero.basicSetting.model.dto.ExcelRankSalary;
 import com.nextLevel.hero.mngBasicInformation.model.dto.BusinessDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngDepartmentHistoryDTO;
@@ -28,5 +30,9 @@ public interface BasicSettingMapper {
 	int insertUserAuth(int userId);
 
 	int insertBusinessList(List<ExcelBusiness> dataList);
+
+	int insertIncomeTax(List<ExcelIncomeTax> dataList);
+
+	int insertRankSalary(List<ExcelRankSalary> dataList);
 
 }

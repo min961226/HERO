@@ -23,9 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class FileDownController {
 	
-	@GetMapping("/download")
+	@GetMapping("/downloadBusinessList")
 	public ResponseEntity<Object> download() {
-		String path = "C:/HERO/HERO/src/main/resources/static/download/test.txt";
+		String path = "C:/HERO/HERO/src/main/resources/static/download/businessList.xlsx";
 		
 		try {
 			Path filePath = Paths.get(path);
@@ -42,5 +42,42 @@ public class FileDownController {
 		}
 	}
 	
+	@GetMapping("/downloadIncomeTax")
+	public ResponseEntity<Object> downloadIncomeTax() {
+		String path = "C:/HERO/HERO/src/main/resources/static/download/incomeTaxForm.xlsx";
+		
+		try {
+			Path filePath = Paths.get(path);
+			Resource resource = new InputStreamResource(Files.newInputStream(filePath)); // 파일 resource 얻기
+			
+			File file = new File(path);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentDisposition(ContentDisposition.builder("attachment").filename(file.getName()).build());  // 다운로드 되거나 로컬에 저장되는 용도로 쓰이는지를 알려주는 헤더
+			
+			return new ResponseEntity<Object>(resource, headers, HttpStatus.OK);
+		} catch(Exception e) {
+			return new ResponseEntity<Object>(null, HttpStatus.CONFLICT);
+		}
+	}
+	
+	@GetMapping("/downloadRankSalary")
+	public ResponseEntity<Object> downloadRankSalary() {
+		String path = "C:/HERO/HERO/src/main/resources/static/download/rankSalaryStepForm.xlsx";
+		
+		try {
+			Path filePath = Paths.get(path);
+			Resource resource = new InputStreamResource(Files.newInputStream(filePath)); // 파일 resource 얻기
+			
+			File file = new File(path);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentDisposition(ContentDisposition.builder("attachment").filename(file.getName()).build());  // 다운로드 되거나 로컬에 저장되는 용도로 쓰이는지를 알려주는 헤더
+			
+			return new ResponseEntity<Object>(resource, headers, HttpStatus.OK);
+		} catch(Exception e) {
+			return new ResponseEntity<Object>(null, HttpStatus.CONFLICT);
+		}
+	}
 
 }

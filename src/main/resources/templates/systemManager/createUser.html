@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
@@ -20,6 +21,186 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div class="row">
+								<div class="col-12">
+									<div class="card">
+										<div class="card-body">
+											<h4 class="header-title mt-0">신규 계정 생성 및 아이디 비밀 번호 생성</h4>
+											<hr>
+											<form class="form-horizontal" method="post" action="/systemManager/insertNewMember" onsubmit="return askCheck();">
+												<div class="row">
+													<div class="col">
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">아이디</label>
+															<div class="col-lg-7">
+																<input type="text" class="form-control" id="memberId" name="memberId" onchange="idChange()" required="required">
+																<code>※ 계정은 4 ~ 12자의 영문 대소문자로만 작성하여 주세요. </code>
+															</div>
+															<div class="col-lg-3">
+																<button type="button" id="memberIdCheck" class="btn btn-info">중복확인</button>
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">계정 사용자명</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" name="memberName">
+															</div>
+														</div>
+													</div>
+													<div class="col">
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">비밀번호</label>
+															<div class="col-lg-3">
+																<input type="password" class="form-control" id="password" name="memberPassword">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">비밀번호 확인</label>
+															<div class="col-lg-3">
+																<input type="password" class="form-control"id="passwordCheck"name="memberPasswordCheck">
+															</div>
+															<label class="col-lg-6 col-form-label" id="resultCheck" ></label>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput"></label>
+															<div class="col-lg-5">
+																 <div class="form-switch mb-2">
+                                                				<input type="checkbox" class="form-check-input" id="checkShowHidePwd">
+                                                				<label class="form-check-label" for="checkShowHidePwd"> 비밀번호 보이기 / 숨기기</label>
+                                            				</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<hr>
+												<h4 class="header-title mt-0">HERO 구매자 기본정보</h4>
+											<p class="sub-header">
+												계정 생성시 기입 내용을 다시한번 확인 후 생성버튼을 눌러주시기 바랍니다.
+												<br>
+												업체 기본 정보는
+												<code>기업체명</code>
+												,
+												<code>대표자명</code>
+												,
+												<code>본사주소</code>
+												,
+												<code>본사연락처</code>
+												,
+												<code>사업자 등록 번호</code>
+												,
+												<code>담당자명</code>
+												,
+												<code>담당자 부서</code>
+												,
+												<code>담당자 직급</code>
+												,
+												<code>담당자 연락처</code>
+												,
+												<code>담당자 이메일</code>
+												의 정보를 담고있습니다.
+											</p>
+												<div class="row">
+													<div class="col">
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">기업체명</label>
+															<div class="col-lg-10">
+																<input  type="text" class="form-control" name="companyName" required="required">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">대표자명</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" name="ceoName" required="required">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">본사
+																주소</label>
+															<div class="col-lg-7">
+																<input type="text" class="form-control" id="companyAddress" name="address" readonly="readonly">
+															</div>
+															<div class="col-lg-3">
+																<button type="button" id="address" class="btn btn-info">주소 찾기</button>
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">상세주소</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" id="address_detail" name="addressDetail" >
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">본사 연락처</label>
+															<div class="col-lg-10">
+																<input class="form-control" id="example-number"	type="text" name="companyPhone" required="required">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label"
+																for="example-number">사업자 등록 번호</label>
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="companyRegistrationNo1" required="required">
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="companyRegistrationNo2" required="required">
+															</div>
+															_
+															<div class="col-lg-2">
+																<input class="form-control" id="example-number"
+																	type="text" name="companyRegistrationNo3" required="required">
+															</div>
+														</div>
+													</div>
+													<div class="col">
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">담당자명</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" name="managerName">
+															</div>
+														</div><div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">담당자 부서</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" name="managerDept">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">담당자 직급</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" name="managerRank">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">담당자 연락처</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" name="managerPhone">
+															</div>
+														</div>
+														<div class="mb-3 row">
+															<label class="col-lg-2 col-form-label" for="simpleinput">담당자 이메일</label>
+															<div class="col-lg-10">
+																<input type="text" class="form-control" name="managerEmail">
+															</div>
+														</div>
+														
+															<div align="right" >
+															<button type="submit" class="btn btn-info">생성</button>
+															<button type="reset" class="btn btn-success"style="margin-left: 10px"  id="cancel">취소</button>
+														</div>
+													</div>
+												</div>
+											</form>
+
+										</div>
+										<!-- end card-body -->
+									</div>
+									<!-- end card-->
+								</div>
+								<!-- end col -->
+							</div>
 						</div>
 					</div>
 				</div>
@@ -27,5 +208,154 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script>
+	$(document).ready(function(){
+		$("#checkShowHidePwd").change(function(){
+
+		// Check the checkbox state, 체크박스 상태 체크
+		if($(this).is(':checked')){
+		// Changing type attribute
+		$("#password").attr("type","text");
+		}else{
+		// Changing type attribute, 입력 속성 변경하기
+		$("#password").attr("type","password");
+		}
+
+		});
+		});
+	window.onload = function(){
+	    document.getElementById("address").addEventListener("click", function(){ //주소입력칸을 클릭하면
+	        //카카오 지도 발생
+	        new daum.Postcode({
+	            oncomplete: function(data) { //선택시 입력값 세팅
+	                document.getElementById("companyAddress").value = data.address; // 주소 넣기
+	                document.querySelector("input[name=addressDetail]").focus(); //상세입력 포커싱
+	            }
+	        }).open();
+	    });
+	}
+
+$('#memberIdCheck').click(function() {
+	 var RegExp = /^[a-zA-Z0-9]{4,12}$/;
+    	 const $memberId = $('#memberId').val();
+    	 console.log($memberId);
+	 if($memberId == ''){
+		 Swal.fire({
+   			  position: 'center',
+   			  icon: 'error',
+   			  title: 'ID를 입력하여주세요.',
+   			  showConfirmButton: false,
+   			  timer: 1500,
+   			  width: 600
+   			})
+     }else if(!RegExp.test($memberId)){ //아이디 유효성검사
+         Swal.fire({
+  			  position: 'center',
+  			  icon: 'error',
+  			  title: 'ID는 4~12자의 영문 대소문자와 숫자로만 입력하여 주세요.',
+  			  showConfirmButton: false,
+  			  timer: 1500,
+  			  width: 600
+  			})
+     }else{
+    	      $.ajax({
+    	            url: "/systemManager/memberIdCheck",
+    	         method: "POST",
+    	     	  data: {   "memberId" : $memberId },
+    	        success: function(data, status, xhr) {
+    	     	   		if(data==0){
+    	     	   			Swal.fire({
+    	     	     			  position: 'center',
+    	     	     			  icon: 'success',
+    	     	     			  title: '중복된 아이디가 없습니다',
+    	     	     			  showConfirmButton: false,
+    	     	     			  timer: 1500,
+    	     	     			  width: 600
+    	     	     		})
+    	     	     		document.getElementById("memberIdCheck").innerHTML="중복확인 완료";
+    	     	   			document.getElementById("memberIdCheck").style.background="#ffbe0b";
+    	     	   		}else{
+    	     	   			Swal.fire({
+    	   	     			  position: 'center',
+    	   	     			  icon: 'error',
+    	   	     			  title: 'ID가 중복되었습니다',
+    	   	     			  showConfirmButton: false,
+    	   	     			  timer: 1500,
+    	   	     			  width: 600
+    	   	     			  
+    	     	   			})
+    	     	   			document.getElementById('memberId').value= "";
+    	     	   		}
+    	 						
+    	 				},
+    	 				error: function(xhr, status, error) {
+    	 					console.log(error);
+    	 				}
+    	        });
+     }
+
+
+	
+});
+function idChange(){
+	document.getElementById("memberIdCheck").innerHTML="중복확인";
+	document.getElementById("memberIdCheck").style.background="#25c2e3";
+}
+
+
+$('#passwordCheck').focusout(function () {
+	var passrule = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/;
+
+    var pwd1 = $("#password").val();
+    var pwd2 = $("#passwordCheck").val();
+	if(!passrule.test(pwd1) && !passrule.test(pwd2)){
+        $("#resultCheck").text("비밀번호는 4자리 이상의 문자와 숫자를 최소 1개 이상 혼합하여 작성하여주세요.").css("color","red");
+	}else{
+		if ( pwd1 != '' && pwd2 == '' ) {
+	        null;
+	    } else if (pwd1 != "" || pwd2 != "") {
+	        if (pwd1 == pwd2) {
+	            $("#resultCheck").text("비밀번호 일치").css("color","green");
+	        } else {
+	        	$("#resultCheck").text("비밀번호 미일치").css("color","red");
+	        }
+	    }
+	}
+    
+});
+
+function askCheck() {
+	
+	var idCheckYn;
+	var passwordCheckYn;
+	idCheckYn = $("#memberIdCheck").text();
+	passwordCheckYn = $("#resultCheck").text();
+	if (idCheckYn == "중복확인 완료" && passwordCheckYn == "비밀번호 일치") {
+		return true;
+	} else if(idCheckYn != "중복확인 완료") {
+		 Swal.fire({
+   			  position: 'center',
+   			  icon: 'error',
+   			  title: '아이디 중복확인을 눌러주세요.',
+   			  showConfirmButton: false,
+   			  timer: 1500,
+   			  width: 600
+   		})
+		return false;
+	}else if(passwordCheckYn != "비밀번호 일치") {
+		 Swal.fire({
+  			  position: 'center',
+  			  icon: 'error',
+  			  title: '비밀번호와 비밀번호 확인값이 일치하지 않습니다.',
+  			  showConfirmButton: false,
+  			  timer: 1500,
+  			  width: 600
+  		})
+		return false;
+	}
+}
+
+</script>
 </body>
+
 </html>
