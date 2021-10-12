@@ -23,8 +23,10 @@ import com.nextLevel.hero.mngSalary.model.dto.MngBonusListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
 import com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO;
+import com.nextLevel.hero.mngSalary.model.dto.SeverancePayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.fourInsuranceList;
 import com.nextLevel.hero.mngSalary.model.dto.memInsFeeList;
+import com.nextLevel.hero.mngSalary.model.dto.memberSeverancePayDTO;
 
 @Service("mngSalaryService")
 public class MngSalaryServiceImpl implements MngSalaryService {
@@ -831,6 +833,16 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 	public List<MngAccountDTO> listmngPayrollAccount() {
 		
 		return mngSalaryMapper.listmngPayrollAccount();
+	}
+
+	@Override
+	public List<SeverancePayDTO> severancePayList(int companyNo) {
+		return mngSalaryMapper.severancePayList(companyNo);
+	}
+
+	@Override
+	public memberSeverancePayDTO selectOneSeverancePay(int companyNo, int idNum) {
+		return mngSalaryMapper.selectOneSeverancePay(companyNo,idNum);
 	}
 
 	

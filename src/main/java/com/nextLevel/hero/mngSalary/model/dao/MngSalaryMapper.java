@@ -14,6 +14,8 @@ import com.nextLevel.hero.mngSalary.model.dto.MngBonusListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
 import com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO;
+import com.nextLevel.hero.mngSalary.model.dto.SeverancePayDTO;
+import com.nextLevel.hero.mngSalary.model.dto.memberSeverancePayDTO;
 
 @Mapper
 public interface MngSalaryMapper {
@@ -67,6 +69,10 @@ public interface MngSalaryMapper {
 	int insertSalaryList(SalaryAndBonusDTO personalCalc);
 
 	List<SalaryAndBonusDTO> selectSalOrBonusList(SalaryAndBonusDTO search);
+
+	List<SeverancePayDTO> severancePayList(int companyNo);
+
+	memberSeverancePayDTO selectOneSeverancePay(int companyNo, int idNum);
 
 	
 

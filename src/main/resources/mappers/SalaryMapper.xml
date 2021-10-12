@@ -18,6 +18,8 @@
 	</resultMap>
 	
 	
+	
+	
 	<select id="selectAccountList" resultMap="accountListResultMap" parameterType="_int">
 		SELECT
                A.COMPANY_NO

@@ -10,8 +10,10 @@ import com.nextLevel.hero.mngSalary.model.dto.MngBonusListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
 import com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO;
+import com.nextLevel.hero.mngSalary.model.dto.SeverancePayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.fourInsuranceList;
 import com.nextLevel.hero.mngSalary.model.dto.memInsFeeList;
+import com.nextLevel.hero.mngSalary.model.dto.memberSeverancePayDTO;
 
 public interface MngSalaryService {
 
@@ -40,6 +42,10 @@ public interface MngSalaryService {
 	List<SalaryAndBonusDTO> insertBonus(SalaryAndBonusDTO search);
 
 	List<SalaryAndBonusDTO> selectSalOrBonusList(SalaryAndBonusDTO search);
+
+	List<SeverancePayDTO> severancePayList(int companyNo);
+
+	memberSeverancePayDTO selectOneSeverancePay(int companyNo, int idNum);
 
 
 

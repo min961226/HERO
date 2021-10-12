@@ -20,6 +20,61 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div>
+								<form action="/mngSalary/annualSalary" method="get">
+									<label style="padding: 10px;">기준일 </label><input type="date"
+										id="searchDate" name="searchDate"><br> <label
+										style="margin: 15px;">검색</label> <select style="width: 155px"
+										id="searchCondition" name="searchCondition">
+										<option value="searchDeptName" selected="selected">부서명</option>
+										<option value="searchMemberName">성 명</option>
+									</select> <input type="text" style="margin: 10px;" id="searchValue"
+										name="searchValue">
+									<button type="submit" class="btn btn-outline-primary"
+										id="searchBtn">검 색</button>
+								</form>
+							</div>
+							<br>
+							<div class="card">
+								<div class="card-body">
+									<div class="row">
+										<div class="form-check float-start">
+											<h4 class="header-title mt-0">퇴직금 정산</h4>
+											<hr>
+										</div>
+										<table class="table table-striped dt-responsive nowrap w-100"
+											id="annualTBL">
+											<thead>
+												<tr>
+													<th>구 분</th>
+													<th>사원번호</th>
+													<th>성명</th>
+													<th>소 속</th>
+													<th>퇴직금 정산 여부</th>
+													<th>상세보기 및 정산처리</th>
+												</tr>
+											</thead>
+
+											<tbody>
+												<tr th:each="sev,num : ${severancePayList}">
+													<td th:text="${num.count}"></td>
+													<td th:text="${sev.memberNo}" class="memberNo" th:value="${sev.idNo}"></td>
+													<td th:text="${sev.idNo}" class="idNo" hidden="hidden"></td>
+													<td th:text="${sev.memberName}" class="memberName"></td>
+													<td th:text="${sev.memberDept}" class="memberDept"></td>
+													<td th:text="${sev.severanceStatus}== 'N'?'미정산':'정산'"
+														class="severanceStatus"></td>
+													<td th:id="'detail' + ${num.count}" width="300px"><button
+															type="button" class="btn btn-soft-success width-xs"
+															data-bs-toggle="modal" data-bs-target="#severanceModal">상세보기
+															/ 정산하기</button></td>
+												</tr>
+											</tbody>
+										</table>
+
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -27,5 +82,174 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<!-- 월 지급항목 모달창 -->
+	<div class="modal fade" id="severanceModal" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<!-- 모달창 시작 -->
+		<div class="modal-dialog modal-xl modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: gray">
+					<h5 class="modal-title" id="myCenterModalLabel"
+						style="font-size: 20px">
+						<b>퇴직금 상세 조회 및 정산</b>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<label style="margin: 5px; display: none;" id="memberNo"></label>
+							<label style="margin: 10px;">사번 :</label>
+							<label id="memNo"	style="margin: 5px;"></label>
+							<br>
+							<label style="margin: 10px;">성명 :</label>
+							<label id="memName" style="margin: 5px;"></label>
+							<br>
+							<label style="margin: 10px;">소속 :</label>
+							<label id="deptName" style="margin: 5px;"></label>
+							<br>
+							<label style="margin: 10px;">총 급여 :</label>
+							<label id="salAmount" style="margin: 5px;"></label>
+					</div>
+					<br>
+					<div
+						style="margin: 0 auto; padding: 20px; height: 400px; overflow-y: scroll;">
+						<table class="table mb-0 text-center" id="modalTBL">
+							<thead class="table-light">
+								<tr>
+									<th>항목</th>
+									<th>지급액</th>
+									<th style="width: 350px">비고</th>
+									<th>과세여부</th>
+								</tr>
+							</thead>
+							<tr>
+								<th>기본급</th>
+								<td th:text="${#numbers.formatInteger(num,3,'COMMA')}"
+									id="salAmount"></td>
+								<td>월 209시간 근로에 대한 임금(주휴수당 포함)</td>
+								<td>Y</td>
+							</tr>
+
+							<tbody id="monthly">
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<button type="button" class="btn btn-soft-success width-xs"	data-bs-toggle="modal" data-bs-target="#centermodal">상세보기	/ 정산하기</button>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success width-xs"
+						id="createDepartment">등록</button>
+					<button type="reset" class="btn btn-warning width-xs"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+		<!-- /.modal -->
+		<!-- 모달창 종료 -->
+
+	</div>
+	<!-- <div class="modal fade" id="centermodal" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		모달창 시작
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: gray">
+					<h5 class="modal-title" id="myCenterModalLabel"
+						style="font-size: 20px">
+						<b>부서 추가</b>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<label style="margin: 5px; display: none;" id="memberNo"></label>
+						<label style="margin: 10px;">소속 :</label><label id="deptName"
+							style="margin: 5px;"></label><br> <label
+							style="margin: 10px;">사번 :</label><label id="memNo"
+							style="margin: 5px;"></label><br> <label
+							style="margin: 10px;">성명 :</label><label id="memName"
+							style="margin: 5px;"></label><br> <label
+							style="margin: 10px;">호봉 :</label><label id="step"
+							style="margin: 5px;"></label><br>
+					</div>
+					<br>
+					<div
+						style="margin: 0 auto; padding: 20px; height: 400px; overflow-y: scroll;">
+						<table class="table mb-0 text-center" id="modalTBL">
+							<thead class="table-light">
+								<tr>
+									<th>항목</th>
+									<th>지급액</th>
+									<th style="width: 350px">비고</th>
+									<th>과세여부</th>
+								</tr>
+							</thead>
+							<tr>
+								<th>기본급</th>
+								<td th:text="${#numbers.formatInteger(num,3,'COMMA')}"
+									id="salAmount"></td>
+								<td>월 209시간 근로에 대한 임금(주휴수당 포함)</td>
+								<td>Y</td>
+							</tr>
+
+							<tbody id="monthly">
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success width-xs"
+						id="createDepartment">등록</button>
+					<button type="reset" class="btn btn-warning width-xs"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+			/.modal-content
+		</div>
+		/.modal-dialog
+		/.modal
+		모달창 종료
+
+	</div> -->
+	<!-- 월 지급항목 모달창 종료 -->
+	<!-- 월 지급항목 모달창 종료 -->
+	<script type="text/javascript">
+		$("[id^=detail]").click(function(){
+		
+		const idNo = $(this).siblings(".idNo").text();
+		const memberNo = $(this).siblings(".memberNo").text();
+		const memberName = $(this).siblings(".memberName").text();
+		const memberDept = $(this).siblings(".memberDept").text();
+			
+		const memNo = $("#memNo").text(memberNo);
+		const deptName = $("#deptName").text(memberDept);
+		const memName = $("#memName").text(memberName);
+			
+		
+		$.ajax({
+			url: "severanceDetail",
+			method: "POST",
+			data: { memberNo : memberNo,
+					idNo : idNo },
+			success: function(data) {
+				
+				const $salAmount = $("#salAmount");
+				$salAmount.html("");
+				const val = $salAmount.text(data.sumSalAmount).val(data.sumSalAmount);
+				console.log(val);
+				
+			},
+			error: function(xhr) {
+				alert("잠시 후 다시 시도해주세요");
+			}
+		});
+	});
+	</script>
 </body>
 </html>

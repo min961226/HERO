@@ -27,8 +27,10 @@ import com.nextLevel.hero.mngSalary.model.dto.MngBonusListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
 import com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO;
+import com.nextLevel.hero.mngSalary.model.dto.SeverancePayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.fourInsuranceList;
 import com.nextLevel.hero.mngSalary.model.dto.memInsFeeList;
+import com.nextLevel.hero.mngSalary.model.dto.memberSeverancePayDTO;
 import com.nextLevel.hero.mngSalary.model.service.MngSalaryService;
 
 @Controller
@@ -277,8 +279,37 @@ public class MngSalaryController {
 
 	/* 퇴직 정산 */
 	@GetMapping("/severancePay")
-	public String mngSeverancePay() {
-		return "/mngSalary/severancePay";
+	public ModelAndView mngSeverancePay(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
+		
+		List<SeverancePayDTO> severancePayDTO = mngSalaryService.severancePayList(user.getCompanyNo()); 
+		
+		System.out.println(severancePayDTO);
+		mv.addObject("severancePayList",severancePayDTO);
+		mv.setViewName("/mngSalary/severancePay");
+		return mv;
 	}
+	
+	@PostMapping(value ="severanceDetail", produces = "application/json; chartset=UTF-8")
+	@ResponseBody
+	public String severanceDetail(@AuthenticationPrincipal UserImpl user, @RequestParam String memberNo,@RequestParam String idNo) {
+
+		int membNo = Integer.parseInt(memberNo);
+		int idNum = Integer.parseInt(idNo);
+		
+		memberSeverancePayDTO severancePay = mngSalaryService.selectOneSeverancePay(user.getCompanyNo(),idNum);
+		System.out.println(severancePay);
+
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+
+
+		return gson.toJson(severancePay);
+	}
+	
 
 }

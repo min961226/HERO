@@ -62,7 +62,6 @@ public class BasicSettingController {
 
 	@GetMapping("/basicSetting")
 	public ModelAndView mngCompany(@AuthenticationPrincipal UserImpl user, ModelAndView mv) {
-
 		int companyNo = user.getCompanyNo();
 
 		MngBasicInformationDTO companyInfo = mngBasicInformationService.selectCompanyInformationByCompanyNo(companyNo);
