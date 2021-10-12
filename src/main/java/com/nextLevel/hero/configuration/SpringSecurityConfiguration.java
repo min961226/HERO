@@ -47,7 +47,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	/* 권한 설정 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
+
 		http.csrf().disable()
 			.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/humanResource/**").hasRole("MEMBER")

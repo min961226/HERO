@@ -40,7 +40,6 @@ public class MngRoleController {
 
 		List<MngRoleDTO> rankList = mngRoleService.selectRank(companyNo);
 
-		System.out.println(rankList);
 		mv.addObject("rankList", rankList);
 		mv.setViewName("/mngRole/roleDept");
 
@@ -81,15 +80,10 @@ public class MngRoleController {
 	public ModelAndView insertRankAuth(ModelAndView mv, @AuthenticationPrincipal UserImpl user, RedirectAttributes rttr,
 									   MngRankAuthDTO mngRankAuthDTO) {
 		
-		System.out.println(mngRankAuthDTO);
 		mngRankAuthDTO.setCompanyNo(user.getCompanyNo());
 		
 		/* 해당 직급 번호 list 조회*/
-		mngRankAuthDTO.setSalaryStepByRankArg(mngRoleService.selectStepByRank(mngRankAuthDTO));
-		/* insert전 delete*/
-		mngRoleService.deleteRankAuth(mngRankAuthDTO);
-		/* 직급 권한 insert */
-		int result = mngRoleService.insertRankAuth(mngRankAuthDTO);
+		int result = mngRoleService.selectStepByRank(mngRankAuthDTO);
 		
 		if(result >0) {
 			rttr.addFlashAttribute("successMessage", "권한 수정에 성공하였습니다");
@@ -158,11 +152,8 @@ public class MngRoleController {
 	public ModelAndView insertUserAuth(ModelAndView mv, @AuthenticationPrincipal UserImpl user, RedirectAttributes rttr,
 									   MngUserAuthDTO mngUserAuthDTO) {
 		
-		
-		/* insert전 delete*/
-		int result = mngRoleService.deleteUserAuth(mngUserAuthDTO);
 		/* 사원 권한 수정 */
-		result += mngRoleService.insertUserAuth(mngUserAuthDTO);
+		int result = mngRoleService.insertUserAuth(mngUserAuthDTO);
 		
 		if(result > 1) {
 			rttr.addFlashAttribute("successMessage", "권한 수정에 성공하였습니다");
