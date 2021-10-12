@@ -16,10 +16,46 @@
 						<div class="col-12">
 							<br>
 							<div class="page-title-box">
-								<h3 class="page-title">임직원 정보 수정 이력</h3>
+								<h3 class="page-title">임직원 조회</h3>
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+								<div>
+								<label style="margin:15px;">검색</label>
+								<select>
+									<option value="memberName">이름</option>
+									<option value="deptName">부서명</option>
+								</select>
+								<input type="text" style="margin:10px;"><button type="button" class="btn btn-outline-primary">검 색</button>
+							</div>
+							<br>
+							<div class="card">
+								<div class="card-body">
+								<table class="table table-striped dt-responsive nowrap w-100 text-center">
+									<thead>
+										<tr>
+											<th>번호</th>
+											<th>이름</th>
+											<th>사번</th>
+											<th>아이디</th>
+											<th>부서명</th>											
+											<th>부서 연락처</th>											
+										</tr>
+									</thead>
+										
+									<tbody>
+										<tr th:each="dept : ${ memberList }">
+											<td th:text="${dept.idNo}"></td>
+											<td th:text="${dept.memberName}"></td>
+											<td th:text="${dept.memberId}"></td>
+											<td th:text="${dept.memberNo}"></td>
+											<td th:text="${dept.departmentName}"></td>
+											<td th:text="${dept.departmentPhone}"></td>
+										</tr>
+									</tbody>
+								</table>
+							   </div>
+							</div>
 						</div>
 					</div>
 				</div>

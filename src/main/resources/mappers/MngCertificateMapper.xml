@@ -3,34 +3,33 @@
 <mapper namespace="com.nextLevel.hero.mngCertificate.model.dao.MngCertificateMapper">
 
 	<resultMap type="com.nextLevel.hero.mngCertificate.model.dto.CertificateMemberDTO" id="MemberResultMap">
-		<id property="requestNo" column="REQUEST_NO"/>
+		<id property="idNo" column="ID_NO"/>
 		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="jobName" column="JOB_NAME"/>
 		<result property="departmentName" column="DEPARTMENT_NAME"/>
-		<result property="rank" column="RANK"/>
-		<result property="requestDate" column="REQUEST_DATE"/>
-		<result property="successedDate" column="SUCCESSED_DATE"/>
-		<result property="companyNo" column="COMPANY_NO"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="hireDate" column="HIRE_DATE"/>
+		<result property="accSecessionDatetime" column="ACC_SECESSION_DATETIME"/>
 	</resultMap>
 
-	<select id="findAllMember" resultMap="MemberResultMap">
-	SELECT
-        C.REQUEST_NO
-	  , C.MEMBER_NO
-      , C.MEMBER_NAME
-	  , D.DEPARTMENT_NAME 
-	  , R.RANK
-	  , C.REQUEST_DATE
-	  , C.SUCCESSED_DATE
-	  , C.ISSUE_STATUS
-	  , C.CERTIFICATION_PURPOSE
-	  , C.CERTIFICATION_NO
-	  , C.COMPANY_NO
-	  , C.DEPARTMENT_NO
-	FROM TBL_REQUEST_CERTIFICATION C
-	JOIN TBL_DEPARTMENT D ON(C.COMPANY_NO = D.COMPANY_NO)
-	JOIN TBL_RANK_SALARY_STEP R ON(C.COMPANY_NO = R.COMPANY_NO)
-		
+	<select id="selectfindAllMember" resultMap="MemberResultMap">
+        SELECT
+                E.ID_NO
+              , E.MEMBER_NO  
+              , M.MEMBER_NAME
+              , J.JOB_NAME
+              , D.DEPARTMENT_NAME
+              , M.MEMBER_ID
+              , M.HIRE_DATE
+              , M.ACC_SECESSION_DATETIME
+        FROM TBL_MEMBER M
+       JOIN TBL_EMPLOYEE E ON M.ID_NO = E.ID_NO
+       JOIN TBL_JOB J ON J.JOB_NO = E.JOB_NO
+       JOIN TBL_DEPARTMENT D ON E.DEPARTMENT_NO = D.DEPARTMENT_NO          
+       WHERE E.COMPANY_NO = 1
+       ORDER BY ID_NO ASC
 	</select>
+	
 	
 </mapper>

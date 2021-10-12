@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nextLevel.hero.mngVacation.model.dao.MngVacationMapper">
-
+	
+	<!-- 휴일 -->
 	<resultMap type="com.nextLevel.hero.mngVacation.model.dto.MngHolidayDTO" id="listHolidayResultMap">
 		<id property="companyNo" column="COMPANY_NO"/>
 		<result property="holidayNo" column="HOLIDAY_NO"/>
@@ -11,7 +12,15 @@
 		<result property="holidayStatus" column="HOLIDAY_STATUS"/>
 	</resultMap>
 	
-	<!-- 조회 -->
+	<!-- 연차일괄조정 -->
+	<resultMap type="com.nextLevel.hero.mngVacation.model.dto.AnnualVacationControlDTO" id="listAnnualResultMap">
+		<id property="vacationCode" column="VACATION_CODE"/>
+		<result property="vacationDays" column="VACATION_DAYS"/>
+		<result property="vacationStartDate" column="VACATION_START_DATE"/>
+		<result property="workYears" column="WORK_YEARS"/>
+	</resultMap> 
+	
+	<!-- 휴일 조회 -->
 	<select id="listHoliday" resultMap="listHolidayResultMap">
 		SELECT 
 		       A.*
@@ -19,7 +28,7 @@
 		 WHERE A.COMPANY_NO = #{ companyNo }      
 	</select>
 	
-	<!-- Insert -->
+	<!-- 휴일 생성 -->
 	<insert id="insertPublicHoliday" parameterType="com.nextLevel.hero.mngVacation.model.dto.MngHolidayDTO">
 		INSERT
 		  INTO TBL_HOLIDAY A
@@ -42,12 +51,33 @@
 		)  
 	</insert> 
 	
-	<!-- Delete -->
-	<!-- <delete id="holidayDelete">
+	<!-- 휴일 삭제 -->
+	<delete id="holidayDelete">
 		DELETE
 		  FROM TBL_HOLIDAY A
 		 WHERE A.HOLIDAY_NO = #{ holidayNo } 
-	</delete> -->
+	</delete>
+	
+	
+	<!-- 연차일괄조정표 조회 -->
+	<!-- <select id="annualList" resultMap="listAnnualResultMap" parameterType="_int">
+		SELECT 
+		       A.*
+		  FROM TBL_VACATION_CONTROL A
+		 WHERE A.VACATION_CODE = #{ vacationCode }  
+	</select>   -->
+	
+	
+	
 	
 
 </mapper>
+
+
+
+
+
+
+
+
+

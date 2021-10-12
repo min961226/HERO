@@ -1,5 +1,6 @@
 package com.nextLevel.hero.mngSalary.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,10 @@ import com.nextLevel.hero.mngSalary.model.dto.FourInsRateDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO;
+import com.nextLevel.hero.mngSalary.model.dto.MngBonusListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
+import com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO;
 import com.nextLevel.hero.mngSalary.model.dto.fourInsuranceList;
 import com.nextLevel.hero.mngSalary.model.dto.memInsFeeList;
 import com.nextLevel.hero.mngSalary.model.service.MngSalaryService;
@@ -183,12 +186,89 @@ public class MngSalaryController {
 		return mv;
 	}
 
-	/* 급상여 생성 조회 */
+	
+	/* 급상여 페이지 이동 */
 	@GetMapping("/salaryAndBonus")
 	public String mngSalaryAndBonus() {
-		return "mngSalary/salaryAndBonus";
+		return "mngSalary/salaryAndBonus";	
+	
 	}
 
+
+	/* 상여 카테고리 */
+	@GetMapping(value="selectBonusCategory", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String selectBonusCategory(@AuthenticationPrincipal UserImpl user) {
+		
+		int companyNo = user.getCompanyNo();	
+		List<MngBonusListDTO> bonusCategory = mngSalaryService.selectBonusCategory(companyNo);
+		System.out.println(bonusCategory);
+		
+		Gson gson = new GsonBuilder()
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		
+		return gson.toJson(bonusCategory);
+	}
+		
+	
+	
+	/* 급상여 생성여부 체크 */
+	@GetMapping(value="/searchSalaryAndBonus", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String searchSalaryAndBonus(@AuthenticationPrincipal UserImpl user, SalaryAndBonusDTO search) {
+		
+		search.setCompanyNo(user.getCompanyNo());
+		String result = mngSalaryService.checkCreate(search);		
+		
+		return result;
+	}
+	
+	/* 급상여 생성 */
+	@GetMapping("/listSalaryAndBonus")
+	public ModelAndView listSalaryAndBonus(ModelAndView mv, @AuthenticationPrincipal UserImpl user, SalaryAndBonusDTO search) {
+		
+		System.out.println("생성을 위한 컨트롤러 넘어옴");
+		
+		search.setCompanyNo(user.getCompanyNo());
+		List<SalaryAndBonusDTO> basicSalList = new ArrayList<>();
+		
+		if(search.getCategory().equals("급여")) {
+			
+			search.setCategory("급여");
+			basicSalList =  mngSalaryService.insertSalary(search);
+			
+		} else {
+			search.setCategory("상여");
+			basicSalList = mngSalaryService.insertBonus(search);
+		}
+		
+		mv.addObject("basicSalList",basicSalList);
+		mv.setViewName("mngSalary/salaryAndBonus");
+		
+		System.out.println("컨트롤러 도착 화면 진입 전 : " + basicSalList);
+		return mv;
+	}
+	
+	/* 급상여 이력 조회 */
+	@GetMapping("/historySalAndBonus")
+	public ModelAndView selectHistory(ModelAndView mv, @AuthenticationPrincipal UserImpl user, SalaryAndBonusDTO search) {
+		
+		System.out.println("조회를 위한 컨트롤러 넘어옴");
+		
+		search.setCompanyNo(user.getCompanyNo());
+		List<SalaryAndBonusDTO> salListHistory = new ArrayList<>();
+		
+		salListHistory = mngSalaryService.selectSalOrBonusList(search);
+		
+		
+		return null;
+	}
+	
+	
 	/* 예수금 */
 	@GetMapping("/deposit")
 	public String mngDeposit() {

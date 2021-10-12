@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nextLevel.hero.mngVacation.model.dao.MngVacationMapper;
+import com.nextLevel.hero.mngVacation.model.dto.AnnualVacationControlDTO;
 import com.nextLevel.hero.mngVacation.model.dto.MngHolidayDTO;
 
 @Service("mngVacationService")
@@ -33,13 +34,28 @@ public class MngVacationServiceImpl implements MngVacationService {
 		return mngVacationMapper.insertPublicHoliday(mngHolidayDTO);
 	}
 
+	@Override
+	@Transactional
+	public int holidayDelete(int companyNo, int holidayNo) {
+		
+		return mngVacationMapper.holidayDelete(companyNo, holidayNo);
+	}
+
+	@Override
+	public List<AnnualVacationControlDTO> annualList(int vacationCode) {
+		
+		return mngVacationMapper.annualList(vacationCode);
+	}
+
+	
+	  
+	  
 	/*
-	 * 휴일 insert
-	 * 
 	 * @Override public int holidayModalInsert(MngHolidayDTO mngHolidayDTO) {
 	 * 
 	 * return mngVacationMapper.holidayModalInsert(mngHolidayDTO); }
 	 */
+	 
 
 	// 이거 다시 확인해야됌
 	/*

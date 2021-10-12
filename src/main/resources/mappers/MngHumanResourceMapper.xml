@@ -21,6 +21,9 @@
 		<result property="national" column="NATIONAL"/>
 		<result property="hireDate" column="HIRE_DATE"/>
 		<result property="entDate" column="ENT_DATE"/>
+		<result property="tblUserAuth" column="TBL_USER_AUTH"/>
+		<result property="jobName" column="JOB_NAME"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
 		
 		<result property="idNo" column="ID_NO"/>
 		<result property="memberId" column="MEMBER_ID"/>
@@ -29,7 +32,6 @@
 		<result property="koreanName" column="MEMBER_NAME"/>
 		<result property="hireDate" column="HIRE_DATE"/>
 		<result property="accSecessionYn" column="ACC_SECESSION_YN"/>
-		<result property="basicSettingYn" column="BASIC_SETTING_YN"/>
 		
 		<result property="appointmentDate" column="PERSONAL_APPOINTMENT_DATE"/>
 		<result property="personalAppointmentCategory" column="PERSONAL_APPOINTMENT_CATEGORY"/>
@@ -58,19 +60,42 @@
 		<result property="companyName" column="COMPANY_NAME"/>
 		<result property="department" column="DEPARTMENT"/>
 		
+	</resultMap >
+	
+	<resultMap type="com.nextLevel.hero.mnghumanResource.model.dto.SalaryStepDTO" id="SalaryStepResultMap">
+		<id property="rank" column="RANK"/>
+		<result property="salaryStep" column="SALARY_STEP"/>
+	</resultMap>
+
+	<resultMap type="com.nextLevel.hero.mnghumanResource.model.dto.MemberListDTO" id="MemberListResultMap">
+		<id property="memberName" column="MEMBER_NAME"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="idNo" column="ID_NO"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="departmentPhone" column="DEPARTMENT_PHONE"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mnghumanResource.model.dto.JobDTO" id="JobResultMap">
+		<id property="jobNo" column="JOB_NO"/>
+		<result property="jobName" column="JOB_NAME"/>
+	</resultMap>
+
+	<resultMap type="com.nextLevel.hero.mnghumanResource.model.dto.MilitaryDTO" id="MilitaryResultMap">
+		<id property="jobNo" column="JOB_NO"/>
+		<result property="jobName" column="JOB_NAME"/>
 	</resultMap>
 	
 <insert id="insertMember" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
 	 INSERT INTO TBL_MEMBER M
 			(
-			  M.ID_NO
-			, M.MEMBER_ID
-			, M.MEMBER_PASSWORD
-	        , M.TEMP_PWD_YN
-	        , M.MEMBER_NAME
-	        , M.HIRE_DATE
-	        , M.ACC_SECESSION_YN
-	        , M.BASIC_SETTING_YN
+              M.ID_NO
+            , M.MEMBER_ID
+            , M.MEMBER_PASSWORD
+            , M.TEMP_PWD_YN
+            , M.MEMBER_NAME
+            , M.HIRE_DATE
+            , M.ACC_SECESSION_YN
 			)
 			VALUES
 			(
@@ -81,11 +106,134 @@
 			, #{ humanResourceDTO.koreanName } 
 			, SYSDATE 
 			, DEFAULT 
-			, DEFAULT 
 			) 
 			   
 </insert>
        
+<select id="selectNewMemberNumber" resultType="_int">
+	SELECT 
+		   SEQ_ID_NO.CURRVAL
+	  FROM DUAL	       
+</select>
+
+<select id="selectSalaryStep" resultMap="SalaryStepResultMap">
+	SELECT 
+		   	RANK
+		  , SALARY_STEP	
+	  FROM TBL_RANK_SALARY_STEP
+	 WHERE COMPANY_NO = #{ companyNo } 
+		
+</select>
+
+<select id="selectJobList" resultMap="JobResultMap">
+	SELECT
+			JOB_NO
+		  , JOB_NAME
+	  FROM TBL_JOB
+	 WHERE COMPANY_NO = #{ companyNo } 	  
+
+</select>
+
+
+
+<insert id="insertEmployee" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+	 INSERT INTO TBL_EMPLOYEE E
+			(
+              E.COMPANY_NO
+            , E.ID_NO
+            , E.MEMBER_NO
+            , E.JOB_NO
+            , E.DEPARTMENT_NO
+            , E.KOREAN_NAME
+            , E.SSN
+            , E.ENGLISH_NAME
+            , E.SPECIALITY
+            , E.FAMILY_ORIGIN_ADDRESS
+            , E.ADDRESS
+            , E.PHONE
+            , E.TEL
+            , E.DEPARTMENT_PHONE
+            , E.EMAIL
+            , E.GENDER
+            , E.NATIONAL
+            , E.HIRE_DATE
+            , E.TBL_USER_AUTH
+			)
+			VALUES
+			(
+			  #{ companyNo }
+			, #{ humanResourceDTO.idNo }
+			, #{ humanResourceDTO.memberNo } 
+			, #{ humanResourceDTO.jobNo } 
+			, #{ humanResourceDTO.departmentNo } 
+			, #{ humanResourceDTO.koreanName } 
+			, #{ humanResourceDTO.ssn } 
+			, #{ humanResourceDTO.englishName } 
+			, #{ humanResourceDTO.speciality } 
+			, #{ humanResourceDTO.familyOriginAddress } 
+			, #{ humanResourceDTO.address } 
+			, #{ humanResourceDTO.phone } 
+			, #{ humanResourceDTO.tel } 
+			, #{ humanResourceDTO.departmentPhone } 
+			, #{ humanResourceDTO.email } 
+			, #{ humanResourceDTO.gender } 
+			, #{ humanResourceDTO.national } 
+			, SYSDATE 
+			, DEFAULT
+			) 
+</insert>
+
+<insert id="insertMemberCompany" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+	 INSERT INTO TBL_MEMBER_COMPANY M
+			(
+              M.COMPANY_NO
+            , M.ID_NO
+			)
+			VALUES
+			(
+			  #{ companyNo }
+			, #{ newMemberNo }
+			) 
+</insert>
+
+<insert id="insertMilitary" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+	 INSERT INTO TBL_MILITARY_SERVICE M
+			(
+              M.COMPANY_NO
+            , M.ID_NO
+			)
+			VALUES
+			(
+			  #{ companyNo }
+			, #{ newMemberNo }
+			) 
+</insert>
+
+<select id="selectIdCheck" resultType="java.lang.String">
+		SELECT
+			M.MEMBER_ID
+	  FROM TBL_MEMBER M
+	  JOIN TBL_EMPLOYEE E ON M.ID_NO = E.ID_NO
+	 WHERE M.MEMBER_ID = #{ memberId }	  
+       AND E.COMPANY_NO = #{ companyNo }     
+</select>
+
+<select id="selectMemberList" resultMap="MemberListResultMap">
+       SELECT
+                M.MEMBER_NAME
+              , M.MEMBER_ID
+              , E.MEMBER_NO
+              , E.ID_NO
+              , D.DEPARTMENT_NAME
+              , D.DEPARTMENT_PHONE
+        FROM TBL_MEMBER M
+       INNER JOIN TBL_EMPLOYEE E
+          ON M.ID_NO = E.ID_NO
+       INNER JOIN TBL_DEPARTMENT D
+          ON E.DEPARTMENT_NO = D.DEPARTMENT_NO          
+       WHERE E.COMPANY_NO = #{ companyNo }
+       ORDER BY ID_NO ASC
+</select>
 
 
 

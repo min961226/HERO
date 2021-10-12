@@ -6,15 +6,17 @@ public class MemberInfoDTO {
 
 	private int companyNo;
 	private int memberNo;
+	private int idNo;
 	private String memberName;
 	private java.sql.Date hireDate;
 	
 	public MemberInfoDTO() {}
 
-	public MemberInfoDTO(int companyNo, int memberNo, String memberName, Date hireDate) {
+	public MemberInfoDTO(int companyNo, int memberNo, int idNo, String memberName, Date hireDate) {
 		super();
 		this.companyNo = companyNo;
 		this.memberNo = memberNo;
+		this.idNo = idNo;
 		this.memberName = memberName;
 		this.hireDate = hireDate;
 	}
@@ -35,6 +37,14 @@ public class MemberInfoDTO {
 		this.memberNo = memberNo;
 	}
 
+	public int getIdNo() {
+		return idNo;
+	}
+
+	public void setIdNo(int idNo) {
+		this.idNo = idNo;
+	}
+
 	public String getMemberName() {
 		return memberName;
 	}
@@ -53,8 +63,8 @@ public class MemberInfoDTO {
 
 	@Override
 	public String toString() {
-		return "MemberInfoDTO [companyNo=" + companyNo + ", memberNo=" + memberNo + ", memberName=" + memberName
-				+ ", hireDate=" + hireDate + "]";
+		return "MemberInfoDTO [companyNo=" + companyNo + ", memberNo=" + memberNo + ", idNo=" + idNo + ", memberName="
+				+ memberName + ", hireDate=" + hireDate + "]";
 	}
 
 	

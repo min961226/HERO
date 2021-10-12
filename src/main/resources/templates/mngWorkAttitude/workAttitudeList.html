@@ -32,27 +32,25 @@
 									<button type="submit" class="btn btn-outline-primary" id="searchBtn">검 색</button>
 									<button type="submit" class="btn btn-primary btn-lg" style="float: right; margin:10px;">&emsp;다운로드&emsp;</button>
 										
+											<!-- th:text="${ workCoList(item.MngWorkCommuteDTO.yearAndMonth) }"></td> -->
 									</div>
 								<br><br>
 									<table class="table table-striped dt-responsive nowrap w-80 text-center">
-										<tr>
+										
+										<tr th:each="${ index : #numbers.sequence(0, 3) }">
 											<td width="10%">날짜</td>
-											<td>날짜</td>
+											<td  th:text="${ workList[index]}" ></td>
 										</tr>
 										<tr>
-											<td>이름</td>
-											<td>요일</td>
+											<td ></td>
+											<!-- <td th:each="item : ${ workList }" th:text="${ item.workCoListyearAndMonth }"></td> -->
 										</tr>
 										<tr>
-											<td>사번</td>
-											<td>출석</td>
+											<td></td>
+											<!-- <td th:each="item : ${ workList }" th:text="${item.workCoList.yearAndMonth}"></td> -->
 										</tr>
 										<tr>
-											<td>부서</td>
-											<td>출석</td>
-										</tr>
-										<tr>
-											<td colspan = "3">지각</td>
+											<td colspan = "40">지각</td>
 										</tr>
 									</table><br>
 									<table class="table table-striped dt-responsive nowrap w-80 text-center">
@@ -69,13 +67,14 @@
 											<td>출석</td>
 										</tr>
 										<tr>
-											<td>부서</td>
-											<td>출석</td>
+											<td colspan = "40">지각</td>
 										</tr>
-										<tr>
-											<td colspan = "3">지각</td>
-										</tr>
-									</table>
+									</table> 
+									
+									
+									
+									
+									
 								
 								</div>
 							</div>

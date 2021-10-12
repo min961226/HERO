@@ -10,6 +10,7 @@ public class MngDeductFourInsDTO {
 	private int idNo;
 	private int divNo;
 	private String departmentName;
+	private String searchStartDate;
 	private java.sql.Date validateDate;
 	private String healthYn;
 	private String pensionYn;
@@ -19,8 +20,8 @@ public class MngDeductFourInsDTO {
 	public MngDeductFourInsDTO() {}
 
 	public MngDeductFourInsDTO(int memberNo, String memberName, int companyNo, int idNo, int divNo,
-			String departmentName, Date validateDate, String healthYn, String pensionYn, String unemployeeYn,
-			String industryYn) {
+			String departmentName, String searchStartDate, Date validateDate, String healthYn, String pensionYn,
+			String unemployeeYn, String industryYn) {
 		super();
 		this.memberNo = memberNo;
 		this.memberName = memberName;
@@ -28,6 +29,7 @@ public class MngDeductFourInsDTO {
 		this.idNo = idNo;
 		this.divNo = divNo;
 		this.departmentName = departmentName;
+		this.searchStartDate = searchStartDate;
 		this.validateDate = validateDate;
 		this.healthYn = healthYn;
 		this.pensionYn = pensionYn;
@@ -83,6 +85,14 @@ public class MngDeductFourInsDTO {
 		this.departmentName = departmentName;
 	}
 
+	public String getSearchStartDate() {
+		return searchStartDate;
+	}
+
+	public void setSearchStartDate(String searchStartDate) {
+		this.searchStartDate = searchStartDate;
+	}
+
 	public java.sql.Date getValidateDate() {
 		return validateDate;
 	}
@@ -126,9 +136,9 @@ public class MngDeductFourInsDTO {
 	@Override
 	public String toString() {
 		return "MngDeductFourInsDTO [memberNo=" + memberNo + ", memberName=" + memberName + ", companyNo=" + companyNo
-				+ ", idNo=" + idNo + ", divNo=" + divNo + ", departmentName=" + departmentName + ", validateDate="
-				+ validateDate + ", healthYn=" + healthYn + ", pensionYn=" + pensionYn + ", unemployeeYn="
-				+ unemployeeYn + ", industryYn=" + industryYn + "]";
+				+ ", idNo=" + idNo + ", divNo=" + divNo + ", departmentName=" + departmentName + ", searchStartDate="
+				+ searchStartDate + ", validateDate=" + validateDate + ", healthYn=" + healthYn + ", pensionYn="
+				+ pensionYn + ", unemployeeYn=" + unemployeeYn + ", industryYn=" + industryYn + "]";
 	}
 
 	

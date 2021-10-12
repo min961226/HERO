@@ -16,19 +16,13 @@ public interface MngRoleService {
 
 	int updateRoleAuth(MngRankSalaryDTO mngRankSalaryDTO);
 
-	List<MngRankAuthDTO> selectStepByRank(MngRankAuthDTO mngRankAuthDTO);
-
-	int deleteRankAuth(MngRankAuthDTO mngRankAuthDTO);
-
-	int insertRankAuth(MngRankAuthDTO mngRankAuthDTO);
+	int selectStepByRank(MngRankAuthDTO mngRankAuthDTO);
 
 	List<MngUserDTO> selectUser(int companyNo);
 
 	List<MngUserAuthDTO> selectUserAuth(String userName, String memberNo, int companyNo);
 
 	int updateUserRoleAuth(MngUserAuthDTO mngUserAuthDTO);
-
-	int deleteUserAuth(MngUserAuthDTO mngUserAuthDTO);
 
 	int insertUserAuth(MngUserAuthDTO mngUserAuthDTO);
 

@@ -17,6 +17,7 @@
 	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MemberInfoDTO" id="memberInfoResult">
 		<id property="companyNo" column="COMPANY_NO"/>
 		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="idNo" column="ID_NO"/>
 		<result property="memberName" column="MEMBER_NAME"/>		
 		<result property="hireDate" column="HIRE_DATE"/>		
 	</resultMap>
@@ -50,6 +51,7 @@
 		<id property="companyNo" column="COMPANY_NO"/>
 		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="divNum" column="DIV_NO"/>
 		<result property="hireDate" column="HIRE_DATE"/>
 		<result property="healthCoverDate" column="HEALTH_INS_START_DATE"/>
 		<result property="healthSal" column="HEALTH_INS_SALARY"/>
@@ -69,7 +71,7 @@
 		<result property="workersLongTermCareRate" column="WORKERS_LONG_TERM_CARE_RATE"/>
 		<result property="workersUnempRate" column="WORKERS_UNEMP_RATE"/>
 		<result property="under150EmpRate" column="UNDER150_EMP_INSURANCE"/>
-		<result property="industryRate" column="INDUSTRY_RATE"/>
+		<result property="industryRate" column="INDUSTRIAL_INSURANCE_RATE"/>
 	</resultMap>
 	
 	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO" id="memberAccountResultMap">
@@ -85,12 +87,57 @@
 		<association property="memberInfo" resultMap="memberInfoResult"/>
 	</resultMap>
 	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngBonusListDTO" id="bonusCategoryResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<id property="bonusNo" column="BONUS_NO"/>
+		<result property="bonusName" column="BONUS_NAME"/>
+		<result property="bonusAmount" column="BONUS_AMOUNT"/>
+	</resultMap>
+	
+	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.AppointmentDTO" id="appointmentResultMap">
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="date" column="PERSONAL_APPOINTMENT_DATE"/>
+		<result property="appointment" column="PERSONAL_APPOINTMENT_CATEGORY"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.DetailPayDTO" id="payListResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<id property="divNo" column="SALARY_NO"/>
+		<result property="idNo" column="ID_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="salaryName" column="SALARY_NAME"/>
+		<result property="imputedDate" column="IMPUTED_YEAR_AND_MONTH"/>
+		<result property="payDate" column="PAY_DATE"/>
+		<result property="salaryAmount" column="SALARY_AMOUNT"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="salOrBonus" column="SALARY_OR_BONUS"/>
+		<result property="deductYn" column="DEDUCTION_YN"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO" id="monthlySalPayList">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="rank" column="RANK"/>
+		<result property="salaryStep" column="SALARY_STEP"/>
+		<result property="yearAndMonth" column="IMPUTED_YEAR_AND_MONTH"/>
+		<result property="payDate" column="PAY_DATE"/>
+		<result property="salaryAmount" column="SALARY_AMOUNT"/>
+		<result property="deductAmount" column="DEDUCTIBLE_AMOUNT"/>
+		<result property="transferAmount" column="TRANSFER_AMOUNT"/>
+		<result property="category" column="SALARY_OR_BONUS"/>
+	</resultMap>
+	
 	
 	<select id="listMngAnnualSalary" resultMap="annualSalaryResultMap" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO">
 		SELECT
                A.COMPANY_NO
              , A.MEMBER_NO
              , A.KOREAN_NAME AS MEMBER_NAME
+             , A.ID_NO
              , B.DEPARTMENT_NAME
              , D.RANK
              , D.SALARY_STEP
@@ -127,22 +174,22 @@
 	
 	<select id="listMonthlyPay" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO" resultMap="latestMonthlyResult">
 	    SELECT
-		       A.COMPANY_NO
+               A.COMPANY_NO
              , A.MEMBER_NO
-		     , A.MONTHLY_PAY_CATEGORY
-		     , A.AMOUNT
-		     , A.CHANGE_START_DATE
-		     , A.DEDUCTION_YN
-		     , A.SALARY_NO 
-		     , A.STOP_DATE
-	      FROM TBL_EMP_MONTHLY_SALARY_LIST A
-	     WHERE A.COMPANY_NO = #{ companyNo }
+             , A.MONTHLY_PAY_CATEGORY
+             , A.AMOUNT
+             , A.CHANGE_START_DATE
+             , A.DEDUCTION_YN
+             , A.SALARY_NO 
+             , A.STOP_DATE
+          FROM TBL_EMP_MONTHLY_SALARY_LIST A
+         WHERE A.COMPANY_NO = #{ companyNo }
 	     <if test="(searchDate == null) or '' == searchDate">
                 AND A.CHANGE_START_DATE <![CDATA[<=]]> SYSDATE
                 AND A.USE_STATUS = 'Y'
          </if>
          <if test="(searchDate != null) and '' != searchDate">
-                AND A.CHANGE_START_DATE <![CDATA[<=]]> #{ searchDate } 
+                AND A.CHANGE_START_DATE <![CDATA[<]]> #{ searchDate } 
          </if>
 	</select>
 	
@@ -175,6 +222,7 @@
 	<select id="listMonthlySalary" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO" resultMap="latestMonthlyResult">
 		SELECT
 		       A.COMPANY_NO
+		     , A.ID_NO  
              , A.MONTHLY_PAY_CATEGORY
 		     , A.AMOUNT
 		     , A.DESCRIPTION
@@ -253,6 +301,7 @@
              , A.MEMBER_NO
              , A.KOREAN_NAME AS MEMBER_NAME
              , A.HIRE_DATE
+             , B.DIV_NO
              , B.HEALTH_INS_START_DATE
              , B.HEALTH_INS_SALARY
              , B.HEALTH_INSURANCE_FEE
@@ -289,6 +338,14 @@
              , A.MEMBER_NO
              , A.KOREAN_NAME AS MEMBER_NAME
              , A.HIRE_DATE
+             , B.DIV_NO
+             , B.HEALTH_INS_START_DATE
+             , B.HEALTH_INS_SALARY
+             , B.HEALTH_INSURANCE_FEE
+             , B.LONG_TERM_CARE_FEE
+             , B.PENSION_INS_START_DATE
+             , B.PENSION_INS_SALARY
+             , B.PENSION_INSURANCE_FEE
           FROM TBL_EMPLOYEE A
           LEFT JOIN TBL_PERSONAL_INSURANCE_FEE B ON (A.MEMBER_NO = B.MEMBER_NO)         
          WHERE A.COMPANY_NO = #{ companyNo }
@@ -304,6 +361,7 @@
 	<select id="selectInsRate" parameterType="com.nextLevel.hero.mngSalary.model.dto.FourInsRateDTO" resultMap="insRateResultMap">
 	    SELECT
 	           A.COMPANY_NO
+	         , A.DIV_NO 
 	         , A.INSURANCE_RATE_START_DATE
 	         , A.WORKERS_PENSION_RATE
 	         , A.WORKERS_HEALTH_RATE
@@ -327,7 +385,7 @@
 	    VALUES
 	    (
 	      #{ companyNo }
-	    , SEQ_PERSONAL_INS_FEE_NO.NEXTVAL  
+	    , #{ divNum }  
 	    , #{ memberNo }
 	    , #{ healthCoverDate }
 	    , #{ healthSal }
@@ -368,7 +426,204 @@
 		        )I
 	</select>
 	
+	<select id="selectBonusCategory" resultMap="bonusCategoryResultMap" parameterType="_int">
+		SELECT
+		       A.COMPANY_NO
+		     , A.BONUS_NO
+		     , A.BONUS_NAME
+		     , A.BONUS_AMOUNT
+		  FROM TBL_BONUS A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+	</select>
 	
+	<select id="checkCreate" resultType="_int">
+	   SELECT
+	          COUNT(A.PAY_DATE)
+	     FROM TBL_SALARY_AND_BONUS_LIST A
+	    WHERE A.COMPANY_NO = #{ companyNo }
+	      AND A.SALARY_OR_BONUS = #{ category }
+	      AND A.PAY_DATE = #{ searchPayDate }
+	</select>
 	
+	<select id="selectAppointment" resultMap="appointmentResultMap">
+		SELECT
+		       A.MEMBER_NO
+		     , A.PERSONAL_APPOINTMENT_DATE
+		     , A.PERSONAL_APPOINTMENT_CATEGORY  
+	      FROM TBL_APPOINTMENT A
+	     WHERE A.COMPANY_NO = #{ companyNo }
+	       AND A.MEMBER_NO = #{ memberNo }
+	       AND A.PERSONAL_APPOINTMENT_DATE <![CDATA[<]]> #{ searchDate }	       
+	</select>
+	
+	<insert id="insertDetailPay" parameterType="com.nextLevel.hero.mngSalary.model.dto.DetailPayDTO">
+		INSERT
+		  INTO TBL_DETAIL_PAY
+		VALUES
+		(
+		  #{ companyNo }
+		, #{ memberNo }
+		, #{ salaryName }
+		, #{ imputedDate }
+		, #{ payDate }
+		, #{ salaryAmount }
+		, #{ departmentName }
+		, #{ memberName }
+		, #{ salOrBonus }
+		, #{ idNo }
+		, SEQ_DETAIL_PAY_NO.NEXTVAL 
+		) 
+	</insert>
+	
+	<select id="selectPayList" resultMap="payListResultMap">
+		SELECT
+		       A.COMPANY_NO
+		     , A.MEMBER_NO
+		     , A.SALARY_NAME
+		     , A.MEMBER_NAME
+		     , A.SALARY_AMOUNT
+		     , B.DEDUCTION_YN
+		  FROM TBL_DETAIL_PAY A
+		  LEFT JOIN TBL_EMP_MONTHLY_SALARY_LIST B ON (A.SALARY_NAME = B.MONTHLY_PAY_CATEGORY)
+		 WHERE A.COMPANY_NO = #{ companyNo }		   
+		   AND A.MEMBER_NO = #{ memberNo }
+		   AND A.PAY_DATE = #{ searchPayDate }
+		   AND A.SALARY_OR_BONUS = #{ category }
+	</select>
+	
+	<select id="selectIncomeTax" resultType="integer" parameterType="_int">
+		SELECT
+		       NVL(A.INCOME_TAX, 0) AS INCOME_TAX
+		  FROM TBL_INCOME_TAX A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		   AND A.MIN_SALARY <![CDATA[<=]]> #{ calcTaxSalary } 
+           AND A.MAX_SALARY	<![CDATA[>]]> #{ calcTaxSalary } 	
+	</select>
+	
+	<select id="selectOneFourInsDeduct" resultMap="fourInsResultMap">
+		SELECT
+		       A.COMPANY_NO
+		     , A.MEMBER_NO
+		     , A.KOREAN_NAME AS MEMBER_NAME
+		     , A.ID_NO
+		     , B.DEPARTMENT_NAME
+		     , C.DIV_NO
+		     , C.START_DATE
+		     , C.HEALTH
+		     , C.PENSION
+		     , C.UNEMPLOYEE
+		     , C.INDUSTRY
+		  FROM TBL_EMPLOYEE A
+		  JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+		  JOIN TBL_FOUR_INS_HISTORY C ON (A.MEMBER_NO = C.MEMBER_NO)
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		   AND A.MEMBER_NO = #{ memberNo }
+		   AND (A.MEMBER_NO, C.START_DATE) IN (SELECT
+		                               C1.MEMBER_NO 
+	 	                             , MAX(C1.START_DATE) AS START_DATE
+	 	                          FROM TBL_FOUR_INS_HISTORY C1
+	 	                         WHERE C1.COMPANY_NO = #{ companyNo }      
+	 	                           AND C1.START_DATE <![CDATA[<]]> #{ searchStartDate } 
+	 	                         GROUP BY C1.MEMBER_NO    
+	 	                        ) 
+	</select>
+	
+	<select id="selectOneInsFee" resultMap="memberInsFeeResult">
+		SELECT
+               A.COMPANY_NO
+             , A.MEMBER_NO
+             , A.HEALTH_INS_START_DATE
+             , A.HEALTH_INS_SALARY
+             , A.HEALTH_INSURANCE_FEE
+             , A.LONG_TERM_CARE_FEE
+             , A.PENSION_INS_START_DATE
+             , A.PENSION_INS_SALARY
+             , A.PENSION_INSURANCE_FEE
+          FROM TBL_PERSONAL_INSURANCE_FEE A         
+         WHERE A.COMPANY_NO = #{ companyNo }
+           AND A.MEMBER_NO = #{ memberNo }
+           AND (A.MEMBER_NO, A.HEALTH_INS_START_DATE, A.PENSION_INS_START_DATE) IN (SELECT 
+                                                                                            A1.MEMBER_NO
+                                                                                          , MAX(A1.HEALTH_INS_START_DATE)AS HEALTH_INS_START_DATE
+                                                                                          , MAX(A1.PENSION_INS_START_DATE)AS PENSION_INS_START_DATE                                      
+                                                                                       FROM TBL_PERSONAL_INSURANCE_FEE A1 
+                                                                                      WHERE A1.HEALTH_INS_START_DATE <![CDATA[<=]]> #{ searchDate } 
+                                                                                        OR  A1.PENSION_INS_START_DATE <![CDATA[<=]]> #{ searchDate }
+                                                                                      GROUP BY A1.MEMBER_NO   
+                                                                                    )
+	</select>
+	
+	<insert id="insertDetailDeduct" parameterType="com.nextLevel.hero.mngSalary.model.dto.DetailPayDTO">
+		INSERT
+		  INTO TBL_DETAIL_DEDUCTION
+		VALUES
+		(
+		  #{ companyNo }
+		, #{ memberNo }
+		, #{ salaryName }
+		, #{ imputedDate }
+		, #{ payDate }
+		, #{ salaryAmount }
+		, #{ departmentName }
+		, #{ memberName }
+		, #{ salOrBonus }
+		, #{ idNo }
+		, SEQ_DETAIL_DEDUCTION_NO.NEXTVAL 
+		) 
+	</insert>
+	
+	<insert id="insertEmployerDeduct" parameterType="com.nextLevel.hero.mngSalary.model.dto.DetailPayDTO">
+		INSERT
+		  INTO TBL_EMPLOYER_DEDUCTION
+		VALUES
+		(
+		  #{ companyNo }
+		, #{ imputedDate }
+		, #{ payDate }
+		, #{ salaryAmount }
+		, #{ memberNo }
+		, #{ departmentName }
+		, #{ memberName }
+		, #{ salaryName }
+		, #{ salOrBonus }
+		, #{ idNo }
+		, SEQ_EMPLOYER_DEDUCTION_NO.NEXTVAL 
+		) 
+	</insert>
+	
+	<insert id="insertSalaryList" parameterType="com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO">
+	    INSERT
+		  INTO TBL_SALARY_AND_BONUS_LIST
+		VALUES
+		(
+		  #{ companyNo }
+		, SEQ_SALARY_BONUS_DIV_NO.NEXTVAL
+		, #{ memberNo }
+		, #{ rank }
+		, #{ salaryStep }
+		, #{ yearAndMonth }
+		, #{ payDate }
+		, #{ salaryAmount }
+		, #{ deductAmount }
+		, #{ transferAmount }
+		, #{ category }
+		, #{ idNo }
+		)
+	
+	</insert>
+	
+	<select id="selectSalOrBonusList" resultMap="monthlySalPayList">
+		SELECT
+		       A.COMPANY_NO
+		     , A.MEMBER_NO
+		     , A.RANK
+		     , A.SALARY_STEP
+		     , A.IMPUTED_YEAR_AND_MONTH
+		     , A.PAY_DATE
+		     , A.SALARY_AMOUNT
+		     , A.DEDUCTIBLE_AMOUNT
+		     , A.TRANSFER_AMOUNT
+		 FROM TBL_SALARY_AND_BONUS_LIST A	
+	</select>
 	
 </mapper>
