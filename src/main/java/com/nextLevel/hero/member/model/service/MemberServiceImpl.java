@@ -37,10 +37,14 @@ public class MemberServiceImpl implements MemberService{
       
       /*데이터베이스에서 사용자정보를 조회하고 시큐리티가 달라는대로 주는 메소드*/
       /* 사용자 id입력해서 일치하면 회원정보 조회 userDEtails 타입으로 반환하는 메소드 */
-      MemberDTO member = memberMapper.findMemberById(username);               //사용자 정보를 조회한다.
+      MemberDTO member = memberMapper.findMemberById(username);     
+      //사용자 정보를 조회한다.
       int companyNo = memberMapper.findCompanyNoByUserNo(member.getNo());
-      List<AuthorityDTO> rankRoleList = memberMapper.findRankAuth(member, companyNo);
-
+      
+      List<AuthorityDTO> rankRoleList = new ArrayList<AuthorityDTO>();
+      
+      rankRoleList = memberMapper.findRankAuth(member, companyNo);
+    	  
       if(member == null) {
          member = new MemberDTO();
       }

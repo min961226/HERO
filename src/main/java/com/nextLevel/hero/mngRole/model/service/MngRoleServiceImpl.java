@@ -53,38 +53,36 @@ public class MngRoleServiceImpl implements MngRoleService {
 
 	}
 	
-	/* 해당 직급 번호 list 조회*/
-	@Override
-	public List<MngRankAuthDTO> selectStepByRank(MngRankAuthDTO mngRankAuthDTO) {
-		
-		return mngRoleMapper.selectStepByRank(mngRankAuthDTO);
-	}
-	
-	/* insert전 보유권한 delete*/
+	/* 직급 권한 수정 */
 	@Override
 	@Transactional
-	public int deleteRankAuth(MngRankAuthDTO mngRankAuthDTO) {
+	public int selectStepByRank(MngRankAuthDTO mngRankAuthDTO) {
 		
-		return mngRoleMapper.deleteRankAuth(mngRankAuthDTO);
-	}
-	
-	/* 직급 권한 insert */
-	@Override
-	@Transactional
-	public int insertRankAuth(MngRankAuthDTO mngRankAuthDTO) {
+		/* 해당 직급 번호 list 조회*/
+		mngRankAuthDTO.setSalaryStepByRankArg(mngRoleMapper.selectStepByRank(mngRankAuthDTO));
 		
-		int result = 0;
-		
-		
+		/* insert전 delete*/
+		int result = mngRoleMapper.deleteRankAuth(mngRankAuthDTO);
+		/* 직급 권한 insert */
+		if(mngRankAuthDTO.getAuthoryityNoArg() != null) {
+			
 		for(int i=0; i < mngRankAuthDTO.getAuthoryityNoArg().size(); i++) {
 			
 			mngRankAuthDTO.setAuthoryityNo(mngRankAuthDTO.getAuthoryityNoArg().get(i).getAuthoryityNo());
 			
 			if(mngRankAuthDTO.getAuthoryityNo() != 0) {
-			result = mngRoleMapper.insertRankAuth(mngRankAuthDTO);
+				
+				result = mngRoleMapper.insertRankAuth(mngRankAuthDTO);
+			}
+				
 			}
 		}
-		
+
+		if(result < 2) {
+			result = 0;
+		} else if(result > 2) {
+			result = 1;
+		}
 		return result;
 	}
 
@@ -114,22 +112,25 @@ public class MngRoleServiceImpl implements MngRoleService {
 		return mngRoleMapper.updateUserRoleAuth(mngUserAuthDTO);
 	}
 	
-	/* insert전 delete*/
-	@Override
-	@Transactional
-	public int deleteUserAuth(MngUserAuthDTO mngUserAuthDTO) {
-		
-		return mngRoleMapper.deleteUserAuth(mngUserAuthDTO);
-	}
-	
-	/* 사원 권한 수정 */
+	/* 사원 권한 수정 */ 
 	@Override
 	@Transactional
 	public int insertUserAuth(MngUserAuthDTO mngUserAuthDTO) {
 		
-		return mngRoleMapper.insertUserAuth(mngUserAuthDTO);
+		/* insert전 delete*/
+		int result = mngRoleMapper.deleteUserAuth(mngUserAuthDTO);
+		/* 사원 권한 수정 */
+		if(mngUserAuthDTO.getAuthoryityNoArg() != null) {
+			result += mngRoleMapper.insertUserAuth(mngUserAuthDTO);
+		}
+		
+		if(result < 2) {
+			result = 0;
+		} 
+		
+		return result;
 	}
-	
+
 	
 
 }

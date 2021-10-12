@@ -94,7 +94,7 @@
 			</foreach>
 	</delete>
 	
-	<insert id="insertRankAuth" parameterType="com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO">
+	<insert id="insertRankAuth" >
 		<foreach collection="salaryStepByRankArg" item="item" open="INSERT ALL" close= "SELECT * FROM SYS.DUAL" separator=" ">
 			INTO TBL_RANK_AUTH
 		(

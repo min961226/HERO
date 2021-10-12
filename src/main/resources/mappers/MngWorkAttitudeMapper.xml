@@ -2,4 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nextLevel.hero.mngWorkAttitude.model.dao.MngWorkAttitudeMapper">
 
+	<resultMap type="com.nextLevel.hero.mngWorkAttitude.model.dto.MngWorkAttitudeDTO" id="workResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="IdNo" column="ID_NO"/>
+		<result property="koreanName" column="KOREAN_NAME"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		
+		<association property="workCoList" resultMap="workCommuteMap"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngWorkAttitude.model.dto.MngWorkCommuteDTO" id="workCommuteMap">
+		<id property="commuteNo" column="COMMUTE_NO"/>
+		<result property="yearAndMonth" column="YEAR_AND_MONTH"/>
+		<result property="workStartTime" column="WORK_START_TIME"/>
+		<result property="workEndTime" column="WORK_END_TIME"/>
+		<result property="todayStatus" column="TARDY_STATUS"/>
+		<result property="earlyLeaveStatus" column="EARLY_LEAVE_STATUS"/>
+		<result property="absentStatus" column="ABSENT_STATUS"/>
+		<result property="holidayNo" column="HOLIDAY_NO"/>
+	</resultMap>
+	
+	
+
+	
+	<select id="selectWorkAttitudeList" resultMap="workResultMap">
+		SELECT
+               A.COMMUTE_NO
+             , B.COMPANY_NO
+             , A.YEAR_AND_MONTH
+             , A.WORK_START_TIME
+             , A.WORK_END_TIME
+             , A.TARDY_STATUS
+             , A.EARLY_LEAVE_STATUS
+             , A.ABSENT_STATUS
+             , A.HOLIDAY_NO
+             , B.MEMBER_NO
+             , B.ID_NO
+             , B.KOREAN_NAME
+          FROM TBL_COMMUTE A
+          JOIN TBL_EMPLOYEE B ON (A.ID_NO = B.ID_NO)
+          JOIN TBL_DEPARTMENT C ON (B.DEPARTMENT_NO = C.DEPARTMENT_NO)
+         WHERE A.COMPANY_NO = #{ companyNo }
+           AND A.YEAR_AND_MONTH LIKE #{ formatedNow }
+	</select>
+
+
+
 </mapper>
