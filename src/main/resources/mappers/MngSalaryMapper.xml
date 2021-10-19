@@ -146,6 +146,23 @@
 		<result property="transferAmount" column="TRANSFER_AMOUNT"/>
 		<result property="category" column="SALARY_OR_BONUS"/>
 	</resultMap>
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.SeverancePayDTO" id="severanceListMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="idNo" column="ID_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberName" column="KOREAN_NAME"/>
+		<result property="memberDept" column="DEPARTMENT_NAME"/>
+		<result property="severanceStatus" column="CALCULATE_STATUS"/>
+	</resultMap>
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.memberSeverancePayDTO" id="memberSeveranceListMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="idNo" column="ID_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberName" column="KOREAN_NAME"/>
+		<result property="memberDept" column="DEPARTMENT_NAME"/>
+		<result property="severanceStatus" column="CALCULATE_STATUS"/>
+		<result property="sumSalAmount" column="SUM_SAL"/>
+	</resultMap>
 	
 	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngDepositDTO" id="depositResultMap">
 		<result property="companyNo" column="COMPANY_NO"/>	
@@ -932,5 +949,31 @@
            AND A.MEMBER_NO = #{ memberNo }
          ORDER BY A.ENROLL_DATE DESC  
 	</select>
-	
+	<select id="severancePayList" resultMap="severanceListMap">
+		SELECT
+    		   A.COMPANY_NO
+     		 , A.ID_NO
+     		 , A.MEMBER_NO
+     		 , A.KOREAN_NAME
+     		 , B.DEPARTMENT_NAME
+     		 , NVL(CALCULATE_STATUS,'N')
+  		  FROM TBL_EMPLOYEE A
+  		  JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+  	 LEFT JOIN TBL_SEVERANCE_PAY C ON (A.COMPANY_NO = C.COMPANY_NO)
+ 		 WHERE A.COMPANY_NO = #{ companyNo }
+	</select>
+	<select id="selectOneSeverancePay" resultType="com.nextLevel.hero.mngSalary.model.dto.memberSeverancePayDTO">
+		SELECT
+      		   A.COMPANY_NO
+     		 , A.ID_NO
+     		 , A.MEMBER_NO
+     		 , SUM(B.SALARY_AMOUNT) AS SUM_SAL
+  		  FROM TBL_EMPLOYEE A
+  		  JOIN TBL_SALARY_AND_BONUS_LIST B ON (A.ID_NO = B.ID_NO)
+ 		 GROUP BY A.COMPANY_NO
+     		 , A.ID_NO
+     		 , A.MEMBER_NO
+		HAVING A.COMPANY_NO = #{ companyNo }
+   		   AND A.ID_NO = #{ idNum }
+	</select>
 </mapper>

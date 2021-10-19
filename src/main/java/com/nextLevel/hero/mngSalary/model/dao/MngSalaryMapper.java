@@ -16,6 +16,8 @@ import com.nextLevel.hero.mngSalary.model.dto.MngDepositDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MonthlyListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO;
+import com.nextLevel.hero.mngSalary.model.dto.SeverancePayDTO;
+import com.nextLevel.hero.mngSalary.model.dto.memberSeverancePayDTO;
 import com.nextLevel.hero.salary.model.dto.MyAccountDTO;
 
 @Mapper
@@ -71,7 +73,11 @@ public interface MngSalaryMapper {
 
 	List<SalaryAndBonusDTO> selectSalOrBonusList(SalaryAndBonusDTO search);
 
-	List<DetailPayDTO> listPayDetail(SalaryAndBonusDTO search);
+	List<SeverancePayDTO> severancePayList(int companyNo);
+
+	memberSeverancePayDTO selectOneSeverancePay(int companyNo, int idNum);
+
+  List<DetailPayDTO> listPayDetail(SalaryAndBonusDTO search);
 
 	List<DetailPayDTO> listDeductDetail(SalaryAndBonusDTO search);
 
