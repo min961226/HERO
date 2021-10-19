@@ -1,7 +1,10 @@
 package com.nextLevel.hero.mngSalary.controller;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,23 +18,30 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import com.nextLevel.hero.member.model.dto.UserImpl;
+import com.nextLevel.hero.mngSalary.model.dto.DetailPayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.FourInsRateDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngBonusListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
+import com.nextLevel.hero.mngSalary.model.dto.MngDepositDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
+import com.nextLevel.hero.mngSalary.model.dto.MonthlyListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO;
 import com.nextLevel.hero.mngSalary.model.dto.SeverancePayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.fourInsuranceList;
 import com.nextLevel.hero.mngSalary.model.dto.memInsFeeList;
 import com.nextLevel.hero.mngSalary.model.dto.memberSeverancePayDTO;
 import com.nextLevel.hero.mngSalary.model.service.MngSalaryService;
+import com.nextLevel.hero.salary.model.dto.MyAccountDTO;
 
 @Controller
 @RequestMapping("/mngSalary")
@@ -81,6 +91,57 @@ public class MngSalaryController {
 		return gson.toJson(memberMonthly);
 	}
 
+	/* 월 지급금액 추가용 리스트 */
+	@PostMapping(value="addMonthPay", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String listAddMonthlyPay(@AuthenticationPrincipal UserImpl user) {
+		
+		int companyNo = user.getCompanyNo();
+		
+		List<MonthlyListDTO> month = mngSalaryService.selectMonthlyList(companyNo);
+		
+		System.out.println("controller에서 넘기기 전" + month);
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		
+		
+		return gson.toJson(month);
+	}
+	
+	
+	/* 개인별 월 지급금액 변경 */
+	@PostMapping(value="updatePerMonthly", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String updatePersonalMonPay(@AuthenticationPrincipal UserImpl user, @RequestParam String updateList) {
+		
+		Type ListType = new TypeToken<List<MemberMonthlyPayDTO>>(){}.getType();
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		
+		List<MemberMonthlyPayDTO> detail = gson.fromJson(updateList, ListType);
+		
+		System.out.println("다시 변환 in controller : " + detail);
+		
+		int companyNo = user.getCompanyNo();
+		
+		String result = mngSalaryService.updatePersonalMonPay(companyNo, detail);
+		
+		return result;
+	}
+	
+	
+	
 	/* 4대보험 개인별 공제항목 리스트*/
 	@GetMapping("/deductFourMajorInsurances")
 	public ModelAndView mngDeductFourMajorInsurances(@AuthenticationPrincipal UserImpl user, ModelAndView mv) {
@@ -178,9 +239,11 @@ public class MngSalaryController {
 
 	/* 급여 계좌 조회 */
 	@GetMapping("/payrollAccount")
-	public ModelAndView mngPayrollAccount(ModelAndView mv) {
+	public ModelAndView mngPayrollAccount(ModelAndView mv, @AuthenticationPrincipal UserImpl user, MngAccountDTO search) {
 
-		List<MngAccountDTO> memAccountList = mngSalaryService.listmngPayrollAccount();
+		search.setCompanyNo(user.getCompanyNo());
+		
+		List<MngAccountDTO> memAccountList = mngSalaryService.listmngPayrollAccount(search);
 
 		mv.addObject("memAccount", memAccountList);
 		mv.setViewName("mngSalary/payrollAccount");
@@ -188,6 +251,30 @@ public class MngSalaryController {
 		return mv;
 	}
 
+	/* 개인별 급여 계좌 리스트 */
+	@PostMapping(value="personalAccountList", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String selectPersonalAccountList(@AuthenticationPrincipal UserImpl user, MngAccountDTO search) {
+		
+		search.setCompanyNo(user.getCompanyNo());
+		
+		List<MyAccountDTO> personalList = mngSalaryService.selectPersonalAccount(search);
+		
+		System.out.println(personalList);
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		
+		return gson.toJson(personalList);
+	}
+	
+	
+	
 	
 	/* 급상여 페이지 이동 */
 	@GetMapping("/salaryAndBonus")
@@ -204,7 +291,6 @@ public class MngSalaryController {
 		
 		int companyNo = user.getCompanyNo();	
 		List<MngBonusListDTO> bonusCategory = mngSalaryService.selectBonusCategory(companyNo);
-		System.out.println(bonusCategory);
 		
 		Gson gson = new GsonBuilder()
 				.setPrettyPrinting()
@@ -258,17 +344,66 @@ public class MngSalaryController {
 	/* 급상여 이력 조회 */
 	@GetMapping("/historySalAndBonus")
 	public ModelAndView selectHistory(ModelAndView mv, @AuthenticationPrincipal UserImpl user, SalaryAndBonusDTO search) {
+				
+		search.setCompanyNo(user.getCompanyNo());
+		List<SalaryAndBonusDTO> basicSalList = new ArrayList<>();
 		
-		System.out.println("조회를 위한 컨트롤러 넘어옴");
+		basicSalList = mngSalaryService.selectSalOrBonusList(search);
+		
+		mv.addObject("basicSalList",basicSalList);
+		mv.setViewName("mngSalary/salaryAndBonus");
+		
+		
+		return mv;
+	}
+	
+	/* 개인별 세부 내역 */
+	@PostMapping(value="personalDetail", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String listPersonalDetail(@AuthenticationPrincipal UserImpl user, SalaryAndBonusDTO search) {
 		
 		search.setCompanyNo(user.getCompanyNo());
-		List<SalaryAndBonusDTO> salListHistory = new ArrayList<>();
 		
-		salListHistory = mngSalaryService.selectSalOrBonusList(search);
+		List<DetailPayDTO> detailList = mngSalaryService.listPersonalDetail(search);
 		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+
 		
-		return null;
+		return gson.toJson(detailList);
 	}
+	
+	/* 개인별 공제 내역 수정 */
+	@PostMapping(value="personalUpdate", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String updatePersonalDetail(@AuthenticationPrincipal UserImpl user, @RequestParam String updateList) {
+		
+		int companyNo = user.getCompanyNo();
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+		
+		Type ListType = new TypeToken<List<DetailPayDTO>>(){}.getType();
+		List<DetailPayDTO> detail = gson.fromJson(updateList, ListType);
+		
+		System.out.println("다시 변환 in controller : " + detail);
+		
+		String result = mngSalaryService.updatePersonalDeduct(companyNo, detail);
+		
+		return result;
+	}
+	
+	
 	
 	
 	/* 예수금 */
@@ -277,6 +412,20 @@ public class MngSalaryController {
 		return "mngSalary/deposit";
 	}
 
+	/* 예수금 검색 조회 */
+	@GetMapping("/depositHistory")
+	public ModelAndView selectDepositList(ModelAndView mv, @AuthenticationPrincipal UserImpl user, MngDepositDTO search) {
+		
+		search.setCompanyNo(user.getCompanyNo());
+		System.out.println("검색체크 : " + search);
+		List<MngDepositDTO> depositList = mngSalaryService.selectDepositList(search);
+		
+		mv.addObject("depositList",depositList);
+		mv.setViewName("mngSalary/deposit");
+		
+		return mv;
+	}
+	
 	/* 퇴직 정산 */
 	@GetMapping("/severancePay")
 	public ModelAndView mngSeverancePay(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {

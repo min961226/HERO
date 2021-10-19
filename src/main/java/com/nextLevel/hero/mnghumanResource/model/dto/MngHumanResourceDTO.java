@@ -21,10 +21,13 @@ public class MngHumanResourceDTO implements Serializable{
 	private String email;
 	private char gender;
 	private String national;
-	private java.util.Date entDate;
+	private java.sql.Date entDate;
 	private char tblUserAuth;
 	private String jobName;								
-	private String departmentName;		
+	private String departmentName;
+	private String addressDetail;
+	private String familyOriginAddressDetail;
+	private java.sql.Date empUpdateDate;	
 	
 	private int idNo;								//TBL_MEMBER 맴버 테이블
 	private String memberId;						
@@ -34,33 +37,38 @@ public class MngHumanResourceDTO implements Serializable{
 	private java.util.Date hireDate;								
 	private char accSecessionYn;
 	
-	private java.util.Date appointmentDate;               //TBL_APPOINTMENT 발령 테이블
-	private String personalAppointmentCategory; 
+	private String militaryServiceStatus;				//TBL_MILITARY_SERVICE 병역 테이블
+	private String militaryKind;
+	private String rankIng;
+	private java.sql.Date militaryStartDate;			
+	private java.sql.Date militaryEndDate;
 	
 	private String veteranStatus;						//TBL_VETERAN 보훈 테이블
 	private String relationship;
 	private int veteranNo;
 	
-	private char militaryServiceStatus;					//TBL_MILITARY_SERVICE 병역 테이블
-	private char militaryKind;
-	private String rankIng;
-	private java.util.Date militaryStartDate;
-	private java.util.Date militaryEndDate;
+	private java.sql.Date appointmentDate;              //TBL_APPOINTMENT 발령 테이블 
+	private String personalAppointmentCategory; 
 
-	private java.util.Date graduatedDate;       //TBL_GRADUATED 학력 테이블
+	private String graduatedDate;       					//TBL_GRADUATED 학력 테이블
+	private java.sql.Date graduatedDateStart;       
+	private java.sql.Date graduatedDateEnd;      	 
 	private String nativeSchool;
 	private char graduatedStatus;
 	
-	private String relationShip;  				//TBL_FAMILY 가족 테이블
-	private char familyGender;
-	private int familyAge;
-	private String job;
+	private int salaryStepByRank;							//TBL_EMP_SALARY_STEP 호봉 테이블
 	
-	private java.util.Date employeementPeriod;      //TBL_CAREER 경력 테이블
+	private String employeementPeriod;      				//TBL_CAREER 경력 테이블
+	private java.sql.Date employeementPeriodStart;      
+	private java.sql.Date employeementPeriodEnd;      
 	private String position;
 	private String companyName;
 	private String department;
 								
+	private String familyRelationShip;  							//TBL_FAMILY 가족 테이블
+	private char familyGender;
+	private int familyAge;
+	private String familyJob;
 		
 	//	TBL_EMP_SALARY_STEP							하림님 신규 사원이 생성시 값 인서트 해주기
 	//	TBL_EMP_SALARY_STEP_UPDATE
@@ -69,16 +77,18 @@ public class MngHumanResourceDTO implements Serializable{
 	
 	public MngHumanResourceDTO() {}
 
-
 	public MngHumanResourceDTO(int companyNo, int memberNo, int jobNo, int departmentNo, String koreanName, String ssn,
 			String englishName, String speciality, String familyOriginAddress, String address, String phone, String tel,
-			String departmentPhone, String email, char gender, String national, Date entDate, char tblUserAuth,
-			String jobName, String departmentName, int idNo, String memberId, String memberPassword, char tempPwdYn,
-			Date hireDate, char accSecessionYn, Date appointmentDate, String personalAppointmentCategory,
-			String veteranStatus, String relationship, int veteranNo, char militaryServiceStatus, char militaryKind,
-			String rankIng, Date militaryStartDate, Date militaryEndDate, Date graduatedDate, String nativeSchool,
-			char graduatedStatus, String relationShip2, char familyGender, int familyAge, String job,
-			Date employeementPeriod, String position, String companyName, String department) {
+			String departmentPhone, String email, char gender, String national, java.sql.Date entDate, char tblUserAuth,
+			String jobName, String departmentName, String addressDetail, String familyOriginAddressDetail,
+			java.sql.Date empUpdateDate, int idNo, String memberId, String memberPassword, char tempPwdYn,
+			Date hireDate, char accSecessionYn, String militaryServiceStatus, String militaryKind, String rankIng,
+			java.sql.Date militaryStartDate, java.sql.Date militaryEndDate, String veteranStatus, String relationship,
+			int veteranNo, java.sql.Date appointmentDate, String personalAppointmentCategory, String graduatedDate,
+			java.sql.Date graduatedDateStart, java.sql.Date graduatedDateEnd, String nativeSchool, char graduatedStatus,
+			int salaryStepByRank, String employeementPeriod, java.sql.Date employeementPeriodStart,
+			java.sql.Date employeementPeriodEnd, String position, String companyName, String department,
+			String familyRelationShip, char familyGender, int familyAge, String familyJob) {
 		super();
 		this.companyNo = companyNo;
 		this.memberNo = memberNo;
@@ -100,505 +110,482 @@ public class MngHumanResourceDTO implements Serializable{
 		this.tblUserAuth = tblUserAuth;
 		this.jobName = jobName;
 		this.departmentName = departmentName;
+		this.addressDetail = addressDetail;
+		this.familyOriginAddressDetail = familyOriginAddressDetail;
+		this.empUpdateDate = empUpdateDate;
 		this.idNo = idNo;
 		this.memberId = memberId;
 		this.memberPassword = memberPassword;
 		this.tempPwdYn = tempPwdYn;
 		this.hireDate = hireDate;
 		this.accSecessionYn = accSecessionYn;
-		this.appointmentDate = appointmentDate;
-		this.personalAppointmentCategory = personalAppointmentCategory;
-		this.veteranStatus = veteranStatus;
-		this.relationship = relationship;
-		this.veteranNo = veteranNo;
 		this.militaryServiceStatus = militaryServiceStatus;
 		this.militaryKind = militaryKind;
 		this.rankIng = rankIng;
 		this.militaryStartDate = militaryStartDate;
 		this.militaryEndDate = militaryEndDate;
+		this.veteranStatus = veteranStatus;
+		this.relationship = relationship;
+		this.veteranNo = veteranNo;
+		this.appointmentDate = appointmentDate;
+		this.personalAppointmentCategory = personalAppointmentCategory;
 		this.graduatedDate = graduatedDate;
+		this.graduatedDateStart = graduatedDateStart;
+		this.graduatedDateEnd = graduatedDateEnd;
 		this.nativeSchool = nativeSchool;
 		this.graduatedStatus = graduatedStatus;
-		relationShip = relationShip2;
-		this.familyGender = familyGender;
-		this.familyAge = familyAge;
-		this.job = job;
+		this.salaryStepByRank = salaryStepByRank;
 		this.employeementPeriod = employeementPeriod;
+		this.employeementPeriodStart = employeementPeriodStart;
+		this.employeementPeriodEnd = employeementPeriodEnd;
 		this.position = position;
 		this.companyName = companyName;
 		this.department = department;
+		this.familyRelationShip = familyRelationShip;
+		this.familyGender = familyGender;
+		this.familyAge = familyAge;
+		this.familyJob = familyJob;
 	}
-
 
 	public int getCompanyNo() {
 		return companyNo;
 	}
 
-
 	public void setCompanyNo(int companyNo) {
 		this.companyNo = companyNo;
 	}
-
 
 	public int getMemberNo() {
 		return memberNo;
 	}
 
-
 	public void setMemberNo(int memberNo) {
 		this.memberNo = memberNo;
 	}
-
 
 	public int getJobNo() {
 		return jobNo;
 	}
 
-
 	public void setJobNo(int jobNo) {
 		this.jobNo = jobNo;
 	}
-
 
 	public int getDepartmentNo() {
 		return departmentNo;
 	}
 
-
 	public void setDepartmentNo(int departmentNo) {
 		this.departmentNo = departmentNo;
 	}
-
 
 	public String getKoreanName() {
 		return koreanName;
 	}
 
-
 	public void setKoreanName(String koreanName) {
 		this.koreanName = koreanName;
 	}
-
 
 	public String getSsn() {
 		return ssn;
 	}
 
-
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
 	}
-
 
 	public String getEnglishName() {
 		return englishName;
 	}
 
-
 	public void setEnglishName(String englishName) {
 		this.englishName = englishName;
 	}
-
 
 	public String getSpeciality() {
 		return speciality;
 	}
 
-
 	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
 	}
-
 
 	public String getFamilyOriginAddress() {
 		return familyOriginAddress;
 	}
 
-
 	public void setFamilyOriginAddress(String familyOriginAddress) {
 		this.familyOriginAddress = familyOriginAddress;
 	}
-
 
 	public String getAddress() {
 		return address;
 	}
 
-
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
 
 	public String getPhone() {
 		return phone;
 	}
 
-
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-
 
 	public String getTel() {
 		return tel;
 	}
 
-
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
-
 
 	public String getDepartmentPhone() {
 		return departmentPhone;
 	}
 
-
 	public void setDepartmentPhone(String departmentPhone) {
 		this.departmentPhone = departmentPhone;
 	}
-
 
 	public String getEmail() {
 		return email;
 	}
 
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 	public char getGender() {
 		return gender;
 	}
 
-
 	public void setGender(char gender) {
 		this.gender = gender;
 	}
-
 
 	public String getNational() {
 		return national;
 	}
 
-
 	public void setNational(String national) {
 		this.national = national;
 	}
 
-
-	public java.util.Date getEntDate() {
+	public java.sql.Date getEntDate() {
 		return entDate;
 	}
 
-
-	public void setEntDate(java.util.Date entDate) {
+	public void setEntDate(java.sql.Date entDate) {
 		this.entDate = entDate;
 	}
-
 
 	public char getTblUserAuth() {
 		return tblUserAuth;
 	}
 
-
 	public void setTblUserAuth(char tblUserAuth) {
 		this.tblUserAuth = tblUserAuth;
 	}
-
 
 	public String getJobName() {
 		return jobName;
 	}
 
-
 	public void setJobName(String jobName) {
 		this.jobName = jobName;
 	}
-
 
 	public String getDepartmentName() {
 		return departmentName;
 	}
 
-
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
 	}
 
+	public String getAddressDetail() {
+		return addressDetail;
+	}
+
+	public void setAddressDetail(String addressDetail) {
+		this.addressDetail = addressDetail;
+	}
+
+	public String getFamilyOriginAddressDetail() {
+		return familyOriginAddressDetail;
+	}
+
+	public void setFamilyOriginAddressDetail(String familyOriginAddressDetail) {
+		this.familyOriginAddressDetail = familyOriginAddressDetail;
+	}
+
+	public java.sql.Date getEmpUpdateDate() {
+		return empUpdateDate;
+	}
+
+	public void setEmpUpdateDate(java.sql.Date empUpdateDate) {
+		this.empUpdateDate = empUpdateDate;
+	}
 
 	public int getIdNo() {
 		return idNo;
 	}
 
-
 	public void setIdNo(int idNo) {
 		this.idNo = idNo;
 	}
-
 
 	public String getMemberId() {
 		return memberId;
 	}
 
-
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
-
 
 	public String getMemberPassword() {
 		return memberPassword;
 	}
 
-
 	public void setMemberPassword(String memberPassword) {
 		this.memberPassword = memberPassword;
 	}
-
 
 	public char getTempPwdYn() {
 		return tempPwdYn;
 	}
 
-
 	public void setTempPwdYn(char tempPwdYn) {
 		this.tempPwdYn = tempPwdYn;
 	}
-
 
 	public java.util.Date getHireDate() {
 		return hireDate;
 	}
 
-
 	public void setHireDate(java.util.Date hireDate) {
 		this.hireDate = hireDate;
 	}
-
 
 	public char getAccSecessionYn() {
 		return accSecessionYn;
 	}
 
-
 	public void setAccSecessionYn(char accSecessionYn) {
 		this.accSecessionYn = accSecessionYn;
 	}
 
-
-	public java.util.Date getAppointmentDate() {
-		return appointmentDate;
-	}
-
-
-	public void setAppointmentDate(java.util.Date appointmentDate) {
-		this.appointmentDate = appointmentDate;
-	}
-
-
-	public String getPersonalAppointmentCategory() {
-		return personalAppointmentCategory;
-	}
-
-
-	public void setPersonalAppointmentCategory(String personalAppointmentCategory) {
-		this.personalAppointmentCategory = personalAppointmentCategory;
-	}
-
-
-	public String getVeteranStatus() {
-		return veteranStatus;
-	}
-
-
-	public void setVeteranStatus(String veteranStatus) {
-		this.veteranStatus = veteranStatus;
-	}
-
-
-	public String getRelationship() {
-		return relationship;
-	}
-
-
-	public void setRelationship(String relationship) {
-		this.relationship = relationship;
-	}
-
-
-	public int getVeteranNo() {
-		return veteranNo;
-	}
-
-
-	public void setVeteranNo(int veteranNo) {
-		this.veteranNo = veteranNo;
-	}
-
-
-	public char getMilitaryServiceStatus() {
+	public String getMilitaryServiceStatus() {
 		return militaryServiceStatus;
 	}
 
-
-	public void setMilitaryServiceStatus(char militaryServiceStatus) {
+	public void setMilitaryServiceStatus(String militaryServiceStatus) {
 		this.militaryServiceStatus = militaryServiceStatus;
 	}
 
-
-	public char getMilitaryKind() {
+	public String getMilitaryKind() {
 		return militaryKind;
 	}
 
-
-	public void setMilitaryKind(char militaryKind) {
+	public void setMilitaryKind(String militaryKind) {
 		this.militaryKind = militaryKind;
 	}
-
 
 	public String getRankIng() {
 		return rankIng;
 	}
 
-
 	public void setRankIng(String rankIng) {
 		this.rankIng = rankIng;
 	}
 
-
-	public java.util.Date getMilitaryStartDate() {
+	public java.sql.Date getMilitaryStartDate() {
 		return militaryStartDate;
 	}
 
-
-	public void setMilitaryStartDate(java.util.Date militaryStartDate) {
+	public void setMilitaryStartDate(java.sql.Date militaryStartDate) {
 		this.militaryStartDate = militaryStartDate;
 	}
 
-
-	public java.util.Date getMilitaryEndDate() {
+	public java.sql.Date getMilitaryEndDate() {
 		return militaryEndDate;
 	}
 
-
-	public void setMilitaryEndDate(java.util.Date militaryEndDate) {
+	public void setMilitaryEndDate(java.sql.Date militaryEndDate) {
 		this.militaryEndDate = militaryEndDate;
 	}
 
+	public String getVeteranStatus() {
+		return veteranStatus;
+	}
 
-	public java.util.Date getGraduatedDate() {
+	public void setVeteranStatus(String veteranStatus) {
+		this.veteranStatus = veteranStatus;
+	}
+
+	public String getRelationship() {
+		return relationship;
+	}
+
+	public void setRelationship(String relationship) {
+		this.relationship = relationship;
+	}
+
+	public int getVeteranNo() {
+		return veteranNo;
+	}
+
+	public void setVeteranNo(int veteranNo) {
+		this.veteranNo = veteranNo;
+	}
+
+	public java.sql.Date getAppointmentDate() {
+		return appointmentDate;
+	}
+
+	public void setAppointmentDate(java.sql.Date appointmentDate) {
+		this.appointmentDate = appointmentDate;
+	}
+
+	public String getPersonalAppointmentCategory() {
+		return personalAppointmentCategory;
+	}
+
+	public void setPersonalAppointmentCategory(String personalAppointmentCategory) {
+		this.personalAppointmentCategory = personalAppointmentCategory;
+	}
+
+	public String getGraduatedDate() {
 		return graduatedDate;
 	}
 
-
-	public void setGraduatedDate(java.util.Date graduatedDate) {
+	public void setGraduatedDate(String graduatedDate) {
 		this.graduatedDate = graduatedDate;
 	}
 
+	public java.sql.Date getGraduatedDateStart() {
+		return graduatedDateStart;
+	}
+
+	public void setGraduatedDateStart(java.sql.Date graduatedDateStart) {
+		this.graduatedDateStart = graduatedDateStart;
+	}
+
+	public java.sql.Date getGraduatedDateEnd() {
+		return graduatedDateEnd;
+	}
+
+	public void setGraduatedDateEnd(java.sql.Date graduatedDateEnd) {
+		this.graduatedDateEnd = graduatedDateEnd;
+	}
 
 	public String getNativeSchool() {
 		return nativeSchool;
 	}
 
-
 	public void setNativeSchool(String nativeSchool) {
 		this.nativeSchool = nativeSchool;
 	}
-
 
 	public char getGraduatedStatus() {
 		return graduatedStatus;
 	}
 
-
 	public void setGraduatedStatus(char graduatedStatus) {
 		this.graduatedStatus = graduatedStatus;
 	}
 
-
-	public String getRelationShip() {
-		return relationShip;
+	public int getSalaryStepByRank() {
+		return salaryStepByRank;
 	}
 
-
-	public void setRelationShip(String relationShip) {
-		this.relationShip = relationShip;
+	public void setSalaryStepByRank(int salaryStepByRank) {
+		this.salaryStepByRank = salaryStepByRank;
 	}
 
-
-	public char getFamilyGender() {
-		return familyGender;
-	}
-
-
-	public void setFamilyGender(char familyGender) {
-		this.familyGender = familyGender;
-	}
-
-
-	public int getFamilyAge() {
-		return familyAge;
-	}
-
-
-	public void setFamilyAge(int familyAge) {
-		this.familyAge = familyAge;
-	}
-
-
-	public String getJob() {
-		return job;
-	}
-
-
-	public void setJob(String job) {
-		this.job = job;
-	}
-
-
-	public java.util.Date getEmployeementPeriod() {
+	public String getEmployeementPeriod() {
 		return employeementPeriod;
 	}
 
-
-	public void setEmployeementPeriod(java.util.Date employeementPeriod) {
+	public void setEmployeementPeriod(String employeementPeriod) {
 		this.employeementPeriod = employeementPeriod;
 	}
 
+	public java.sql.Date getEmployeementPeriodStart() {
+		return employeementPeriodStart;
+	}
+
+	public void setEmployeementPeriodStart(java.sql.Date employeementPeriodStart) {
+		this.employeementPeriodStart = employeementPeriodStart;
+	}
+
+	public java.sql.Date getEmployeementPeriodEnd() {
+		return employeementPeriodEnd;
+	}
+
+	public void setEmployeementPeriodEnd(java.sql.Date employeementPeriodEnd) {
+		this.employeementPeriodEnd = employeementPeriodEnd;
+	}
 
 	public String getPosition() {
 		return position;
 	}
 
-
 	public void setPosition(String position) {
 		this.position = position;
 	}
-
 
 	public String getCompanyName() {
 		return companyName;
 	}
 
-
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
-
 
 	public String getDepartment() {
 		return department;
 	}
 
-
 	public void setDepartment(String department) {
 		this.department = department;
 	}
 
+	public String getFamilyRelationShip() {
+		return familyRelationShip;
+	}
+
+	public void setFamilyRelationShip(String familyRelationShip) {
+		this.familyRelationShip = familyRelationShip;
+	}
+
+	public char getFamilyGender() {
+		return familyGender;
+	}
+
+	public void setFamilyGender(char familyGender) {
+		this.familyGender = familyGender;
+	}
+
+	public int getFamilyAge() {
+		return familyAge;
+	}
+
+	public void setFamilyAge(int familyAge) {
+		this.familyAge = familyAge;
+	}
+
+	public String getFamilyJob() {
+		return familyJob;
+	}
+
+	public void setFamilyJob(String familyJob) {
+		this.familyJob = familyJob;
+	}
 
 	@Override
 	public String toString() {
@@ -608,17 +595,20 @@ public class MngHumanResourceDTO implements Serializable{
 				+ ", address=" + address + ", phone=" + phone + ", tel=" + tel + ", departmentPhone=" + departmentPhone
 				+ ", email=" + email + ", gender=" + gender + ", national=" + national + ", entDate=" + entDate
 				+ ", tblUserAuth=" + tblUserAuth + ", jobName=" + jobName + ", departmentName=" + departmentName
-				+ ", idNo=" + idNo + ", memberId=" + memberId + ", memberPassword=" + memberPassword + ", tempPwdYn="
-				+ tempPwdYn + ", hireDate=" + hireDate + ", accSecessionYn=" + accSecessionYn + ", appointmentDate="
-				+ appointmentDate + ", personalAppointmentCategory=" + personalAppointmentCategory + ", veteranStatus="
-				+ veteranStatus + ", relationship=" + relationship + ", veteranNo=" + veteranNo
-				+ ", militaryServiceStatus=" + militaryServiceStatus + ", militaryKind=" + militaryKind + ", rankIng="
-				+ rankIng + ", militaryStartDate=" + militaryStartDate + ", militaryEndDate=" + militaryEndDate
-				+ ", graduatedDate=" + graduatedDate + ", nativeSchool=" + nativeSchool + ", graduatedStatus="
-				+ graduatedStatus + ", relationShip=" + relationShip + ", familyGender=" + familyGender + ", familyAge="
-				+ familyAge + ", job=" + job + ", employeementPeriod=" + employeementPeriod + ", position=" + position
-				+ ", companyName=" + companyName + ", department=" + department + "]";
+				+ ", addressDetail=" + addressDetail + ", familyOriginAddressDetail=" + familyOriginAddressDetail
+				+ ", empUpdateDate=" + empUpdateDate + ", idNo=" + idNo + ", memberId=" + memberId + ", memberPassword="
+				+ memberPassword + ", tempPwdYn=" + tempPwdYn + ", hireDate=" + hireDate + ", accSecessionYn="
+				+ accSecessionYn + ", militaryServiceStatus=" + militaryServiceStatus + ", militaryKind=" + militaryKind
+				+ ", rankIng=" + rankIng + ", militaryStartDate=" + militaryStartDate + ", militaryEndDate="
+				+ militaryEndDate + ", veteranStatus=" + veteranStatus + ", relationship=" + relationship
+				+ ", veteranNo=" + veteranNo + ", appointmentDate=" + appointmentDate + ", personalAppointmentCategory="
+				+ personalAppointmentCategory + ", graduatedDate=" + graduatedDate + ", graduatedDateStart="
+				+ graduatedDateStart + ", graduatedDateEnd=" + graduatedDateEnd + ", nativeSchool=" + nativeSchool
+				+ ", graduatedStatus=" + graduatedStatus + ", salaryStepByRank=" + salaryStepByRank
+				+ ", employeementPeriod=" + employeementPeriod + ", employeementPeriodStart=" + employeementPeriodStart
+				+ ", employeementPeriodEnd=" + employeementPeriodEnd + ", position=" + position + ", companyName="
+				+ companyName + ", department=" + department + ", familyRelationShip=" + familyRelationShip
+				+ ", familyGender=" + familyGender + ", familyAge=" + familyAge + ", familyJob=" + familyJob + "]";
 	}
-
 
 }

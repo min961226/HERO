@@ -1,6 +1,6 @@
-package com.nextLevel.hero.mngWorkAttitude.model.dto;
+package com.nextLevel.hero.workattitude.model.dto;
 
-public class MngWorkCommuteDTO {
+public class WorkCommuteDTO {
 	
 	private String yearAndMonth; 			//연도월
 	private String workStartTime;			//시작시간
@@ -12,11 +12,11 @@ public class MngWorkCommuteDTO {
 	
 	private int holidayNo; 					//휴일번호
 	
-	public MngWorkCommuteDTO() {
+	public WorkCommuteDTO() {
 		super();
 	}
 
-	public MngWorkCommuteDTO(String yearAndMonth, String workStartTime, String workEndTime, int commuteNo,
+	public WorkCommuteDTO(String yearAndMonth, String workStartTime, String workEndTime, int commuteNo,
 			char todayStatus, char earlyLeaveStatus, char absentStatus, int holidayNo) {
 		super();
 		this.yearAndMonth = yearAndMonth;
@@ -95,7 +95,7 @@ public class MngWorkCommuteDTO {
 
 	@Override
 	public String toString() {
-		return "MngWorkCommuteDTO [yearAndMonth=" + yearAndMonth + ", workStartTime=" + workStartTime + ", workEndTime="
+		return "WorkCommuteDTO [yearAndMonth=" + yearAndMonth + ", workStartTime=" + workStartTime + ", workEndTime="
 				+ workEndTime + ", commuteNo=" + commuteNo + ", todayStatus=" + todayStatus + ", earlyLeaveStatus="
 				+ earlyLeaveStatus + ", absentStatus=" + absentStatus + ", holidayNo=" + holidayNo + "]";
 	}

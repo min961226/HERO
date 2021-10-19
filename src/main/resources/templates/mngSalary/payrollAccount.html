@@ -27,12 +27,14 @@
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
 							<div>
-								<label style="margin:10px;">검색</label>
-								<select style="width:155px">
-									<option value="deptName">부서명</option>
-									<option value="memberName">성 명</option>
-								</select>
-								<input type="text" style="margin:10px;"><button type="button" class="btn btn-outline-primary">검 색</button>
+								<form action="/mngSalary/payrollAccount">
+									<label style="margin:10px;">검색</label>
+									<select style="width:100px" id="searchCondition" name="searchCondition">
+										<option value="deptName">부서명</option>
+										<option value="memberName">성 명</option>
+									</select>
+									<input type="text" style="margin:10px;" id="searchValue" name="searchValue"><button type="button" class="btn btn-outline-primary">검 색</button>
+								</form>
 							</div>
 							<br>
 							<div class="row">
@@ -40,7 +42,7 @@
 		                            <div class="row">
 		                                <div class="col">
 											<div class="card">
-		                                        <div class="card-body">
+		                                        <div class="card-body" style="height:600px; overflow-y:scroll;">
 													<div class="row">				                                                
 		                                                <table class="table mb-0 text-center" id="accountList">
 															<thead>
@@ -58,10 +60,10 @@
 															<tbody>
 																<tr th:each="account,num : ${memAccount}">
 																	<td th:text="${num.count}"></td>
-																	<td th:text="${account.memberInfo.memberNo}"></td>
-																	<td th:text="${account.memberInfo.memberName}"></td>
-																	<td th:text="${account.departmentName}"></td>
-																	<td th:text="${account.rank}"></td>
+																	<td th:text="${account.memberNo}" th:id="${'memberNo' + num.count}"></td>
+																	<td th:text="${account.memberName}" th:id="${'memberName' + num.count}"></td>
+																	<td th:text="${account.departmentName}" th:id="${'departmentName' + num.count}"></td>
+																	<td th:text="${account.rank}" th:id="${'rank' + num.count}"></td>
 																	<td th:text="${account.bankName}"></td>
 																	<td th:text="${account.accountNo}"></td>
 																</tr>
@@ -76,25 +78,24 @@
 	                            <div class="col-xl-5">
 		                            <div class="card">
 		                                <div class="card-body">
+		                                   <div>
+		                                       <label style="margin:5px; display: none;" id="memberNo" ></label>
+		                                       <label style="margin:10px;">소속 :</label><label id="deptName" style="margin:5px;"></label><br>
+		                                       <label style="margin:10px;">성명 :</label><label id="memName" style="margin:5px;"></label>	                                  
+                                            </div>
+                                            <br>
 		                                    <div class="row">
 		                                        <table class="table table-sm mb-0 text-center" id="accountList">
 															<thead class="table-light">
 																<tr>
 																	<th colspan="2">은 행</th>																					
 																	<th>계좌번호</th>											
-																	<th>설정일자</th>													
-																	<th>통장사본</th>													
+																	<th>설정일자</th>							
 																</tr>
 															</thead>
 																
-															<tbody>
-																<tr>
-																	<td>88</td>
-																	<td>신한</td>
-																	<td>110-292-059380</td>
-																	<td>2021-09-25</td>
-																	<td>아이콘</td>																
-																</tr>
+															<tbody id="personalAccount">
+																
 															</tbody>
 														</table>
 		                                    </div>
@@ -109,5 +110,50 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script>
+		
+	 $("#accountList tbody tr").click(function() {
+		 
+		 const memNo = $(this).find("[id^=memberNo]").text();
+		 const departName = $(this).find("[id^=departmentName]").text();
+		 const memName = $(this).find("[id^=memberName]").text();
+		 
+		 $("#deptName").text(departName);
+		 $("#memName").text(memName);
+		 
+		 $.ajax({
+			 url:"personalAccountList",
+			 method: "POST",
+			 data: {"memberNo" : memNo },
+			 success: function(data) {
+				 const aList = $("#personalAccount");
+				 aList.html("");
+				 
+				 for(let index in data) {
+					 aList.append($("<tr>").append($("<td>").text(data[index].bankCode))
+							               .append($("<td>").text(data[index].bankName))
+							               .append($("<td>").text(data[index].accountNo))
+							               .append($("<td>").text(data[index].enrollDate))							               						 
+					 )
+				 }
+				 
+			 },
+			 error: function(xhr) {
+				 Swal.fire({
+	       			  position: 'center',
+	       			  icon: 'error',
+	       			  title: '개인별 계좌 리스트 조회에 실패하였습니다.',
+	       			  showConfirmButton: false,
+	       			  timer: 1500,
+	       			  width: 600
+	       		})
+			 }		 
+		 });
+	 });
+	
+	
+	
+	</script>
+
 </body>
 </html>

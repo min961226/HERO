@@ -10,18 +10,26 @@ public class MngWorkAttitudeDTO implements Serializable{
 	private int IdNo; 						//계정번호
 	private String koreanName;				//이름
 	private int memberNo;					//사번
+	private String yearMonth;				//연월
+	private int todayCount;					//지각횟수
+	private int earlyCount;					//조퇴횟수
+	private int absentCount;				//결근횟수
 
 	private List<MngWorkCommuteDTO> workCoList;
 	
 	public MngWorkAttitudeDTO() {}
 
-	public MngWorkAttitudeDTO(int companyNo, int idNo, String koreanName, int memberNo,
-			List<MngWorkCommuteDTO> workCoList) {
+	public MngWorkAttitudeDTO(int companyNo, int idNo, String koreanName, int memberNo, String yearMonth,
+			int todayCount, int earlyCount, int absentCount, List<MngWorkCommuteDTO> workCoList) {
 		super();
 		this.companyNo = companyNo;
 		IdNo = idNo;
 		this.koreanName = koreanName;
 		this.memberNo = memberNo;
+		this.yearMonth = yearMonth;
+		this.todayCount = todayCount;
+		this.earlyCount = earlyCount;
+		this.absentCount = absentCount;
 		this.workCoList = workCoList;
 	}
 
@@ -57,6 +65,38 @@ public class MngWorkAttitudeDTO implements Serializable{
 		this.memberNo = memberNo;
 	}
 
+	public String getYearMonth() {
+		return yearMonth;
+	}
+
+	public void setYearMonth(String yearMonth) {
+		this.yearMonth = yearMonth;
+	}
+
+	public int getTodayCount() {
+		return todayCount;
+	}
+
+	public void setTodayCount(int todayCount) {
+		this.todayCount = todayCount;
+	}
+
+	public int getEarlyCount() {
+		return earlyCount;
+	}
+
+	public void setEarlyCount(int earlyCount) {
+		this.earlyCount = earlyCount;
+	}
+
+	public int getAbsentCount() {
+		return absentCount;
+	}
+
+	public void setAbsentCount(int absentCount) {
+		this.absentCount = absentCount;
+	}
+
 	public List<MngWorkCommuteDTO> getWorkCoList() {
 		return workCoList;
 	}
@@ -68,8 +108,11 @@ public class MngWorkAttitudeDTO implements Serializable{
 	@Override
 	public String toString() {
 		return "MngWorkAttitudeDTO [companyNo=" + companyNo + ", IdNo=" + IdNo + ", koreanName=" + koreanName
-				+ ", memberNo=" + memberNo + ", workCoList=" + workCoList + "]";
+				+ ", memberNo=" + memberNo + ", yearMonth=" + yearMonth + ", todayCount=" + todayCount + ", earlyCount="
+				+ earlyCount + ", absentCount=" + absentCount + ", workCoList=" + workCoList + "]";
 	}
+
+	
 
 	
 

@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 	<div id="wrapper">
@@ -20,7 +21,83 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
-							
+							<form action="/mngWorkAttitude/workAttitudeUpdate" method="post">
+							<select style="width:155px; height:30px;" id="searchCondition" name="searchCondition">
+								<option value="searchMemberName">이름</option>
+								<option value="searchMemberNo">사번</option>
+								<option value="searchDeptName">부서</option>
+							</select>
+							<input type="text" style="margin:10px; height:30px;" id="searchValue" name="searchValue">
+							<button type="submit" class="btn btn-outline-primary" id="searchBtn">검 색</button><br><br>
+							</form>
+							<div class="card">
+								<div class="card-body">
+									<table class="table mb-0">
+										<thead class="table-light" align="center">
+										<tr>
+											<th>구분</th>
+											<th>사번</th>
+											<th>이름</th>
+											<th>부서</th>
+											<th>직급</th>
+											<th>입사일</th>
+											<th>수정</th>
+										</tr>
+										</thead>
+										<tr align="center" th:each="item, num: ${ updateList }">
+											<td th:text="${ num.count }" ></td>
+											<td th:text="${ item.memberNo }" ></td>
+											<td th:text="${ item.koreanName }" ></td>
+											<td th:text="${ item.departmenetName }" ></td>
+											<td th:text="${ item.rank }" ></td>
+											<td th:text="${ item.hireDate }" ></td>
+											<td><button type="button" class="btn btn-outline-primary" id="searchBtn"
+												data-bs-toggle="modal" data-bs-target="#update">수정하기</button></td>
+										</tr>
+									</table>
+									<!-- 수정하기 모달 -->
+									<div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                             <div class="modal-content">
+                                       			 <form action="/mngWorkAttitude/AttitudeUpdate" method="post">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="update">수정하기</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    	<div style="margin:0 auto; padding:20px; height:300px;">
+                                                    		
+                                                    		<input type="hidden" name="memberNo" id="memberNo" />
+				                                            <table id="modalTBL" align="center">
+				                                                    <tr height="70px">
+				                                                        <th>수정할 날짜&emsp;</th>
+				                                                        <td><input type="date" name="updateDate"></td>
+				                                                    </tr>
+				                                                	<tr height="70px">
+				                                                        <td>출근시간</td>
+				                                                        <td><input type="time" name="goTime"></td>
+				                                                    </tr>
+				                                                    <tr height="70px">
+				                                                        <td>퇴근시간</td>
+				                                                        <td><input type="time" name="offTime"></td>
+				                                                    </tr>
+				                                                 
+				                                                <tbody id="monthly">
+				                                                    
+				                                                </tbody>
+				                                            </table>
+				                                        </div>
+                                                    </div>
+                                                   <div class="modal-footer">
+	                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
+	                   									<button type="submit" class="btn btn-success width-xs" id="updateBtn">수정</button>
+                                                   </div> 
+                                                   </form>
+                                              </div>
+                                        </div>
+                                     </div> <!-- 월 지급항목 모달창 종료 -->
+								</div>
+							</div>
 							
 						</div>
 					</div>
@@ -29,5 +106,21 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+		<script type="text/javascript">
+	 $("[id^=searchBtn]").click(function(){ 
+			
+			var str = ""
+			var btn_update = $(this);
+			
+			var tr = btn_update.parent().parent();
+			var td = tr.children();
+			
+			var no = td.eq(1).text();
+			
+			$("#memberNo").text(no);
+			document.getElementById("memberNo").value = no;
+
+		});
+	 </script>
 </body>
 </html>
