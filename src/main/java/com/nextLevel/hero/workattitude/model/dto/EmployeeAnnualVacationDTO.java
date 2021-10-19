@@ -1,13 +1,11 @@
-package com.nextLevel.hero.mngVacation.model.dto;
+package com.nextLevel.hero.workattitude.model.dto;
 
 import java.io.Serializable;
 
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngMemberDepartmentDTO;
 
-public class AnnualVacationDTO implements Serializable{
+public class EmployeeAnnualVacationDTO implements Serializable{
 
-	/* 연차 조정 */
-	/* 다시 디비보고 확인 */
 	private int companyNo;					// 회사번호
 	private int memberNo;					// 사번
 	private int createdMonthlyVacation;		// 발생월차
@@ -16,13 +14,13 @@ public class AnnualVacationDTO implements Serializable{
 	private int leaveVacation;				// 잔여연차
 	private int idNo;						// 계정번호
 	private int vacationCode;				// 조정연차코드
-	private String departmentName;
-	private String koreanName;
+	private MngMemberDepartmentDTO mngMemberDepartment; //mngBasicInformation에 있음	// 직원의 이름&부서를 받아오려고 -> mapper.xml에서 Association 해야함
 	
-	public AnnualVacationDTO() {}
+	public EmployeeAnnualVacationDTO() {}
 
-	public AnnualVacationDTO(int companyNo, int memberNo, int createdMonthlyVacation, int totalVacation,
-			int usedVacation, int leaveVacation, int idNo, int vacationCode, String departmentName, String koreanName) {
+	public EmployeeAnnualVacationDTO(int companyNo, int memberNo, int createdMonthlyVacation, int totalVacation,
+			int usedVacation, int leaveVacation, int idNo, int vacationCode,
+			MngMemberDepartmentDTO mngMemberDepartment) {
 		super();
 		this.companyNo = companyNo;
 		this.memberNo = memberNo;
@@ -32,8 +30,7 @@ public class AnnualVacationDTO implements Serializable{
 		this.leaveVacation = leaveVacation;
 		this.idNo = idNo;
 		this.vacationCode = vacationCode;
-		this.departmentName = departmentName;
-		this.koreanName = koreanName;
+		this.mngMemberDepartment = mngMemberDepartment;
 	}
 
 	public int getCompanyNo() {
@@ -68,12 +65,8 @@ public class AnnualVacationDTO implements Serializable{
 		return vacationCode;
 	}
 
-	public String getDepartmentName() {
-		return departmentName;
-	}
-
-	public String getKoreanName() {
-		return koreanName;
+	public MngMemberDepartmentDTO getMngMemberDepartment() {
+		return mngMemberDepartment;
 	}
 
 	public void setCompanyNo(int companyNo) {
@@ -108,23 +101,28 @@ public class AnnualVacationDTO implements Serializable{
 		this.vacationCode = vacationCode;
 	}
 
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
-
-	public void setKoreanName(String koreanName) {
-		this.koreanName = koreanName;
+	public void setMngMemberDepartment(MngMemberDepartmentDTO mngMemberDepartment) {
+		this.mngMemberDepartment = mngMemberDepartment;
 	}
 
 	@Override
 	public String toString() {
-		return "AnnualVacationDTO [companyNo=" + companyNo + ", memberNo=" + memberNo + ", createdMonthlyVacation="
-				+ createdMonthlyVacation + ", totalVacation=" + totalVacation + ", usedVacation=" + usedVacation
-				+ ", leaveVacation=" + leaveVacation + ", idNo=" + idNo + ", vacationCode=" + vacationCode
-				+ ", departmentName=" + departmentName + ", koreanName=" + koreanName + "]";
+		return "EmployeeAnnualVacationDTO [companyNo=" + companyNo + ", memberNo=" + memberNo
+				+ ", createdMonthlyVacation=" + createdMonthlyVacation + ", totalVacation=" + totalVacation
+				+ ", usedVacation=" + usedVacation + ", leaveVacation=" + leaveVacation + ", idNo=" + idNo
+				+ ", vacationCode=" + vacationCode + ", mngMemberDepartment=" + mngMemberDepartment + "]";
 	}
-
+	
+	
 	
 	
 	
 }
+
+
+
+
+
+
+
+

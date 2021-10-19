@@ -33,7 +33,7 @@
                                         <div class="modal-dialog modal-md">
                                              <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="insertHolidayModal">기념일/공휴일 상세보기</h4>
+                                                        <h4 class="modal-title" id="insertHolidayModal">기념일/공휴일 신규추가</h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <!-- form 태그 안에 값지정해주기 (굳이 모달에서 ajax 안써두 됌)-->
@@ -44,9 +44,6 @@
                                                     	     등록버튼 이벤트 걸어주는거 다시 하기-->
                                                     	     <!-- 비비에 들어가나? -->
 	                                                       <!-- <label style="margin:5px; display: none;" id="holiNo" ></label> -->
-	                                                        <label style="margin:10px;">달력 :</label>양력<label id="calendarInsert" style="margin:5px;">
-	                                                        	<!-- <input type="text" placeholder="양력" name="holiNo" readOnly> --> 
-	                                                        </label><br>
 	                                                        <label style="margin:10px;">날짜 :</label><label  style="margin:5px;">
 	                                                        	<input type="date" placeholder="날짜입력칸" name="holidayDate" id="holidayDate">
 	                                                        </label><br>
@@ -78,7 +75,7 @@
 									<thead>
 										<tr>
 											<th>번호</th>											
-											<th>달력</th>											
+											<th hidden="hidden">달력</th>											
 											<th>날짜</th>											
 											<th>제목</th>											
 											<th>휴일여부</th>											
@@ -90,7 +87,7 @@
 									<tbody>
 										<tr th:each="holiday:${holidayList}">
 											<td th:text="${holiday.holidayNo}" class="holidayNo"></td>
-											<td th:text="${holiday.calendar}" class="calendar"></td>
+											<td th:text="${holiday.calendar}" class="calendar"hidden="hidden"></td>
 											<td th:text="${holiday.holidayDate}" class="holidayDate"></td>
 											<td th:text="${holiday.title}" class="title"></td>
 											<td th:text="${holiday.holidayStatus}" class="holidayStatus"></td>
@@ -121,7 +118,7 @@
 	                                                        <label style="margin:10px;">날짜 :</label><label id="holidayDate1" style="margin:5px;"></label><br>
 	                                                        <label style="margin:10px;">제목 :</label><label id="title1" style="margin:5px;"></label><br>
 	                                                        <label style="margin:10px;">휴일여부 :</label><label id="holidayStatus1" style="margin:5px;"></label><br>
-	                                                        <input th:id="selectedHolidayNo" name="selectedHolidayNo">
+	                                                        <input th:id="selectedHolidayNo" name="selectedHolidayNo" hidden="hidden">
                                                     	</div>
                                                     	<br>
                                                     	

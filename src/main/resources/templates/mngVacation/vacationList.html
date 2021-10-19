@@ -16,97 +16,169 @@
 						<div class="col-12">
 							<br>
 							<div class="page-title-box">
-								<h3 class="page-title">직원 휴가</h3>
+								<h3 class="page-title">직원 휴가 신청 · 내역</h3>
 							</div>
 							<hr>
-							<!-- 여기서부터 본문 생성 -->
-							
 							<div class="card">
 								<div class="card-body">
-								<!-- 조회 테이블 -->
-								<table class="table table-striped dt-responsive nowrap w-100 text-center">
-									<thead>
-										<tr>
-											<th>번호</th>											
-											<th>사번</th>											
-											<th>부서명</th>											
-											<th>휴가종류</th>											
-											<th>휴가시작일</th>											
-											<th>휴가종료일</th>											
-											<th>휴가내용</th>											
-											<th>휴가현황</th>											
-											<th>상세보기</th>											
-										</tr>
-									</thead>
-										
-										
-									<tbody>
-										<tr th:each="">
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td><button type="button" class="btn btn-soft-warning">상세보기</button></td>
-										</tr>
-									</tbody>
-								</table>
-								
-								
-								<!-- 모달창 집어넣기 -->
-							<!-- 상세보기 모달창 -->
-									<!-- <div class="modal fade" id="detailHoliday" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg">
-                                             <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title" id="detailHolidayModal">기념일/공휴일 상세보기</h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                    	<div>
-	                                                        <label style="margin:5px; display: none;" id="holiNo" ></label>
-	                                                        <label style="margin:10px;">달력 :</label><label id="calendar1" style="margin:5px;"></label><br>
-	                                                        <label style="margin:10px;">날짜 :</label><label id="holidayDate1" style="margin:5px;"></label><br>
-	                                                        <label style="margin:10px;">제목 :</label><label id="title1" style="margin:5px;"></label><br>
-	                                                        <label style="margin:10px;">휴일여부 :</label><label id="holidayStatus1" style="margin:5px;"></label><br>
-                                                    	</div>
-                                                    	<br>
-                                                    	
-                                                    </div>
-                                                   <div class="modal-footer">
-	                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
-	                   									<button type="button" class="btn btn-success width-xs">삭제</button>
-                                                   </div> 
-                                              </div>
-                                        </div>
-                                     </div>  -->
-                                     <!-- 상세보기 모달창 종료 -->
-								
-								
-								
+									<form action="/mngVacation/updateVacation" method="post">
+									<table
+										class="table table-striped dt-responsive nowrap w-100 text-center">
+										<thead>
+											<tr>
+												<th>번호</th>
+												<th>사번</th>
+												<th>이름</th>
+												<th>부서명</th>
+												<th>휴가종류</th>
+												<th>휴가시작일</th>
+												<th>휴가종료일</th>
+												<th>휴가일수</th>
+												<th>휴가내용</th>
+												<th>처리상태</th>
+												<th>승인 처리</th>
+												<th>반려 처리</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="emp,num:${employeeVacationList}">
+											<td th:text="${emp.resquestNo}" ></td>
+											<td th:text="${emp.memberNo}"></td>
+											<td th:text="${emp.koreanName}" ></td>
+											<td th:text="${emp.departmentName}" class="title"></td>
+											<td th:text="${emp.vacationCategory}" class="title"></td>
+											<td th:text="${emp.startDate}" class="holidayStatus"></td>
+											<td th:text="${emp.endDate}" class="holidayStatus"></td>
+											<td th:text="${emp.vacationDate}" class="holidayStatus"></td>
+											<td th:text="${emp.vacationContents}" class="holidayStatus"></td>
+											<td th:text="${emp.confirmedYn}" class="holidayStatus"></td>
+											<td th:if="${emp.confirmedYn}=='대기'"><button type="button" class="btn btn-soft-success"
+														id="confirmY+ ${num.count}"><input th:value="${emp.resquestNo}" id="requestNo"hidden=""></input>승인</button></td>
+											<td th:if="${emp.confirmedYn}=='대기'"><button type="button" class="btn btn-soft-danger"
+														id="confirmN+ ${num.count}"><input th:value="${emp.resquestNo}" id="requestNo1"hidden=""></input>반려</button></td>
+											<td th:if="${emp.confirmedYn}!='대기'" >처리완료</td>
+											<td th:if="${emp.confirmedYn}!='대기'">처리완료</td>
+											</tr>
+										</tbody>
+									</table>
+									</form>
 								</div>
 							</div>
-								
-								</div>
-							</div>
-							
 						</div>
 					</div>
+
 				</div>
 			</div>
-			<div th:include="common/footer.html"></div>
-			
-			
-			
-			
-			
+		</div>
+	</div>
+
+
+
+
+	<div th:include="common/footer.html"></div>
+
+	<!-- 휴가 신청 리스 -->
+
+
+
 	<!-- <script type="text/javascript">
 				
 	</script> -->
-			
-		
+
+<script type="text/javascript">
+$("[id^=confirmY]").click(function(){
+	const val = $(this).find("#requestNo").val();
+	console.log(val);
+	Swal.fire({
+		  title: '승인하시겠습니까?',
+		  text: '승인된 결과가 신청자에게 전송됩니다.',
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#25c2e3',
+		  cancelButtonColor: '#43d39e',
+		  confirmButtonText: '예',
+		  cancelButtonText: '아니오'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+			           url: "confirmVacationY",
+			    	  data: {   "requestNo" : val },
+			       success: function(data, status, xhr) {
+			    	   
+			    	   Swal.fire({
+			       			  position: 'center',
+			       			  icon: 'success',
+			       			  title: '승인 처리가 완료되었습니다.',
+			       			  showConfirmButton: false,
+			       			  timer: 1500,
+			       			  width: 600
+			       		}).then((result) => {
+				        	   location.reload();
+			       				})
+			           }, error: function(xhr){
+			        	   Swal.fire({
+				       			  position: 'center',
+				       			  icon: 'error',
+				       			  title: '승인 처리에 실패하였습니다.',
+				       			  showConfirmButton: false,
+				       			  timer: 1500,
+				       			  width: 600
+				       		}).then((result) => {
+					        	   location.reload();
+				       				})
+			           }
+			       });
+			  } else if (result.isDenied) {
+			  }
+		})
+});
+
+$("[id^=confirmN]").click(function(){
+	const val1 = $(this).find("#requestNo1").val();
+	console.log(val1);
+	Swal.fire({
+		  title: '반려하시겠습니까?',
+		  text: '반려된 결과가 신청자에게 전송됩니다.',
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#25c2e3',
+		  cancelButtonColor: '#43d39e',
+		  confirmButtonText: '예',
+		  cancelButtonText: '아니오'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+			           url: "confirmVacationN",
+			    	  data: {   "requestNo" : val1 },
+			       success: function(data, status, xhr) {
+			    	   
+			    	   Swal.fire({
+			       			  position: 'center',
+			       			  icon: 'success',
+			       			  title: '반려 처리가 완료되었습니다.',
+			       			  showConfirmButton: false,
+			       			  timer: 1500,
+			       			  width: 600
+			       		}).then((result) => {
+				        	   location.reload();
+			       				})
+			           }, error: function(xhr){
+			        	   Swal.fire({
+				       			  position: 'center',
+				       			  icon: 'error',
+				       			  title: '반려 처리에 실패하였습니다.',
+				       			  showConfirmButton: false,
+				       			  timer: 1500,
+				       			  width: 600
+				       		}).then((result) => {
+					        	   location.reload();
+				       				})
+			           }
+			       });
+			  } else if (result.isDenied) {
+			  }
+		})
+});
+</script>
 </body>
 </html>

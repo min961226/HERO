@@ -20,276 +20,509 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
-							
-							
+
+
 							<div>
-							<!-- 버튼에 이벤트 걸어줘서 모달창 띄우기 -->
-							<!-- th id값이랑 주소값 넣어야함 -->
-								<button type="button" class="btn btn-soft-success width-xs" 
-												data-bs-toggle="modal" data-bs-target="#annualForm" id="annualControl">연차일괄조정</button>
+								<!-- 버튼에 이벤트 걸어줘서 모달창 띄우기 -->
+								<!-- th id값이랑 주소값 넣어야함 -->
+								<button type="button" class="btn btn-soft-success width-xs"
+									data-bs-toggle="modal" data-bs-target="#annualForm"
+									id="annualControl">연차일괄조정</button>
 							</div>
 							<br>
-							
+
 							<!-- 일괄조정연차 모달창 -->
-									<div class="modal fade" id="annualForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-xl">
-                                             <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title" id="annualModal">연차일괄조정</h4><br>
-                                                        <!-- <label style="margin:10px;">연차생성 기준 :</label>회계년도 기준<label style="margin:5px;"></label><br> -->
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div align="center">
-                                                    	 <label style="margin:10px;">연차생성 기준 :</label>회계년도 기준<label style="margin:5px;"></label><br>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                    
-                                                    <table class="table table-striped dt-responsive nowrap w-100 text-center">
-									<thead>
-										<tr>
-											<th>연차일수</th>											
-										</tr>
-									</thead>
+							<form action="/mngVacation/updateControl" method="post">
+							<div class="modal fade" id="annualForm" tabindex="-1"
+								role="dialog" aria-labelledby="myLargeModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog modal-xl">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title" id="annualModal">연차일괄조정</h4>
+											<br>
+											<!-- <label style="margin:10px;">연차생성 기준 :</label>회계년도 기준<label style="margin:5px;"></label><br> -->
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div align="center">
+											<label style="margin: 10px;">연차생성 기준 :</label>회계년도 기준<label
+												style="margin: 5px;"></label><br>
+										</div>
 										
-									<tbody>
-										<tr th:each="annualVacation:${auunualVacationList}">
-											<td th:text="${annualVacation.vacationDays}" class="vacationDays"></td>
-										</tr>
-									</tbody> 
-								</table> 
-                                                <div>
-                                                    		
-	                                                        <label style="margin:10px;">근속연수별 연차 설정</label><label  style="margin:5px;"></label><br><br>
-	                                                        <!-- 1~8년차 -->
-	                                                        <label style="margin:10px;">1년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=one id="oneYear" readonly size="5" th:value="${ annualVacation.vacationDays }">
-	                                                        </label>
-	                                                        <label style="margin:10px;">2년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=two id="twoYears" readonly size="5">
-	                                                        </label>
-	                                                        <label style="margin:10px;">3년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=three id="threeYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">4년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=four id="fourYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">5년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=five id="fiveYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">6년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=six id="sixYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">7년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=seven id="sevenYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">8년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=eight id="eightYears" readonly size="5">
-	                                                        </label> 
-	                                                        <br>
-	                                                        <!-- 9~16년차 -->
-	                                                        <label style="margin:10px;">9년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=nine id="nineYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">10년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=ten id="tenYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">11년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=eleven id="elevenYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">12년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=twelve id="twelveYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">13년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=thirteen id="thirteenYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">14년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=fourteen id="fourteenYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">15년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=fifteen id="fifteenYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">16년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=sixteen id="sixteenYears" readonly size="5">
-	                                                        </label> 
-	                                                         <br>
-	                                                        <!-- 17~24년차 -->
-	                                                        <label style="margin:10px;">17년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=seventeen id="seventeenYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">18년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=eighteen id="eighteenYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">19년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=nineteen id="nineteenYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">20년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=twenty id="twentyYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">21년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=twentyone id="twentyoneYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">22년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=twentytwo id="twentytwoYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">23년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=twentythree id="twentythreeYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">24년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=twentyfour id="twentyfourYears" readonly size="5">
-	                                                        </label> 
-	                                                        <br>
-	                                                        <!-- 25~32년차 -->
-	                                                        <label style="margin:10px;">25년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=twentyfive id="twentyfiveYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">26년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=twentysix id="twentysixYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">27년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=twentyseven id="twentysevenYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">28년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=twentyeight id="twentyeightYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">29년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=twentynine id="twentynineYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">30년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=thirty id="thirtyYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">31년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=thirtyone id="thirtyoneYears" readonly size="5">
-	                                                        </label> 
-	                                                        <label style="margin:10px;">32년차</label><label  style="margin:5px;">
-	                                                        	<input type="text" name=thirtytwo id="thirtytwoYears" readonly size="5">
-	                                                        </label> 
-                                                    	</div>
-                                                    	<br> 
-                                                    	
-                                                    </div>
-                                                   <div class="modal-footer">
-	                   									<button id="annualInsert" type="submit" class="btn btn-success width-xs">저장</button> 
-	                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">취소</button>
-                                                   </div> 
-                                                  <!--  </form> -->
-                                              </div>
-                                        </div>
-                                     </div>  
-                                     <!-- 일괄조정연차 모달창 종료 -->
-							
-							
-							
-							<div>
-								<input type="text" style="margin:10px;" placeholder="부서명">
-								<input type="text" style="margin:10px;" placeholder="이름">
-								<button type="button" class="btn btn-outline-primary">검 색</button>
+										<div class="modal-body">
+
+											<!-- <table
+												class="table table-striped dt-responsive nowrap w-100 text-center">
+												<thead>
+													<tr>
+														<th>연차일수</th>
+													</tr>
+												</thead>
+
+												<tbody>
+													<tr th:each="annualVacation:${auunualVacationList}">
+														<td th:text="${annualVacation.vacationDays}"
+															class="vacationDays"></td>
+													</tr>
+												</tbody>
+											</table> -->
+											<div>
+
+												<!-- 	                                                        <label style="margin:10px;">근속연수별 연차 설정</label><label  style="margin:5px;"></label><br><br> -->
+												<!-- 	                                                        1~8년차 -->
+												<!-- 	                                                        <label style="margin:10px;">1년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=one id="oneYear" readonly size="5" th:value="${ annualVacation.vacationDays }"> -->
+												<!-- 	                                                        	<input type="text" name=one id="oneYear" readonly size="5"> -->
+												<!-- 	                                                        </label> -->
+												<!-- 	                                                        <label style="margin:10px;">2년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=two id="twoYears" readonly size="5"> -->
+												<!-- 	                                                        </label> -->
+												<!-- 	                                                        <label style="margin:10px;">3년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=three id="threeYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">4년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=four id="fourYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">5년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=five id="fiveYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">6년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=six id="sixYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">7년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=seven id="sevenYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">8년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=eight id="eightYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <br> -->
+												<!-- 	                                                        9~16년차 -->
+												<!-- 	                                                        <label style="margin:10px;">9년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=nine id="nineYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">10년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=ten id="tenYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">11년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=eleven id="elevenYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">12년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=twelve id="twelveYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">13년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=thirteen id="thirteenYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">14년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=fourteen id="fourteenYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">15년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=fifteen id="fifteenYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">16년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=sixteen id="sixteenYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                         <br> -->
+												<!-- 	                                                        17~24년차 -->
+												<!-- 	                                                        <label style="margin:10px;">17년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=seventeen id="seventeenYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">18년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=eighteen id="eighteenYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">19년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=nineteen id="nineteenYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">20년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=twenty id="twentyYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">21년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=twentyone id="twentyoneYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">22년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=twentytwo id="twentytwoYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">23년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=twentythree id="twentythreeYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">24년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=twentyfour id="twentyfourYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <br> -->
+												<!-- 	                                                        25~32년차 -->
+												<!-- 	                                                        <label style="margin:10px;">25년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=twentyfive id="twentyfiveYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">26년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=twentysix id="twentysixYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">27년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=twentyseven id="twentysevenYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">28년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=twentyeight id="twentyeightYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">29년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=twentynine id="twentynineYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">30년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=thirty id="thirtyYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">31년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=thirtyone id="thirtyoneYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+												<!-- 	                                                        <label style="margin:10px;">32년차</label><label  style="margin:5px;"> -->
+												<!-- 	                                                        	<input type="text" name=thirtytwo id="thirtytwoYears" readonly size="5"> -->
+												<!-- 	                                                        </label>  -->
+
+												<!-- 1번쨰 -->
+												<!-- <table
+													class="table table-striped dt-responsive nowrap w-100 text-center">
+													<thead>
+														<tr>
+															<th>1년차</th>
+															<th>2년차</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="annual:${annalList}">
+															<td th:text="${annual.vacationDays}" class="vacationDays"></td>
+															<td th:text="${annual.vacationDays}" class="vacationDays"></td>
+														</tr>
+													</tbody>
+												</table>
+
+												2번쨰
+												<div>
+													<label style="margin: 10px;">1년차</label><label
+														id="vacationDays" style="margin: 5px;"></label><br> <label
+														style="margin: 10px;">2년차</label><label id="vacationDays"
+														style="margin: 5px;"></label><br>
+													<input th:id="vacationCode" name="vacationCode">
+												</div> -->
+
+												<!-- 3번쨰 -->
+											<div class="mb-3 row" th:each="control:${controlList}">
+															<label class="col-lg-2 col-form-label" th:text="${control.workYears} + '년차 :'"></label>
+															<div class="col-lg-2">
+																<input  type="text" class="form-control" name="vacationCode"  th:value="${control.vacationCode}" hidden="">
+																<input  type="text" class="form-control" name="vacationDays"  th:value="${control.vacationDays}" >
+															</div>
+														</div>
+														
+											</div>
+											<br>
+
+										</div>
+										<div class="modal-footer">
+											<button id="annualInsert" type="submit"
+												class="btn btn-success width-xs">수정</button>
+											<button type="reset" class="btn btn-warning width-xs"
+												data-bs-dismiss="modal">취소</button>
+										</div>
+										
+									</div>
+								</div>
 							</div>
-							
+							</form> 
+							<!-- 일괄조정연차 모달창 종료 -->
+
+
+
+							<div>
+								<input type="text" style="margin: 10px;" placeholder="부서명">
+								<input type="text" style="margin: 10px;" placeholder="이름">
+								<button type="button" class="btn btn-outline-primary">검
+									색</button>
+							</div>
+
 							<div class="card">
 								<div class="card-body">
-								<!-- 조회 테이블 -->
-								<table class="table table-striped dt-responsive nowrap w-100 text-center">
-									<thead>
-										<tr>
-											<th>번호</th>											
-											<th>사번</th>											
-											<th>부서명</th>											
-											<th>발생월차</th>											
-											<th>총연차</th>											
-											<th>조정연차</th>											
-											<th>잔여연차</th>											
-											<th>연차조정(상세보기)</th>											
-										</tr>
-									</thead>
-										
-									<tbody>
-										<tr th:each="">
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td th:text=""></td>
-											<td><button type="button" class="btn btn-soft-warning">상세보기</button></td>
-										</tr>
-									</tbody> 
-								</table>
-							
-							<!-- 모달창 집어넣기 -->
-							<!-- 상세보기 모달창 -->
-									<!-- <div class="modal fade" id="detailHoliday" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg">
-                                             <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title" id="detailHolidayModal">기념일/공휴일 상세보기</h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                    	<div>
-	                                                        <label style="margin:5px; display: none;" id="holiNo" ></label>
-	                                                        <label style="margin:10px;">달력 :</label><label id="calendar1" style="margin:5px;"></label><br>
-	                                                        <label style="margin:10px;">날짜 :</label><label id="holidayDate1" style="margin:5px;"></label><br>
-	                                                        <label style="margin:10px;">제목 :</label><label id="title1" style="margin:5px;"></label><br>
-	                                                        <label style="margin:10px;">휴일여부 :</label><label id="holidayStatus1" style="margin:5px;"></label><br>
-                                                    	</div>
-                                                    	<br>
-                                                    	
-                                                    </div>
-                                                   <div class="modal-footer">
-	                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
-	                   									<button type="button" class="btn btn-success width-xs">삭제</button>
-                                                   </div> 
-                                              </div>
-                                        </div>
-                                     </div>  -->
-                                     <!-- 상세보기 모달창 종료 -->
-							
-							
+									<!-- 조회 테이블 -->
+									<!-- <div class="dropdown float-end">
+										<button type="button" class="btn btn-warning"
+											id="departmentList" data-bs-toggle="modal"
+											data-bs-target="#vacationList">휴가 신청 내역 및 승인/반려</button>
+									</div> -->
+									<table
+										class="table table-striped dt-responsive nowrap w-100 text-center">
+										<thead>
+											<tr>
+												<!-- 일단 AnnualVacationDTO에 넣은거 다 받아와보자!! -->
+												<th>사번</th>
+												<th>이름</th>
+												<th>부서</th>
+												<th>1년 미만 발생월차</th>
+												<th>총연차</th>
+												<th>사용연차</th>
+												<th>잔여연차</th>
+												<th>연차조정(상세보기)</th>
+												<!-- 사원의 이름 & 부서도 받아오고 싶음... -->
+											</tr>
+										</thead>
+
+										<tbody>
+											<tr th:each="annualVacation:${annualVacationList}">
+												<td th:text="${annualVacation.memberNo}" class="memberNo"
+													id="memberNo"></td>
+												<td
+													th:text="${annualVacation.koreanName}"
+													class="koreanName"></td>
+												<td
+													th:text="${annualVacation.departmentName}"
+													class="departmentName"></td>
+												<td th:text="${annualVacation.createdMonthlyVacation}"
+													class="createdMonthlyVacation"></td>
+												<td th:text="${annualVacation.totalVacation}"
+													class="totalVacation"></td>
+												<td th:text="${annualVacation.usedVacation}"
+													class="usedVacation"></td>
+												<td th:text="${annualVacation.leaveVacation}"
+													class="leaveVacation"></td>
+												<td th:text="${annualVacation.idNo}" class="idNo"
+													hidden="hidden"></td>
+												<td th:text="${annualVacation.vacationCode}"
+													class="vacationCode" hidden="hidden"></td>
+												<!-- <td th:text="${annualVacation.memberInfoDTO.memberName}" class="vacationCode"></td> -->
+												<!-- 이런식으로 받아오면됌 -->
+												<!-- <td><button type="button" class="btn btn-soft-warning">상세보기</button></td> -->
+												<td
+													th:id="'annualVacationDetail' + ${annualVacation.memberNo}"><button
+														type="button" class="btn btn-soft-success width-xs"
+														data-bs-toggle="modal"
+														data-bs-target="#detailAnnualVacation"
+														th:value="${annualVacation.memberNo}" th:id="datailView">휴가
+														지급</button></td>
+											</tr>
+										</tbody>
+									</table>
+
+
+
+
+									<!-- 모달창 집어넣기 -->
+									<!-- 상세보기 모달창 -->
+									<form action="/mngVacation/insertAnnualVacation" method="POST">
+										<div class="modal fade" id="detailAnnualVacation"
+											tabindex="-1" role="dialog"
+											aria-labelledby="myLargeModalLabel" aria-hidden="true">
+											<div class="modal-dialog modal-md">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h4 class="modal-title" id="detailAnnualVacationModal">연차휴가
+															지급</h4>
+														<button type="button" class="btn-close"
+															data-bs-dismiss="modal" aria-label="Close"></button>
+													</div>
+													<div class="modal-body">
+														<div>
+															<label style="margin: 5px; display: none;" id=""></label>
+															<label style="margin: 10px;">사번 :</label><label
+																id="memNo" style="margin: 5px;"></label><br> <label
+																style="margin: 10px;">이름 :</label><label
+																id="koreanName1" style="margin: 5px;"></label><br>
+															<label style="margin: 10px;">부서 :</label><label
+																id="departmentName1" style="margin: 5px;"></label><br>
+															<label style="margin: 10px;">휴가 지급 종류 / 휴가명 / 일수
+																:</label> <select name="selectedVacationType">
+																<option th:each="vacation : ${vacationTypeList}"
+																	th:text="${vacation.vacationCategory} + ' : ' + ${vacation.vacationName} + ' ( ' + ${vacation.vacationDate} + '일)'"
+																	th:value="${vacation.vacationDate}"></option>
+															</select>
+															<!--  <input th:id="selectedAnnualVacation" name="selectedAnnualVacation"> -->
+															<input id="idNo1" style="margin: 5px;" hidden="hidden"
+																name="idNo"> <input id="vacationCode1"
+																style="margin: 5px;" hidden="hidden">
+														</div>
+														<br>
+
+													</div>
+													<div class="modal-footer">
+														<button type="submit" class="btn btn-success width-xs">지급</button>
+														<button type="reset" class="btn btn-warning width-xs"
+															data-bs-dismiss="modal">닫기</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+									<!-- 상세보기 모달창 종료 -->
+
+
+								</div>
+							</div>
 						</div>
 					</div>
+					<div th:include="common/footer.html"></div>
 				</div>
 			</div>
-			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
-	</div>
-	</div>
-	
-	<script>
+
+	<!-- 일괄연차 모달창 -->
+	<!-- 	<script>
 	
 	$("#annualControl").click(function() {
        $.ajax({
     	  type: "GET",
-          url: "annualVacation/modal" , 
-          data: { "vacationDays" : $('#vacationDays').val()},
+          url: "annualVacation" , 
+          /* data: { "vacationDays" : $('#vacationDays').val()}, */
+          data: { "vacationCode" : $('#vacationCode').val()},
+          success: function(data, status, xhr) {
+        	  
+          },
+          error: function(xhr) {
+        	  console.log(xhr);
+          }
           
          
         });
    });
-   </script>  
-	
-	<!-- 상세보기 모달창 스크립트 -->
-	<!-- <script type="text/javascript">
+   </script>   -->
+	<!-- 휴가 신청 리스 -->
+	<!-- <div class="modal fade" id="vacationList" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="detailAnnualVacationModal">휴가 신청 내역 및 승인/반려</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table
+						class="table table-striped dt-responsive nowrap w-100 text-center">
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>사번</th>
+								<th>부서명</th>
+								<th>휴가종류</th>
+								<th>휴가시작일</th>
+								<th>휴가종료일</th>
+								<th>휴가내용</th>
+								<th>휴가현황</th>
+								<th>상세보기</th>
+							</tr>
+						</thead>
 
-	$("[id^=annualControl]").click(function(){
-		
-			const vacationCode = $(this).siblings(".vacationCode").text();
-			const vacationDays = $(this).siblings(".vacationDays").text();
-			const vacationStartDate = $(this).siblings(".vacationStartDate").text();
-			const workYears = $(this).siblings(".workYears").text();
-			
-			const vacationCode = $("#vacationCode").text(vacationCode);
-			const vacationDays = $("#vacationDays").text(vacationDays);
-			const vacationStartDate = $("#vacationStartDate").text(vacationStartDate);
-			const workYears = $("#workYears").text(workYears);
-			
-			
-	}); 
+
+						<tbody>
+							<tr>
+								<td></td>
+								<td><button type="button" class="btn btn-soft-warning"
+										data-bs-toggle="modal" data-bs-target="#vacationRequest">상세보기</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success width-xs">지급</button>
+					<button type="reset" class="btn btn-warning width-xs"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div> -->
+
+	<div class="modal fade" id="vacationRequest" tabindex="-1"
+		role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="detailAnnualVacationModal">연차휴가 지급</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<label style="margin: 5px; display: none;" id=""></label> <label
+							style="margin: 10px;">사번 :</label><label id="memNo"
+							style="margin: 5px;"></label><br> <label
+							style="margin: 10px;">이름 :</label><label id="koreanName1"
+							style="margin: 5px;"></label><br> <span><label
+							style="margin: 10px;">휴가 내용:</label><textarea id="departmentName1" readonly="readonly"></textarea></span><br> <label
+							style="margin: 10px;">휴가 지급 종류 / 휴가명 / 일수 :</label> <select
+							name="selectedVacationType">
+							<option th:each="vacation : ${vacationTypeList}"
+								th:text="${vacation.vacationCategory} + ' : ' + ${vacation.vacationName} + ' ( ' + ${vacation.vacationDate} + '일)'"
+								th:value="${vacation.vacationDate}"></option>
+						</select>
+						<!--  <input th:id="selectedAnnualVacation" name="selectedAnnualVacation"> -->
+						<input id="idNo1" style="margin: 5px;" hidden="hidden" name="idNo">
+						<input id="vacationCode1" style="margin: 5px;" hidden="hidden">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success width-xs">지급</button>
+					<button type="reset" class="btn btn-warning width-xs"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	
-	</script>-->
 	
 	
+	<script type="text/javascript">
+		$("[id^=annualVacationDetail]")
+				.click(
+						function() {
+
+							const memberNo = $(this).siblings(".memberNo")
+									.text();
+							const koreanName = $(this).siblings(".koreanName")
+									.text();
+							const departmentName = $(this).siblings(
+									".departmentName").text();
+							const createdMonthlyVacation = $(this).siblings(
+									".createdMonthlyVacation").text();
+							const totalVacation = $(this).siblings(
+									".totalVacation").text();
+							const usedVacation = $(this).siblings(
+									".usedVacation").text();
+							const leaveVacation = $(this).siblings(
+									".leaveVacation").text();
+							const idNo = $(this).siblings(".idNo").text();
+							const vacationCode = $(this).siblings(
+									".vacationCode").text();
+							/* 사원번호 확인 */
+							//const selectedAnnualVacation = $("#selectedAnnualVacation").text(memberNo);
+							const $memNo = $("#memNo");
+							const $koreanName1 = $("#koreanName1");
+							const $departmentName1 = $("#departmentName1");
+							const $createdMonthlyVacation1 = $("#createdMonthlyVacation1");
+							const $totalVacation1 = $("#totalVacation1");
+							const $usedVacation1 = $("#usedVacation1");
+							const $leaveVacation1 = $("#leaveVacation1");
+							const $idNo1 = $("#idNo1");
+							const $vacationCode1 = $("#vacationCode1");
+							$memNo.html("");
+							$koreanName1.html("");
+							$departmentName1.html("");
+							$createdMonthlyVacation1.html("");
+							$totalVacation1.html("");
+							$usedVacation1.html("");
+							$leaveVacation1.html("");
+							$idNo1.html("");
+							$vacationCode1.html("");
+
+							$memNo.text(memberNo);
+							$koreanName1.text(koreanName);
+							$departmentName1.text(departmentName);
+							$createdMonthlyVacation1
+									.val(createdMonthlyVacation);
+							$totalVacation1.val(totalVacation);
+							$usedVacation1.val(usedVacation);
+							$leaveVacation1.val(leaveVacation);
+							$idNo1.val(idNo);
+							$vacationCode1.val(vacationCode);
+
+							console.log($memNo.val());
+						});
+	</script>
+
+
 </body>
 </html>
 
