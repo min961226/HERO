@@ -78,16 +78,6 @@
 	
 
 
-</mapper>
-
-
-
-
-
-
-
-
-=======
 	<resultMap type="com.nextLevel.hero.workattitude.model.dto.WorkAttitudeDTO" id="workResultMap">
 		<id property="companyNo" column="COMPANY_NO"/>
 		<result property="IdNo" column="ID_NO"/>

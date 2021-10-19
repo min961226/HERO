@@ -18,7 +18,7 @@ public interface MngHumanResourceService {
 
 	List<MemberListDTO> selectMemberList(int companyNo);
 
-	int insertMember(MngHumanResourceDTO humanResourceDTO, int companyNo, ModelAndView mv);
+	int insertMember(MngHumanResourceDTO humanResourceDTO, int companyNo);
 
 	List<MngHumanResourceDTO> selectMemberHistoryList(int companyNo, int idNo);
 

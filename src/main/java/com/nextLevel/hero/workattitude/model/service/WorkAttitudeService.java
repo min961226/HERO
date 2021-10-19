@@ -1,9 +1,11 @@
 package com.nextLevel.hero.workattitude.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.nextLevel.hero.workattitude.model.dto.EmployeeAnnualVacationDTO;
 import com.nextLevel.hero.workattitude.model.dto.EmployeeVacationDTO;
+import com.nextLevel.hero.workattitude.model.dto.WorkAttitudeDTO;
 
 public interface WorkAttitudeService {
 
@@ -13,16 +15,6 @@ public interface WorkAttitudeService {
 
 	int insertVacation(EmployeeVacationDTO employeeVacationDTO);
 
-
-	
-
-	
-import java.util.Map;
-
-import com.nextLevel.hero.workattitude.model.dto.WorkAttitudeDTO;
-
-public interface WorkAttitudeService {
-
-	List<WorkAttitudeDTO> selectAllWorkAttitudeList(int companyNo,int idNo, Map searchMap);
+	List<WorkAttitudeDTO> selectAllWorkAttitudeList(int companyNo,int idNo, Map<String, String> searchMap);
 
 }

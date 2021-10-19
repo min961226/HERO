@@ -102,27 +102,6 @@ public class MngHumanResourceController {
 		return mv;
 	}
 	
-	@PostMapping(value = "/idCheck" , produces = "application/json; chartset=UTF-8")
-	public ModelAndView idCheck(ModelAndView mv, RedirectAttributes rttr, @AuthenticationPrincipal UserImpl user ,@RequestParam String memberId) {
-		
-		int companyNo = user.getCompanyNo();
-		
-		String idCheck = mngHumanResourceService.selectIdCheck(memberId, companyNo);
-		System.out.println("idCheck : " + idCheck);
-		System.out.println("memberId : " + memberId);
-		
-		if (idCheck == null) {
-			rttr.addFlashAttribute("failedMessage","사용 가능한 아이디 입니다." );
-		} else if (memberId.equals(idCheck)) {
-			rttr.addFlashAttribute("successMessage","아이디가 중복되었습니다 다른 아이디를 입력해주세요." );
-		} else {
-			rttr.addFlashAttribute("failedMessage","사용 가능한 아이디 입니다." );
-		}
-		
-			
-		mv.setViewName("mngHumanResource/memberInsert");
-		return mv;
-	}
 	
 	@GetMapping("/organizationChart")
 	public String mngOrganizationChart() {

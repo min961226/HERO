@@ -27,7 +27,7 @@ public class MngHumanResourceServiceImpl implements MngHumanResourceService {
 
 
 	@Override
-	public int insertMember(MngHumanResourceDTO humanResourceDTO, int companyNo, ModelAndView mv) {
+	public int insertMember(MngHumanResourceDTO humanResourceDTO, int companyNo) {
 		RankSalaryStepDTO rankSalaryStepDTO = new RankSalaryStepDTO();
 		VacationControlDTO vacationControlDTO = new VacationControlDTO();
 		int insertEmployeeResult = 0;
