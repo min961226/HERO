@@ -1,9 +1,14 @@
 package com.nextLevel.hero.mngVacation.model.service;
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.nextLevel.hero.mngVacation.model.dto.AnnualVacationControlDTO;
+import com.nextLevel.hero.mngVacation.model.dto.AnnualVacationDTO;
 import com.nextLevel.hero.mngVacation.model.dto.MngHolidayDTO;
+import com.nextLevel.hero.workattitude.model.dto.EmployeeVacationDTO;
 
 public interface MngVacationService {
 
@@ -13,8 +18,22 @@ public interface MngVacationService {
 
 	int holidayDelete(int companyNo, int holidayNo);
 
+	List<AnnualVacationDTO> listAnnualVacation(int companyNo);
 
-	List<AnnualVacationControlDTO> annualList(int vacationCode);
+	int updateAnnualVacationDate(String idNo, String selectedVacationType);
+
+	List<EmployeeVacationDTO> selectVacationList(int companyNo);
+
+	int confirmVacationY(String requestNo);
+
+	int confirmVacationN(String requestNo);
+
+	List<AnnualVacationControlDTO> listAnnualVacationControl();
+
+	int updateControl(@Param("map") Map<String, String> map);
+
+
+//	List<AnnualVacationControlDTO> annualList(int vacationCode);
 
 	/*
 	 * 휴일 insert public int holidayModalInsert(MngHolidayDTO mngHolidayDTO);

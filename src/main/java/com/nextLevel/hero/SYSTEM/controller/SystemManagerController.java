@@ -20,7 +20,6 @@ import com.nextLevel.hero.SYSTEM.model.dto.NewMemberDTO;
 import com.nextLevel.hero.SYSTEM.model.service.SystemManagerService;
 import com.nextLevel.hero.member.model.dto.UserImpl;
 import com.nextLevel.hero.mngBasicInformation.model.dto.MngBasicInformationDTO;
-import com.nextLevel.hero.mngBasicInformation.service.MngBasicInformationService;
 
 @Controller
 @RequestMapping("/systemManager")

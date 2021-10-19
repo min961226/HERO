@@ -12,6 +12,46 @@
 		<result property="holidayStatus" column="HOLIDAY_STATUS"/>
 	</resultMap>
 	
+	<!-- 인사관리자가 직원의 연차 조회 -->
+	<resultMap type="com.nextLevel.hero.mngVacation.model.dto.AnnualVacationDTO" id="listAnnualVacationResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="createdMonthlyVacation" column="CREATED_MONTHLY_VACATION"/>
+		<result property="totalVacation" column="TOTAL_VACATION"/>
+		<result property="usedVacation" column="USED_VACATION"/>
+		<result property="leaveVacation" column="LEAVE_VACATION"/>
+		<result property="idNo" column="ID_NO"/>
+		<result property="vacationCode" column="VACATION_CODE"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="koreanName" column="KOREAN_NAME"/>
+		
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngMemberDepartmentDTO" id="mngMemberDepartmentResult">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="departmentNo" column="DEPARTMENT_NO"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="koreanName" column="KOREAN_NAME"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="jobName" column="JOB_NAME"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.workattitude.model.dto.EmployeeVacationDTO" id="employeeVacationResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="resquestNo" column="REQUEST_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="vacationCategory" column="VACATION_CATEGORY"/>
+		<result property="startDate" column="VACATION_START_DATE"/>
+		<result property="endDate" column="VACATION_END_DATE"/>
+		<result property="vacationDate" column="VACATION_DATE"/>
+		<result property="vacationContents" column="VACATION_CONTENTS"/>
+		<result property="confirmedYn" column="CONFIRMED_YN"/>
+		<result property="idNo" column="ID_NO"/>
+		<result property="koreanName" column="KOREAN_NAME"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		
+	</resultMap>
+		
 	<!-- 연차일괄조정 -->
 	<resultMap type="com.nextLevel.hero.mngVacation.model.dto.AnnualVacationControlDTO" id="listAnnualResultMap">
 		<id property="vacationCode" column="VACATION_CODE"/>
@@ -58,19 +98,71 @@
 		 WHERE A.HOLIDAY_NO = #{ holidayNo } 
 	</delete>
 	
+	<!-- 인사관리자가 직원 연차 조회 -->
+	<select id="listAnnualVacation" resultMap="listAnnualVacationResultMap">
+		SELECT
+		       A.*
+		     , B.KOREAN_NAME
+		     , C.DEPARTMENT_NAME  
+		  FROM TBL_VACATION A 
+		  JOIN TBL_EMPLOYEE B ON (A.MEMBER_NO = B.MEMBER_NO)
+		  JOIN TBL_DEPARTMENT C ON (B.DEPARTMENT_NO = C.DEPARTMENT_NO)
+		 WHERE A.COMPANY_NO = #{ companyNo }     
+	</select>
+	
 	
 	<!-- 연차일괄조정표 조회 -->
-	<!-- <select id="annualList" resultMap="listAnnualResultMap" parameterType="_int">
+	<select id="listAnnualVacationControl" resultMap="listAnnualResultMap">
 		SELECT 
 		       A.*
 		  FROM TBL_VACATION_CONTROL A
-		 WHERE A.VACATION_CODE = #{ vacationCode }  
-	</select>   -->
+	</select>   
 	
 	
 	
+	<update id="updateAnnualVacationDate">
+		UPDATE TBL_VACATION
+		   SET TOTAL_VACATION = TOTAL_VACATION + #{ selectedVacationType }
+		     , LEAVE_VACATION = LEAVE_VACATION +  #{ selectedVacationType }
+	 	 WHERE ID_NO = #{ idNo }
+	</update>
 	
-
+	<select id="selectVacationList" resultMap="employeeVacationResultMap">
+		SELECT
+			   A.*
+			 , B.KOREAN_NAME
+			 , C.DEPARTMENT_NAME
+		  FROM TBL_REQUEST_VACATION A
+		  JOIN TBL_EMPLOYEE B ON (A.ID_NO = B.ID_NO )
+		  JOIN TBL_DEPARTMENT C ON (B.DEPARTMENT_NO = C.DEPARTMENT_NO)
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		 ORDER BY A.REQUEST_NO
+	</select>
+	
+	<update id="confirmVacationY">
+		UPDATE TBL_REQUEST_VACATION
+		   SET CONFIRMED_YN = '승인'
+		 WHERE REQUEST_NO = #{ requestNo }  
+	</update>
+	
+	<update id="confirmVacationN">
+		UPDATE TBL_REQUEST_VACATION
+		   SET CONFIRMED_YN = '반려'
+		 WHERE REQUEST_NO = #{ requestNo }  
+	</update>
+	
+<!-- 	<update id="updateControl" parameterType="hashMap"> -->
+<!-- 		UPDATE TBL_VACATION_CONTROL -->
+<!-- 		   SET VACATION_DAYS =  -->
+<!-- 		  CASE -->
+<!-- 		       <foreach index="vacationCode" item="vacationDays" collection="map"> -->
+<!-- 		           WHEN VACATION_CODE = #{ vacationCode } THEN #{ vacationDays } -->
+<!-- 		       </foreach>  -->
+<!-- 		   END -->
+<!-- 		 WHERE VACATION_CODE = #{ vacationCode }       -->
+<!-- 	</update> -->
+	
+	
 </mapper>
 
 
