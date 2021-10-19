@@ -20,6 +20,45 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+						<div class="card">
+								<div class="card-body">
+									<div align="center">
+									<form action="/workattitude/list" method="post">
+									<label style="margin:10px;" align="center">대상기간</label>
+									<input type="month" style="margin:10px; height:30px;" id="searchDate" name="searchDate">
+									<button type="submit" class="btn btn-outline-primary" id="searchBtn">검 색</button>
+									</form>
+									<button type="submit" class="btn btn-primary btn-lg" style="float: right; margin:10px;">&emsp;다운로드&emsp;</button>
+										
+									</div>
+								<br><br>
+									
+									<table class="table table-striped dt-responsive nowrap w-80 text-center" th:each="item: ${ workList }" >
+										
+										<tr>
+											<td width="8%"  th:text="${ item.yearMonth+'월' }"></td>
+											<td th:each="list : ${ item.workCoList }" th:text="${ list.yearAndMonth}"></td> 
+										</tr>
+										<tr>
+											<td th:text="${ item.koreanName }" ></td>
+											<td th:each="list : ${ item.workCoList }" th:text="${ list.workStartTime }"></td> 
+											<td ></td>
+										</tr>
+										<tr>
+											<td th:text="${ '사번   '+item.memberNo }"  style="text-align: left;"></td>
+											<td th:each="list : ${ item.workCoList }" th:text="${ list.workEndTime }"></td> 
+										</tr>
+										<tr>
+											<td th:text="${ '지각 ' + item.todayCount + '회 결근 ' + item.absentCount + '회 조퇴 ' + item.earlyCount +'회' } "  
+											style="text-align: left; float:center;" colspan=50></td>
+										</tr>
+				
+									</table>
+			
+
+								</div>
+							</div>
+
 						</div>
 					</div>
 				</div>

@@ -1,6 +1,7 @@
 package com.nextLevel.hero.workattitude.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +17,13 @@ import com.nextLevel.hero.mngBasicInformation.model.dto.MngVacationTypeDTO;
 import com.nextLevel.hero.mngBasicInformation.model.service.MngBasicInformationService;
 import com.nextLevel.hero.workattitude.model.dto.EmployeeAnnualVacationDTO;
 import com.nextLevel.hero.workattitude.model.dto.EmployeeVacationDTO;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.nextLevel.hero.member.model.dto.UserImpl;
+import com.nextLevel.hero.workattitude.model.dto.WorkAttitudeDTO;
 import com.nextLevel.hero.workattitude.model.service.WorkAttitudeService;
 
 @Controller
@@ -31,10 +39,20 @@ public class WorkAttitudeController {
 		this.mngBasicInformationService = mngBasicInformationService;
 	}
 	
-	@GetMapping("/list")
-	public String workAttitudeList() {
+	/* 임직원 근태 조회 */
+	@ResponseBody
+	@RequestMapping(value="/list", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView mngWorkSelectAttitudeList(ModelAndView mv, @AuthenticationPrincipal UserImpl user,  @RequestParam Map searchMap) {
 		
-		return "workattitude/list";
+		int companyNo = user.getCompanyNo();
+		int idNo = user.getNo();
+		
+		List<WorkAttitudeDTO> workList = workAttitudeService.selectAllWorkAttitudeList(companyNo,idNo, searchMap);
+		
+		mv.addObject("workList", workList);
+		mv.setViewName("/workattitude/list");
+		
+		return mv;
 	}
 
 	/* 직원의 연차 조회 & 신청내역 조회*/

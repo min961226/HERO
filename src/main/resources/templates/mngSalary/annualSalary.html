@@ -68,7 +68,7 @@
 											<td th:text="${annual.rank}" class="rank"></td>
 											<td th:text="${annual.salaryStep}" class="step"></td>
 											<td th:text="${annual.salStepAmount}" class="stepAmount" style="display: none;"></td>
-											<td th:text="${annual.changeStartDate}"></td>
+											<td th:text="${annual.changeStartDate}" class="change"></td>
 											<td th:text="${#numbers.formatInteger(annual.annualSal, 3, 'COMMA')}"></td>
 											<td th:id="'monDetail' + ${num.count}"><button type="button" class="btn btn-soft-success width-xs" 
 												data-bs-toggle="modal" data-bs-target="#monthlyPay">지급항목</button></td>
@@ -91,7 +91,10 @@
 	                                                        <label style="margin:10px;">소속 :</label><label id="deptName" style="margin:5px;"></label><br>
 	                                                        <label style="margin:10px;">직급 :</label><label id="rank" style="margin:5px;"></label><br>
 	                                                        <label style="margin:10px;">성명 :</label><label id="memName" style="margin:5px;"></label><br>
-	                                                        <label style="margin:10px;">호봉 :</label><label id="step" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">호봉 :</label><label id="step" style="margin:5px;"></label><br>                                                    	
+                                                    	</div>
+                                                    	<div style="display:none;" id="startDiv">
+                                                    		<label style="margin:10px;"><code>*</code>적용일자 :</label><input type="date" id="newStartDate" style="margin:5px;" required>
                                                     	</div>
                                                     	<br>
                                                     	<div style="margin:0 auto; padding:20px; height:400px; overflow-y:scroll;">
@@ -119,7 +122,8 @@
                                                     </div>
                                                    <div class="modal-footer">
 	                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
-	                   									<button type="button" class="btn btn-success width-xs">수정</button>
+	                   									<button type="button" id="add" data-bs-toggle="modal" data-bs-target="#addMonthly" class="btn btn-success width-xs">수정</button>
+                                                   		<button type="button" class="btn btn-info width-xs" style="display:none;" id="addDB">적용</button>
                                                    </div> 
                                               </div>
                                         </div>
@@ -185,6 +189,33 @@
                                               </div>
                                         </div>
                                      </div> <!-- 변경이력 모달창 종료 -->
+                                     <!-- 급여 추가 모달창 -->
+									<div class="modal fade" id="addMonthly" tabindex="-1" role="dialog" aria-labelledby="myCenterModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                             <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="addmonthly">급여 목록</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">                                                    	
+                                                    	<div style="margin:0 auto; padding:20px;">
+				                                            <table class="table mb-0 text-center" id="modalAdd">
+				                                                <thead class="table-light">
+				                                                    <tr>				                                                    	
+				                                                        <th>항목</th>
+				                                                        <th>지급액</th>				                                                       
+				                                                        <th>과세여부</th>
+				                                                    </tr>
+				                                                </thead>
+				                                                <tbody id="addMonList">
+				                                                    
+				                                                </tbody>
+				                                            </table>
+				                                        </div>
+                                                    </div>                                                
+                                              </div>
+                                        </div>
+                                     </div> <!-- 급여추가 모달창 종료 -->
 							   </div>
 							</div>
 						</div>
@@ -198,14 +229,27 @@
 
 	$("[id^=monDetail]").click(function(){
 		
+		if($("#startDiv").css("display") != "none") {
+			$("#startDiv").css({"display":"none"});	
+		}
+		
+		if($("#addDB").css("display") != "none") {
+			$("#addDB").css({"display":"none"});	
+		} 
+		
+		if($("#add").css("display") == "none") {
+			$("#add").css({"display":"inline-block"});	
+		}
+		
 		const memberNo = $(this).siblings(".memberNo").text();
 		const memberName = $(this).siblings(".memberName").text();
 		const departmentName = $(this).siblings(".deptName").text();
 		const salRank = $(this).siblings(".rank").text();
 		const salStep = $(this).siblings(".step").text();
 		const salStepAmount = $(this).siblings(".stepAmount").text();
+		const cDate = $(this).siblings(".change").text();
 			
-		const memNo = $("#memNo").text(memberNo);
+		const memNo = $("#memberNo").text(memberNo);
 		const deptName = $("#deptName").text(departmentName);
 		const memName = $("#memName").text(memberName);
 		const rank = $("#rank").text(salRank);
@@ -216,7 +260,7 @@
 		$.ajax({
 			url: "annualSalary",
 			method: "POST",
-			data: { memberNo : memberNo },
+			data: { memberNo : memberNo, "searchDate" : cDate },
 			success: function(data) {
 				
 				const $monthly = $("#monthly");
@@ -224,8 +268,9 @@
 				
 				var monTotal = 0;
 				for(let index in data) {
-					$monthly.append($("<tr>").append($("<th>").text(data[index].payCategory))
-											 .append($("<td>").text(data[index].amount))
+					$monthly.append($("<tr>").append($("<td>").text(data[index].salaryNo).css("display","none"))
+					                         .append($("<th>").text(data[index].payCategory))
+											 .append($("<td>").append($("<input>").attr({"value":data[index].amount, "readonly":true, "class":"newAmount"}).css({"width":"100px", "text-align":"center"})))											 
 											 .append($("<td>").text(data[index].note))
 											 .append($("<td>").text(data[index].deductionYn))
 									);
@@ -263,6 +308,142 @@
 		const step = $("#step2").text(salStep);
 	});
 	
+	$("#add").click(function() {
+		
+		$("#startDiv").css({"display":"inline-block"});	
+		$("#add").css({"display":"none"});	
+		$("#addDB").css({"display":"inline-block"});	
+		$("#monthly input").attr("readonly",false);
+		
+		$.ajax({
+			url: "addMonthPay",
+			method: "POST",
+			success: function(data){
+				
+				let add = $("#addMonList");
+				add.html("");
+			
+				for(let index in data) {
+					add.append($("<tr>").append($("<td>").append($("<button>").attr({"type":"button", "value":data[index].salaryNo+"-"+data[index].salaryAmount+"-"+data[index].deductYn, "class": "btn btn-outline-info width-xs", "id":"plusbtn" + data[index]})
+																			  .text(data[index].salaryName)))
+										.append($("<td>").text(data[index].salaryAmount))
+										.append($("<td>").text(data[index].deductYn))
+										
+							)
+				}
+			},
+			error: function(xhr) {
+				Swal.fire({
+	       			  position: 'center',
+	       			  icon: 'error',
+	       			  title: '급여 목록 조회에 실패하였습니다.',
+	       			  showConfirmButton: false,
+	       			  timer: 1500,
+	       			  width: 600
+	       		})
+			}			
+		});
+		
+		
+		
+		
+	});
+	
+	$(document).on("click", "[id^=plusbtn]", function() {
+		
+		console.log($(this).val());
+		
+		let salName = $(this).text();
+		let splt = $(this).val().split("-");
+		
+		let salNo = splt[0];
+		let salAmount = splt[1];
+		let dYn = splt[2];
+		
+		$("#addMonthly").modal("hide");
+		
+		let monthly = $("#monthly > tr:last");
+		monthly.before($("<tr>").append($("<td>").text(salNo).css("display","none"))
+				 				 .append($("<td>").append($("<input>").attr({"type":"text", "value":salName, "readonly":true, "class":"salName"}).css({"width":"80px", "text-align": "center"})))
+								 .append($("<td>").append($("<input>").attr({"value":salAmount, "readonly":true, "class":"newAmount"}).css({"width":"100px", "text-align":"center"})))
+								 .append($("<td>").text(""))
+								 .append($("<td>").text(dYn))
+		
+		)
+
+	});
+	
+
+	$("#addDB").click(function() {
+		
+		const memberNo = $("#memberNo").text();
+		const startDate = $("#newStartDate").val();
+		
+		const tbody = $("#monthly");
+		const tr = tbody.children();
+		
+		const monthlyNewList = [];
+		
+		tr.each(function() {
+			if($(this).find("th").eq(0).text() != "총계") {				
+				const update = {};
+				update.memberNo = memberNo;
+				update.newStartDate = startDate;
+				update.salaryNo = $(this).find("td").eq(0).text();
+				update.amount = $(this).find(".newAmount").val();
+				update.payCategory = $(this).find(".salName").val();
+				update.deductionYn = $(this).find("td").eq(4).text();
+				
+				monthlyNewList.push(update);
+				console.log(monthlyNewList);	
+			}
+		});
+		
+		let updateList = JSON.stringify(monthlyNewList);
+		
+		$.ajax({
+			url: "updatePerMonthly",
+			method: "POST",
+			traditional: true,
+			data: { updateList : updateList },
+			success: function(result) {
+				if(result == "1") {
+					Swal.fire({
+		       			  position: 'center',
+		       			  icon: 'success',
+		       			  title: '월 지급내역 변경에 성공하였습니다.',
+		       			  showConfirmButton: false,
+		       			  timer: 1500,
+		       			  width: 600
+		       		}).then((result) => {
+		       			  location.href="/mngSalary/annualSalary";
+		       				})
+				} else {
+					Swal.fire({
+		       			  position: 'center',
+		       			  icon: 'error',
+		       			  title: '변경할 내역이 없습니다.',
+		       			  showConfirmButton: false,
+		       			  timer: 1500,
+		       			  width: 600
+		       		}).then((result) => {
+			        	   location.href="#";
+     				})
+				}
+			},
+			error: function(xhr) {
+				Swal.fire({
+	       			  position: 'center',
+	       			  icon: 'error',
+	       			  title: '월 지급내역 변경에 실패하였습니다.',
+	       			  showConfirmButton: false,
+	       			  timer: 1500,
+	       			  width: 600
+	       		})
+			}
+		});
+		
+	});
 	
 	
 	

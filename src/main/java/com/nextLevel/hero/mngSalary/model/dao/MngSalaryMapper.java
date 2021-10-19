@@ -12,8 +12,13 @@ import com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngBonusListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
+import com.nextLevel.hero.mngSalary.model.dto.MngDepositDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
+import com.nextLevel.hero.mngSalary.model.dto.MonthlyListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO;
+import com.nextLevel.hero.mngSalary.model.dto.SeverancePayDTO;
+import com.nextLevel.hero.mngSalary.model.dto.memberSeverancePayDTO;
+import com.nextLevel.hero.salary.model.dto.MyAccountDTO;
 
 @Mapper
 public interface MngSalaryMapper {
@@ -32,7 +37,7 @@ public interface MngSalaryMapper {
 
 	List<MemberInsFeeDTO> listMngNationalHealthInsurancePension(MemberInsFeeDTO search);
 
-	List<MngAccountDTO> listmngPayrollAccount();
+	List<MngAccountDTO> listmngPayrollAccount(MngAccountDTO search);
 
 	List<MemberMonthlyPayDTO> listMonthlySalary(MngSalaryDTO search);
 
@@ -67,6 +72,42 @@ public interface MngSalaryMapper {
 	int insertSalaryList(SalaryAndBonusDTO personalCalc);
 
 	List<SalaryAndBonusDTO> selectSalOrBonusList(SalaryAndBonusDTO search);
+
+	List<SeverancePayDTO> severancePayList(int companyNo);
+
+	memberSeverancePayDTO selectOneSeverancePay(int companyNo, int idNum);
+
+  List<DetailPayDTO> listPayDetail(SalaryAndBonusDTO search);
+
+	List<DetailPayDTO> listDeductDetail(SalaryAndBonusDTO search);
+
+	List<DetailPayDTO> selectDepositList(MngDepositDTO search);
+
+	List<MngDepositDTO> selectMemberNo(MngDepositDTO search);
+
+	int updatePersonalDetailDeduct(DetailPayDTO update);
+
+	int updateEmployerDeduct(DetailPayDTO update);
+
+	SalaryAndBonusDTO selectOneSalOrBonus(SalaryAndBonusDTO search);
+
+	int updateSalAndBonus(SalaryAndBonusDTO search);
+
+	String checkConfirm(SalaryAndBonusDTO search);
+
+	List<MyAccountDTO> selectPersonalAccount(MngAccountDTO search);
+
+	List<MonthlyListDTO> selectMonthlyList(int companyNo);
+
+//	List<MemberMonthlyPayDTO> selectPersonalMonthlyList(int companyNo, int updateMemNo);
+
+	int updatePayStop(MemberMonthlyPayDTO stop);
+
+	int insertNewMonthPay(MemberMonthlyPayDTO update);
+
+	int selectIdNo(int companyNo, int updateMemNo);
+
+	
 
 	
 

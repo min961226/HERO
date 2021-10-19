@@ -87,3 +87,104 @@
 
 
 
+=======
+	<resultMap type="com.nextLevel.hero.workattitude.model.dto.WorkAttitudeDTO" id="workResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="IdNo" column="ID_NO"/>
+		<result property="koreanName" column="KOREAN_NAME"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.workattitude.model.dto.WorkCommuteDTO" id="workCommuteMap">
+		<id property="commuteNo" column="COMMUTE_NO"/>
+		<result property="yearAndMonth" column="YEAR_AND_MONTH"/>
+		<result property="workStartTime" column="WORK_START_TIME"/>
+		<result property="workEndTime" column="WORK_END_TIME"/>
+		<result property="todayStatus" column="TARDY_STATUS"/>
+		<result property="earlyLeaveStatus" column="EARLY_LEAVE_STATUS"/>
+		<result property="absentStatus" column="ABSENT_STATUS"/>
+		<result property="holidayNo" column="HOLIDAY_NO"/>
+	</resultMap>
+	
+	<select id="selectMemberCount" resultType="_int" parameterType="hashmap">
+		 SELECT 
+               COUNT(DISTINCT A.ID_NO)
+          FROM TBL_EMPLOYEE A
+         <if test="searchMap.searchCondition == 'searchDeptName'">
+           JOIN TBL_DEPARTMENT B ON(A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+         </if>
+         <where>
+            <if test="searchMap.searchCondition == 'searchDeptName'">
+            	B.DEPARTMENT_NAME LIKE '%' || #{ searchMap.searchValue } || '%'
+            </if>
+            <if test="searchMap.searchCondition == 'searchMemberName'">
+            	A.KOREAN_NAME LIKE '%' || #{ searchMap.searchValue } || '%'
+            </if>
+            <if test="searchMap.searchCondition == 'searchMemberNo'">
+            	A.MEMBER_NO LIKE '%' || #{ searchMap.searchValue } || '%'
+            </if>
+            AND A.COMPANY_NO = #{ companyNo }
+            AND A.ID_NO = #{ idNo }
+         </where>
+	</select>
+	
+	<select id="selectMemberList" resultMap="workResultMap">
+		SELECT
+			   A.RNUM	
+		     , A.COMPANY_NO
+             , A.MEMBER_NO
+             , A.ID_NO
+             , A.KOREAN_NAME
+          FROM (SELECT ROWNUM RNUM
+          			 , B.COMPANY_NO
+          			 , B.MEMBER_NO
+          			 , B.ID_NO
+          			 , B.KOREAN_NAME
+          		  FROM (SELECT C.COMPANY_NO
+          		  			 , C.MEMBER_NO
+          		  			 , C.ID_NO
+          		  			 , C.KOREAN_NAME
+          		  		  FROM TBL_EMPLOYEE C
+          		  		  <if test="searchMap.searchCondition == 'searchDeptName'">
+          					JOIN TBL_DEPARTMENT D ON(C.DEPARTMENT_NO = D.DEPARTMENT_NO)
+        				  </if>
+        				  <where>
+        				 	 <if test="searchMap.searchCondition == 'searchDeptName'">
+        				 	 	D.DEPARTMENT_NAME LIKE '%' || #{ searchMap.searchValue } || '%'
+        				  	 </if>
+        				  	 <if test="searchMap.searchCondition == 'searchMemberName'">
+            					C.KOREAN_NAME LIKE '%' || #{ searchMap.searchValue } || '%'
+           					 </if>
+          					  <if test="searchMap.searchCondition == 'searchMemberNo'">
+            					C.MEMBER_NO LIKE '%' || #{ searchMap.searchValue } || '%'
+          					  </if>
+          					AND C.COMPANY_NO = #{ companyNo }
+          					AND C.ID_NO = #{ idNo }
+        				  </where>
+        				   ORDER BY C.MEMBER_NO DESC
+          		  		  ) B
+          		  	<![CDATA[
+                  WHERE ROWNUM <= #{ selectCriteria.endRow }
+                  ]]>
+          	   ) A 
+         WHERE A.RNUM >= #{ selectCriteria.startRow }  
+	</select>
+
+	<select id="selectWorkAttitudeList" resultMap="workCommuteMap">
+		SELECT
+               A.COMMUTE_NO
+             , A.YEAR_AND_MONTH
+             , A.WORK_START_TIME
+             , A.WORK_END_TIME
+             , A.TARDY_STATUS
+             , A.EARLY_LEAVE_STATUS
+             , A.ABSENT_STATUS
+             , A.HOLIDAY_NO
+          FROM TBL_COMMUTE A
+         WHERE A.COMPANY_NO = #{ memberInfo.companyNo }
+           AND A.YEAR_AND_MONTH LIKE #{ formatedNow }
+		   AND A.ID_NO = #{ memberInfo.IdNo }
+		 ORDER BY 2 ASC
+	</select>
+
+</mapper>

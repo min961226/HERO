@@ -4,11 +4,15 @@ import java.sql.Date;
 
 public class MemberMonthlyPayDTO {
 
+	private int companyNo;
+	private int memberNo;
+	private int idNo;
 	private MemberInfoDTO memberInfo;		//직원 정보
 	private int salaryStepByRank;			//직급별 호봉번호
 	private String rank;					//직급
 	private	String salaryStep;				//호봉
 	private int salaryNo;					//급여번호
+	private String newStartDate;			//입력받은 시작일자
 	private java.sql.Date monthlyStartDate; //월 지급금액 적용일자
 	private String payCategory;				//지급항목명
 	private int amount;						//지급금액
@@ -18,21 +22,49 @@ public class MemberMonthlyPayDTO {
 	
 	public MemberMonthlyPayDTO() {}
 
-	public MemberMonthlyPayDTO(MemberInfoDTO memberInfo, int salaryStepByRank, String rank, String salaryStep,
-			int salaryNo, Date monthlyStartDate, String payCategory, int amount, String note, String deductionYn,
-			Date monthlyStopDate) {
+	public MemberMonthlyPayDTO(int companyNo, int memberNo, int idNo, MemberInfoDTO memberInfo, int salaryStepByRank,
+			String rank, String salaryStep, int salaryNo, String newStartDate, Date monthlyStartDate,
+			String payCategory, int amount, String note, String deductionYn, Date monthlyStopDate) {
 		super();
+		this.companyNo = companyNo;
+		this.memberNo = memberNo;
+		this.idNo = idNo;
 		this.memberInfo = memberInfo;
 		this.salaryStepByRank = salaryStepByRank;
 		this.rank = rank;
 		this.salaryStep = salaryStep;
 		this.salaryNo = salaryNo;
+		this.newStartDate = newStartDate;
 		this.monthlyStartDate = monthlyStartDate;
 		this.payCategory = payCategory;
 		this.amount = amount;
 		this.note = note;
 		this.deductionYn = deductionYn;
 		this.monthlyStopDate = monthlyStopDate;
+	}
+
+	public int getCompanyNo() {
+		return companyNo;
+	}
+
+	public void setCompanyNo(int companyNo) {
+		this.companyNo = companyNo;
+	}
+
+	public int getMemberNo() {
+		return memberNo;
+	}
+
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
+	}
+
+	public int getIdNo() {
+		return idNo;
+	}
+
+	public void setIdNo(int idNo) {
+		this.idNo = idNo;
 	}
 
 	public MemberInfoDTO getMemberInfo() {
@@ -73,6 +105,14 @@ public class MemberMonthlyPayDTO {
 
 	public void setSalaryNo(int salaryNo) {
 		this.salaryNo = salaryNo;
+	}
+
+	public String getNewStartDate() {
+		return newStartDate;
+	}
+
+	public void setNewStartDate(String newStartDate) {
+		this.newStartDate = newStartDate;
 	}
 
 	public java.sql.Date getMonthlyStartDate() {
@@ -125,13 +165,13 @@ public class MemberMonthlyPayDTO {
 
 	@Override
 	public String toString() {
-		return "MemberMonthlyPayDTO [memberInfo=" + memberInfo + ", salaryStepByRank=" + salaryStepByRank + ", rank="
-				+ rank + ", salaryStep=" + salaryStep + ", salaryNo=" + salaryNo + ", monthlyStartDate="
-				+ monthlyStartDate + ", payCategory=" + payCategory + ", amount=" + amount + ", note=" + note
-				+ ", deductionYn=" + deductionYn + ", monthlyStopDate=" + monthlyStopDate + "]";
+		return "MemberMonthlyPayDTO [companyNo=" + companyNo + ", memberNo=" + memberNo + ", idNo=" + idNo
+				+ ", memberInfo=" + memberInfo + ", salaryStepByRank=" + salaryStepByRank + ", rank=" + rank
+				+ ", salaryStep=" + salaryStep + ", salaryNo=" + salaryNo + ", newStartDate=" + newStartDate
+				+ ", monthlyStartDate=" + monthlyStartDate + ", payCategory=" + payCategory + ", amount=" + amount
+				+ ", note=" + note + ", deductionYn=" + deductionYn + ", monthlyStopDate=" + monthlyStopDate + "]";
 	}
 
-	
 	
 	
 }

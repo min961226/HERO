@@ -56,7 +56,7 @@ public class MngHumanResourceController {
 		mv.setViewName("mngHumanResource/memberInsert");
 		mv.addObject("departmentList", departmentList);
 		mv.addObject("SalaryStepList", SalaryStepList);
-		mv.addObject("JobList", JobList)
+		mv.addObject("JobList", JobList);
 		return mv;
 	}
 
