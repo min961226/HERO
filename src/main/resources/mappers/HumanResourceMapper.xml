@@ -2,4 +2,132 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nextLevel.hero.humanResource.model.dao.HumanResourceMapper">
 
+<resultMap type="com.nextLevel.hero.humanResource.model.dto.MyPageDTO" id="selectMypageMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="updateNo" column="UPDATE_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="koreanName" column="KOREAN_NAME"/>
+		<result property="ssn" column="SSN"/>
+		<result property="englishName" column="ENGLISH_NAME"/>
+		<result property="speciality" column="SPECIALITY"/>
+		<result property="familyOriginAddress" column="FAMILY_ORIGIN_ADDRESS"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="tel" column="TEL"/>
+		<result property="departmentPhone" column="DEPARTMENT_PHONE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="password" column="PASSWORD"/>
+		<result property="gender" column="GENDER"/>
+		<result property="national" column="NATIONAL"/>
+		<result property="hireDate" column="HIRE_DATE"/>
+		<result property="entDate" column="ENT_DATE"/>
+		<result property="updateDate" column="UPDATE_DATE"/>
+		<result property="idNo" column="ID_NO"/>
+		<result property="jobNo" column="JOB_NO"/>
+		<result property="departmentNo" column="DEPARTMENT_NO"/>
+		<result property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="jobName" column="JOB_NAME"/>
+		<result property="addressDetail" column="ADDRESS_DETAIL"/>
+		<result property="familyOriginAddressDetail" column="FAMILY_ORIGIN_ADDRESS_DETAIL"/>
+</resultMap>	
+	
+<select id="selectMemberNo" resultType="_int">
+        SELECT
+                MEMBER_NO
+          FROM TBL_EMPLOYEE
+         WHERE ID_NO = #{ idNo }
+           AND COMPANY_NO = #{ companyNo }
+</select>
+
+<select id="selectjobNo" resultType="_int">
+        SELECT
+                JOB_NO
+          FROM TBL_EMPLOYEE
+         WHERE ID_NO = #{ idNo }
+           AND COMPANY_NO = #{ companyNo }
+</select>
+
+<select id="selectMypage" resultMap="selectMypageMap">
+         SELECT
+              E.MEMBER_NO
+            , E.KOREAN_NAME
+            , E.SSN
+            , E.ENGLISH_NAME
+            , E.SPECIALITY
+            , E.FAMILY_ORIGIN_ADDRESS
+            , E.ADDRESS
+            , E.PHONE
+            , E.TEL
+            , E.DEPARTMENT_PHONE
+            , E.EMAIL
+            , E.GENDER
+            , E.NATIONAL
+            , E.HIRE_DATE
+            , E.ADDRESS_DETAIL
+            , E.FAMILY_ORIGIN_ADDRESS_DETAIL
+            , M.MEMBER_ID
+            , J.JOB_NAME
+            , D.DEPARTMENT_NAME
+            , R.SALARY_STEP_BY_RANK
+        FROM TBL_EMPLOYEE E
+        JOIN TBL_MEMBER M ON E.ID_NO = M.ID_NO
+        JOIN TBL_JOB J ON E.COMPANY_NO = J.COMPANY_NO
+        JOIN TBL_DEPARTMENT D ON E.DEPARTMENT_NO = D.DEPARTMENT_NO
+        JOIN TBL_EMP_SALARY_STEP R ON E.COMPANY_NO = R.COMPANY_NO
+       WHERE E.ID_NO = #{ idNo } 
+         AND E.COMPANY_NO = #{ companyNo } 
+         AND J.JOB_NO = #{ jobNo } 
+         AND R.MEMBER_NO = #{ memberNo }
+</select>
+
+<update id="updateEmp" parameterType="com.nextLevel.hero.humanResource.model.dto.MyPageDTO" >
+        UPDATE  TBL_EMPLOYEE E
+           SET 
+              E.SPECIALITY = #{ myPageDTO.speciality }
+            , E.FAMILY_ORIGIN_ADDRESS = #{ myPageDTO.familyOriginAddress }
+            , E.FAMILY_ORIGIN_ADDRESS_DETAIL = #{ myPageDTO.familyOriginAddressDetail }
+            , E.ADDRESS = #{ myPageDTO.address }
+            , E.ADDRESS_DETAIL = #{ myPageDTO.addressDetail }
+            , E.PHONE = #{ myPageDTO.phone }
+            , E.TEL = #{ myPageDTO.tel }
+            , E.DEPARTMENT_PHONE = #{ myPageDTO.departmentPhone }
+            , E.EMAIL = #{ myPageDTO.email }
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND ID_NO =#{ idNo }
+</update>
+
+<update id="updateMypage" parameterType="com.nextLevel.hero.humanResource.model.dto.MyPageDTO" >
+        UPDATE  TBL_EMP_UPDATE E
+           SET 
+              E.COMPANY_NO = #{ companyNo }
+            , E.UPDATE_NO = SEQ_EMP_UPDATE_NO.NEXTVAL
+            , E.MEMBER_NO = #{ myPageDTO.memberNo }
+            , E.KOREAN_NAME = #{ myPageDTO.koreanName }
+            , E.SSN = #{ myPageDTO.ssn }
+            , E.ENGLISH_NAME = #{ myPageDTO.englishName }
+            , E.SPECIALITY = #{ myPageDTO.speciality }
+            , E.FAMILY_ORIGIN_ADDRESS = #{ myPageDTO.familyOriginAddress }
+            , E.ADDRESS = #{ myPageDTO.address }
+            , E.PHONE = #{ myPageDTO.phone }
+            , E.TEL = #{ myPageDTO.tel }
+            , E.DEPARTMENT_PHONE = #{ myPageDTO.departmentPhone }
+            , E.EMAIL = #{ myPageDTO.email }
+            , E.GENDER = #{ myPageDTO.gender }
+            , E.NATIONAL = #{ myPageDTO.national }
+            , E.HIRE_DATE = #{ myPageDTO.hireDate }
+            , E.UPDATE_DATE = SYSDATE
+            , E.ID_NO = #{ idNo }
+            , E.ADDRESS_DETAIL = #{ myPageDTO.addressDetail }
+            , E.FAMILY_ORIGIN_ADDRESS_DETAIL = #{ myPageDTO.familyOriginAddressDetail }
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND ID_NO =#{ idNo }
+</update>
+
+
+
+
+
+
 </mapper>
