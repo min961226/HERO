@@ -25,12 +25,27 @@
 	width: 50px;
 }
 .totalTbl input {
-	width: 80px;
+	width: 90px;
 	text-align: center;
 	vertical-align : middle;
 	background-color: rgba( 255, 255, 255, 0 );
 	border: none;
 	outline: none;
+}
+
+#payDetail input {
+	width: 80%;
+	text-align: center;
+	vertical-align : middle;
+	background-color: rgba( 255, 255, 255, 0 );
+	border: none;
+	outline: none;
+
+}
+
+#deductDetail input {
+	width: 80%;
+	text-align: center;
 }
 
 </style>
@@ -62,14 +77,14 @@
 		                                        	 	<tr>
 		                                        	 		<td colspan="2"><input type="radio" class="form-check-input" name="category" id="salary" value="급여" style="padding:5px;" required><label style="padding:5px;">급여</label>
 		                                        	 		<input type="radio" class="form-check-input" name="category" id="bonus" value="상여" required><label style="padding: 5px;">상여</label>
-		                                        	 		<select name="bonusCategory" id="bonusCategory"></select></td>
+		                                        	 		<select name="bonusCategory" id="bonusCategory"></select></td>		                                        
 		                                        	 	</tr>
 		                                        	 	<tr>
                                               		 		<td><label>지급일자</label></td>
-                                              		 		<td><input type="date" name="searchPayDate" id="searchPayDate"></td>
+                                              		 		<td><input type="date" name="searchPayDate" id="searchPayDate"></td>                                              		 		
                                              		  	<tr>
                                              		  		<td><label>귀속년월</label></td>
-                                             		  		<td><input type="text" name="year" style="width:50px;" id="year"><label style="padding: 5px;">년</label><input type="text" name="month" id="month" style="width:30px;"><label style="padding: 5px;">월</label></td>
+                                             		  		<td><input type="text" name="year" style="width:50px;" id="year"><label style="padding: 5px;">년</label><input type="text" name="month" id="month" style="width:30px;"><label style="padding: 5px;">월</label></td>                                             		  		
                                              		  	</tr>	
                                              		 </table> 	                                            	                                              		 												
 													</form>
@@ -82,14 +97,14 @@
 											<div class="card">
 		                                        <div class="card-body">
 		                                        <p class="sub-header"><code>자동 연산</code> 항목입니다</p>		                                        	
-													<table class="table table-sm table-borderless mb-0">																			
+													<table class="table table-sm table-borderless mb-0" th:if="${not #strings.isEmpty(basicSalList)}">																			
 														<tr>
 															<td style="width:30%"><label>지급 인원</label></td>
-															<td><input type="text" style="width:80px;"><label style="padding:5px;">명</label></td>
+															<td><input type="text" style="width:80px; text-align: right;" id="totalNum" readonly><label style="padding:5px;">명</label></td>
 														</tr>
 														<tr>
 															<td style="width:30%"><label>지급 총액</label></td>
-															<td><input type="text"><label style="padding:5px;">원</label></td>
+															<td><input type="text" id="totalSum" style="text-align: right;" readonly><label style="padding:5px;">원</label></td>
 														</tr>
 													</table>
 													
@@ -115,8 +130,7 @@
 																	<th>성 명</th>
 																	<th>소 속</th>
 																	<th>직 급</th>
-																	<th>호 봉</th>
-																	<th>연장근로시수</th>
+																	<th>호 봉</th>																	
 																	<th>지급총액</th>
 																	<th>공제총액</th>
 																	<th>실지급액</th>
@@ -125,12 +139,14 @@
 														
 															<tbody class="totalTbl">
 																<tr th:each="sal, salStat : ${basicSalList}" th:if="${not #strings.isEmpty(basicSalList)}">
+																	<td style="display:none"><input th:value="${sal.payDate}" class="payDate"></td>
+																	<td style="display:none"><input th:value="${sal.category}" class="category"></td>
+																	<td style="display:none"><input th:value="${sal.yearAndMonth}" class="year"></td>								
 																	<td><input type="text" readonly th:value="${sal.memberNo}" class="memberNo" th:id="${'memberNo' + salStat.index }"></td>
 																	<td><input type="text" readonly th:value="${sal.memberName}" class="memberName" th:id="${'memberName' + salStat.index }"></td>
 																	<td><input type="text" readonly th:value="${sal.departmentName}" class="departmentName" th:id="${'departmentName' + salStat.index}"></td>
 																	<td><input type="text" readonly th:value="${sal.rank}" class="rank" th:id="${'rank' + salStat.index}"></td>
-																	<td><input type="text" readonly th:value="${sal.salaryStep}" class="salaryStep" th:id="${'salaryStep' + salStat.index}"></td>
-																	<td><input type="text" readonly class="addWorkHour"></td>
+																	<td><input type="text" readonly th:value="${sal.salaryStep}" class="salaryStep" th:id="${'salaryStep' + salStat.index}"></td>											
 																	<td><input type="text" readonly th:value="${sal.salaryAmount}" class="salaryTotal" th:id="${'salaryTotal' + salStat.index}"></td>
 																	<td><input type="text" readonly th:value="${sal.deductAmount}" class="deductTotal" th:id="${'deductTotal' + salStat.index}"></td>
 																	<td><input type="text" readonly th:value="${sal.transferAmount}" class="transferTotal" th:id="${'transferTotal' + salStat.index}"></td>																	
@@ -159,104 +175,33 @@
 		                            <div class="card">
 		                                <div class="card-body">
 		                                    <div class="row">
+		                                    	<input type="text" style="display: none;" id="personalmemNo">
 		                                    	<table class="table table-bordered mb-0 text-center well">
 													<thead class="table-light">
 														<tr>
-															<th colspan="2" style="width: 50%;">항 목</th>
+															<th style="width: 50%;">항 목</th>
 															<th>금 액</th>
 														</tr>
 													</thead>
 														
-													<tbody id="detail">
-														<tr>
-															<td rowspan="8" class="textmode"><b>지급 금액</b></td>															
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="salaryAmount"></td>
-														</tr>
-														<tr>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="salaryAmount"></td>
-														</tr>
-														<tr>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="salaryAmount"></td>
-														</tr>
-														<tr>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="salaryAmount"></td>
-														</tr>
-														<tr>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="salaryAmount"></td>
-														</tr>
-														<tr>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="salaryAmount"></td>
-														</tr>
-														<tr>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="salaryAmount"></td>
-														</tr>
-														<tr>
-															<td><b>지급 총액</b></td>
-															<td><input type="text" readonly class="salarySum"></td>
-														</tr>
-														<tr>
-															<td rowspan="8" class="textmode"><b>공제 금액</b></td>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="deductAmount"></td>
-														</tr>
-														<tr>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="deductAmount"></td>
-														</tr>
-														<tr>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="deductAmount"></td>
-														</tr>
-														<tr>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="deductAmount"></td>
-														</tr>
-														<tr>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="deductAmount"></td>
-														</tr>
-														<tr>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="deductAmount"></td>
-														</tr>
-														<tr>
-															<td><input type="text" readonly class="categoryName"></td>
-															<td><input type="text" readonly class="deductAmount"></td>
-														</tr>
-														<tr>
-															<td><b>공제 총액</b></td>
-															<td><input type="text" readonly class="deductSum"></td>
-														</tr>
+													<tbody id="payDetail">
+														
+													</tbody>
+													<tbody id="deductDetail">
+														
 													</tbody>
 												</table>
 		                                    </div>
 		                                </div>
 		                            </div>
 		                        </div>
-		                        <!-- 연산 처리를 위한 div 공간 -->
-		                        <div style="display: none;">
-			                        <table class="table table-striped dt-responsive nowrap w-100 well">
-										<tbody id="">
-											<tr>
-												<td><input type="text" readonly></td>
-											</tr>
-										</tbody>
-									</table>		
-		                        </div>
 							</div>
 						</div>
 					</div>
 				</div>
 			<div style="float: right; padding: 5px;">
-				<button type="submit" id="save" class="btn btn-soft-info" style="margin:5px; display:none;">변경저장</button>
-				<button type="submit" id="finish" class="btn btn-info" style="margin:5px; display:none;">정산완료</button>
+				<button type="button" id="save" class="btn btn-soft-info" style="margin:5px; display:none;">변경저장</button>
+				<button type="button" id="finish" class="btn btn-info" style="margin:5px; display:none;">정산완료</button>
 			</div>
 			</div>
 			<div th:include="common/footer.html"></div>
@@ -290,7 +235,6 @@
 			$("#year").val(year);
 			$("#month").val(month);
 		});
-		
 		
 	});
 	
@@ -360,7 +304,8 @@
 								}
 							
 							})
-						
+				
+					
 				} else {
 					$("#searchForm").attr("action", "/mngSalary/historySalAndBonus");
 					$("#searchForm").trigger("submit");
@@ -383,19 +328,240 @@
 	
 //		$("#checkAdd").show();			
 //		$("#zero").show();
-//		$("#save").show();
-//		$("#finish").show();
+
 		
 		
 	});
 	
 	$("#totalList tbody tr").click(function() {
 		console.log("tr 클릭됨");
+		const memNo = $(this).find("input[id^=memberNo]").val();
+		
+		$("#personalmemNo").val(memNo);
+		
+		const category = $(".category").val();
+		const searchPayDate = $("#searchPayDate").val();
+		const yearAndMon = $(".year").val();
+		let payTotal = 0;
+		let deductTotal = 0;
+		
+		$.ajax({
+			url: "personalDetail",
+			method: "POST",
+			data: { "memberNo" : memNo, "category" : category, "searchPayDate" : searchPayDate, "yearAndMonth" : yearAndMon},
+			success: function(result) {
+				const pay = $("#payDetail");
+				const deduct = $("#deductDetail");
+				pay.html("");
+				deduct.html("");
+				
+				let paySum = 0;
+				let deductSum = 0;
+				
+				
+				for(let index in result) {
+					if((result[index].divNo) == 0) {
+						pay.append($("<tr>").append($("<th>").text(result[index].salaryName))
+											.append($("<td>").append($("<input>").val(result[index].salaryAmount).css({"text-align":"right"})))
+								);
+						paySum += result[index].salaryAmount;
+						pay.find("input").attr("readonly", true);
+						
+					} else {
+						
+						deduct.append($("<tr>").append($("<th>").text(result[index].salaryName))
+											   .append($("<td>").append($("<input>").val(result[index].salaryAmount).css({"text-align":"right"})))
+								);
+						deductSum += result[index].salaryAmount;
+						if(result[index].updatable == "N") {
+							deduct.find("input").attr("readonly", true).css({"background-color": "rgba( 255, 255, 255, 0 )", "border": "none", "outline": "none", "text-align" : "right"});
+						} else {
+							$("#save").css("display", "inline-block");
+							$("#finish").css("display", "inline-block");		
+							
+						}
+					}
+				};
+				
+				pay.append($("<tr>").append($("<th>").text("지급총계").css({"background-color":"rgba(67,211,158,.1)"}))
+									.append($("<td>").append($("<input>").val(paySum).css({"text-align":"right"}))
+											.css({"background-color":"rgba(67,211,158,.1)"}))
+						);
+				
+				deduct.append($("<tr>").append($("<th>").text("공제총계").css({"background-color":"rgba(37,194,227,.1)"}))
+						   			   .append($("<td>").append($("<input>").val(deductSum)
+						   					   			.css({"background-color": "rgba( 255, 255, 255, 0 )", "border": "none", "outline": "none", "text-align" : "right"}))
+						   					  .css({"background-color":"rgba(37,194,227,.1)"}))
+						);
+				
+				
+			},
+			error: function(xhr) {
+				Swal.fire({
+	       			  position: 'center',
+	       			  icon: 'error',
+	       			  title: '세부 내역 조회에 실패하였습니다.',
+	       			  showConfirmButton: false,
+	       			  timer: 1500,
+	       			  width: 600
+	       		})
+			}
+		});
+		
+	});
+	
+	if(!$(".totalTbl").isEmpty) {
+		
+		$("#searchPayDate").val($(".payDate").val());
+		const yearAndMonth = $(".year").val();
+		let dateSplit = yearAndMonth.split("-");
+		
+		$("#year").val(dateSplit[0]);
+		$("#month").val(dateSplit[1]);
+		
+		
+		if($(".category").val() == '급여') {
+			$("input:radio[id=salary]").prop("checked", true);
+		} else if($(".category").val() == '상여') {
+			$("input:radio[id=bonus]").prop("checked", true);
+		}
+		
+		const tbody = $("#totalList > tbody");
+		const rows = tbody.children();
+		let totalSum = 0;
+		let totalNum = 0;
+		
+		rows.each(function() {			
+			totalSum += parseInt($(this).find(".salaryTotal").val());
+			totalNum += 1;
+		}); 
+		
+		$("#totalNum").val(totalNum);
+		$("#totalSum").val(totalSum);
+	}
+	
+	$("#deductDetail").change(function() {
+		
+		const tbody = $("#deductDetail");
+		const rows = tbody.children();
+		
+		let totalSum = 0;
+		
+		rows.not(":last").each(function() {
+			
+			totalSum += parseInt($(this).find("input").val());
+			console.log(totalSum);
+		});
+		
+		tbody.find("input:last").val(totalSum);
 		
 	});
 	
 	
 	
+	$("#finish").click(function() {
+		const deduct = $("#deductDetail");
+		deduct.children("tr").find("input").attr("readonly", true).css({"background-color":"rgba( 255, 255, 255, 0 )", "border" : "none", "outline" : "none"});
+
+		Swal.fire({
+			  title: '정산을 완료하시겠습니까?',
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#25c2e3',
+			  cancelButtonColor: '#43d39e',
+			  confirmButtonText: '예',
+			  cancelButtonText: '아니오'
+			}).then((data) => {
+					if(data.isConfirmed) {
+						Swal.fire({
+			       			  position: 'center',
+			       			  icon: 'success',
+			       			  title: '정산을 완료했습니다.',
+			       			  showConfirmButton: false,
+			       			  timer: 1500,
+			       			  width: 600
+			       		})
+						location.href="/mngSalary/salaryAndBonus";
+					} else {
+						location.href="#";
+					}
+				
+				})
+		
+	});
+	
+	$("#save").click(function() {
+		
+		const memNo = $("#personalmemNo").val();
+		const salOrBonus = $(".category").val();
+		const searchDate = $("#searchPayDate").val();
+		const yearAndMon = $(".year").val();
+		let salName = ""
+		let salAmount = 0;
+		
+		const tbody = $("#deductDetail");
+		const rows = tbody.children();
+		
+		const deductList = [];
+		
+		rows.each(function() {
+			const update = {};
+			update.memberNo = memNo;
+			update.salOrBonus = salOrBonus;
+			update.payDate = searchDate;
+			update.imputedDate = yearAndMon;
+			update.salaryName = $(this).find("th").text();
+			update.salaryAmount = $(this).find("input").val();
+			
+			deductList.push(update);
+			
+			console.log(update);
+		});
+		
+		let updateList = JSON.stringify(deductList);
+		console.log(updateList);
+		$.ajax({
+			url: "personalUpdate",
+			method: "POST",
+			traditional: true,
+			data: { updateList : updateList },
+			success: function(result) {
+				if(result == "1") {
+					Swal.fire({
+		       			  position: 'center',
+		       			  icon: 'success',
+		       			  title: '세부 내역 변경에 성공하였습니다.',
+		       			  showConfirmButton: false,
+		       			  timer: 1500,
+		       			  width: 600
+		       		}).then((result) => {
+		       			  location.reload();
+		       				})
+				} else {
+					Swal.fire({
+		       			  position: 'center',
+		       			  icon: 'error',
+		       			  title: '변경할 내역이 없습니다.',
+		       			  showConfirmButton: false,
+		       			  timer: 1500,
+		       			  width: 600
+		       		}).then((result) => {
+			        	   location.href="#";
+       				})
+				}
+			},
+			error: function(xhr) {
+				Swal.fire({
+	       			  position: 'center',
+	       			  icon: 'error',
+	       			  title: '세부 내역 변경에 실패하였습니다.',
+	       			  showConfirmButton: false,
+	       			  timer: 1500,
+	       			  width: 600
+	       		})
+			}
+		});
+	});
 	
 	</script>
 </body>

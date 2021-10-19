@@ -28,9 +28,11 @@
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
 							<div>
-								<label style="padding:10px;">지급일자 </label><input type="date"><br>
-								<label style="padding:10px;">귀속년월 </label><input type="text" style="width:70px;"><label style="padding:5px;">년</label><input type="text" style="width:40px;"><label style="padding:5px;">월</label>
-								<button type="button" class="btn btn-outline-primary" style="margin:10px;">검 색</button>
+								<form action="/mngSalary/depositHistory" method="GET">
+									<label style="padding:10px;">지급일자 </label><input type="date" name="searchDate" id="searchDate"><br>
+									<label style="padding:10px;">귀속년월 </label><input type="text" style="width:70px;" id="year" name="year" placeholder="2021"><label style="padding:5px;">년</label><input type="text" style="width:40px;" id="month" name="month" placeholder="09"><label style="padding:5px;">월</label>
+									<button type="submit" class="btn btn-outline-primary" style="margin:10px;">검 색</button>
+								</form>
 							</div>
 							<br>
 							<div class="card">
@@ -46,7 +48,7 @@
 												<th rowspan = '3' class="thSpan">주민세</th>										
 												<th colspan = '4'>건강보험</th>											
 												<th colspan = '2'>국민연금</th>																							
-												<th colspan = '3'>국민연금</th>
+												<th colspan = '3'>고용보험</th>
 												<th rowspan = '3' class="thSpan">산재보험</th>																							
 												<th rowspan = '3' class="thSpan">기타공제</th>																							
 											</tr>
@@ -72,24 +74,24 @@
 										</thead>
 											
 										<tbody>
-											<tr >
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
+											<tr th:each="deposit : ${depositList}">
+												<td th:text="${deposit.memberNo}" ></td>
+												<td th:text="${deposit.memberName}"></td>
+												<td th:text="${deposit.departmentName}"></td>
+												<td th:text="${deposit.yearAndMonth}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.incomeTax, 3, 'COMMA')}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.residentTax, 3, 'COMMA')}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.health, 3, 'COMMA')}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.longterm, 3, 'COMMA')}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.health, 3, 'COMMA')}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.longterm, 3, 'COMMA')}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.pension, 3, 'COMMA')}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.pension, 3, 'COMMA')}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.workerEmp, 3, 'COMMA')}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.workerEmp, 3, 'COMMA')}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.employerEmp, 3, 'COMMA')}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.industry, 3, 'COMMA')}"></td>
+												<td th:text="${#numbers.formatInteger(deposit.etcDeduct, 3, 'COMMA')}"></td>
 											</tr>
 										</tbody>
 									</table>

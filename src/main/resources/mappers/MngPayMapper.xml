@@ -2,11 +2,106 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nextLevel.hero.mngPay.model.dao.MngPayMapper">
 
+	<resultMap type="com.nextLevel.hero.mngPay.model.dto.MngPayDTO" id="payListResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="category" column="SALARY_OR_BONUS"/>
+		<result property="yearAndMonth" column="IMPUTED_YEAR_AND_MONTH"/>
+		<result property="payDate" column="PAY_DATE"/>
+		<result property="totalPay" column="TOTAL_PAY"/>
+		<result property="totalCount" column="TOTAL_COUNT"/>
+		<result property="confirmYn" column="CONFIRM_YN"/>
+	</resultMap>
 
+	<resultMap type="com.nextLevel.hero.mngPay.model.dto.MngPayListDTO" id="detailListResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="idNo" column="ID_NO"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="yearAndMonth" column="IMPUTED_YEAR_AND_MONTH"/>
+		<result property="payDate" column="PAY_DATE"/>
+		<result property="salaryAmount" column="SALARY_AMOUNT"/>
+		<result property="deductAmount" column="DEDUCTIBLE_AMOUNT"/>
+		<result property="transferAmount" column="TRANSFER_AMOUNT"/>
+		<result property="bankCode" column="BANK_CODE"/>
+		<result property="bankName" column="BANK_NAME"/>
+		<result property="accountNo" column="ACCOUNT_NO"/>	
+	</resultMap>
 
+	<select id="selectPayList" resultMap="payListResultMap">
+		SELECT
+		       A.SALARY_OR_BONUS
+		     , A.IMPUTED_YEAR_AND_MONTH
+		     , A.PAY_DATE
+		     , SUM(A.TRANSFER_AMOUNT) AS TOTAL_PAY
+		     , COUNT(*) AS TOTAL_COUNT
+		     , A.CONFIRM_YN
+		  FROM TBL_SALARY_AND_BONUS_LIST A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		 <if test="searchDate != null and '' != searchDate">
+		   AND A.PAY_DATE = #{ searchDate }
+		 </if>
+		 <if test="category != null and '' != category">
+		   AND A.SALARY_OR_BONUS = #{ category }
+		 </if>
+		 GROUP BY (A.SALARY_OR_BONUS, A.IMPUTED_YEAR_AND_MONTH, A.PAY_DATE, A.CONFIRM_YN) 
+		 ORDER BY A.PAY_DATE DESC      	
+	</select>
 
+	<update id="updateSalAndBonusConfirm">
+		UPDATE
+		       TBL_SALARY_AND_BONUS_LIST
+		   SET CONFIRM_YN = 'Y'
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND PAY_DATE = #{ searchPayDate }
+		   AND IMPUTED_YEAR_AND_MONTH = #{ yearAndMonth }
+		   AND SALARY_OR_BONUS = #{ category }      	
+	</update>
 
-
-
+	<select id="selectPayListDetail" resultMap="detailListResultMap">
+		SELECT
+               A.COMPANY_NO
+             , A.MEMBER_NO
+             , A.IMPUTED_YEAR_AND_MONTH
+             , A.PAY_DATE
+             , A.SALARY_AMOUNT
+             , A.DEDUCTIBLE_AMOUNT
+             , A.TRANSFER_AMOUNT
+             , A.SALARY_OR_BONUS
+             , B.MEMBER_NAME
+             , B.DEPARTMENT_NAME
+             , C.BANK_CODE
+             , C.ACCOUNT_NO
+             , D.BANK_NAME
+          FROM TBL_SALARY_AND_BONUS_LIST A
+          LEFT JOIN TBL_DETAIL_PAY B ON (B.MEMBER_NO = A.MEMBER_NO)    
+	      LEFT JOIN TBL_EMP_ACCOUNT_UPDATE C ON (A.MEMBER_NO = C.MEMBER_NO)
+          LEFT JOIN TBL_BANK D ON (C.BANK_CODE = D.BANK_CODE)
+         WHERE (A.MEMBER_NO, C.ENROLL_DATE) IN (SELECT
+                                                       C1.MEMBER_NO
+                                                     , MAX(C1.ENROLL_DATE)
+                                                  FROM TBL_EMP_ACCOUNT_UPDATE C1     
+                                                 WHERE C1.ENROLL_DATE <![CDATA[<=]]> #{ searchPayDate }
+                                                 GROUP BY C1.MEMBER_NO)        
+         GROUP BY A.COMPANY_NO
+             , A.MEMBER_NO
+             , A.IMPUTED_YEAR_AND_MONTH
+             , A.PAY_DATE
+             , A.SALARY_AMOUNT
+             , A.DEDUCTIBLE_AMOUNT
+             , A.TRANSFER_AMOUNT
+             , A.SALARY_OR_BONUS
+             , B.MEMBER_NAME
+             , B.DEPARTMENT_NAME
+             , C.BANK_CODE
+             , C.ACCOUNT_NO
+             , D.BANK_NAME
+        HAVING A.COMPANY_NO = #{ companyNo }
+		   AND A.IMPUTED_YEAR_AND_MONTH = #{ yearAndMonth }
+		   AND A.SALARY_OR_BONUS = #{ category }
+		   AND A.PAY_DATE = #{ searchPayDate }
+		 ORDER BY A.MEMBER_NO   
+	</select>
+	
 
 </mapper>

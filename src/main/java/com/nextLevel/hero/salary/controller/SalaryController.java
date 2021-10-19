@@ -15,8 +15,10 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nextLevel.hero.member.model.dto.UserImpl;
+import com.nextLevel.hero.mngSalary.model.dto.DetailPayDTO;
 import com.nextLevel.hero.salary.model.dto.BankListDTO;
 import com.nextLevel.hero.salary.model.dto.MyAccountDTO;
+import com.nextLevel.hero.salary.model.dto.SalaryDTO;
 import com.nextLevel.hero.salary.model.service.SalaryService;
 
 @Controller
@@ -54,20 +56,14 @@ public class SalaryController {
 	
 	/* 직원 본인 계좌 등록 */
 	@PostMapping("/applyAccount")
-	public ModelAndView applyAccount() {
+	public ModelAndView applyAccount(@AuthenticationPrincipal UserImpl user, MyAccountDTO add) {
+		
+		
 		
 		return null;
 	}
 	
-	
-	
-	/* 직원 본인 급여명세서 조회 */
-	@GetMapping("/list")
-	public String salaryList() {
-		return "salary/list";
-	}
-	
-	
+	/* 은행 목록 조회 */
 	@PostMapping(value="bankList", produces="application/json; charset=UTF-8")
 	@ResponseBody
 	public String getBankList() {
@@ -85,6 +81,42 @@ public class SalaryController {
 		
 	}
 	
+	/* 직원 본인 급여명세서 조회 */
+	@GetMapping("/list")
+	public ModelAndView salaryList(@AuthenticationPrincipal UserImpl user, ModelAndView mv, SalaryDTO search) {
+		
+		search.setIdNo(user.getNo());
+		search.setCompanyNo(user.getCompanyNo());
+		
+		List<SalaryDTO> salList = salaryService.selectMyPaymentList(search);
+		
+		mv.addObject("salList", salList);
+		mv.setViewName("salary/list");
+		
+		return mv;
+	}
+	
+	
+	/* 직원 본인 급여명세서 세부 조회 */
+	@PostMapping(value="detailList", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String selectDetailList(@AuthenticationPrincipal UserImpl user, SalaryDTO search) {
+		
+		search.setIdNo(user.getNo());
+		search.setCompanyNo(user.getCompanyNo());
+		
+		List<DetailPayDTO> detailList = salaryService.selectDetailList(search);
+		
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd")
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.serializeNulls()
+				.disableHtmlEscaping()
+				.create();
+	
+		return gson.toJson(detailList);		
+	}
 	
 	
 }

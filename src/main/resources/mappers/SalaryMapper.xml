@@ -5,6 +5,7 @@
 		<id property="companyNo" column="COMPANY_NO"/>
 		<id property="bankCode" column="BANK_CODE"/>
 		<result property="bankName" column="BANK_NAME"/>
+		<result property="accountNo" column="ACCOUNT_NO"/>
 		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="memberName" column="MEMBER_NAME"/>
 		<result property="departmentName" column="DEPARTMENT_NAME"/>
@@ -16,6 +17,49 @@
 		<id property="code" column="BANK_CODE"/>
 		<result property="bankName" column="BANK_NAME"/>
 	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.salary.model.dto.SalaryDTO" id="paymentResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="category" column="SALARY_OR_BONUS"/>
+		<result property="yearAndMonth" column="IMPUTED_YEAR_AND_MONTH"/>
+		<result property="payDate" column="PAY_DATE"/>
+		<result property="transferAmount" column="TRANSFER_AMOUNT"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="rank" column="RANK"/>
+		<result property="salaryStep" column="SALARY_STEP"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.DetailPayDTO" id="payListResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<id property="divNo" column="SALARY_NO"/>
+		<result property="idNo" column="ID_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="salaryName" column="SALARY_NAME"/>
+		<result property="imputedDate" column="IMPUTED_YEAR_AND_MONTH"/>
+		<result property="payDate" column="PAY_DATE"/>
+		<result property="salaryAmount" column="SALARY_AMOUNT"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="salOrBonus" column="SALARY_OR_BONUS"/>
+		<result property="deductYn" column="DEDUCTION_YN"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.DetailPayDTO" id="deductListResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<id property="divNo" column="EMP_DEDUCT_NO"/>
+		<result property="idNo" column="ID_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="salaryName" column="DEDUCTION_NAME"/>
+		<result property="imputedDate" column="IMPUTED_YEAR_AND_MONTH"/>
+		<result property="payDate" column="PAY_DATE"/>
+		<result property="salaryAmount" column="DEDUCTIBLE_AMOUNT"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="salOrBonus" column="SALARY_OR_BONUS"/>
+		<result property="deductYn" column="DEDUCTION_YN"/>
+	</resultMap>
+	
+	
 	
 	
 	<select id="selectAccountList" resultMap="accountListResultMap" parameterType="_int">
@@ -43,6 +87,53 @@
 	         , A.BANK_NAME
           FROM TBL_BANK A
 	</select>
+	
+	<select id="selectMyPaymentList" resultMap="paymentResultMap">
+		SELECT
+		       A.SALARY_OR_BONUS
+		     , A.IMPUTED_YEAR_AND_MONTH
+		     , A.PAY_DATE
+		     , A.TRANSFER_AMOUNT
+		     , A.RANK
+		     , A.SALARY_STEP
+		     , B.KOREAN_NAME AS MEMBER_NAME
+		  FROM TBL_SALARY_AND_BONUS_LIST A
+		  JOIN TBL_EMPLOYEE B ON (A.ID_NO = B.ID_NO)
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		   AND A.ID_NO = #{ idNo }
+		   
+		 <if test="searchDate != null and '' != searchDate">
+		   AND A.PAY_DATE = #{ searchDate }
+		 </if>		  
+		 ORDER BY A.PAY_DATE DESC   	
+	</select>
+	
+	<select id="listPayDetail" resultMap="payListResultMap">
+		SELECT 
+		       A.SALARY_NAME
+		     , A.SALARY_AMOUNT
+		  FROM TBL_DETAIL_PAY A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		   AND A.ID_NO = #{ idNo }
+		   AND A.PAY_DATE = #{ searchDate }
+		   AND A.IMPUTED_YEAR_AND_MONTH = #{ yearAndMonth }
+		   AND A.SALARY_OR_BONUS = #{ category }  
+	</select>
+	
+	<select id="listDeductDetail" resultMap="deductListResultMap">
+		SELECT 
+		       A.DEDUCTION_NAME
+		     , A.DEDUCTIBLE_AMOUNT
+		  FROM TBL_DETAIL_DEDUCTION A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		   AND A.ID_NO = #{ idNo }
+		   AND A.PAY_DATE = #{ searchDate }
+		   AND A.IMPUTED_YEAR_AND_MONTH = #{ yearAndMonth }
+		   AND A.SALARY_OR_BONUS = #{ category }  
+	</select>
+	
+	
+	
 	
 	
 </mapper>

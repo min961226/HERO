@@ -4,6 +4,13 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style>
+ #payList {
+ 	vertical-align : middle;
+ 	text-align: center;
+ }
+</style>
 </head>
 <body>
 	<div id="wrapper">
@@ -20,6 +27,94 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div>
+								<form action="" method="get">
+									<input type="radio" class="form-check-input" name="category" id="salary" value="급여" style="padding:5px;"><label style="padding:5px;">급여</label>
+		                            <input type="radio" class="form-check-input" name="category" id="bonus" value="상여"><label style="padding: 5px;">상여</label><br>
+		                            <label style="padding:10px;">지급일자 </label>
+									<input type="date" style="margin:10px;" id="searchDate" name="searchDate">
+									<button type="submit" class="btn btn-outline-primary" id="searchBtn">검 색</button>
+								</form>
+							</div>
+							<br>
+							<div class="card">
+								<div class="card-body">								
+								<table class="table table-striped dt-responsive nowrap w-100" id="payList">
+									<thead>
+										<tr>
+											<th>지급항목</th>											
+											<th>귀속연월</th>											
+											<th>지급일자</th>											
+											<th>이체총액</th>											
+											<th>이체건수</th>											
+											<th>지급여부</th>											
+											<th>상세보기</th>
+											<th>지급승인</th>											
+										</tr>
+									</thead>
+										
+									<tbody>
+										<tr th:each="pay,payStat : ${confirmPayList}">
+											<td th:text="${pay.category}" class="category"></td>
+											<td th:text="${pay.yearAndMonth}" class="yearAndMonth"></td>
+											<td th:text="${pay.payDate}" class="payDate"></td>
+											<td th:text="${#numbers.formatInteger(pay.totalPay,3,'COMMA')}"></td>
+											<td th:text="${pay.totalCount}"></td>
+											<td th:text="${pay.confirmYn}" class="confirmYn"></td>											
+											<td><button type="button" class="btn btn-soft-success width-xs" 
+												data-bs-toggle="modal" data-bs-target="#transferList" th:id="'detailPay' + ${payStat.index}">상세보기</button></td>
+											<td><button type="button" class="btn btn-info width-xs" th:if="${pay.confirmYn } == N " th:id="'ok' + ${payStat.index}">지급승인</button>
+												<button type="button" class="btn btn-soft-secondary width-xs" th:unless="${pay.confirmYn } == N " disabled th:id="'ok' + ${payStat.index}">지급승인</button>
+											</td>												
+										</tr>
+									</tbody>
+								</table>
+								<!-- 이체 리스트 모달창 -->
+									<div class="modal fade" id="transferList" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl">
+                                             <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="transferListModal"><b>이체 리스트</b></h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    	<div>	                                                        
+	                                                        <label style="margin:10px;">구   분 :</label><label id="modalCategory" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">귀속년월 :</label><label id="modalDate" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">지급일자 :</label><label id="modalPayDate" style="margin:5px;"></label><br>	                                                        
+                                                    	</div>
+                                                    	<br>                                                    	
+                                                    	<div style="margin:0 auto; padding:20px; height:400px; overflow-y:scroll;">
+				                                            <table class="table mb-0 text-center" id="modalTBL">
+				                                                <thead class="table-light">
+				                                                    <tr>
+				                                                        <th>사원번호</th>
+				                                                        <th>성 명</th>
+				                                                        <th>소 속</th>
+				                                                        <th>지급총액</th>
+				                                                        <th>공제총액</th>
+				                                                        <th>실지급액</th>
+				                                                        <th>지급일자</th>
+				                                                        <th>은행코드</th>
+				                                                        <th>은행명</th>
+				                                                        <th>계좌번호</th>
+				                                                    </tr>
+				                                                </thead>				                                                	
+				                                                <tbody id="transfer">
+				                                                    
+				                                                </tbody>
+				                                            </table>
+				                                        </div>
+                                                    </div>
+                                                   <div class="modal-footer">
+	                                                   	<button type="reset" class="btn btn-success width-xs" data-bs-dismiss="modal">닫기</button>
+	                   									<button type="button" class="btn btn-info width-xs" style="display:none;" id="modalConfirm">승인</button>
+                                                   </div> 
+                                              </div>
+                                        </div>
+                                     </div> <!-- 이체 리스트 모달창 종료 -->                                   
+							   </div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -27,5 +122,184 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script type="text/javascript">
+	
+	$("[id^=ok]").click(function(){
+		
+		const category = $(this).parent().siblings(".category").text();
+		const yearAndMonth = $(this).parent().siblings(".yearAndMonth").text();
+		const payDate = $(this).parent().siblings(".payDate").text();
+		
+		console.log(category);
+		console.log(yearAndMonth);
+		console.log(payDate);
+		
+		Swal.fire({
+			  title: '지급승인 하시겠습니까?',
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#25c2e3',
+			  cancelButtonColor: '#43d39e',
+			  confirmButtonText: '예',
+			  cancelButtonText: '아니오'
+			}).then((data) => {		
+				$.ajax({
+					url:"/mngPay/paySalAndBonusConfirm",
+					method: "POST",
+					data:{ "category" : category, "yearAndMonth" : yearAndMonth, "searchPayDate" : payDate },
+					success: function(result) {
+						if(result == "1") {
+							Swal.fire({
+				       			  position: 'center',
+				       			  icon: 'success',
+				       			  title: '지급 승인 처리를 완료했습니다.',
+				       			  showConfirmButton: false,
+				       			  timer: 1500,
+				       			  width: 600
+				       		}).then((result) => {
+					        	   location.reload();
+		       				})
+						} else {
+							Swal.fire({
+				       			  position: 'center',
+				       			  icon: 'error',
+				       			  title: '잠시 후 다시 시도해주세요.',
+				       			  showConfirmButton: false,
+				       			  timer: 1500,
+				       			  width: 600
+				       		})
+						}
+					},
+					error: function(xhr) {
+						Swal.fire({
+			       			  position: 'center',
+			       			  icon: 'error',
+			       			  title: '잠시 후 다시 시도해주세요.',
+			       			  showConfirmButton: false,
+			       			  timer: 1500,
+			       			  width: 600
+			       		})
+				}
+			})
+	  	})
+	});
+	
+	$("[id^=detailPay]").click(function(){
+		
+		const category = $(this).parent().siblings(".category").text();
+		const yearAndMonth = $(this).parent().siblings(".yearAndMonth").text();
+		const payDate = $(this).parent().siblings(".payDate").text();
+		const confirmYn = $(this).parent().siblings(".confirmYn").text();
+		
+		$("#modalCategory").text(category);
+		$("#modalDate").text(yearAndMonth);
+		$("#modalPayDate").text(payDate);
+		
+		console.log(confirmYn);
+		
+		if(confirmYn =='N') {
+			$("#modalConfirm").css("display", "inline-block");
+		}
+		
+		$.ajax({
+			url: "/mngPay/payListDetail",
+			method: "POST",
+			data: { "category" : category, "yearAndMonth" : yearAndMonth, "searchPayDate" : payDate },
+			success: function(data) {
+				const transfer = $("#transfer");
+				transfer.html("");
+				
+				for(let index in data) {
+					transfer.append($("<tr>").append($("<td>").text(data[index].memberNo))
+											 .append($("<td>").text(data[index].memberName))
+											 .append($("<td>").text(data[index].departmentName))
+											 .append($("<td>").text(data[index].salaryAmount))
+											 .append($("<td>").text(data[index].deductAmount))
+											 .append($("<td>").text(data[index].transferAmount))
+											 .append($("<td>").text(data[index].payDate))
+											 .append($("<td>").text(data[index].bankCode))
+											 .append($("<td>").text(data[index].bankName))
+											 .append($("<td>").text(data[index].accountNo))
+							)
+				}
+				
+			},
+			error: function(xhr) {
+				Swal.fire({
+	       			  position: 'center',
+	       			  icon: 'error',
+	       			  title: '잠시 후 다시 시도해주세요.',
+	       			  showConfirmButton: false,
+	       			  timer: 1500,
+	       			  width: 600
+	       		})
+			}
+		});
+		
+		
+	});
+	
+	$("#modalConfirm").click(function() {
+		
+		const category = $("#modalCategory").text();
+		const yearAndMonth = $("#modalDate").text();
+		const payDate = $("#modalPayDate").text();
+		
+		console.log(category);
+		console.log(yearAndMonth);
+		console.log(payDate);
+		
+		Swal.fire({
+			  title: '지급승인 하시겠습니까?',
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#25c2e3',
+			  cancelButtonColor: '#43d39e',
+			  confirmButtonText: '예',
+			  cancelButtonText: '아니오'
+			}).then((data) => {		
+				$.ajax({
+					url:"/mngPay/paySalAndBonusConfirm",
+					method: "POST",
+					data:{ "category" : category, "yearAndMonth" : yearAndMonth, "searchPayDate" : payDate },
+					success: function(result) {
+						if(result == "1") {
+							Swal.fire({
+				       			  position: 'center',
+				       			  icon: 'success',
+				       			  title: '지급 승인 처리를 완료했습니다.',
+				       			  showConfirmButton: false,
+				       			  timer: 1500,
+				       			  width: 600
+				       		}).then((result) => {
+					        	   location.reload();
+		       				})
+						} else {
+							Swal.fire({
+				       			  position: 'center',
+				       			  icon: 'error',
+				       			  title: '잠시 후 다시 시도해주세요.',
+				       			  showConfirmButton: false,
+				       			  timer: 1500,
+				       			  width: 600
+				       		})
+						}
+					},
+					error: function(xhr) {
+						Swal.fire({
+			       			  position: 'center',
+			       			  icon: 'error',
+			       			  title: '잠시 후 다시 시도해주세요.',
+			       			  showConfirmButton: false,
+			       			  timer: 1500,
+			       			  width: 600
+			       		})
+				}
+			})
+	  	})
+	});
+	
+	
+	</script>
 </body>
 </html>

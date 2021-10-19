@@ -17,11 +17,14 @@ public class DetailPayDTO {
 	private String salOrBonus;
 	private int divNo;
 	private String deductYn;
+	private String updatable;
+	private String confirmYn;
 	
 	public DetailPayDTO() {}
 
 	public DetailPayDTO(int companyNo, int idNo, int memberNo, String salaryName, String imputedDate, Date payDate,
-			int salaryAmount, String departmentName, String memberName, String salOrBonus, int divNo, String deductYn) {
+			int salaryAmount, String departmentName, String memberName, String salOrBonus, int divNo, String deductYn,
+			String updatable, String confirmYn) {
 		super();
 		this.companyNo = companyNo;
 		this.idNo = idNo;
@@ -35,6 +38,8 @@ public class DetailPayDTO {
 		this.salOrBonus = salOrBonus;
 		this.divNo = divNo;
 		this.deductYn = deductYn;
+		this.updatable = updatable;
+		this.confirmYn = confirmYn;
 	}
 
 	public int getCompanyNo() {
@@ -133,12 +138,29 @@ public class DetailPayDTO {
 		this.deductYn = deductYn;
 	}
 
+	public String getUpdatable() {
+		return updatable;
+	}
+
+	public void setUpdatable(String updatable) {
+		this.updatable = updatable;
+	}
+
+	public String getConfirmYn() {
+		return confirmYn;
+	}
+
+	public void setConfirmYn(String confirmYn) {
+		this.confirmYn = confirmYn;
+	}
+
 	@Override
 	public String toString() {
 		return "DetailPayDTO [companyNo=" + companyNo + ", idNo=" + idNo + ", memberNo=" + memberNo + ", salaryName="
 				+ salaryName + ", imputedDate=" + imputedDate + ", payDate=" + payDate + ", salaryAmount="
 				+ salaryAmount + ", departmentName=" + departmentName + ", memberName=" + memberName + ", salOrBonus="
-				+ salOrBonus + ", divNo=" + divNo + ", deductYn=" + deductYn + "]";
+				+ salOrBonus + ", divNo=" + divNo + ", deductYn=" + deductYn + ", updatable=" + updatable
+				+ ", confirmYn=" + confirmYn + "]";
 	}
 
 	

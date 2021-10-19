@@ -29,6 +29,7 @@
 		<result property="note" column="DESCRIPTION"/>
 		<result property="deductionYn" column="DEDUCTION_YN"/>
 		<result property="monthlyStopDate" column="STOP_DATE"/>
+		<result property="salaryNo" column="SALARY_NO"/>
 	
 		<association property="memberInfo" resultMap="memberInfoResult"/>
 	</resultMap>
@@ -82,9 +83,8 @@
 		<result property="bankName" column="BANK_NAME"/>
 		<result property="accountNo" column="ACCOUNT_NO"/>
 		<result property="enrollDate" column="ENROLL_DATE"/>
-		
-		
-		<association property="memberInfo" resultMap="memberInfoResult"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="memberNo" column="MEMBER_NO"/>
 	</resultMap>
 	
 	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngBonusListDTO" id="bonusCategoryResultMap">
@@ -116,6 +116,22 @@
 		<result property="deductYn" column="DEDUCTION_YN"/>
 	</resultMap>
 	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.DetailPayDTO" id="deductListResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<id property="divNo" column="EMP_DEDUCT_NO"/>
+		<result property="idNo" column="ID_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="salaryName" column="DEDUCTION_NAME"/>
+		<result property="imputedDate" column="IMPUTED_YEAR_AND_MONTH"/>
+		<result property="payDate" column="PAY_DATE"/>
+		<result property="salaryAmount" column="DEDUCTIBLE_AMOUNT"/>
+		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="salOrBonus" column="SALARY_OR_BONUS"/>
+		<result property="deductYn" column="DEDUCTION_YN"/>
+		<result property="confirmYn" column="CONFIRM_YN"/>
+	</resultMap>
+	
 	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO" id="monthlySalPayList">
 		<id property="companyNo" column="COMPANY_NO"/>
 		<result property="memberNo" column="MEMBER_NO"/>
@@ -131,6 +147,36 @@
 		<result property="category" column="SALARY_OR_BONUS"/>
 	</resultMap>
 	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MngDepositDTO" id="depositResultMap">
+		<result property="companyNo" column="COMPANY_NO"/>	
+		<result property="memberNo" column="MEMBER_NO"/>	
+		<result property="memberName" column="MEMBER_NAME"/>	
+		<result property="departmentName" column="DEPARTMENT_NAME"/>	
+		<result property="yearAndMonth" column="IMPUTED_YEAR_AND_MONTH"/>	
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.salary.model.dto.MyAccountDTO" id="accountListResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<id property="bankCode" column="BANK_CODE"/>
+		<result property="bankName" column="BANK_NAME"/>
+		<result property="accountNo" column="ACCOUNT_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="enrollDate" column="ENROLL_DATE"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mngSalary.model.dto.MonthlyListDTO" id="MonthlyListResultMap">
+		<id property="companyNo" column="COMPANY_NO"/>
+		<result property="salaryNo" column="SALARY_NO"/>
+		<result property="salaryName" column="SALARY_NAME"/>
+		<result property="regularyYn" column="REGULARLY_YN"/>
+		<result property="payPeriod" column="PAY_PERIOD"/>
+		<result property="salaryAmount" column="SALARY_AMOUNT"/>
+		<result property="deductYn" column="DEDUCTION_YN"/>
+		<result property="annualYn" column="ANNUAL_SALARY_YN"/>
+		<result property="useYn" column="USE_STATUS"/>
+		<result property="targetYn" column="TARGET"/>	
+	</resultMap>
 	
 	<select id="listMngAnnualSalary" resultMap="annualSalaryResultMap" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO">
 		SELECT
@@ -189,7 +235,7 @@
                 AND A.USE_STATUS = 'Y'
          </if>
          <if test="(searchDate != null) and '' != searchDate">
-                AND A.CHANGE_START_DATE <![CDATA[<]]> #{ searchDate } 
+                AND A.CHANGE_START_DATE <![CDATA[<=]]> #{ searchDate } 
          </if>
 	</select>
 	
@@ -223,6 +269,7 @@
 		SELECT
 		       A.COMPANY_NO
 		     , A.ID_NO  
+		     , A.SALARY_NO
              , A.MONTHLY_PAY_CATEGORY
 		     , A.AMOUNT
 		     , A.DESCRIPTION
@@ -242,6 +289,59 @@
         </if>
 	</select>
 	
+	<select id="selectMonthlyList" resultMap="MonthlyListResultMap">
+		SELECT
+		       A.COMPANY_NO
+		     , A.SALARY_NO
+		     , A.SALARY_NAME
+		     , A.REGULARLY_YN
+		     , A.PAY_PERIOD
+		     , A.SALARY_AMOUNT
+		     , A.DEDUCTION_YN
+		     , A.ANNUAL_SALARY_YN
+		  FROM TBL_SALARY_CRITERIA A    
+		 WHERE A.COMPANY_NO = #{ companyNo }    
+		   AND A.USE_STATUS = 'Y'
+		   AND A.REGULARLY_YN = '매월'
+	</select>
+	
+	<select id="selectIdNo" resultType="_int">
+		SELECT
+               A.ID_NO
+          FROM TBL_EMPLOYEE A
+         WHERE A.COMPANY_NO = #{ companyNo }
+           AND A.MEMBER_NO = #{ updateMemNo }	
+	</select>
+	
+	<update id="updatePayStop">
+		UPDATE
+		       TBL_EMP_MONTHLY_SALARY_LIST
+		   SET USE_STATUS = 'N'
+		     , STOP_DATE = #{ monthlyStopDate }
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND MEMBER_NO = #{ memberNo }
+		   AND SALARY_NO = #{ salaryNo }	  
+	</update>
+	
+	<insert id="insertNewMonthPay">
+	    INSERT
+		  INTO TBL_EMP_MONTHLY_SALARY_LIST
+		VALUES
+		(
+		  #{ companyNo }
+		, #{ payCategory }
+		, SYSDATE
+		, #{ amount }
+		, #{ note }
+		, #{ newStartDate }
+		, #{ deductionYn }
+		, #{ memberNo }
+		, #{ salaryNo }
+		, #{ idNo }
+		, DEFAULT
+		, NULL
+		)	
+	</insert>
 	
 	<select id="listMngFourInsuranceList" parameterType="_int" resultMap="fourInsResultMap">
 		SELECT
@@ -310,7 +410,8 @@
              , B.PENSION_INS_SALARY
              , B.PENSION_INSURANCE_FEE
           FROM TBL_EMPLOYEE A
-          JOIN TBL_PERSONAL_INSURANCE_FEE B ON (A.MEMBER_NO = B.MEMBER_NO)         
+          JOIN TBL_PERSONAL_INSURANCE_FEE B ON (A.MEMBER_NO = B.MEMBER_NO)
+          JOIN TBL_DEPARTMENT C ON (A.DEPARTMENT_NO = C.DEPARTMENT_NO)         
          WHERE A.COMPANY_NO = #{ companyNo }
            AND (A.MEMBER_NO, B.HEALTH_INS_START_DATE, B.PENSION_INS_START_DATE) IN (SELECT 
                                                                                             A1.MEMBER_NO
@@ -330,6 +431,12 @@
                                                                                                          </if>
                                                                                                      </where>
                                                                                                        GROUP BY A1.MEMBER_NO)
+         <if test = "searchCondition == 'searchDeptName'">
+           AND C.DEPARTMENT_NAME LIKE '%' || #{ searchValue } || '%'
+         </if>
+         <if test = "searchCondition == 'searchMemberName'">
+           AND A.KOREAN_NAME = #{ searchValue }
+         </if>                                                                                              
 	</select>
 	
 	<select id="selectNewMemberInsFee" resultMap="memberInsFeeResult">
@@ -347,13 +454,21 @@
              , B.PENSION_INS_SALARY
              , B.PENSION_INSURANCE_FEE
           FROM TBL_EMPLOYEE A
-          LEFT JOIN TBL_PERSONAL_INSURANCE_FEE B ON (A.MEMBER_NO = B.MEMBER_NO)         
+          LEFT JOIN TBL_PERSONAL_INSURANCE_FEE B ON (A.MEMBER_NO = B.MEMBER_NO) 
+          JOIN TBL_DEPARTMENT C ON (A.DEPARTMENT_NO = C.DEPARTMENT_NO)        
          WHERE A.COMPANY_NO = #{ companyNo }
            AND B.HEALTH_INS_SALARY IS NULL
            AND B.PENSION_INS_SALARY IS NULL
         <if test="(searchDate != null) and '' != searchDate">  
            AND A.HIRE_DATE <![CDATA[<=]]> #{ searchDate }
-        </if>     
+        </if> 
+        <if test = "searchCondition == 'searchDeptName'">
+           AND C.DEPARTMENT_NAME LIKE '%' || #{ searchValue } || '%'
+        </if>
+        <if test = "searchCondition == 'searchMemberName'">
+           AND A.KOREAN_NAME = #{ searchValue }
+        </if>  
+         ORDER BY A.HIRE_DATE    
 	</select>
 	
 	
@@ -375,8 +490,14 @@
 	 	                                              MAX(A1.INSURANCE_RATE_START_DATE)
 	 	                                         FROM TBL_INSURANCE_RATE A1
 	 	                                        WHERE A1.COMPANY_NO = #{ companyNo }      
+	 	                                        <if test="(searchDate != null) and '' != searchDate">  
 	 	                                          AND A1.INSURANCE_RATE_START_DATE <![CDATA[<=]]> #{ searchDate }     
 	 	                                              ) 
+	 	                                        </if>
+                                                <if test="(searchDate == null) or '' == searchDate">
+                                                  AND A1.INSURANCE_RATE_START_DATE <![CDATA[<=]]> SYSDATE    
+	 	                                              )   
+	 	                                        </if>   
 	</select>	
 	
 	<insert id="updateMonthlyInsurance" parameterType="com.nextLevel.hero.mngSalary.model.dto.MemberInsFeeDTO">
@@ -400,30 +521,49 @@
 	
 	
 	<select id="listmngPayrollAccount" resultMap="memberAccountResultMap">
-		SELECT 
-	           I.COMPANY_NO
-	         , I.MEMBER_NO
-	         , I.MEMBER_NAME
-	         , I.DEPARTMENT_NAME
-	         , I.RANK
-	         , I.ACCOUNT_NO
-	         , I.BANK_NAME	
-	      FROM (SELECT
-	                   A.COMPANY_NO
-	                 , A.MEMBER_NO
-	                 , A.KOREAN_NAME AS MEMBER_NAME
-	                 , B.DEPARTMENT_NAME
-	                 , F.RANK
-	                 , G.ACCOUNT_NO
-	                 , H.BANK_NAME
-	              FROM TBL_EMPLOYEE A
-	              JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
-	              JOIN TBL_EMP_SALARY_STEP C ON (A.MEMBER_NO = C.MEMBER_NO)
-	              JOIN TBL_RANK_SALARY_STEP F ON (C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK)
-	              JOIN TBL_EMP_ACCOUNT G ON (A.MEMBER_NO = G.MEMBER_NO)
-	              LEFT JOIN TBL_BANK H ON (G.BANK_CODE = H.BANK_CODE)
-	             WHERE C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK
-		        )I
+		SELECT
+	            A.COMPANY_NO
+	          , A.MEMBER_NO
+	          , A.KOREAN_NAME AS MEMBER_NAME
+	          , B.DEPARTMENT_NAME
+	          , F.RANK
+	          , G.ACCOUNT_NO
+	          , H.BANK_NAME
+	       FROM TBL_EMPLOYEE A
+	       LEFT JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+	       LEFT JOIN TBL_EMP_SALARY_STEP C ON (A.MEMBER_NO = C.MEMBER_NO)
+	       LEFT JOIN TBL_RANK_SALARY_STEP F ON (C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK)
+	       FULL JOIN TBL_EMP_ACCOUNT G ON (A.MEMBER_NO = G.MEMBER_NO)
+	       LEFT JOIN TBL_BANK H ON (G.BANK_CODE = H.BANK_CODE)
+	      WHERE C.SALARY_STEP_BY_RANK = F.SALARY_STEP_BY_RANK
+		    AND (A.MEMBER_NO, G.ENROLL_DATE) IN (SELECT 
+		                                                G1.MEMBER_NO
+		                                              , MAX(G1.ENROLL_DATE) 
+		                                           FROM TBL_EMP_ACCOUNT_UPDATE G1 
+		                                           <where>
+                                                       <if test="(searchDate != null) and '' != searchDate">  
+                                                         G1.ENROLL_DATE <![CDATA[<=]]> #{ searchDate }  
+                                                       </if>
+                                                       <if test="(searchDate == null) or '' == searchDate">
+                                                         G1.ENROLL_DATE <![CDATA[<=]]> SYSDATE
+                                                       </if>
+                                                    </where>		                                          
+		                                          GROUP BY G1.MEMBER_NO)
+		     OR G.ACCOUNT_NO IS NULL                                     
+		  GROUP BY A.COMPANY_NO
+	          , A.MEMBER_NO
+	          , A.KOREAN_NAME
+	          , B.DEPARTMENT_NAME
+	          , F.RANK
+	          , G.ACCOUNT_NO
+	          , H.BANK_NAME
+         HAVING A.COMPANY_NO = #{ companyNo }
+         <if test = "searchCondition == 'deptName'">
+           AND B.DEPARTMENT_NAME LIKE '%' || #{ searchValue } || '%'
+         </if>
+         <if test = "searchCondition == 'memberName'">
+           AND A.KOREAN_NAME = #{ searchValue }
+         </if>                                                
 	</select>
 	
 	<select id="selectBonusCategory" resultMap="bonusCategoryResultMap" parameterType="_int">
@@ -525,7 +665,15 @@
 	 	                         WHERE C1.COMPANY_NO = #{ companyNo }      
 	 	                           AND C1.START_DATE <![CDATA[<]]> #{ searchStartDate } 
 	 	                         GROUP BY C1.MEMBER_NO    
-	 	                        ) 
+	 	                        )
+	 	   AND (A.MEMBER_NO, C.UPDATE_NO) IN (SELECT
+		                               C1.MEMBER_NO 
+		                             , MAX(C1.UPDATE_NO) AS UPDATE_NO 
+	 	                          FROM TBL_FOUR_INS_HISTORY C1
+	 	                         WHERE C1.COMPANY_NO = #{ companyNo }      
+	 	                           AND C1.START_DATE <![CDATA[<]]> #{ searchStartDate } 
+	 	                         GROUP BY C1.MEMBER_NO    
+	 	                        )                       
 	</select>
 	
 	<select id="selectOneInsFee" resultMap="memberInsFeeResult">
@@ -614,16 +762,175 @@
 	
 	<select id="selectSalOrBonusList" resultMap="monthlySalPayList">
 		SELECT
+               A.COMPANY_NO
+             , A.MEMBER_NO
+             , A.RANK
+             , A.SALARY_STEP
+             , A.IMPUTED_YEAR_AND_MONTH
+             , A.PAY_DATE
+             , A.SALARY_AMOUNT
+             , A.DEDUCTIBLE_AMOUNT
+             , A.TRANSFER_AMOUNT
+             , A.SALARY_OR_BONUS
+             , B.MEMBER_NAME
+             , B.DEPARTMENT_NAME
+          FROM TBL_DETAIL_PAY B
+          LEFT JOIN TBL_SALARY_AND_BONUS_LIST A ON (B.MEMBER_NO = A.MEMBER_NO)
+         GROUP BY A.COMPANY_NO
+             , A.MEMBER_NO
+             , A.RANK
+             , A.SALARY_STEP
+             , A.IMPUTED_YEAR_AND_MONTH
+             , A.PAY_DATE
+             , A.SALARY_AMOUNT
+             , A.DEDUCTIBLE_AMOUNT
+             , A.TRANSFER_AMOUNT
+             , A.SALARY_OR_BONUS
+             , B.MEMBER_NAME
+             , B.DEPARTMENT_NAME
+        HAVING A.COMPANY_NO = #{ companyNo }
+		   AND A.IMPUTED_YEAR_AND_MONTH = #{ yearAndMonth }
+		   AND A.SALARY_OR_BONUS = #{ category }
+		   AND A.PAY_DATE = #{ searchPayDate }	
+	</select>
+	
+	<select id="listPayDetail" resultMap="payListResultMap">
+		SELECT 
+		       A.SALARY_NAME
+		     , A.SALARY_AMOUNT
+		  FROM TBL_DETAIL_PAY A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		   AND A.MEMBER_NO = #{ memberNo }
+		   AND A.PAY_DATE = #{ searchPayDate }
+		   AND A.IMPUTED_YEAR_AND_MONTH = #{ yearAndMonth }
+		   AND A.SALARY_OR_BONUS = #{ category }  
+	</select>
+	
+	<select id="listDeductDetail" resultMap="deductListResultMap">
+		SELECT 
+		       A.DEDUCTION_NAME
+		     , A.DEDUCTIBLE_AMOUNT
+		  FROM TBL_DETAIL_DEDUCTION A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		   AND A.MEMBER_NO = #{ memberNo }
+		   AND A.PAY_DATE = #{ searchPayDate }
+		   AND A.IMPUTED_YEAR_AND_MONTH = #{ yearAndMonth }
+		   AND A.SALARY_OR_BONUS = #{ category }  
+	</select>
+	
+	<select id="checkConfirm" resultType="string">
+		SELECT
+		       A.CONFIRM_YN
+		  FROM TBL_SALARY_AND_BONUS_LIST A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		   AND A.MEMBER_NO = #{ memberNo }
+		   AND A.PAY_DATE = #{ searchPayDate }
+		   AND A.IMPUTED_YEAR_AND_MONTH = #{ yearAndMonth }
+		   AND A.SALARY_OR_BONUS = #{ category } 
+	</select>
+	
+	<select id="selectDepositList" resultMap="deductListResultMap">
+		SELECT
 		       A.COMPANY_NO
 		     , A.MEMBER_NO
-		     , A.RANK
-		     , A.SALARY_STEP
+		     , A.MEMBER_NAME
+		     , A.DEPARTMENT_NAME
 		     , A.IMPUTED_YEAR_AND_MONTH
-		     , A.PAY_DATE
-		     , A.SALARY_AMOUNT
-		     , A.DEDUCTIBLE_AMOUNT
-		     , A.TRANSFER_AMOUNT
-		 FROM TBL_SALARY_AND_BONUS_LIST A	
+		     , A.DEDUCTION_NAME
+		     , A.DEDUCTIBLE_AMOUNT 
+		  FROM TBL_EMPLOYER_DEDUCTION A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		 <if test="(searchDate != null) and '' != searchDate">
+		   AND A.PAY_DATE = #{ searchDate } 
+	     </if>
+		 <if test="(yearAndMonth != null) and '' != yearAndMonth">
+		   AND A.IMPUTED_YEAR_AND_MONTH = #{ yearAndMonth } 
+	     </if>
+	
+	</select>
+	
+	<select id="selectMemberNo" resultMap="depositResultMap">
+		SELECT
+		       DISTINCT A.MEMBER_NO
+		  FROM TBL_EMPLOYER_DEDUCTION A
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		 <if test="(searchDate != null) and '' != searchDate">
+		   AND A.PAY_DATE = #{ searchDate } 
+	     </if>
+		 <if test="(yearAndMonth != null) and '' != yearAndMonth">
+		   AND A.IMPUTED_YEAR_AND_MONTH = #{ yearAndMonth } 
+	     </if>	
+	</select>
+	
+	<update id="updatePersonalDetailDeduct">
+		UPDATE
+		       TBL_DETAIL_DEDUCTION
+		   SET DEDUCTIBLE_AMOUNT = #{ salaryAmount }
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND MEMBER_NO = #{ memberNo }
+		   AND PAY_DATE = #{ payDate }
+		   AND IMPUTED_YEAR_AND_MONTH = #{ imputedDate }
+		   AND SALARY_OR_BONUS = #{ salOrBonus }
+		   AND DEDUCTION_NAME = #{ salaryName }       	
+	</update>
+	
+	<update id="updateEmployerDeduct">
+		UPDATE
+		       TBL_EMPLOYER_DEDUCTION
+		   SET DEDUCTIBLE_AMOUNT = #{ salaryAmount }
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND MEMBER_NO = #{ memberNo }
+		   AND PAY_DATE = #{ payDate }
+		   AND IMPUTED_YEAR_AND_MONTH = #{ imputedDate }
+		   AND DIV_NO = #{ salOrBonus }
+		   AND DEDUCTION_NAME = #{ salaryName }       	
+	</update>
+	
+	<select id="selectOneSalOrBonus" resultMap="monthlySalPayList">
+		SELECT
+               A.COMPANY_NO
+             , A.MEMBER_NO
+             , A.IMPUTED_YEAR_AND_MONTH
+             , A.PAY_DATE
+             , A.SALARY_AMOUNT
+             , A.DEDUCTIBLE_AMOUNT
+             , A.TRANSFER_AMOUNT
+             , A.SALARY_OR_BONUS
+          FROM TBL_SALARY_AND_BONUS_LIST A
+         WHERE A.COMPANY_NO = #{ companyNo }
+           AND A.MEMBER_NO = #{ memberNo }
+           AND A.PAY_DATE = #{ searchPayDate }
+           AND A.IMPUTED_YEAR_AND_MONTH = #{ yearAndMonth }
+           AND A.SALARY_OR_BONUS = #{ category }  
+    </select>
+	
+	<update id="updateSalAndBonus">
+		UPDATE
+		       TBL_SALARY_AND_BONUS_LIST
+		   SET DEDUCTIBLE_AMOUNT = #{ deductAmount }
+		     , TRANSFER_AMOUNT = #{ transferAmount }
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND MEMBER_NO = #{ memberNo }
+		   AND PAY_DATE = #{ searchPayDate }
+		   AND IMPUTED_YEAR_AND_MONTH = #{ yearAndMonth }
+		   AND SALARY_OR_BONUS = #{ category }       	
+	</update>
+	
+	<select id="selectPersonalAccount" resultMap="accountListResultMap">
+	    SELECT
+               A.COMPANY_NO
+             , A.BANK_CODE
+             , A.ACCOUNT_NO
+             , A.MEMBER_NO
+             , B.KOREAN_NAME AS MEMBER_NAME
+             , A.ENROLL_DATE
+             , C.BANK_NAME
+          FROM TBL_EMP_ACCOUNT_UPDATE A
+          JOIN TBL_EMPLOYEE B ON (A.MEMBER_NO = B.MEMBER_NO)
+          JOIN TBL_BANK C ON (A.BANK_CODE = C.BANK_CODE)
+         WHERE A.COMPANY_NO = #{ companyNo }
+           AND A.MEMBER_NO = #{ memberNo }
+         ORDER BY A.ENROLL_DATE DESC  
 	</select>
 	
 </mapper>
