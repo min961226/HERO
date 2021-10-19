@@ -24,6 +24,9 @@
 		<result property="tblUserAuth" column="TBL_USER_AUTH"/>
 		<result property="jobName" column="JOB_NAME"/>
 		<result property="departmentName" column="DEPARTMENT_NAME"/>
+		<result property="addressDetail" column="ADDRESS_DETAIL"/>
+		<result property="familyOriginAddressDetail" column="FAMILY_ORIGIN_ADDRESS_DETAIL"/>
+		<result property="empUpdateDate" column="UPDATE_DATE"/>
 		
 		<result property="idNo" column="ID_NO"/>
 		<result property="memberId" column="MEMBER_ID"/>
@@ -50,16 +53,16 @@
 		<result property="nativeSchool" column="NATIVE_SCHOOL"/>
 		<result property="graduatedStatus" column="GRADUATED_STATUS"/>
 		
-		<result property="relationShip" column="RELATIONSHIP"/>
-		<result property="familyGender" column="GENDER"/>
-		<result property="familyAge" column="AGE"/>
-		<result property="job" column="JOB"/>
 		
 		<result property="employeementPeriod" column="EMPLOYEEMENT_PERIOD"/>
 		<result property="position" column="POSITION"/>
 		<result property="companyName" column="COMPANY_NAME"/>
 		<result property="department" column="DEPARTMENT"/>
 		
+		<result property="familyRelationShip" column="FAMILY_RELATIONSHIP"/>
+		<result property="familyGender" column="FAMILY_GENDER"/>
+		<result property="familyAge" column="FAMILY_AGE"/>
+		<result property="familyJob" column="FAMILY_JOB"/>
 	</resultMap >
 	
 	<resultMap type="com.nextLevel.hero.mnghumanResource.model.dto.SalaryStepDTO" id="SalaryStepResultMap">
@@ -84,6 +87,15 @@
 	<resultMap type="com.nextLevel.hero.mnghumanResource.model.dto.MilitaryDTO" id="MilitaryResultMap">
 		<id property="jobNo" column="JOB_NO"/>
 		<result property="jobName" column="JOB_NAME"/>
+	</resultMap>
+
+	<resultMap type="com.nextLevel.hero.mnghumanResource.model.dto.VacationControlDTO" id="VacationControlResultMap">
+		<id property="vacationCode" column="VACATION_CODE"/>
+		<result property="vacationDays" column="VACATION_DAYS"/>
+	</resultMap>
+	
+	<resultMap type="com.nextLevel.hero.mnghumanResource.model.dto.RankSalaryStepDTO" id="RankSalaryStepResultMap">
+		<result property="startDate" column="START_DATE"/>
 	</resultMap>
 	
 <insert id="insertMember" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
@@ -116,25 +128,6 @@
 	  FROM DUAL	       
 </select>
 
-<select id="selectSalaryStep" resultMap="SalaryStepResultMap">
-	SELECT 
-		   	RANK
-		  , SALARY_STEP	
-	  FROM TBL_RANK_SALARY_STEP
-	 WHERE COMPANY_NO = #{ companyNo } 
-		
-</select>
-
-<select id="selectJobList" resultMap="JobResultMap">
-	SELECT
-			JOB_NO
-		  , JOB_NAME
-	  FROM TBL_JOB
-	 WHERE COMPANY_NO = #{ companyNo } 	  
-
-</select>
-
-
 
 <insert id="insertEmployee" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
 	 INSERT INTO TBL_EMPLOYEE E
@@ -158,10 +151,12 @@
             , E.NATIONAL
             , E.HIRE_DATE
             , E.TBL_USER_AUTH
+            , E.ADDRESS_DETAIL
+            , E.FAMILY_ORIGIN_ADDRESS_DETAIL
 			)
 			VALUES
 			(
-			  #{ companyNo }
+  			  #{ companyNo }
 			, #{ humanResourceDTO.idNo }
 			, #{ humanResourceDTO.memberNo } 
 			, #{ humanResourceDTO.jobNo } 
@@ -178,6 +173,8 @@
 			, #{ humanResourceDTO.email } 
 			, #{ humanResourceDTO.gender } 
 			, #{ humanResourceDTO.national } 
+			, #{ humanResourceDTO.addressDetail } 
+			, #{ humanResourceDTO.familyOriginAddressDetail } 
 			, SYSDATE 
 			, DEFAULT
 			) 
@@ -192,7 +189,7 @@
 			VALUES
 			(
 			  #{ companyNo }
-			, #{ newMemberNo }
+			, #{ humanResourceDTO.idNo }
 			) 
 </insert>
 
@@ -200,23 +197,407 @@
 	 INSERT INTO TBL_MILITARY_SERVICE M
 			(
               M.COMPANY_NO
+            , M.MEMBER_NO
+            , M.MILITARY_SERVICE_STATUS
+            , M.MILITARY_KIND
+            , M.RANKING
+            , M.MILITARY_START_DATE
+            , M.MILITYRY_END_DATE
             , M.ID_NO
 			)
 			VALUES
 			(
 			  #{ companyNo }
-			, #{ newMemberNo }
+			, #{ humanResourceDTO.memberNo }
+			, #{ humanResourceDTO.militaryServiceStatus }
+			, #{ humanResourceDTO.militaryKind }
+			, #{ humanResourceDTO.rankIng }
+			, #{ humanResourceDTO.militaryStartDate }
+			, #{ humanResourceDTO.militaryEndDate }
+			, #{ humanResourceDTO.idNo }
 			) 
 </insert>
 
-<select id="selectIdCheck" resultType="java.lang.String">
+<insert id="insertVeteran" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+		INSERT INTO TBL_VETERAN V
+			(
+              V.COMPANY_NO
+            , V.VETERAN_NO
+            , V.ID_NO
+            , V.MEMBER_NO
+            , V.VETERAN_STATUS
+            , V.RELATIONSHIP
+			)
+			VALUES
+			(
+			  #{ companyNo }
+			, SEQ_VETERAN_NO.NEXTVAL
+			, #{ humanResourceDTO.idNo }
+			, #{ humanResourceDTO.memberNo }
+			, #{ humanResourceDTO.veteranStatus }
+			, #{ humanResourceDTO.relationship}
+			) 
+</insert>
+
+<insert id="insertAppointment" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+		INSERT INTO TBL_APPOINTMENT A
+			(
+              A.COMPANY_NO
+            , A.MEMBER_NO
+            , A.PERSONAL_APPOINTMENT_DATE
+            , A.PERSONAL_APPOINTMENT_CATEGORY
+            , A.ID_NO
+            , A.APPOINTMENT_NO
+			)
+			VALUES
+			(
+			  #{ companyNo }
+			, #{ humanResourceDTO.memberNo }
+			, #{ humanResourceDTO.appointmentDate }
+			, #{ humanResourceDTO.personalAppointmentCategory }
+			, #{ humanResourceDTO.idNo }
+			, SEQ_APPOINTMENT_NO.NEXTVAL
+			) 
+</insert>
+
+<insert id="insertGraduated" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+		INSERT INTO TBL_GRADUATED G
+			(
+              G.COMPANY_NO
+            , G.MEMBER_NO
+            , G.GRADUATED_DATE
+            , G.NATIVE_SCHOOL
+            , G.GRADUATED_STATUS
+            , G.ID_NO
+            , G.GRADUATED_NO
+        
+			)
+			VALUES
+			(
+			  #{ companyNo }
+			, #{ humanResourceDTO.memberNo }
+			, #{ humanResourceDTO.graduatedDate }
+			, #{ humanResourceDTO.nativeSchool }
+			, #{ humanResourceDTO.graduatedStatus }
+			, #{ humanResourceDTO.idNo }
+			, SEQ_GRADUATED_NO.NEXTVAL
+			) 
+</insert>
+
+<insert id="insertCareer" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+		INSERT INTO TBL_CAREER C
+			(
+              C.COMPANY_NO
+            , C.ID_NO
+            , C.MEMBER_NO
+            , C.CAREER_NO
+            , C.EMPLOYEEMENT_PERIOD
+            , C.POSITION
+            , C.COMPANY_NAME
+            , C.DEPARTMENT
+			)
+			VALUES
+			(
+			  #{ companyNo }
+			, #{ humanResourceDTO.idNo }
+			, #{ humanResourceDTO.memberNo }
+			, SEQ_CAREER_NO.NEXTVAL
+			, #{ humanResourceDTO.employeementPeriod }
+			, #{ humanResourceDTO.position }
+			, #{ humanResourceDTO.companyName }
+			, #{ humanResourceDTO.department }
+			) 
+</insert>
+
+<insert id="insertFamily" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+		INSERT INTO TBL_FAMILY F
+			(
+              F.COMPANY_NO
+            , F.FAMILY_NO
+            , F.MEMBER_NO
+            , F.FAMILY_RELATIONSHIP
+            , F.FAMILY_GENDER
+            , F.FAMILY_AGE
+            , F.FAMILY_JOB
+            , F.ID_NO
+			)
+			VALUES
+			(
+			  #{ companyNo }
+			, SEQ_FAMILY_NO.NEXTVAL
+			, #{ humanResourceDTO.memberNo }
+			, #{ humanResourceDTO.familyRelationShip }
+			, #{ humanResourceDTO.familyGender }
+			, #{ humanResourceDTO.familyAge }
+			, #{ humanResourceDTO.familyJob }
+			, #{ humanResourceDTO.idNo }
+			) 
+</insert>
+
+<insert id="insertUserAuth" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+		INSERT INTO TBL_USER_AUTH U
+			(
+              U.ID_NO
+            , U.AUTHORITY_NO
+			)
+			VALUES
+			(
+			  #{ humanResourceDTO.idNo }
+			, 1
+			) 
+</insert>
+
+<select id="selectVacationControl" resultMap="VacationControlResultMap">
 		SELECT
-			M.MEMBER_ID
-	  FROM TBL_MEMBER M
-	  JOIN TBL_EMPLOYEE E ON M.ID_NO = E.ID_NO
-	 WHERE M.MEMBER_ID = #{ memberId }	  
-       AND E.COMPANY_NO = #{ companyNo }     
+		       VACATION_CODE
+		     , VACATION_DAYS
+		  FROM TBL_VACATION_CONTROL
+		 WHERE WORK_YEARS = 1
 </select>
+
+<insert id="insertVacation" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+    INSERT INTO TBL_VACATION V
+       (
+          V.COMPANY_NO
+        , V.MEMBER_NO
+        , V.CREATED_MONTHLY_VACATION
+        , V.TOTAL_VACATION
+        , V.USED_VACATION
+        , V.LEAVE_VACATION
+        , V.ID_NO
+        , V.VACATION_CODE
+        )
+    VALUES
+        (
+		  #{ companyNo }
+		, #{ humanResourceDTO.memberNo }
+		, 0
+		, #{ vacationDays }
+		, 0
+		, #{ vacationDays }
+		, #{ humanResourceDTO.idNo }
+		, #{ vacationCode }
+		)
+</insert>
+
+<insert id="insertFamilyUpdate" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+		INSERT INTO TBL_FAMILY_UPDATE F
+			(
+              F.COMPANY_NO
+            , F.UPDATE_NO
+            , F.FAMILY_NO
+            , F.UPDATE_DATE
+            , F.FAMILY_RELATIONSHIP
+            , F.FAMILY_GENDER
+            , F.FAMILY_AGE
+            , F.FAMILY_JOB
+			)
+			VALUES
+			(
+			  #{ companyNo }
+			, SEQ_UPDATE_NO.NEXTVAL
+			, #{ familyNo }
+			, SYSDATE
+			, #{ humanResourceDTO.familyRelationShip }
+			, #{ humanResourceDTO.familyGender }
+			, #{ humanResourceDTO.familyAge }
+			, #{ humanResourceDTO.familyJob }
+			) 
+</insert>
+
+<insert id="insertEmpSalaryStep" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+		INSERT INTO TBL_EMP_SALARY_STEP E
+			(
+              E.COMPANY_NO
+            , E.MEMBER_NO
+            , E.ID_NO
+            , E.START_DATE
+            , E.DIV_NO
+            , E.SALARY_STEP_BY_RANK
+            , E.USE_YN
+			)
+			VALUES
+			(
+			  #{ companyNo }
+			, #{ humanResourceDTO.memberNo }
+			, #{ humanResourceDTO.idNo}
+			, #{ startDate }
+			, SEQ_DIV_NO.NEXTVAL
+			, #{ humanResourceDTO.salaryStepByRank }
+			, DEFAULT
+			) 
+</insert>
+
+<select id="selectRankSalaryStep" resultType="java.sql.Date">
+		SELECT
+			 START_DATE
+		FROM TBL_RANK_SALARY_STEP
+	   WHERE COMPANY_NO =#{ companyNo }
+	     AND SALARY_STEP_BY_RANK =#{ salaryStepByRank }
+</select>
+
+<select id="selectEmpSalaryStep" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" resultType="_int">
+		SELECT
+			 DIV_NO
+		FROM TBL_EMP_SALARY_STEP
+	   WHERE ID_NO =#{ humanResourceDTO.idNo }
+</select>
+
+<select id="selectFamilyUpdate" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" resultType="_int">
+       	SELECT
+			 FAMILY_NO
+		FROM TBL_FAMILY
+	   WHERE COMPANY_NO =#{ companyNo }
+         AND ID_NO =#{ humanResourceDTO.idNo }
+</select>
+
+<select id="selectMemberHistoryList"  resultMap="MngHumanResourceResultMap">
+        SELECT  
+              E.COMPANY_NO 
+            , E.UPDATE_NO 
+            , E.MEMBER_NO
+            , E.KOREAN_NAME
+            , E.SSN
+            , E.ENGLISH_NAME
+            , E.SPECIALITY
+            , E.FAMILY_ORIGIN_ADDRESS
+            , E.ADDRESS
+            , E.PHONE
+            , E.TEL
+            , E.DEPARTMENT_PHONE
+            , E.EMAIL
+            , E.GENDER
+            , E.NATIONAL
+            , E.HIRE_DATE
+            , E.UPDATE_DATE
+            , E.ID_NO
+            , E.ADDRESS_DETAIL
+            , E.FAMILY_ORIGIN_ADDRESS_DETAIL
+            , M.MEMBER_ID
+            FROM TBL_EMP_UPDATE E
+            JOIN TBL_MEMBER M ON M.ID_NO = E.ID_NO
+		 WHERE E.COMPANY_NO = #{ companyNo }
+		   AND M.ID_NO = #{ idNo }         
+</select>
+
+<insert id="insertEmpSalaryStepUpdate" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+		INSERT INTO TBL_EMP_SALARY_STEP_UPDATE E
+			(
+              E.EMP_SALARY_STEP_UPDATE_NO
+            , E.COMPANY_NO
+            , E.MEMBER_NO
+            , E.UPDATED_DATE
+            , E.START_DATE
+            , E.DIV_NO
+            , E.SALARY_STEP_BY_RANK
+			)
+			VALUES
+			(
+			  SEQ_EMP_SALARY_STEP_UPDATE_NO.NEXTVAL
+			, #{ companyNo }
+			, #{ humanResourceDTO.memberNo }
+			, SYSDATE
+			, #{ startDate }
+			, #{ divNo }
+			, #{ humanResourceDTO.salaryStepByRank }
+			) 
+</insert>
+
+
+<select id="selectSalaryStep" resultMap="SalaryStepResultMap">
+	SELECT 
+		   	RANK
+		  , SALARY_STEP	
+	  FROM TBL_RANK_SALARY_STEP
+	 WHERE COMPANY_NO = #{ companyNo } 
+</select>
+
+<insert id="insertFourInsuranceDeduct" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+		INSERT INTO TBL_FOUR_INSURANCE_DEDUCT F
+			(
+              F.COMPANY_NO
+            , F.DIV_NO
+            , F.MEMBER_NO
+            , F.START_DATE
+            , F.HEALTH
+            , F.PENSION
+            , F.UNEMPLOYEE
+            , F.INDUSTRY
+            , F.ID_NO
+			)
+			VALUES
+			(
+			  #{ companyNo }
+			, SEQ_DIV_NO.NEXTVAL
+			, #{ humanResourceDTO.memberNo }
+			, SYSDATE
+			, 'Y'
+			, 'Y'
+			, 'Y'
+			, 'Y'
+			, #{ humanResourceDTO.idNo }
+			) 
+</insert>
+
+<insert id="insertEmpUpdate" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
+	 INSERT INTO TBL_EMP_UPDATE E
+			(
+              E.COMPANY_NO
+            , E.UPDATE_NO
+            , E.MEMBER_NO
+            , E.KOREAN_NAME
+            , E.SSN
+            , E.ENGLISH_NAME
+            , E.SPECIALITY
+            , E.FAMILY_ORIGIN_ADDRESS
+            , E.ADDRESS
+            , E.PHONE
+            , E.TEL
+            , E.DEPARTMENT_PHONE
+            , E.EMAIL
+            , E.PASSWORD
+            , E.GENDER
+            , E.NATIONAL
+            , E.HIRE_DATE
+            , E.UPDATE_DATE
+            , E.ID_NO
+            , E.ADDRESS_DETAIL
+            , E.FAMILY_ORIGIN_ADDRESS_DETAIL
+			)
+			VALUES
+			(
+			  #{ companyNo }
+			, SEQ_EMP_UPDATE_NO.NEXTVAL
+			, #{ humanResourceDTO.memberNo } 
+			, #{ humanResourceDTO.koreanName } 
+			, #{ humanResourceDTO.ssn } 
+			, #{ humanResourceDTO.englishName } 
+			, #{ humanResourceDTO.speciality } 
+			, #{ humanResourceDTO.familyOriginAddress } 
+			, #{ humanResourceDTO.address } 
+			, #{ humanResourceDTO.phone } 
+			, #{ humanResourceDTO.tel } 
+			, #{ humanResourceDTO.departmentPhone } 
+			, #{ humanResourceDTO.email } 
+			, #{ humanResourceDTO.memberPassword } 
+			, #{ humanResourceDTO.gender } 
+			, #{ humanResourceDTO.national } 
+			, SYSDATE
+			, SYSDATE
+			, #{ humanResourceDTO.idNo } 
+			, #{ humanResourceDTO.addressDetail } 
+			, #{ humanResourceDTO.familyOriginAddressDetail } 
+			) 
+</insert>
+
+<select id="selectJobList" resultMap="JobResultMap">
+	SELECT
+			JOB_NO
+		  , JOB_NAME
+	  FROM TBL_JOB
+	 WHERE COMPANY_NO =#{ companyNo } 	  
+</select>
+
 
 <select id="selectMemberList" resultMap="MemberListResultMap">
        SELECT
@@ -231,141 +612,12 @@
           ON M.ID_NO = E.ID_NO
        INNER JOIN TBL_DEPARTMENT D
           ON E.DEPARTMENT_NO = D.DEPARTMENT_NO          
-       WHERE E.COMPANY_NO = #{ companyNo }
+       WHERE E.COMPANY_NO =#{ companyNo }
        ORDER BY ID_NO ASC
 </select>
 
 
 
-<insert id="insertMember2" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
-	INSERT ALL
-		  INTO TBL_EMPLOYEE E
-		(
-		  E.COMPANY_NO
-		, E.ID_NO
-		, E.MEMBER_NO
-		, E.JOB_NO
-		, E.DEPARTMENT_NO
-		, E.KOREAN_NAME  
-		, E.SSN  
-		, E.ENGLISH_NAME  
-		, E.SPECIALITY  
-		, E.FAMILY_ORIGIN_ADDRESS  
-		, E.ADDRESS  
-		, E.PHONE  
-		, E.TEL  
-		, E.DEPARTMENT_PHONE  
-		, E.EMAIL  
-		, E.GENDER  
-		, E.NATIONAL  
-		, E.HIRE_DATE  
-		, E.ENT_DATE  
-		, E.BASIC_SETTING_YN  
-		)
-		VALUES
-		(
-		  #{ companyNo }
-		, #{ idNo }
-		, #{ memberNo }
-		, #{ jobNo }
-		, #{ departmentNo }
-		, #{ koreanName }
-		, #{ ssn }
-		, #{ englishName }
-		, #{ speciality }
-		, #{ familyOriginAddress }
-		, #{ address }
-		, #{ phone }
-		, #{ tel }
-		, #{ departmentPhone } 
-		, #{ email } 
-		, #{ gender} 
-		, #{ national} 
-		, #{ hireDate} 
-		, #{ entDate} 
-		, #{ basicSettingYn} 
-		)
-		
-		   INTO TBL_APPOINTMENT A
-		(
-		  A.PERSONAL_APPOINTMENT_DATE
-		, A.PERSONAL_APPOINTMENT_CATEGORY
-		)
-		VALUES
-		(
-		  #{ appointmentDate }
-		, #{ personalAppointmentCategory} 
-		)    
-		   INTO TBL_VETERAN V
-		(
-		  V.VETERAN_STATUS
-		, V.RELATIONSHIP
-		, V.VETERAN_NO
-		)
-		VALUES
-		(
-		  #{ veteranStatus }
-		, #{ relationship }
-		, #{ veteranNo } 
-		)    
-		   INTO TBL_MILITARY_SERVICE Y
-		(
-		  Y.MILITARY_SERVICE_STATUS
-		, Y.MILITARY_KIND
-		, Y.RANKING
-		, Y.MILITARY_START_DATE
-		, Y.MILITYRY_END_DATE
-		)
-		VALUES
-		(
-		  #{ militaryServiceStatus }
-		, #{ militaryKind }
-		, #{ rankIng }
-		, #{ militaryStartDate }
-		, #{ militaryEndDate } 
-		)		
-		   INTO TBL_GRADUATED G
-		(
-		  G.GRADUATED_DATE
-		, G.NATIVE_SCHOOL
-		, G.GRADUATED_STATUS
-		)
-		VALUES
-		(
-		  #{ graduatedDate }
-		, #{ nativeSchool } 
-		, #{ graduatedStatus } 
-		)    	
-		   INTO TBL_FAMILY F
-		(
-		  F.RELATIONSHIP
-		, F.GENDER
-		, F.AGE
-		, F.JOB
-		)
-		VALUES
-		(
-		  #{ relationShip }
-		, #{ familyGender } 
-		, #{ familyAge } 
-		, #{ job } 
-		)    					
-		   INTO TBL_CAREER C
-		(
-		  F.EMPLOYEEMENT_PERIOD
-		, F.POSITION
-		, F.COMPANY_NAME
-		, F.DEPARTMENT
-		)
-		VALUES
-		(
-		  #{ employeementPeriod }
-		, #{ position } 
-		, #{ companyName } 
-		, #{ department } 
-		)    							
-
-</insert>
 
 
 </mapper>
