@@ -21,10 +21,13 @@ import com.nextLevel.hero.mngSalary.model.dto.MemberMonthlyPayDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngAccountDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngBonusListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO;
+import com.nextLevel.hero.mngSalary.model.dto.MngDepositDTO;
 import com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO;
+import com.nextLevel.hero.mngSalary.model.dto.MonthlyListDTO;
 import com.nextLevel.hero.mngSalary.model.dto.SalaryAndBonusDTO;
 import com.nextLevel.hero.mngSalary.model.dto.fourInsuranceList;
 import com.nextLevel.hero.mngSalary.model.dto.memInsFeeList;
+import com.nextLevel.hero.salary.model.dto.MyAccountDTO;
 
 @Service("mngSalaryService")
 public class MngSalaryServiceImpl implements MngSalaryService {
@@ -106,6 +109,79 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 
 		return mngSalaryMapper.listMonthlySalary(search);
 	}
+	
+	
+	/* 매월 지급 항목 리스트 조회 */
+	@Override
+	public List<MonthlyListDTO> selectMonthlyList(int companyNo) {
+		
+		List<MonthlyListDTO> list = mngSalaryMapper.selectMonthlyList(companyNo);
+		
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).getDeductYn().equals("과세")) {			
+				list.get(i).setDeductYn("Y");
+			} else {
+				list.get(i).setDeductYn("N");
+			}
+		}
+		
+		return list;
+	}
+
+	/* 개인별 월 지급항목 변경 */
+	@Override
+	public String updatePersonalMonPay(int companyNo, List<MemberMonthlyPayDTO> detail) {
+		
+		int updateMemNo = detail.get(0).getMemberNo();
+		int idNo = mngSalaryMapper.selectIdNo(companyNo, updateMemNo);
+		
+		int updateResult = 0;
+		int insertResult = 0;
+		String returnResult = "";
+		
+		for(int i = 0; i < detail.size(); i++) {
+			if(detail.get(i).getAmount() == 0) {
+				
+				MemberMonthlyPayDTO stop = new MemberMonthlyPayDTO();
+				stop.setCompanyNo(companyNo);
+				stop.setMemberNo(updateMemNo);
+				stop.setSalaryNo(detail.get(i).getSalaryNo());
+				stop.setMonthlyStopDate(java.sql.Date.valueOf(detail.get(i).getNewStartDate()));
+				
+				updateResult += mngSalaryMapper.updatePayStop(stop);
+		
+			}
+			
+			if(detail.get(i).getPayCategory() != null) {
+				
+				MemberMonthlyPayDTO update = new MemberMonthlyPayDTO();
+				update.setCompanyNo(companyNo);
+				update.setPayCategory(detail.get(i).getPayCategory());
+				update.setAmount(detail.get(i).getAmount());
+				update.setNote(detail.get(i).getPayCategory());
+				update.setNewStartDate(detail.get(i).getNewStartDate());
+				update.setDeductionYn(detail.get(i).getDeductionYn());
+				update.setMemberNo(updateMemNo);
+				update.setSalaryNo(detail.get(i).getSalaryNo());
+				update.setIdNo(idNo);
+				
+				insertResult += mngSalaryMapper.insertNewMonthPay(update);
+			}
+			
+		}
+		
+		if((updateResult + insertResult) > 0) {
+			returnResult = "1";
+		} else {
+			returnResult = "0";
+		}
+		
+		return returnResult;
+	}
+
+	
+
+	
 	
 	/* 4대보험 개인별 공제항목 조회*/
 	@Override
@@ -230,9 +306,6 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 			}
 		}		
 	
-		
-		
-		
 		return originMemberList;
 	}
 	
@@ -505,8 +578,34 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 									
 									personalPay.get(k).setSalaryAmount(calcBasicAmount);
 								}
-							}							
-						} 
+							}
+						
+						/* 휴직 시작일이 당월이 아닌 경우 */	
+						} else {
+							for(int k = 0; k < personalPay.size(); k++) {
+								if(memberNum == personalPay.get(k).getMemberNo()) {									
+									personalPay.get(k).setSalaryAmount(0);
+								}
+							}
+						}
+					} else if((appointmentCategory.equals("복직")) && (appYearAndMonth.equals(search.getYear() +"-"+ search.getMonth()))
+							&& (appointment.getDate().toLocalDate().getDayOfMonth() != 1)) {
+						
+						/* 근무일수 산출 */
+						long workDate = ChronoUnit.DAYS.between(appointment.getDate().toLocalDate(), typeChangeSearchingDate); 
+						
+						/* 복직월 말일 산출 */
+						int comebackMonLastDay = appointment.getDate().toLocalDate().lengthOfMonth();
+						
+						/* 입사일부터 말일까지 급여 일할 계산 */
+						for(int k = 0; k < personalPay.size(); k++) {
+							if(memberNum == personalPay.get(k).getMemberNo()) {						
+								basicMonthlyAmount = personalPay.get(k).getSalaryAmount();							
+								int calcBasicAmount = (int) Math.ceil((basicMonthlyAmount /  comebackMonLastDay * workDate) / 10) * 10;
+								
+								personalPay.get(k).setSalaryAmount(calcBasicAmount);
+							}
+						}
 					}
 				
 					
@@ -819,18 +918,275 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 	public List<SalaryAndBonusDTO> selectSalOrBonusList(SalaryAndBonusDTO search) {
 		
 		System.out.println(search);
-		
+		String yearAndMonth = search.getYear() + "-" + search.getMonth();
+		search.setYearAndMonth(yearAndMonth);
 		
 		
 		return mngSalaryMapper.selectSalOrBonusList(search);
 	}
 
+	/* 개인별 세부 내역 조회 */
+	@Override
+	public List<DetailPayDTO> listPersonalDetail(SalaryAndBonusDTO search) {
+		
+		List<DetailPayDTO> payList = mngSalaryMapper.listPayDetail(search);
+		List<DetailPayDTO> deductList = mngSalaryMapper.listDeductDetail(search);
+		String confirmYn = mngSalaryMapper.checkConfirm(search);
+		
+		System.out.println("서비스 : " + payList);
+		System.out.println("서비스 : " + deductList);
+		
+		List<DetailPayDTO> personalList = new ArrayList<>();
+		
+		/* 개인별 세부 내역 수정 가능 여부 */
+		LocalDate todayDate = LocalDate.now();
+		LocalDate searchDay = LocalDate.parse(search.getSearchPayDate());
+		String editable = "";
+		
+		//(todayDate.isAfter(searchDay)) || 
+		if((confirmYn.equals("Y"))) {
+			editable = "N";
+		} else {
+			editable = "Y";
+		}
+		
+		for(DetailPayDTO pay : payList) {
+			pay.setUpdatable(editable);
+			
+			personalList.add(pay);
+		}
+		
+		for(DetailPayDTO deduct : deductList) {
+			deduct.setUpdatable(editable);
+			deduct.setDivNo(1);
+			
+			personalList.add(deduct);
+		}
+		
+		System.out.println("서비스 결과 : " + personalList);
+		
+		return personalList;
+	}
+
+	/* 개인별 공제항목 수정 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE,
+		rollbackFor = {Exception.class})
+	public String updatePersonalDeduct(int companyNo, List<DetailPayDTO> detail) {
+		
+		SalaryAndBonusDTO search = new SalaryAndBonusDTO();
+		search.setCompanyNo(companyNo);
+		search.setMemberNo(detail.get(0).getMemberNo());
+		search.setSearchPayDate(String.valueOf(detail.get(0).getPayDate()));
+		search.setYearAndMonth(detail.get(0).getImputedDate());
+		search.setCategory(detail.get(0).getSalOrBonus());
+		
+		
+		List<DetailPayDTO> origin = mngSalaryMapper.listDeductDetail(search);
+		
+		int detailTBLResult = 0;
+		int employerResult = 0;
+		int salaryAndBonusResult = 0;
+		
+		
+			for(DetailPayDTO update : detail) {
+				for(int i = 0; i < origin.size(); i++) {
+					
+					/* 같은 공제항목에서 금액이 달라졌을 경우 */
+					if(((origin.get(i).getSalaryName()).equals(update.getSalaryName())) 
+							&& ((origin.get(i).getSalaryAmount()) != (update.getSalaryAmount()))) {
+						
+						update.setCompanyNo(companyNo);					
+					
+						detailTBLResult =  mngSalaryMapper.updatePersonalDetailDeduct(update);
+						employerResult = mngSalaryMapper.updateEmployerDeduct(update);
+						
+					}			
+				}
+				
+				if((update.getSalaryName()).equals("공제총계")) {
+					
+					/* 공제총액과 이체금액 변경*/
+					SalaryAndBonusDTO beforeAmount = mngSalaryMapper.selectOneSalOrBonus(search);
+					
+					if((update.getSalaryAmount()) != (beforeAmount.getDeductAmount())) {
+						
+						int paySum = beforeAmount.getSalaryAmount();
+						int deductSum = update.getSalaryAmount();
+						int transferSum = paySum - deductSum;
+						
+						search.setDeductAmount(deductSum);
+						search.setTransferAmount(transferSum);
+						
+						salaryAndBonusResult = mngSalaryMapper.updateSalAndBonus(search);						
+					}					
+				}
+		}
+		
+		String result = "";	
+		
+		if((detailTBLResult > 0) && (employerResult > 0) && (salaryAndBonusResult > 0)) {
+			result = "1";
+		} else {
+			result = "0";
+		}
+			
+		return result;
+	}
+
+	
+	
+	
+	
+	
+	
+	/* 공제 예수금 조회 */
+	@Override
+	public List<MngDepositDTO> selectDepositList(MngDepositDTO search) {
+		
+		if((search.getYear() != null) && (!(search.getYear()).equals(""))) {
+			String yearAndMonth = search.getYear() + "-" + search.getMonth();
+			search.setYearAndMonth(yearAndMonth);			
+		}
+		
+		List<DetailPayDTO> searchList = mngSalaryMapper.selectDepositList(search);
+		List<MngDepositDTO> depositList = mngSalaryMapper.selectMemberNo(search);		
+		
+		for(int i = 0; i < searchList.size(); i++) {
+			int memberNo = searchList.get(i).getMemberNo();
+			
+			if(depositList.size() > 0) {
+				for(int j = 0; j < depositList.size(); j++) {
+					int memNo = depositList.get(j).getMemberNo();
+					Integer incomeTax = depositList.get(j).getIncomeTax();
+					Integer residentTax = depositList.get(j).getResidentTax();
+					Integer health = depositList.get(j).getHealth();
+					Integer longterm = depositList.get(j).getLongterm();
+					Integer pension = depositList.get(j).getPension();
+					Integer workerEmp = depositList.get(j).getWorkerEmp();
+					Integer employer = depositList.get(j).getEmployerEmp();
+					Integer industry = depositList.get(j).getIndustry();
+					Integer etc = depositList.get(j).getEtcDeduct();
+					
+					
+					
+					if(memberNo == memNo) {
+						if((searchList.get(i).getSalaryName()).equals("소득세")) {
+							
+							if(incomeTax == null) {
+								incomeTax = searchList.get(i).getSalaryAmount();
+							} else {
+								incomeTax += searchList.get(i).getSalaryAmount();
+							}
+							
+							depositList.get(j).setIncomeTax(incomeTax);
+							
+						} else if((searchList.get(i).getSalaryName()).equals("주민세")) {
+							
+							if(residentTax == null) {								
+								residentTax = searchList.get(i).getSalaryAmount();
+							} else {
+								residentTax += searchList.get(i).getSalaryAmount();
+							}
+							
+							depositList.get(j).setResidentTax(residentTax);
+							
+						} else if((searchList.get(i).getSalaryName()).equals("건강보험")) {
+							
+							if(health == null) {
+								health = searchList.get(i).getSalaryAmount();
+							} else {
+								health += searchList.get(i).getSalaryAmount();								
+							}
+							
+							depositList.get(j).setHealth(health);
+							
+						} else if((searchList.get(i).getSalaryName()).equals("장기요양")) {
+							
+							if(longterm == null) {
+								longterm = searchList.get(i).getSalaryAmount();
+							} else {
+								longterm += searchList.get(i).getSalaryAmount();								
+							}
+							
+							depositList.get(j).setLongterm(longterm);
+							
+						} else if((searchList.get(i).getSalaryName()).equals("국민연금")) {
+							
+							if(pension == null) {
+								pension = searchList.get(i).getSalaryAmount();	
+							} else {
+								pension += searchList.get(i).getSalaryAmount();								
+							}
+							
+							depositList.get(j).setPension(pension);
+							
+						} else if((searchList.get(i).getSalaryName()).equals("실업급여")) {
+							
+							if(workerEmp == null) {
+								workerEmp = searchList.get(i).getSalaryAmount();
+							} else {
+								workerEmp += searchList.get(i).getSalaryAmount();								
+							}
+							
+							depositList.get(j).setWorkerEmp(workerEmp);
+							
+						} else if((searchList.get(i).getSalaryName()).equals("고안직능")) {
+							
+							if(employer == null) {
+								employer = searchList.get(i).getSalaryAmount();	
+							} else {
+								employer += searchList.get(i).getSalaryAmount();								
+							}
+							
+							depositList.get(j).setEmployerEmp(employer);
+							
+						} else if((searchList.get(i).getSalaryName()).equals("산재보험")) {
+							
+							if(industry == null) {
+								industry = searchList.get(i).getSalaryAmount();	
+							} else {
+								industry += searchList.get(i).getSalaryAmount();								
+							}
+							
+							depositList.get(j).setIndustry(industry);
+							
+						} else {
+							
+							if(etc == null) {
+								etc = searchList.get(i).getSalaryAmount();	
+							} else {
+								etc += searchList.get(i).getSalaryAmount();								
+							}
+							
+							depositList.get(j).setEtcDeduct(etc);
+						}		
+						
+						depositList.get(j).setDepartmentName(searchList.get(i).getDepartmentName());
+						depositList.get(j).setMemberName(searchList.get(i).getMemberName());
+						depositList.get(j).setYearAndMonth(searchList.get(i).getImputedDate());
+						
+					} 
+				}						
+			} 
+		}		
+		return depositList;
+	}
+	
 	
 	/* 급여 계좌 조회 */
 	@Override
-	public List<MngAccountDTO> listmngPayrollAccount() {
+	public List<MngAccountDTO> listmngPayrollAccount(MngAccountDTO search) {
 		
-		return mngSalaryMapper.listmngPayrollAccount();
+		return mngSalaryMapper.listmngPayrollAccount(search);
+	}
+
+	
+	/* 개인별 급여 계좌 조회 */
+	@Override
+	public List<MyAccountDTO> selectPersonalAccount(MngAccountDTO search) {
+				
+		return mngSalaryMapper.selectPersonalAccount(search);
 	}
 
 	

@@ -60,7 +60,7 @@
 							</div>
 							<br>
 							<div class="card">
-								<div class="card-body">
+								<div class="card-body" style="height:800px; overflow-y:scroll;">
 								<form action="/mngSalary/updateMonthlyIns" method="POST" id="updateIns">
 									<button type="button" class="btn btn-warning" style="margin:5px;" id="modify">수 정</button>
 									<button type="submit" class="btn btn-info" style="margin:5px; display:none;" id="finModi">수정완료</button>
@@ -163,6 +163,23 @@
 			$("[id^=reducebtn]").attr("class", "btn btn-soft-info");
 			
 		}
+		
+		Swal.fire({
+			  title: '이전 페이지로 이동하시겠습니까?',
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#25c2e3',
+			  cancelButtonColor: '#43d39e',
+			  confirmButtonText: '예',
+			  cancelButtonText: '아니오'
+			}).then((data) => {
+					if(data.isConfirmed) {									
+						location.href="/mngSalary/nationalHealthInsurancePension"
+					} else {
+						location.href="#";
+					}
+				
+				})
 	});
 		
 	$("[name*=healthSal]").change(function() {
@@ -246,7 +263,6 @@
 		
 	});
 
-	
 	</script>
 </body>
 </html>

@@ -4,6 +4,13 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style>
+ #payList {
+ 	vertical-align : middle;
+ 	text-align: center;
+ }
+</style>
 </head>
 <body>
 	<div id="wrapper">
@@ -16,10 +23,87 @@
 						<div class="col-12">
 							<br>
 							<div class="page-title-box">
-								<h3 class="page-title">급여 내역 조회</h3>
+								<h3 class="page-title"><b>급여 내역 조회</b></h3>
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<div>
+								<form action="" method="get">									
+		                            <label style="padding:10px;">지급일자 </label>
+									<input type="date" style="margin:10px;" id="searchDate" name="searchDate">
+									<button type="submit" class="btn btn-outline-primary" id="searchBtn">검 색</button>
+								</form>
+							</div>
+							<br>
+							<div class="card">
+								<div class="card-body">								
+								<table class="table table-striped dt-responsive nowrap w-100" id="payList">
+									<thead>
+										<tr>
+											<th>지급항목</th>											
+											<th>귀속연월</th>											
+											<th>지급일자</th>											
+											<th>실지급액</th>
+											<th>상세보기</th>																					
+										</tr>
+									</thead>
+										
+									<tbody>
+										<tr th:each="sal,salStat : ${salList}">
+											<td th:text="${sal.memberName}" class="myName" style="display:none;"></td>
+											<td th:text="${sal.rank}" class="myRank" style="display:none;"></td>
+											<td th:text="${sal.salaryStep}" class="mySalaryStep" style="display:none;"></td>
+											<td th:text="${sal.category}" class="category"></td>
+											<td th:text="${sal.yearAndMonth}" class="yearNMon"></td>
+											<td th:text="${sal.payDate}" class="payDate"></td>
+											<td th:text="${#numbers.formatInteger(sal.transferAmount,3,'COMMA')}" class="transfer"></td>																						
+											<td><button type="button" class="btn btn-soft-success width-xs" 
+												data-bs-toggle="modal" data-bs-target="#transferList" th:id="${'detail' + salStat}">상세보기</button></td>																							
+										</tr>
+									</tbody>
+								</table>
+								<!-- 이체 리스트 모달창 -->
+									<div class="modal fade" id="transferList" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                             <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="transferListModal"><b>급여 명세서</b></h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    	<div>	                                                        
+	                                                        <label style="margin:10px;" id="modalyearAndMonth"></label><span><b>급상여 명세</b></span><br>	                                                        
+	                                                        <label style="margin:10px;">성 명 :</label><label id="modalMemName" style="margin:5px;"></label><br>
+	                                                        <label style="margin:10px;">직 급 :</label><label id="modalRank" style="margin:5px;"></label><br>	                                                        
+	                                                        <label style="margin:10px;">호 봉 :</label><label id="modalsalStep" style="margin:5px;"></label><br>	                                                        
+                                                    	</div>
+                                                    	<br>                                                    	
+                                                    	<div style="margin:0 auto; padding:20px; height:400px; overflow-y:scroll;">
+				                                            <table class="table table-sm mb-0 text-center" id="modalPay">
+				                                                <thead class="table-light">
+				                                                    <tr>
+				                                                        <th>항 목</th>
+				                                                        <th>금 액</th>				                                                        			                                                        
+				                                                    </tr>
+				                                                </thead>				                                                	
+				                                                <tbody id="payDetail">
+				                                                    
+				                                                </tbody>
+				                                                <tbody id="deductDetail">
+				                                                    
+				                                                </tbody>
+				                                            </table>				                                            
+				                                        </div>
+                                                    </div>
+                                                   <div class="modal-footer">
+	                                                   	<button type="reset" class="btn btn-success width-xs" data-bs-dismiss="modal">닫기</button>
+	                   									<button type="button" class="btn btn-info width-xs" style="display:none;" id="modalConfirm">승인</button>
+                                                   </div> 
+                                              </div>
+                                        </div>
+                                     </div> <!-- 이체 리스트 모달창 종료 -->                                   
+							   </div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -27,5 +111,88 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	<script>
+		$("[id^=detail]").click(function() {
+			console.log("정상작동");
+			
+			const memberName = $(this).parent().siblings(".myName").text();
+			const memberRank = $(this).parent().siblings(".myRank").text();
+			const memberSalaryStep = $(this).parent().siblings(".mySalaryStep").text();
+			
+			$("#modalMemName").text(memberName);
+			$("#modalRank").text(memberRank);
+			$("#modalsalStep").text(memberSalaryStep);
+			
+			const category = $(this).parent().siblings(".category").text();
+			const yearNmonth = $(this).parent().siblings(".yearNMon").text();
+			const payDate = $(this).parent().siblings(".payDate").text();
+			
+			console.log(yearNmonth);
+			$("#modalyearAndMonth").text(yearNmonth);
+			
+			$.ajax({
+				url: "/salary/detailList",
+				method: "POST",
+				data: {"category" : category, "yearAndMonth" : yearNmonth, "searchDate" : payDate},
+				success: function(data) {
+					const pay = $("#payDetail");
+					const deduct = $("#deductDetail");
+					pay.html("");
+					deduct.html("");
+					
+					let paySum = 0;
+					let deductSum = 0;
+					
+					for(let index in data) {
+						if((data[index].divNo) == 0) {
+							pay.append($("<tr>").append($("<th>").text(data[index].salaryName))
+												.append($("<td>").text(data[index].salaryAmount).css({"text-align":"right", "width":"150px"}))
+									);
+							paySum += data[index].salaryAmount;
+							pay.find("input").attr("readonly", true);
+							
+						} else {
+							
+							deduct.append($("<tr>").append($("<th>").text(data[index].salaryName))
+												   .append($("<td>").text(data[index].salaryAmount).css({"text-align":"right", "width":"150px"}))
+									);
+							deductSum += data[index].salaryAmount;
+							
+							deduct.find("input").attr("readonly", true).css({"background-color": "rgba( 255, 255, 255, 0 )", "border": "none", "outline": "none", "text-align" : "right"});
+							
+						}
+					};
+					
+					pay.append($("<tr>").append($("<th>").text("지급총계").css({"background-color":"rgba(67,211,158,.1)"}))
+										.append($("<td>").text(paySum).css({"text-align":"right"})
+												.css({"background-color":"rgba(67,211,158,.1)"}))
+							);
+					
+					deduct.append($("<tr>").append($("<th>").text("공제총계").css({"background-color":"rgba(37,194,227,.1)"}))
+							   			   .append($("<td>").text(deductSum)
+							   					   			.css({"background-color": "rgba( 255, 255, 255, 0 )", "border": "none", "outline": "none", "text-align" : "right"})
+							   					  .css({"background-color":"rgba(37,194,227,.1)"}))
+							);
+					$("#yearAndMonth").text(data[0].imputedDate);
+				},
+				error: function(xhr) {
+					Swal.fire({
+		       			  position: 'center',
+		       			  icon: 'error',
+		       			  title: '세부 내역 조회에 실패하였습니다.',
+		       			  showConfirmButton: false,
+		       			  timer: 1500,
+		       			  width: 600
+		       		})
+				}
+			});		
+		});
+	
+	
+	
+	
+	
+	
+	</script>
 </body>
 </html>
