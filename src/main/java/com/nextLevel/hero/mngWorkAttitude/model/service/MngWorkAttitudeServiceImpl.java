@@ -14,6 +14,7 @@ import com.nextLevel.hero.common.Pagenation;
 import com.nextLevel.hero.common.SelectCriteria;
 import com.nextLevel.hero.mngWorkAttitude.model.dao.MngWorkAttitudeMapper;
 import com.nextLevel.hero.mngWorkAttitude.model.dto.MngAttitudeUpdateDTO;
+import com.nextLevel.hero.mngWorkAttitude.model.dto.MngAttitudeUpdateViewDTO;
 import com.nextLevel.hero.mngWorkAttitude.model.dto.MngUpdateDTO;
 import com.nextLevel.hero.mngWorkAttitude.model.dto.MngWorkAttitudeDTO;
 import com.nextLevel.hero.mngWorkAttitude.model.dto.MngWorkCommuteDTO;
@@ -28,9 +29,16 @@ public class MngWorkAttitudeServiceImpl implements MngWorkAttitudeService {
 	public MngWorkAttitudeServiceImpl(MngWorkAttitudeMapper mngWorkAttitudeMapper) {
 		this.mngWorkAttitudeMapper = mngWorkAttitudeMapper;
 	}
+	
+	/* 사원수 조회 */
+	@Override
+	public int selectMemberCount(int companyNo, Map searchMap) {
+		
+		return  mngWorkAttitudeMapper.selectMemberCount(searchMap, companyNo);
+	}
 
 	@Override
-	public List<MngWorkAttitudeDTO> selectAllWorkAttitudeList(int companyNo, Map searchMap) {
+	public List<MngWorkAttitudeDTO> selectAllWorkAttitudeList(int companyNo, Map searchMap, SelectCriteria selectCriteria) {
 		
 		LocalDate now = LocalDate.now();
 		// 포맷 정의
@@ -40,21 +48,6 @@ public class MngWorkAttitudeServiceImpl implements MngWorkAttitudeService {
 		String formatView = null;
 		String formatedNow = null;
 		
-		/* 페이징 */
-		String currentPage = (String) searchMap.get("currentPage");
-		String searchCondition = (String) searchMap.get("searchCondition");
-		String searchValue = (String) searchMap.get("searchValue");
-		
-		int pageNo = 1;
-		if(currentPage != null && !"".equals(currentPage)) {
-			pageNo = Integer.parseInt(currentPage);
-		}
-		
-		/* 0보다 작은 숫자값을 입력해도 1페이지를 보여준다 */
-		if(pageNo <= 0) {
-			pageNo = 1;
-		}
-		
 		if(searchMap.get("searchDate") == null) {
 			formatedNow = now.format(formatter) + "%";
 			formatView = now.format(formatterView);
@@ -63,25 +56,8 @@ public class MngWorkAttitudeServiceImpl implements MngWorkAttitudeService {
 			formatView = ((String) searchMap.get("searchDate")).replaceAll("-", "/");
 		}
 		
-		/* 사원수 검색 */
-		int totalCount = mngWorkAttitudeMapper.selectMemberCount(searchMap, companyNo);
-		/* 한 페이지에 보여 줄 게시물 수 */
-		int limit = 3;		
-		/* 한 번에 보여질 페이징 버튼의 갯수 */
-		int buttonAmount = 5;
-		
-		/* 페이징 처리를 위한 로직 호출 후 페이징 처리에 관한 정보를 담고 있는 인스턴스를 반환받는다. */
-		SelectCriteria selectCriteria = null;
-
-		
-		if(searchCondition != null && !"".equals(searchCondition)) {
-			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
-		} else {
-			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
-		}
-		
 		/* 사원 조회 */
-		List<MngWorkAttitudeDTO> memberList = mngWorkAttitudeMapper.selectMemberList(searchMap, companyNo, selectCriteria );
+		List<MngWorkAttitudeDTO> memberList = mngWorkAttitudeMapper.selectMemberList(searchMap, companyNo, selectCriteria);
 
 		for(int w = 0; w < memberList.size(); w++) {
 			
@@ -125,6 +101,7 @@ public class MngWorkAttitudeServiceImpl implements MngWorkAttitudeService {
 		return memberList;
 	}
 
+	/* 근태 수정 조회 */
 	@Override
 	public List<MngAttitudeUpdateDTO> selectAllWorkAttitudeUpdate(int companyNo, Map searchMap) {
 		
@@ -161,10 +138,11 @@ public class MngWorkAttitudeServiceImpl implements MngWorkAttitudeService {
 		
 		/* 사원 조회 */
 		List<MngAttitudeUpdateDTO> memberList = mngWorkAttitudeMapper.selectUpdateList(searchMap, companyNo, selectCriteria );
-//		List<MngAttitudeUpdateDTO> memberList = null;
+		
 		return memberList;
 	}
-
+	
+	/* 근태 수정 */
 	@Override
 	@Transactional
 	public int updateWorkAttitude(MngUpdateDTO updateDTO) {
@@ -175,15 +153,64 @@ public class MngWorkAttitudeServiceImpl implements MngWorkAttitudeService {
 		MngWorkCommuteDTO commuteDTO = new MngWorkCommuteDTO();
 		/* insert할 내용 select */
 		commuteDTO = mngWorkAttitudeMapper.selectWorkAttitude(updateDTO, updateDate);
-		System.out.println("======----------");
-		System.out.println(updateDTO);
-		System.out.println(commuteDTO);
 		/* 근태 수정 insert*/ 
 		int result = mngWorkAttitudeMapper.insertWorkAttitude(updateDTO, commuteDTO);
 		/* 근태 수정 update */
 		result += mngWorkAttitudeMapper.updateWorkAttitude(updateDTO, updateDate);
+		
 		return result;
 	}
+
+	/* 근태 기록 수정 내역 */
+	@Override
+	public List<MngAttitudeUpdateDTO> selectUpdateAttitudeList(int companyNo, Map searchMap) {
+		
+		/* 페이징 */
+		String currentPage = (String) searchMap.get("currentPage");
+		String searchCondition = (String) searchMap.get("searchCondition");
+		String searchValue = (String) searchMap.get("searchValue");
+		
+		int pageNo = 1;
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		/* 0보다 작은 숫자값을 입력해도 1페이지를 보여준다 */
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		/* 사원수 검색 */
+		int totalCount = mngWorkAttitudeMapper.selectMemberCount(searchMap, companyNo);
+		/* 한 페이지에 보여 줄 게시물 수 */
+		int limit = 8;		
+		/* 한 번에 보여질 페이징 버튼의 갯수 */
+		int buttonAmount = 5;
+		
+		/* 페이징 처리를 위한 로직 호출 후 페이징 처리에 관한 정보를 담고 있는 인스턴스를 반환받는다. */
+		SelectCriteria selectCriteria = null;
+
+		if(searchCondition != null && !"".equals(searchCondition)) {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		/* 사원 조회 */
+		List<MngAttitudeUpdateDTO> memberList = mngWorkAttitudeMapper.selectUpdateList(searchMap, companyNo, selectCriteria );
+		
+		return memberList;
+	}
+
+	@Override
+	public List<MngAttitudeUpdateViewDTO> selectAllUpdateAttitudeList(int companyNo, int memberNo) {
+		
+		/* 수정 기록 기록 조회 */
+		List<MngAttitudeUpdateViewDTO> updateList = mngWorkAttitudeMapper.selectUpdateAttitudeList(companyNo, memberNo);
+		
+		return updateList;
+	}
+	
 
 
 }

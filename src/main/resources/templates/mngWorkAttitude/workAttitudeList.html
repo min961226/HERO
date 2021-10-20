@@ -60,6 +60,62 @@
 											style="text-align: left; float:center;" colspan=50></td>
 										</tr>
 									</table>
+									
+								
+						
+						 <th:block  th:with="start = ${selectCriteria.startPage}, end = ${selectCriteria.endPage}">
+	   						<div class="page-item" th:with="start = ${selectCriteria.startPage}, end = ${selectCriteria.endPage}"
+	    					th:each="pageButton : ${#numbers.sequence(start, end)}" style="float: left">
+	    					<button class="page-link" th:href="@{'/page=' + ${pageButton}}" th:text=${pageButton}
+	    					th:onclick="location.href='/mngWorkAttitude/workAttitudeList?pageNo=  '"
+							
+	    					>
+	    					</button>
+	   						 </div>
+    						</th:block>
+    						
+    						<ul class="pagination pagination-rounded">
+    							<li class="paginate_button page-item previous disabled">
+    							</li>
+    							
+    							<li class="paginate_button page-item active" th:href="@{'/mngWorkAttitude/workAttitudeList= }"
+													tabindex="0" class="page-link">1</a></li>
+    						</ul>
+    						
+    						<div class="role-down">
+											<ul class="pagination pagination-rounded">
+												<li class="paginate_button page-item previous disabled"
+													id="basic-datatable_previous"><a th:href="@{'/mngWorkAttitude/workAttitudeList=' + ${pageButton}}"
+													aria-controls="basic-datatable" data-dt-idx="0"
+													tabindex="0" class="page-link"> <i
+														class="uil uil-angle-left"></i></a></li>
+												<li class="paginate_button page-item active"><a
+													href="#" aria-controls="basic-datatable" data-dt-idx="1"
+													tabindex="0" class="page-link">1</a></li>
+												<li class="paginate_button page-item "><a href="#"
+													aria-controls="basic-datatable" data-dt-idx="2"
+													tabindex="0" class="page-link">2</a></li>
+												<li class="paginate_button page-item "><a href="#"
+													aria-controls="basic-datatable" data-dt-idx="3"
+													tabindex="0" class="page-link">3</a></li>
+												<li class="paginate_button page-item "><a href="#"
+													aria-controls="basic-datatable" data-dt-idx="4"
+													tabindex="0" class="page-link">4</a></li>
+												<li class="paginate_button page-item "><a href="#"
+													aria-controls="basic-datatable" data-dt-idx="5"
+													tabindex="0" class="page-link">5</a></li>
+												<li class="paginate_button page-item "><a href="#"
+													aria-controls="basic-datatable" data-dt-idx="6"
+													tabindex="0" class="page-link">6</a></li>
+												<li class="paginate_button page-item next"
+													id="basic-datatable_next"><a href="#"
+													aria-controls="basic-datatable" data-dt-idx="7"
+													tabindex="0" class="page-link"> <i
+														class="uil uil-angle-right"></i></a></li>
+											</ul>
+										</div>
+	
+								
 								</div>
 							</div>
 

@@ -29,6 +29,16 @@
 		<result property="hireDate" column="HIRE_DATE"/>
 	</resultMap>
 	
+	<resultMap type="com.nextLevel.hero.mngWorkAttitude.model.dto.MngAttitudeUpdateViewDTO" id="workUpdateViewMap">
+		<id property="workAttitudeUpdateNo" column="WORK_ATTITUDE_UPDATE_NO"/>
+		<result property="writer" column="WRITER"/>
+		<result property="chhangeWantDate" column="CHANGE_WANT_DATE"/>
+		<result property="updateDate" column="UPDATE_DATE"/>
+		<result property="afterChangeStartTime" column="AFTER_CHANGE_START_TIME"/>
+		<result property="afterChangeEndTime" column="AFTER_CHANGE_END_TIME"/>
+	</resultMap>
+	
+	
 	<select id="selectMemberCount" resultType="_int" parameterType="hashmap">
 		 SELECT 
                COUNT(DISTINCT A.ID_NO)
@@ -178,6 +188,7 @@
 		, COMMUTE_NO
 		, AFTER_CHANGE_START_TIME
 		, AFTER_CHANGE_END_TIME
+		, MEMBER_NO
 		)
 		VALUES
 		(
@@ -189,6 +200,7 @@
 		, #{ commuteDTO.commuteNo }
 		, #{ commuteDTO.workStartTime }
 		, #{ commuteDTO.workEndTime }
+		, #{ updateDTO.memberNo }
 		)
 	</insert>
 	
@@ -202,6 +214,21 @@
 		   AND MEMBER_NO = #{ updateDTO.memberNo }
 		   AND YEAR_AND_MONTH LIKE #{ updateDate }
 	</update>
+	
+	<select id="selectUpdateAttitudeList" resultMap="workUpdateViewMap">
+		SELECT
+               A.WORK_ATTITUDE_UPDATE_NO
+             , A.WRITER
+             , A.CHANGE_WANT_DATE
+             , A.UPDATE_DATE
+             , A.AFTER_CHANGE_START_TIME
+             , A.AFTER_CHANGE_END_TIME
+          FROM TBL_COMMUTE_UPDATE A
+         WHERE A.COMPANY_NO = #{ companyNo }
+		   AND A.MEMBER_NO = #{ memberNo }
+		 ORDER BY 1 ASC
+	</select>
+	
 	
 	
 	
