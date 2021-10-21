@@ -43,7 +43,7 @@ public class MngWorkAttitudeController {
 	public ModelAndView mngWorkSelectAttitudeList(ModelAndView mv, @AuthenticationPrincipal UserImpl user, @RequestParam Map searchMap) {
 		
 		int companyNo = user.getCompanyNo();
-		System.out.println("버튼 값 : " + searchMap.get("pageNo"));
+		System.out.println("버튼 값 : " + searchMap.get("currentPage"));
 		
 		/* 페이징 */
 		String currentPage = (String) searchMap.get("currentPage");
@@ -85,7 +85,6 @@ public class MngWorkAttitudeController {
 		mv.addObject("workList", workList);
 		mv.setViewName("/mngWorkAttitude/workAttitudeList");
 		
-		System.out.println("버튼 값 : " + searchMap.get("pageNo"));
 		
 		return mv;
 	}

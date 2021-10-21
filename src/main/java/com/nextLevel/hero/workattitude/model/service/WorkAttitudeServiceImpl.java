@@ -78,7 +78,7 @@ public class WorkAttitudeServiceImpl implements WorkAttitudeService{
 				pageNo = 1;
 			}
 			
-			if(searchMap.get("searchDate") == null) {
+			if(searchMap.get("searchDate") == null || searchMap.get("searchDate") == "") {
 				formatedNow = now.format(formatter) + "%";
 				formatView = now.format(formatterView);
 			} else {

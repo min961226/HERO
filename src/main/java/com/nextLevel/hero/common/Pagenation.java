@@ -53,8 +53,11 @@ public class Pagenation {
 		startRow = (pageNo - 1) * limit + 1;
 		endRow = startRow + limit - 1;
 		
+		System.out.println("startPage : " + startPage);
 		System.out.println("startRow : " + startRow);
 		System.out.println("endRow : " + endRow);
+		System.out.println("endPage : " + endPage);
+		System.out.println("maxPage : " + maxPage);
 		
 		SelectCriteria selectCriteria = new SelectCriteria(pageNo, totalCount, limit, buttonAmount ,maxPage, startPage, endPage, startRow, endRow, searchCondition, searchValue);
 		

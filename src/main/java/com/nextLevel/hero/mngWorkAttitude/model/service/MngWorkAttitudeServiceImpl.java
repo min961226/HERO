@@ -47,8 +47,9 @@ public class MngWorkAttitudeServiceImpl implements MngWorkAttitudeService {
 		// 포맷 적용
 		String formatView = null;
 		String formatedNow = null;
-		
-		if(searchMap.get("searchDate") == null) {
+		System.out.println("====-009");
+		System.out.println(searchMap.get("searchDate"));
+		if(searchMap.get("searchDate") == null || searchMap.get("searchDate") == "") {
 			formatedNow = now.format(formatter) + "%";
 			formatView = now.format(formatterView);
 		} else {
@@ -77,8 +78,10 @@ public class MngWorkAttitudeServiceImpl implements MngWorkAttitudeService {
 			for(int i = 0; i < workSpList.size(); i++) {
 				
 				MngWorkCommuteDTO workViewDTO = new MngWorkCommuteDTO();
-
-				workViewDTO.setYearAndMonth(workSpList.get(i).getYearAndMonth().substring(8, 10));
+				
+				if(workSpList.get(i).getYearAndMonth() != null) {
+					workViewDTO.setYearAndMonth(workSpList.get(i).getYearAndMonth().substring(6, 8));
+				} 
 				workViewDTO.setWorkStartTime(workSpList.get(i).getWorkStartTime());
 				workViewDTO.setWorkEndTime(workSpList.get(i).getWorkEndTime());
 				
