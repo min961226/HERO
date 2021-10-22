@@ -153,10 +153,10 @@
             , E.EMAIL
             , E.GENDER
             , E.NATIONAL
-            , E.HIRE_DATE
-            , E.TBL_USER_AUTH
             , E.ADDRESS_DETAIL
             , E.FAMILY_ORIGIN_ADDRESS_DETAIL
+            , E.HIRE_DATE
+            , E.TBL_USER_AUTH
 			)
 			VALUES
 			(
@@ -787,7 +787,6 @@
             , E.TEL
             , E.DEPARTMENT_PHONE
             , E.EMAIL
-            , E.PASSWORD
             , E.GENDER
             , E.NATIONAL
             , E.HIRE_DATE
@@ -811,7 +810,6 @@
 			, #{ mngHumanResourceDTO.tel } 
 			, #{ mngHumanResourceDTO.departmentPhone } 
 			, #{ mngHumanResourceDTO.email } 
-			, #{ mngHumanResourceDTO.memberPassword } 
 			, #{ mngHumanResourceDTO.gender } 
 			, #{ mngHumanResourceDTO.national } 
 			, SYSDATE

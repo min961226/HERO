@@ -69,7 +69,7 @@ public class MngHumanResourceController {
 			,@RequestParam String ssn1, @RequestParam String ssn2) {
 		
 		int companyNo = user.getCompanyNo();
-		mngHumanResourceDTO.setSsn(ssn1 + "+" + ssn2);
+		mngHumanResourceDTO.setSsn(ssn1 + "-" + ssn2);
 		String familyOriginAddress = mngHumanResourceDTO.getFamilyOriginAddress();
 		System.out.println("familyOriginAddress + familyOriginAddress2 : " + familyOriginAddress + familyOriginAddressDetail);
 		mngHumanResourceDTO.setFamilyOriginAddress(familyOriginAddress + familyOriginAddressDetail);
