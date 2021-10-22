@@ -27,10 +27,6 @@
 	position: relative;
 }
 
-.NoRoleImg {
-	width: 400px;
-}
-
 .noRole {
 	padding: 10px;
 	width: 70%;
@@ -123,44 +119,16 @@ input[type=radio] {
 												<td th:text="${ rank.rank }" align="center" class="td"></td>
 											</tr>
 										</table>
-
-										<div class="role-down">
-											<ul class="pagination pagination-rounded">
-												<li class="paginate_button page-item previous disabled"
-													id="basic-datatable_previous"><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="0"
-													tabindex="0" class="page-link"> <i
-														class="uil uil-angle-left"></i></a></li>
-												<li class="paginate_button page-item active"><a
-													href="#" aria-controls="basic-datatable" data-dt-idx="1"
-													tabindex="0" class="page-link">1</a></li>
-												<li class="paginate_button page-item "><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="2"
-													tabindex="0" class="page-link">2</a></li>
-												<li class="paginate_button page-item "><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="3"
-													tabindex="0" class="page-link">3</a></li>
-												<li class="paginate_button page-item "><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="4"
-													tabindex="0" class="page-link">4</a></li>
-												<li class="paginate_button page-item "><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="5"
-													tabindex="0" class="page-link">5</a></li>
-												<li class="paginate_button page-item "><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="6"
-													tabindex="0" class="page-link">6</a></li>
-												<li class="paginate_button page-item next"
-													id="basic-datatable_next"><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="7"
-													tabindex="0" class="page-link"> <i
-														class="uil uil-angle-right"></i></a></li>
-											</ul>
-										</div>
+										
 									</div>
 									<div class="body-role">
 										<div class="noRole" align="center" style="display: none">
 											<form action="/mngRole/updateRoleAuth" method="post">
-												<img src="/images/mngRole/NoRole.jpg" class="NoRoleImg">
+												<svg xmlns="http://www.w3.org/2000/svg" width="350"  viewBox="0 0 24 24"
+												 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+												 class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 
+												 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13">
+												 </line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
 												<h2>생성된 권한이 없습니다. 권한을 부여하시겠습니까?</h2>
 												<input type="hidden" name="rank" id="rank" />
 												<div class="right" align="right">

@@ -1,6 +1,7 @@
 package com.nextLevel.hero.mngRole.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -8,11 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.nextLevel.hero.common.Pagenation;
+import com.nextLevel.hero.common.SelectCriteria;
 import com.nextLevel.hero.member.model.dto.UserImpl;
 import com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO;
@@ -98,13 +102,46 @@ public class MngRoleController {
 	}
 
 	/* 사용자별 권한 */
-	@GetMapping("/roleUser")
-	public ModelAndView mngRoleUser(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
+	@ResponseBody
+	@RequestMapping(value="/roleUser", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView mngRoleUser(ModelAndView mv, @AuthenticationPrincipal UserImpl user, @RequestParam Map searchMap) {
 
 		int companyNo = user.getCompanyNo();
+		
+		/* 페이징 */
+		String currentPage = (String) searchMap.get("currentPage");
+		String searchCondition = (String) searchMap.get("searchCondition");
+		String searchValue = (String) searchMap.get("searchValue");
+		
+		int pageNo = 1;
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		/* 0보다 작은 숫자값을 입력해도 1페이지를 보여준다 */
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		/* 사원수 검색 */
+		int totalCount = mngRoleService.selectMemberCount(companyNo, searchMap);
+		/* 한 페이지에 보여 줄 게시물 수 */
+		int limit = 8;		
+		/* 한 번에 보여질 페이징 버튼의 갯수 */
+		int buttonAmount = 5;
+		
+		/* 페이징 처리를 위한 로직 호출 후 페이징 처리에 관한 정보를 담고 있는 인스턴스를 반환받는다. */
+		SelectCriteria selectCriteria = null;
 
-		List<MngUserDTO> userList = mngRoleService.selectUser(companyNo);
+		if(searchCondition != null && !"".equals(searchCondition)) {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+		}
 
+		List<MngUserDTO> userList = mngRoleService.selectUser(companyNo, searchMap, selectCriteria);
+		
+		mv.addObject("selectCriteria", selectCriteria);
 		mv.addObject("userList", userList);
 		mv.setViewName("/mngRole/roleUser");
 

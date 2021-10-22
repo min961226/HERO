@@ -81,7 +81,7 @@ public class WorkAttitudeServiceImpl implements WorkAttitudeService{
 				pageNo = 1;
 			}
 			
-			if(searchMap.get("searchDate") == null) {
+			if(searchMap.get("searchDate") == null || searchMap.get("searchDate") == "") {
 				formatedNow = now.format(formatter) + "%";
 				formatView = now.format(formatterView);
 			} else {
@@ -129,7 +129,7 @@ public class WorkAttitudeServiceImpl implements WorkAttitudeService{
 					
 					WorkCommuteDTO workViewDTO = new WorkCommuteDTO();
 
-					workViewDTO.setYearAndMonth(workSpList.get(i).getYearAndMonth().substring(8, 10));
+					workViewDTO.setYearAndMonth(workSpList.get(i).getYearAndMonth().substring(6, 8));
 					workViewDTO.setWorkStartTime(workSpList.get(i).getWorkStartTime());
 					workViewDTO.setWorkEndTime(workSpList.get(i).getWorkEndTime());
 					

@@ -47,7 +47,7 @@ public class WorkAttitudeController {
 		int companyNo = user.getCompanyNo();
 		int idNo = user.getNo();
 		
-		List<WorkAttitudeDTO> workList = workAttitudeService.selectAllWorkAttitudeList(companyNo,idNo, searchMap);
+		List<WorkAttitudeDTO> workList = workAttitudeService.selectAllWorkAttitudeList(companyNo, idNo, searchMap);
 		
 		mv.addObject("workList", workList);
 		mv.setViewName("/workattitude/list");

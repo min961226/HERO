@@ -1,13 +1,15 @@
 package com.nextLevel.hero.mngWorkAttitude.model.dto;
 
+import java.util.List;
+
 public class MngAttitudeUpdateDTO {
 	
-	private int idNo;				//계정번호
-	private int memberNo;			//사번
-	private String koreanName;		//이름
-	private String departmenetName;	//부서이름
-	private String rank;			//직급
-	private String hireDate;		//입사일
+	private int idNo;									//계정번호
+	private int memberNo;								//사번
+	private String koreanName;							//이름
+	private String departmenetName;						//부서이름
+	private String rank;								//직급
+	private String hireDate;							//입사일
 	
 	public MngAttitudeUpdateDTO() {
 		super();
@@ -77,7 +79,8 @@ public class MngAttitudeUpdateDTO {
 		return "MngAttitudeUpdateDTO [idNo=" + idNo + ", memberNo=" + memberNo + ", koreanName=" + koreanName
 				+ ", departmenetName=" + departmenetName + ", rank=" + rank + ", hireDate=" + hireDate + "]";
 	}
-
+	
+	
 	
 	
 	

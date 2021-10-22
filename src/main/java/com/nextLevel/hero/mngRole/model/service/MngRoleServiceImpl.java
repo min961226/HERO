@@ -1,11 +1,13 @@
 package com.nextLevel.hero.mngRole.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nextLevel.hero.common.SelectCriteria;
 import com.nextLevel.hero.mngRole.model.dao.MngRoleMapper;
 import com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO;
@@ -23,6 +25,13 @@ public class MngRoleServiceImpl implements MngRoleService {
 		this.mngRoleMapper = mngRoleMapper;
 	}
 	
+	/* 사원수 조회 */
+	@Override
+	public int selectMemberCount(int companyNo, Map searchMap) {
+		
+		return mngRoleMapper.selectMemberCount(searchMap, companyNo);
+	}
+	
 	/* 직급 조회 */
 	@Override
 	public List<MngRoleDTO> selectRank(int companyNO) {
@@ -38,9 +47,6 @@ public class MngRoleServiceImpl implements MngRoleService {
 		
 		rankAuth.addAll(mngRoleMapper.selectAuthority(rankAuth.get(0).getSalaryStepByRank(), companyNo));
 		
-
-		System.out.println(rankAuth);
-		
 		return rankAuth;
 	}
 	
@@ -50,7 +56,6 @@ public class MngRoleServiceImpl implements MngRoleService {
 	public int updateRoleAuth(MngRankSalaryDTO mngRankSalaryDTO) {
 		
 		return mngRoleMapper.updateRoleAuth(mngRankSalaryDTO);
-
 	}
 	
 	/* 직급 권한 수정 */
@@ -88,9 +93,9 @@ public class MngRoleServiceImpl implements MngRoleService {
 
 	/* 사용자별 권한 */
 	@Override
-	public List<MngUserDTO> selectUser(int companyNo) {
+	public List<MngUserDTO> selectUser(int companyNo, Map searchMap, SelectCriteria selectCriteria) {
 		
-		return mngRoleMapper.selectUser(companyNo);
+		return mngRoleMapper.selectUser(companyNo, searchMap, selectCriteria);
 	}
 
 	/* 사원 권한 ajax 조회 */
@@ -131,6 +136,5 @@ public class MngRoleServiceImpl implements MngRoleService {
 		return result;
 	}
 
-	
 
 }

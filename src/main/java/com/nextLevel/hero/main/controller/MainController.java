@@ -1,19 +1,20 @@
 package com.nextLevel.hero.main.controller;
 
-import java.security.Security;
+import java.util.List;
+import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.nextLevel.hero.main.model.service.MainService;
+import com.nextLevel.hero.member.model.dto.UserImpl;
+import com.nextLevel.hero.workattitude.model.dto.WorkAttitudeDTO;
 
 @Controller
 @RequestMapping("/*")
@@ -35,9 +36,20 @@ public class MainController {
 	public String login() {
 		return "member/login";
 	}
+	
+	/* 메인페이지 근태 조회 */
 	@GetMapping(value = "/main")
-	public String toMain() {
-		return "main/main";
+	public ModelAndView toMain(ModelAndView mv, @AuthenticationPrincipal UserImpl user,  @RequestParam Map searchMap) {
+		
+		int companyNo = user.getCompanyNo();
+		int idNo = user.getNo();
+		
+		List<WorkAttitudeDTO> workList = mainService.selectAllWorkAttitudeList(companyNo, idNo, searchMap);
+		
+		mv.addObject("workList", workList);
+		mv.setViewName("/main/main");
+		
+		return mv;
 	}
 	
 	@PostMapping(value="/main")

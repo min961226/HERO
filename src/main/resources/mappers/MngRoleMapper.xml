@@ -37,6 +37,27 @@
 		<result property="tblUserAuth" column="TBL_USER_AUTH"/>
 	</resultMap>
 	
+	<select id="selectMemberCount" resultType="_int" parameterType="hashmap">
+		 SELECT 
+               COUNT(DISTINCT A.ID_NO)
+          FROM TBL_EMPLOYEE A
+         <if test="searchMap.searchCondition == 'searchDeptName'">
+           JOIN TBL_DEPARTMENT B ON(A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+         </if>
+         <where>
+            <if test="searchMap.searchCondition == 'searchDeptName'">
+            	B.DEPARTMENT_NAME LIKE '%' || #{ searchMap.searchValue } || '%'
+            </if>
+            <if test="searchMap.searchCondition == 'searchMemberName'">
+            	A.KOREAN_NAME LIKE '%' || #{ searchMap.searchValue } || '%'
+            </if>
+            <if test="searchMap.searchCondition == 'searchMemberNo'">
+            	A.MEMBER_NO LIKE '%' || #{ searchMap.searchValue } || '%'
+            </if>
+            AND A.COMPANY_NO = #{ companyNo }
+         </where>
+	</select>
+	
 	<select id="selectRank" resultMap="rankResultMap">
   		SELECT
         	   DISTINCT RANK
@@ -115,12 +136,38 @@
 	
 	<select id="selectUser" resultMap="userResultMap">
          SELECT
-               A.KOREAN_NAME
+         	   A.RNUM
+             , A.KOREAN_NAME
              , A.MEMBER_NO
-             , B.DEPARTMENT_NAME
-          FROM TBL_EMPLOYEE A
-          JOIN TBL_DEPARTMENT B ON(A.DEPARTMENT_NO = B.DEPARTMENT_NO)
-         WHERE A.COMPANY_NO = #{ companyNo }
+             , A.DEPARTMENT_NAME
+          FROM (SELECT ROWNUM RNUM
+          			 , B.KOREAN_NAME
+          			 , B.MEMBER_NO
+          			 , B.DEPARTMENT_NAME
+          		  FROM (SELECT C.KOREAN_NAME
+          		  			 , C.MEMBER_NO
+          		  			 , D.DEPARTMENT_NAME
+          		  		  FROM TBL_EMPLOYEE C
+          				  JOIN TBL_DEPARTMENT D ON(C.DEPARTMENT_NO = D.DEPARTMENT_NO)
+        				  <where>
+        				 	 <if test="searchMap.searchCondition == 'searchDeptName'">
+        				 	 	D.DEPARTMENT_NAME LIKE '%' || #{ searchMap.searchValue } || '%'
+        				  	 </if>
+        				  	 <if test="searchMap.searchCondition == 'searchMemberName'">
+            					C.KOREAN_NAME LIKE '%' || #{ searchMap.searchValue } || '%'
+           					 </if>
+          					 <if test="searchMap.searchCondition == 'searchMemberNo'">
+            					C.MEMBER_NO LIKE '%' || #{ searchMap.searchValue } || '%'
+          					 </if>
+          					AND C.COMPANY_NO = #{ companyNo }
+        				  </where>
+        				  ORDER BY C.MEMBER_NO DESC
+          		  		  ) B
+          		  	<![CDATA[
+                  WHERE ROWNUM <= #{ selectCriteria.endRow }
+                  ]]>       
+          	   ) A    		  		  
+         WHERE A.RNUM >= #{ selectCriteria.startRow }  		  
 	</select>
 	
 	<select id="selectUserAuth" resultMap="userMap">

@@ -2,9 +2,11 @@ package com.nextLevel.hero.mngRole.model.dao;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.nextLevel.hero.common.SelectCriteria;
 import com.nextLevel.hero.mngRole.model.dto.MngRankAuthDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRankSalaryDTO;
 import com.nextLevel.hero.mngRole.model.dto.MngRoleDTO;
@@ -28,7 +30,7 @@ public interface MngRoleMapper {
 
 	Collection<? extends MngRankAuthDTO> selectAuthority(int salaryStepByRank, int companyNo);
 
-	List<MngUserDTO> selectUser(int companyNo);
+	List<MngUserDTO> selectUser(int companyNo, Map searchMap, SelectCriteria selectCriteria);
 
 	List<MngUserAuthDTO> selectUserAuth(String userName, String memberNo, int companyNo);
  
@@ -39,6 +41,8 @@ public interface MngRoleMapper {
 	int deleteUserAuth(MngUserAuthDTO mngUserAuthDTO);
 
 	int insertUserAuth(MngUserAuthDTO mngUserAuthDTO);
+
+	int selectMemberCount(Map searchMap, int companyNo);
 
 
 

@@ -5,6 +5,11 @@
 <meta charset="UTF-8">
 <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
 </head>
+<style>
+	.dropButton {
+		font-size: 21px;
+	}
+</style>
 <body>
 	<div id="wrapper">
 		<div th:include="common/sidebar.html"></div>
@@ -20,7 +25,7 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
-							<form action="/mngWorkAttitude/workAttitudeUpdate" method="post">
+							<form action="/mngWorkAttitude/workAttitudeHistory" method="post">
 							<select style="width:155px; height:30px;" id="searchCondition" name="searchCondition">
 								<option value="searchMemberName">이름</option>
 								<option value="searchMemberNo">사번</option>
@@ -43,14 +48,14 @@
 											<th>상세보기</th>
 										</tr>
 										</thead>
-										<tr align="center" th:each="item, num: ${ updateList }">
+										<tr align="center" th:each="item, num: ${ workList }">
 											<td th:text="${ num.count }" ></td>
 											<td th:text="${ item.memberNo }" ></td>
 											<td th:text="${ item.koreanName }" ></td>
 											<td th:text="${ item.departmenetName }" ></td>
 											<td th:text="${ item.rank }" ></td>
 											<td th:text="${ item.hireDate }" ></td>
-											<td><button type="button" class="btn btn-outline-primary" id="searchBtn"
+											<td><button type="button" class="btn btn-outline-primary" id="details"
 												data-bs-toggle="modal" data-bs-target="#update">상세보기</button></td>
 										</tr>
 									</table>
@@ -58,35 +63,66 @@
 									<div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">
                                              <div class="modal-content">
-                                       			 <form action="/mngWorkAttitude/AttitudeUpdate" method="post">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="update">상세보기</h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                    	<div style="margin:0 auto; padding:20px; height:300px;">
+                                                    	<div style="margin:0 auto; padding:10px; height:500px;">
                                                     		
-                                                    		<input type="hidden" name="memberNo" id="memberNo" />
-				                                            <table id="modalTBL" align="center">
-				                                              
-				                                                 
-				                                                <tbody id="monthly">
-				                                                    
-				                                                </tbody>
+				                                      		<table class="table mb-0">
+																<thead class="table-light" align="center">
+																<tr>
+																	<th>구분</th>
+																	<th>수정자</th>
+																	<th>수정일</th>
+																	<th>수정변경일</th>
+																	<th>출근시간</th>
+																	<th>퇴근시간</th>
+																</tr>
+				                                           		</thead>
+																<tbody id="updateDetails" align="center">
+																
+																</tbody>
+															
 				                                            </table>
 				                                        </div>
                                                     </div>
-                                                   <div class="modal-footer">
-	                                                   	<button type="reset" class="btn btn-warning width-xs" data-bs-dismiss="modal">닫기</button>
-	                   									<button type="submit" class="btn btn-success width-xs" id="updateBtn">수정</button>
-                                                   </div> 
-                                                   </form>
+                                                    <div class="modal-footer">
+	                                                   	<button type="reset" class="btn btn-success width-xs" data-bs-dismiss="modal">닫기</button>
+                                           			</div>
                                               </div>
-                                        </div>
-                                     </div> <!-- 월 지급항목 모달창 종료 -->
+                                          </div>
+                                       </div>
+                                       <!-- 모달창 종료 -->
+                                       <br>
+                                       <div class="pagesButton" style="margin:0 auto; width:300px;">
+										<!-- 이전 페이지 버튼 -->
+										<div th:if="${ selectCriteria.pageNo <= 1 }" style="float:left;">
+										<button disabled class="dropButton"><</button>
+										</div>
+										<div th:if="${ selectCriteria.pageNo > 1 }"  style="float:left;" >
+										<button id="prevPage" class="dropButton"><</button>
+										</div>
+										 <!-- 숫자 버튼 -->
+										 <th:block th:with="start = ${selectCriteria.startPage}, end = ${selectCriteria.endPage}">
+	   										<div class="page-item" th:with="start = ${selectCriteria.startPage}, end = ${selectCriteria.endPage}"
+	    							 	    th:each="pageButton : ${#numbers.sequence(start, end)}" style="float: left">
+	    							 		  <button class="page-link" th:href="@{'/page=' + ${pageButton}}" th:text=${pageButton}
+											   th:onclick="pageButtonAction(this.innerText);">
+	    									  </button>
+	   						 				</div>
+    									 </th:block>
+    									 <!-- 다음 페이지 버튼 -->
+    									 <div th:if="${ selectCriteria.pageNo >= selectCriteria.maxPage }" style="float:left;">
+										 <button disabled class="dropButton">></button>
+										 </div>
+										 <div th:if="${ selectCriteria.pageNo < selectCriteria.maxPage }" style="float:left;">
+										 <button id="nextPage" class="dropButton">></button>
+										 </div>
+										</div>
 								</div>
 							</div>
-							
 						</div>
 					</div>
 				</div>
@@ -94,8 +130,8 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
-		<script type="text/javascript">
-	 $("[id^=searchBtn]").click(function(){ 
+	<script th:inline="javascript">
+	 $("[id^=details]").click(function(){ 
 			
 			var str = ""
 			var btn_update = $(this);
@@ -105,10 +141,60 @@
 			
 			var no = td.eq(1).text();
 			
-			$("#memberNo").text(no);
-			document.getElementById("memberNo").value = no;
-
+			$.ajax({
+				url: "/mngWorkAttitude/updateList",
+				method: "POST",
+				data: { "memberNo" : no },
+				success: function(data) {
+					const updateDetails = $("#updateDetails");
+					updateDetails.html("");
+					
+					for(let index in data) {
+						updateDetails.append($("<tr>").append($("<td>").text([index]))
+												 .append($("<td>").text(data[index].writer))
+												 .append($("<td>").text(data[index].chhangeWantDate))
+												 .append($("<td>").text(data[index].updateDate))
+												 .append($("<td>").text(data[index].afterChangeStartTime))
+												 .append($("<td>").text(data[index].afterChangeEndTime))
+								)
+					}
+					
+				},
+				error: function(xhr) {
+					Swal.fire({
+		       			  position: 'center',
+		       			  icon: 'error',
+		       			  title: '잠시 후 다시 시도해주세요.',
+		       			  showConfirmButton: false,
+		       			  timer: 1500,
+		       			  width: 600
+		       		})
+				}
+			});
+			
 		});
+	 
+	 const link = "/mngWorkAttitude/workAttitudeHistory";
+		let searchText = "";
+		var pageNo = [[${selectCriteria.pageNo}]];
+		
+		function pageButtonAction(text) {
+			location.href = link + "?currentPage=" + text + searchText ;
+		}
+		
+		if(document.getElementById("prevPage")) {
+			const $prevPage = document.getElementById("prevPage");
+			$prevPage.onclick = function() {
+				location.href = link + "?currentPage="+ (pageNo - 1) + searchText;
+			}
+		}
+		
+		if(document.getElementById("nextPage")) {
+			const $nextPage = document.getElementById("nextPage");
+			$nextPage.onclick = function() {
+				location.href = link + "?currentPage="+ (pageNo + 1) + searchText;
+			}
+		}
 	 </script>
 </body>
 </html>
