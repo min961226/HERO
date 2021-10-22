@@ -22,4 +22,12 @@ public interface SalaryMapper {
 
 	List<DetailPayDTO> listDeductDetail(SalaryDTO search);
 
+	MyAccountDTO ckeckAccountYn(MyAccountDTO add);
+
+	int updateAccount(MyAccountDTO add);
+
+	int insertNewAccount(MyAccountDTO add);
+
+	int insertAccUpdateTbl(MyAccountDTO add);
+
 }

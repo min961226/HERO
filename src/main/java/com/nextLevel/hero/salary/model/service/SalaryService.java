@@ -17,4 +17,6 @@ public interface SalaryService {
 
 	List<DetailPayDTO> selectDetailList(SalaryDTO search);
 
+	String applyAccount(MyAccountDTO add);
+
 }

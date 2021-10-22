@@ -43,7 +43,6 @@ public class MngPayController {
 		mv.addObject("confirmPayList", confirmPayList);
 		mv.setViewName("mngPay/paySalaryAndBonus");
 		
-		System.out.println("controller 완 : "+confirmPayList);
 		return mv;
 	}
 	

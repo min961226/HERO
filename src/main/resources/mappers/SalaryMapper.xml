@@ -60,10 +60,6 @@
 	</resultMap>
 	
 	
-	
-	
-	
-	
 	<select id="selectAccountList" resultMap="accountListResultMap" parameterType="_int">
 		SELECT
                A.COMPANY_NO
@@ -90,6 +86,57 @@
           FROM TBL_BANK A
 	</select>
 	
+	<select id="ckeckAccountYn" resultMap="accountListResultMap">
+		SELECT 
+		       A.MEMBER_NO
+		     , B.BANK_CODE  
+		  FROM TBL_EMPLOYEE A
+		  LEFT JOIN TBL_EMP_ACCOUNT B ON (A.ID_NO = B.ID_NO)
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		   AND A.ID_NO = #{ idNo }
+		    OR B.ID_NO = #{ idNo }
+		   AND B.BANK_CODE IS NULL    
+	</select>
+	
+	<update id="updateAccount">
+		UPDATE
+		       TBL_EMP_ACCOUNT
+		   SET BANK_CODE = #{ bankCode }
+		     , ACCOUNT_NO = #{ accountNo }
+	         , ENROLL_DATE = SYSDATE
+	     WHERE COMPANY_NO = #{ companyNo }
+	       AND MEMBER_NO = #{ memberNo }
+	</update>
+	
+	<insert id="insertNewAccount">
+		INSERT
+			  INTO TBL_EMP_ACCOUNT
+			VALUES
+			(
+			  #{ companyNo }
+			, #{ bankCode }
+			, #{ memberNo }
+			, #{ accountNo }
+			, SYSDATE
+			, #{ idNo }
+			)	
+	</insert>
+	
+	<insert id="insertAccUpdateTbl">
+		INSERT
+			  INTO TBL_EMP_ACCOUNT_UPDATE
+			VALUES
+			(
+			  #{ companyNo }
+			, #{ memberNo }
+			, #{ accountNo }
+			, SYSDATE
+			, #{ idNo }
+			, SEQ_ACC_UPDATE_NO.NEXTVAL
+			, #{ bankCode }
+			)	
+	</insert>
+	
 	<select id="selectMyPaymentList" resultMap="paymentResultMap">
 		SELECT
 		       A.SALARY_OR_BONUS
@@ -103,7 +150,7 @@
 		  JOIN TBL_EMPLOYEE B ON (A.ID_NO = B.ID_NO)
 		 WHERE A.COMPANY_NO = #{ companyNo }
 		   AND A.ID_NO = #{ idNo }
-		   
+		  
 		 <if test="searchDate != null and '' != searchDate">
 		   AND A.PAY_DATE = #{ searchDate }
 		 </if>		  

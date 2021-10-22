@@ -32,10 +32,41 @@ public class SalaryServiceImpl implements SalaryService {
 	/* 추가 등록 시, 등록 가능한 은행 리스트 조회 */
 	@Override
 	public List<BankListDTO> selectBankList() {
-		
-		
+				
 		return salaryMapper.selectBankList();
 	}
+	
+	/* 본인 급여 계좌 추가 등록 */
+	@Override
+	public String applyAccount(MyAccountDTO add) {
+		
+		MyAccountDTO checkResult = salaryMapper.ckeckAccountYn(add);
+		int accResult = 0;
+		int updateResult = 0;
+		
+		String result = "";
+		
+		add.setMemberNo(checkResult.getMemberNo());
+		
+		if(checkResult.getBankCode() != null) {
+			
+			accResult = salaryMapper.updateAccount(add);
+			
+		} else {
+			accResult = salaryMapper.insertNewAccount(add);
+		}
+		
+		updateResult = salaryMapper.insertAccUpdateTbl(add);
+		
+		if((accResult + updateResult) > 0) {
+			result = "1";
+		} else {
+			result = "0";
+		}
+		
+		return result;
+	}
+	
 
 	/* 급상여 리스트 조회*/
 	@Override
@@ -50,9 +81,7 @@ public class SalaryServiceImpl implements SalaryService {
 		
 		List<DetailPayDTO> payList = salaryMapper.listPayDetail(search);
 		List<DetailPayDTO> deductList = salaryMapper.listDeductDetail(search);
-		
-		System.out.println("서비스 : " + payList);
-		System.out.println("서비스 : " + deductList);
+
 		
 		List<DetailPayDTO> detailList = new ArrayList<>();
 		
@@ -67,10 +96,8 @@ public class SalaryServiceImpl implements SalaryService {
 			detailList.add(deduct);
 		}
 		
-		System.out.println("서비스 결과 : " + detailList);
-		
 		return detailList;
 	}
-	
+
 	
 }

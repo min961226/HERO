@@ -32,8 +32,10 @@
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
 							<div>
-								<label style="margin:12px;">설정일자 </label><input type="date" style="margin:0px 0px 0px 30px;">
-								<button type="button" class="btn btn-outline-primary" style="margin:5px;">검 색</button>				
+								<form action="/mngSalary/deductFourMajorInsurances" method="GET">
+									<label style="margin:12px;">설정일자 </label><input type="date" style="margin:0px 0px 0px 30px;" name="searchStartDate">
+									<button type="submit" class="btn btn-outline-primary" style="margin:5px;">검 색</button>				
+								</form>
 							</div>
 							<br>
 							<div class="col-10" style="margin:0 auto;">
@@ -113,72 +115,6 @@
 			$("input:checkbox[class='industry']").prop("checked", false);
 		}
 	});
-	
-
-	/*
-	$("#modi").click(function() {
-		
-		const tbody = $("#deducT > tbody");
-		const rows = tbody.children();
-		
-		const deductList = [];	
-		
-		rows.each(function() {
-			const personal = {};
-			personal.memNo = $(this).find(".memNo").text();
-			personal.memName = $(this).find(".memName").text();
-			personal.deptName = $(this).find(".deptName").text();
-			personal.validate = $(this).find(".validateEdit").val();
-			
-			
-			if($(this).find(".health").prop("checked")) {
-				personal.health = "Y";
-			} else {
-				personal.health = "N";
-			}
-			
-			if($(this).find(".pension").prop("checked")) {
-				personal.pension = "Y";
-			} else {
-				personal.pension = "N";
-			}
-			
-			if($(this).find(".unemployee").prop("checked")) {
-				personal.unemployee = "Y";
-			} else {
-				personal.unemployee = "N";
-			}
-			
-			if($(this).find(".industry").prop("checked")) {
-				personal.industry = "Y";
-			} else {
-				personal.industry = "N";
-			}
-			
-			deductList.push(personal);
-		});
-		
-		
-		console.log(deductList);
-		let list = JSON.stringify(deductList);
-		
-		
-		$.ajax({
-			url:"updateInsurances",
-			method: "POST",
-			data: { list : list },
-			success: function(data, testStatus, xhr) {
-				alert("컨트롤러 넘김");
-			},
-			error: function(xhr, status, error) {
-				alert("AGAIn");
-			}
-				
-			
-		});
-		
-		
-	});*/
 	
 	</script>
 </body>

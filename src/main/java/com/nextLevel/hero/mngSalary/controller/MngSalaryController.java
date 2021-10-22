@@ -100,7 +100,6 @@ public class MngSalaryController {
 		
 		List<MonthlyListDTO> month = mngSalaryService.selectMonthlyList(companyNo);
 		
-		System.out.println("controller에서 넘기기 전" + month);
 		
 		Gson gson = new GsonBuilder()
 				.setDateFormat("yyyy-MM-dd")
@@ -131,8 +130,6 @@ public class MngSalaryController {
 		
 		List<MemberMonthlyPayDTO> detail = gson.fromJson(updateList, ListType);
 		
-		System.out.println("다시 변환 in controller : " + detail);
-		
 		int companyNo = user.getCompanyNo();
 		
 		String result = mngSalaryService.updatePersonalMonPay(companyNo, detail);
@@ -144,11 +141,11 @@ public class MngSalaryController {
 	
 	/* 4대보험 개인별 공제항목 리스트*/
 	@GetMapping("/deductFourMajorInsurances")
-	public ModelAndView mngDeductFourMajorInsurances(@AuthenticationPrincipal UserImpl user, ModelAndView mv) {
+	public ModelAndView mngDeductFourMajorInsurances(@AuthenticationPrincipal UserImpl user, ModelAndView mv, MngDeductFourInsDTO search) {
 
-		int companyNo = user.getCompanyNo();		
+		search.setCompanyNo(user.getCompanyNo());
 
-		List<MngDeductFourInsDTO> fourInsuranceList = mngSalaryService.listMngFourInsuranceList(companyNo);
+		List<MngDeductFourInsDTO> fourInsuranceList = mngSalaryService.listMngFourInsuranceList(search);
 
 		mv.addObject("fourInsuranceList", fourInsuranceList);
 		mv.setViewName("mngSalary/deductFourMajorInsurances");
@@ -207,7 +204,6 @@ public class MngSalaryController {
 				.disableHtmlEscaping()
 				.create();
 
-		System.out.println("controller : " + rateList);
 		return gson.toJson(rateList);
 
 
@@ -259,8 +255,6 @@ public class MngSalaryController {
 		search.setCompanyNo(user.getCompanyNo());
 		
 		List<MyAccountDTO> personalList = mngSalaryService.selectPersonalAccount(search);
-		
-		System.out.println(personalList);
 		
 		Gson gson = new GsonBuilder()
 				.setDateFormat("yyyy-MM-dd")
@@ -319,8 +313,6 @@ public class MngSalaryController {
 	@GetMapping("/listSalaryAndBonus")
 	public ModelAndView listSalaryAndBonus(ModelAndView mv, @AuthenticationPrincipal UserImpl user, SalaryAndBonusDTO search) {
 		
-		System.out.println("생성을 위한 컨트롤러 넘어옴");
-		
 		search.setCompanyNo(user.getCompanyNo());
 		List<SalaryAndBonusDTO> basicSalList = new ArrayList<>();
 		
@@ -336,8 +328,7 @@ public class MngSalaryController {
 		
 		mv.addObject("basicSalList",basicSalList);
 		mv.setViewName("mngSalary/salaryAndBonus");
-		
-		System.out.println("컨트롤러 도착 화면 진입 전 : " + basicSalList);
+
 		return mv;
 	}
 	
@@ -396,8 +387,6 @@ public class MngSalaryController {
 		Type ListType = new TypeToken<List<DetailPayDTO>>(){}.getType();
 		List<DetailPayDTO> detail = gson.fromJson(updateList, ListType);
 		
-		System.out.println("다시 변환 in controller : " + detail);
-		
 		String result = mngSalaryService.updatePersonalDeduct(companyNo, detail);
 		
 		return result;
@@ -417,7 +406,7 @@ public class MngSalaryController {
 	public ModelAndView selectDepositList(ModelAndView mv, @AuthenticationPrincipal UserImpl user, MngDepositDTO search) {
 		
 		search.setCompanyNo(user.getCompanyNo());
-		System.out.println("검색체크 : " + search);
+
 		List<MngDepositDTO> depositList = mngSalaryService.selectDepositList(search);
 		
 		mv.addObject("depositList",depositList);
@@ -431,8 +420,7 @@ public class MngSalaryController {
 	public ModelAndView mngSeverancePay(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
 		
 		List<SeverancePayDTO> severancePayDTO = mngSalaryService.severancePayList(user.getCompanyNo()); 
-		
-		System.out.println(severancePayDTO);
+
 		mv.addObject("severancePayList",severancePayDTO);
 		mv.setViewName("/mngSalary/severancePay");
 		return mv;
@@ -446,7 +434,6 @@ public class MngSalaryController {
 		int idNum = Integer.parseInt(idNo);
 		
 		memberSeverancePayDTO severancePay = mngSalaryService.selectOneSeverancePay(user.getCompanyNo(),idNum);
-		System.out.println(severancePay);
 
 		Gson gson = new GsonBuilder()
 				.setDateFormat("yyyy-MM-dd")

@@ -30,7 +30,6 @@
 													<th>구분</th>											
 													<th>은행명</th>											
 													<th>계좌번호</th>											
-													<th>통장사본</th>										
 													<th>등록일자</th>																												
 												</tr>
 											</thead>
@@ -40,7 +39,6 @@
 													<td th:text="${num.count}"></td>
 													<td th:text="${account.bankName}"></td>
 													<td th:text="${account.accountNo}"></td>
-													<td></td>
 													<td th:text="${account.enrollDate}"></td>
 												</tr>
 											</tbody>
@@ -58,18 +56,15 @@
 	                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	                                                    </div>
 	                                                    <div class="modal-body">
-	                                                    	<div>
-	                                                    		<form action="/salary/applyAccount" method="post">
-			                                                        <label style="display: none;" id="memberNo" ></label>		                                                       
-			                                                        <label style="padding:15px;">성   명 :</label><input type="text" style="margin:5px,25px;" id="memberName" required><br>
-			                                                        <label style="padding:15px;">생년월일 :</label><input type="text" 
-			                                                        	style="margin:5px;" placeholder="예) 900101" required><br>
-			                                                        <select name="bankList" id="bankList" style="margin:10px;">
-			                                                        	<!-- ajax로 구현 -->
-			                                                        </select>
-			                                                        <input type="text" style="margin:5px;" id="accountNo" placeholder="계좌번호를 입력해주세요" required>
-			                                                        <button type="button" class="btn btn-info width-xs" id="confirm" style="margin:15px;">계좌인증</button>
-		                                                        </form>
+	                                                    	<div>                                                  
+		                                                        <label style="padding:15px;">성   명 :</label><input type="text" style="margin:5px,25px;" id="memberName" required><br>
+		                                                        <label style="padding:15px;">생년월일 :</label><input type="text" 
+		                                                        	style="margin:5px;" placeholder="예) 900101" required><br>
+		                                                        <select name="bankName" id="bankName" style="margin:10px;">
+		                                                        	<!-- ajax로 구현 -->
+		                                                        </select>
+		                                                        <input type="text" style="margin:5px;" id="accountNo" placeholder="계좌번호를 입력해주세요" required>
+		                                                        <button type="button" class="btn btn-info width-xs" id="confirm" style="margin:15px;">계좌인증</button>		                                                       
 	                                                    	</div>	                                                  
 	                                                    </div>
 	                                              </div>
@@ -91,7 +86,7 @@
 				url: "/salary/bankList",
 				method: "POST",
 				success: function(data) {
-					const $bankList = $("#bankList");			
+					const $bankList = $("#bankName");			
 					$bankList.append($("<option>").text("은행명"));
 					
 					for(let index in data) {
@@ -99,7 +94,14 @@
 					}
 				},
 				error: function(xhr) {
-					alert("잠시 후 다시 시도해주세요");
+					Swal.fire({
+		       			  position: 'center',
+		       			  icon: 'error',
+		       			  title: '잠시 후 다시 시도해주세요.',
+		       			  showConfirmButton: false,
+		       			  timer: 1500,
+		       			  width: 600
+		       		})
 				}
 				
 			});
@@ -121,9 +123,53 @@
 					+"account_hold_auth_yn=Y"
 					
 				
-			$("#registAccount").modal('hide');		
+			const bankCode = $("#bankName option:selected").val();
+			const accountNo = $("#accountNo").val();
+			
+			$("#registAccount").modal('hide');	
+			
+			$.ajax({
+				url: "/salary/applyAccount",
+				method: "POST",
+				data: { "bankCode" : bankCode, "accountNo" : accountNo },
+				success: function(data) {
+					if(data == "1") {
+						Swal.fire({
+			       			  position: 'center',
+			       			  icon: 'success',
+			       			  title: '급여계좌 변경에 성공하였습니다.',
+			       			  showConfirmButton: false,
+			       			  timer: 1500,
+			       			  width: 600
+			       		}).then((result) => {
+			       			  location.href="/salary/changeaccount";
+			       				})
+					} else {
+						Swal.fire({
+			       			  position: 'center',
+			       			  icon: 'error',
+			       			  title: '급여계좌 변경에 실패했습니다. 다시 시도해주세요.',
+			       			  showConfirmButton: false,
+			       			  timer: 1500,
+			       			  width: 600
+			       		}).then((result) => {
+				        	   location.href="#";
+	       				})
+					}
+				},
+				error: function(xhr) {
+					Swal.fire({
+		       			  position: 'center',
+		       			  icon: 'error',
+		       			  title: '잠시 후 다시 시도해주세요.',
+		       			  showConfirmButton: false,
+		       			  timer: 1500,
+		       			  width: 600
+		       		})
+				}
+			});
+			
 		});
-	
 	
 	
 	</script>

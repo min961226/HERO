@@ -232,6 +232,16 @@
          <if test = "searchCondition == 'searchMemberName'">
            AND A.KOREAN_NAME = #{ searchValue }
          </if>
+         GROUP BY  A.COMPANY_NO
+             , A.MEMBER_NO
+             , A.KOREAN_NAME
+             , A.ID_NO
+             , B.DEPARTMENT_NAME
+             , D.RANK
+             , D.SALARY_STEP
+             , D.AMOUNT
+             , C.START_DATE
+             , B.DEPARTMENT_NO  
          ORDER BY B.DEPARTMENT_NO  	
 	</select>
 	
@@ -278,9 +288,6 @@
                 AND A.USE_STATUS = 'Y'
          </if>                                     
 	</select>
-	
-	
-	
 	
 	<select id="listMonthlySalary" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO" resultMap="latestMonthlyResult">
 		SELECT
@@ -360,7 +367,44 @@
 		)	
 	</insert>
 	
-	<select id="listMngFourInsuranceList" parameterType="_int" resultMap="fourInsResultMap">
+	<select id="listMngFourInsuranceList" resultMap="fourInsResultMap">
+		SELECT
+		       A.COMPANY_NO
+		     , A.MEMBER_NO
+		     , A.KOREAN_NAME AS MEMBER_NAME
+		     , A.ID_NO
+		     , B.DEPARTMENT_NAME
+		     , C.DIV_NO
+		     , C.START_DATE
+		     , C.HEALTH
+		     , C.PENSION
+		     , C.UNEMPLOYEE
+		     , C.INDUSTRY
+		  FROM TBL_EMPLOYEE A
+		  JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
+		  JOIN TBL_FOUR_INS_HISTORY C ON (A.MEMBER_NO = C.MEMBER_NO)
+		 WHERE A.COMPANY_NO = #{ companyNo }
+		   AND (A.MEMBER_NO, C.START_DATE, C.UPDATE_NO) IN (SELECT
+		                                              A1.MEMBER_NO
+		                                            , MAX(C1.START_DATE)
+		                                            , MAX(C1.UPDATE_NO)
+		                                         FROM TBL_EMPLOYEE A1
+		                                         JOIN TBL_FOUR_INS_HISTORY C1 ON (A1.MEMBER_NO = C1.MEMBER_NO)
+		                                         <where>
+		                                          <if test="(searchStartDate != null) and '' != searchStartDate">
+           											C1.START_DATE <![CDATA[<=]]> #{ searchStartDate } 
+        										  </if>
+											      <if test="(searchStartDate == null) or '' == searchStartDate">
+											        C1.START_DATE <![CDATA[<=]]> SYSDATE
+											       </if>
+		                                         </where>
+		                                         GROUP BY A1.MEMBER_NO
+		                                            )
+		 
+		 ORDER BY B.DEPARTMENT_NO			
+	</select>
+	
+	<select id="listMngFourInsList" parameterType="_int" resultMap="fourInsResultMap">
 		SELECT
 		       A.COMPANY_NO
 		     , A.MEMBER_NO

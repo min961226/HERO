@@ -29,7 +29,9 @@ public interface MngSalaryMapper {
 
 	List<MemberMonthlyPayDTO> listMonthlyPay2(MngSalaryDTO search);
 
-	List<MngDeductFourInsDTO> listMngFourInsuranceList(int companyNo);
+	List<MngDeductFourInsDTO> listMngFourInsuranceList(MngDeductFourInsDTO search);
+	
+	List<MngDeductFourInsDTO> listMngFourInsList(int companyNo);
 	
 	int updateFourInsuranceList(MngDeductFourInsDTO personal);
 
