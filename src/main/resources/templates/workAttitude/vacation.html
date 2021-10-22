@@ -20,7 +20,6 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
-
 							<div>
 								<button type="button" class="btn btn-warning"
 									id="insertVacation" data-bs-toggle="modal"
@@ -28,17 +27,14 @@
 							</div>
 							<br>
 
-
 							<div class="card">
 								<div class="card-body">
-								<h4 class="header-title mt-0 mb-1">본인 잔여 휴가</h4>
+									<h4 class="header-title mt-0 mb-1">본인 잔여 휴가</h4>
 									<!-- 조회 테이블 -->
-									
 									<table
 										class="table table-striped dt-responsive nowrap w-100 text-center">
 										<thead>
 											<tr>
-												<!-- 일단 EmployeeVacationDTO에 넣은거 다 받아와보자!! -->
 												<th>사번</th>
 												<th>이름</th>
 												<th>부서</th>
@@ -46,21 +42,22 @@
 												<th>총연차</th>
 												<th>사용연차</th>
 												<th>잔여연차</th>
-												<!-- 사원의 이름 & 부서도 받아오고 싶음... -->
 											</tr>
 										</thead>
 
 										<tbody>
-											<tr th:each="EmployeeAnnualVacation:${employeeAnnualVacationList}">
-												<td th:text="${EmployeeAnnualVacation.memberNo}" class="memberNo"
-													id="memberNo"></td>
+											<tr
+												th:each="EmployeeAnnualVacation:${employeeAnnualVacationList}">
+												<td th:text="${EmployeeAnnualVacation.memberNo}"
+													class="memberNo" id="memberNo"></td>
 												<td
 													th:text="${EmployeeAnnualVacation.mngMemberDepartment.koreanName}"
 													class="koreanName" id="memberName"></td>
 												<td
 													th:text="${EmployeeAnnualVacation.mngMemberDepartment.departmentName}"
-													class="departmentName"id="memberDept"></td>
-												<td th:text="${EmployeeAnnualVacation.createdMonthlyVacation}"
+													class="departmentName" id="memberDept"></td>
+												<td
+													th:text="${EmployeeAnnualVacation.createdMonthlyVacation}"
 													class="createdMonthlyVacation"></td>
 												<td th:text="${EmployeeAnnualVacation.totalVacation}"
 													class="totalVacation"></td>
@@ -68,28 +65,24 @@
 													class="usedVacation"></td>
 												<td th:text="${EmployeeAnnualVacation.leaveVacation}"
 													class="leaveVacation"></td>
-												<td th:text="${EmployeeAnnualVacation.idNo}" th:value="${EmployeeAnnualVacation.idNo}" class="idNo"
+												<td th:text="${EmployeeAnnualVacation.idNo}"
+													th:value="${EmployeeAnnualVacation.idNo}" class="idNo"
 													hidden="hidden"></td>
 												<td th:text="${EmployeeAnnualVacation.vacationCode}"
 													class="vacationCode" hidden="hidden"></td>
-												<!-- <td th:text="${EmployeeVacation.memberInfoDTO.memberName}" class="vacationCode"></td> -->
-												<!-- 이런식으로 받아오면됌 -->
-												<!-- <td><button type="button" class="btn btn-soft-warning">상세보기</button></td> -->
-												</tr>
+											</tr>
 										</tbody>
 									</table>
 								</div>
 							</div>
 							<div class="card">
 								<div class="card-body">
-								<h4 class="header-title mt-0 mb-1">신청 내역</h4>
+									<h4 class="header-title mt-0 mb-1">신청 내역</h4>
 									<!-- 조회 테이블 -->
-									
 									<table
 										class="table table-striped dt-responsive nowrap w-100 text-center">
 										<thead>
 											<tr>
-												<!-- 일단 EmployeeVacationDTO에 넣은거 다 받아와보자!! -->
 												<th>신청번호</th>
 												<th>사번</th>
 												<th>휴가종류</th>
@@ -97,7 +90,6 @@
 												<th>휴가종료일</th>
 												<th>휴가내용</th>
 												<th>승인여부</th>
-												<!-- 사원의 이름 & 부서도 받아오고 싶음... -->
 											</tr>
 										</thead>
 
@@ -105,119 +97,85 @@
 											<tr th:each="empVacation:${employeeVacationList}">
 												<td th:text="${empVacation.resquestNo}" class="resquestNo"
 													id="resquestNo"></td>
-												<td
-													th:text="${empVacation.memberNo}"
-													class="memberNo"></td>
-												<td
-													th:text="${empVacation.vacationCategory}"
+												<td th:text="${empVacation.memberNo}" class="memberNo"></td>
+												<td th:text="${empVacation.vacationCategory}"
 													class="vacationCategory"></td>
-												<td th:text="${empVacation.startDate}"
-													class="startDate"></td>
-												<td th:text="${empVacation.endDate}"
-													class="endDate"></td>
+												<td th:text="${empVacation.startDate}" class="startDate"></td>
+												<td th:text="${empVacation.endDate}" class="endDate"></td>
 												<td th:text="${empVacation.vacationContents}"
 													class="vacationContents"></td>
-												<td th:text="${empVacation.confirmedYn}"
-													class="confirmedYn"></td>
-												
-												<!-- <td th:text="${EmployeeVacation.memberInfoDTO.memberName}" class="vacationCode"></td> -->
-												<!-- 이런식으로 받아오면됌 -->
-												<!-- <td><button type="button" class="btn btn-soft-warning">상세보기</button></td> -->
-												</tr>
+												<td th:text="${empVacation.confirmedYn}" class="confirmedYn"></td>
+											</tr>
 										</tbody>
 									</table>
 								</div>
 							</div>
-								</div>
-							</div>
-							
 						</div>
 					</div>
-				</div>
-			</div>
-			
-			
-			
-			
-			<div th:include="common/footer.html"></div>
 
-	<!-- 직원 휴가신청 모달창 -->
-	<form action="/workattitude/vacationInsert" method="post">
-	<div class="modal fade" id="vacationList" tabindex="-1" role="dialog"
-		aria-labelledby="myLargeModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-md">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="employeeRequestVacationModal">휴가신청</h4>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-				
-					<div>
-						<!-- <label style="margin: 5px; display: none;" id=""></label>  -->
-						<input id="memNo1" style="margin: 5px;"name="memberNo"hidden="hidden"></input>
-						<label style="margin: 10px;">사번 :</label><label id="memNo" style="margin: 5px;"></label><br>
-						<label style="margin: 10px;">이름 :</label><label id="memName" style="margin: 5px;"></label><br>
-						<label style="margin: 10px;">부서 :</label><label id="memDept" style="margin: 5px;"></label><br>
-						<!-- <label style="margin: 10px;">휴가종류 :</label><label id="koreanName1" style="margin: 5px;"></label><br>  -->
-						<label style="margin: 10px;">휴가 신청 종류 / 휴가:</label> 
-							<select name="vacationCategory">
-								<option th:each="vacation : ${vacationTypeList}" 
-									th:text="${vacation.vacationCategory} + ' : ' + ${vacation.vacationName}"
-									th:value="${vacation.vacationName}">
-								</option>
-						</select><br>
-                    <label style="margin: 10px;">휴가 신청 일수</label>
-					<br> 
-					<div class="row" style="font-size: 25px;margin-left: 2px; float: center">
-					<input style="width: 150px" class="form-control"type="number" placeholder="휴가 지급 일수" name="vacationDate"
-						id="vacationDate" required="required">&nbsp;일
-					</div>
-						<label style="margin:10px;">휴가 시작일 :</label>
-						<label  style="margin:5px;">
-	                           <input type="date" name="startDate" id="vacationStartDate" class="form-control">
-	                    </label><br>
-						<label style="margin:10px;">휴가 종료일 :</label>
-						<label  style="margin:5px;">
-	                           <input type="date" name="endDate" id="vacationEndDate" class="form-control">
-	                    </label><br>
-						<span><label style="margin: 10px;">휴가 사유:</label><textarea style="margin: 5px;" name="vacationContents" id="vacationContents" cols="30" rows="5" class="form-control"></textarea></span><br>  
-						<!--  <input th:id="selectedAnnualVacation" name="selectedAnnualVacation"> -->
-						<input id="idNo1" style="margin: 5px;" name="idNo"hidden="hidden">
-						<input id="vacationCode1" style="margin: 5px;" hidden="hidden">
-					</div>
-				
-					<!-- <table
-						class="table table-striped dt-responsive nowrap w-100 text-center">
-						<thead>
-							<tr>
-								<th>사번</th>
-								<th>휴가종류</th>
-								<th>휴가시작일</th>
-								<th>휴가종료일</th>
-								<th>휴가내용</th>
-							</tr>
-						</thead>
-
-
-						<tbody>
-							<tr>
-								<td></td>
-								<td><button type="button" class="btn btn-soft-warning"
-										data-bs-toggle="modal" data-bs-target="#vacationRequest">상세보기</button></td>
-							</tr>
-						</tbody>
-					</table> -->
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-success width-xs">신청</button>
-					<button type="reset" class="btn btn-warning width-xs"
-						data-bs-dismiss="modal">닫기</button>
 				</div>
 			</div>
 		</div>
 	</div>
+	<div th:include="common/footer.html"></div>
+
+	<!-- 직원 휴가신청 모달창 -->
+	<form action="/workattitude/vacationInsert" method="post">
+		<div class="modal fade" id="vacationList" tabindex="-1" role="dialog"
+			aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-md">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="employeeRequestVacationModal">휴가신청</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+
+						<div>
+							<input id="memNo1" style="margin: 5px;" name="memberNo"
+								hidden="hidden"></input> <label style="margin: 10px;">사번
+								:</label><label id="memNo" style="margin: 5px;"></label><br> <label
+								style="margin: 10px;">이름 :</label><label id="memName"
+								style="margin: 5px;"></label><br> <label
+								style="margin: 10px;">부서 :</label><label id="memDept"
+								style="margin: 5px;"></label><br> <label
+								style="margin: 10px;">휴가 신청 종류 / 휴가:</label> <select
+								name="vacationCategory">
+								<option th:each="vacation : ${vacationTypeList}"
+									th:text="${vacation.vacationCategory} + ' : ' + ${vacation.vacationName}"
+									th:value="${vacation.vacationName}"></option>
+							</select><br> <label style="margin: 10px;">휴가 신청 일수</label> <br>
+							<div class="row"
+								style="font-size: 25px; margin-left: 2px; float: center">
+								<input style="width: 150px" class="form-control" type="number"
+									placeholder="휴가 지급 일수" name="vacationDate" id="vacationDate"
+									required="required">&nbsp;일
+							</div>
+							<label style="margin: 10px;">휴가 시작일 :</label> <label
+								style="margin: 5px;"> <input type="date"
+								name="startDate" id="vacationStartDate" class="form-control">
+							</label><br> <label style="margin: 10px;">휴가 종료일 :</label> <label
+								style="margin: 5px;"> <input type="date" name="endDate"
+								id="vacationEndDate" class="form-control">
+							</label><br> <span><label style="margin: 10px;">휴가
+									사유:</label>
+							<textarea style="margin: 5px;" name="vacationContents"
+									id="vacationContents" cols="30" rows="5" class="form-control"></textarea></span><br>
+							<!--  <input th:id="selectedAnnualVacation" name="selectedAnnualVacation"> -->
+							<input id="idNo1" style="margin: 5px;" name="idNo"
+								hidden="hidden"> <input id="vacationCode1"
+								style="margin: 5px;" hidden="hidden">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-success width-xs">신청</button>
+						<button type="reset" class="btn btn-warning width-xs"
+							data-bs-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</form>
 	<!-- 직원 휴가신청 모달창 종료 -->
 
@@ -301,26 +259,6 @@
 						});
 	</script>
 
-
-
-
-
-
-	<!-- <script type="text/javascript">
-				
-	</script> -->
-			
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 </body>
 </html>
 

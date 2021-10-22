@@ -16,6 +16,7 @@
 		<association property="mngMemberDepartment" resultMap="mngMemberDepartmentResult"/>
 	</resultMap>
 	
+	<!-- 연차 조회 시 직원의 이름, 부서명 받아오기 위한 resultMap(위와 연결) -->
 	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngMemberDepartmentDTO" id="mngMemberDepartmentResult">
 		<id property="companyNo" column="COMPANY_NO"/>
 		<result property="departmentNo" column="DEPARTMENT_NO"/>
@@ -25,6 +26,7 @@
 		<result property="jobName" column="JOB_NAME"/>
 	</resultMap>
 	
+	<!-- 직원의 휴가 신청 -->
 	<resultMap type="com.nextLevel.hero.workattitude.model.dto.EmployeeVacationDTO" id="employeeVacationResultMap">
 		<id property="companyNo" column="COMPANY_NO"/>
 		<result property="resquestNo" column="REQUEST_NO"/>
@@ -49,6 +51,8 @@
 		 WHERE A.COMPANY_NO = #{ companyNo }    
 		   AND A.ID_NO = #{ idNo } 
 	</select>
+	
+	<!-- 직원의 휴가 신청내역 조회 -->
 	<select id="listEmployeeVacation" resultMap="employeeVacationResultMap">
 		SELECT
 			   *
@@ -57,6 +61,7 @@
 		   AND ID_NO = #{ no }
 	</select>
 	
+	<!-- 직원의 휴가 신청 -->
 	<insert id="insertVacation" parameterType="com.nextLevel.hero.workattitude.model.dto.EmployeeVacationDTO">
 		INSERT
 		  INTO TBL_REQUEST_VACATION
