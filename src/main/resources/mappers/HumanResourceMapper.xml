@@ -121,13 +121,14 @@
             , E.ID_NO = #{ idNo }
             , E.ADDRESS_DETAIL = #{ myPageDTO.addressDetail }
             , E.FAMILY_ORIGIN_ADDRESS_DETAIL = #{ myPageDTO.familyOriginAddressDetail }
-		 WHERE COMPANY_NO = #{ companyNo }
+		 WHERE COMPANY_NO =#{ companyNo }
 		   AND ID_NO =#{ idNo }
 </update>
 
-
-
-
-
-
+<update id="updatePassword" parameterType="com.nextLevel.hero.member.model.dto.FindPwdDTO">
+		UPDATE TBL_MEMBER
+           SET
+        MEMBER_PASSWORD =#{ findPwdDTO.userPwd }
+         WHERE ID_NO =#{ findPwdDTO.idNo }
+</update>
 </mapper>

@@ -42,13 +42,15 @@
 											<th>수정일자</th>											
 										</tr>
 									</thead>
-										
+
+
 									<tbody>
-										<tr th:each="member : ${ memberHistoryList }">
-											<td th:text="${member.idNo}"></td>
+										<tr th:each="member : ${ memberHistoryList }" onClick="test( this  );">
+											<td th:text="${member.idNo}"  > </td>
 											<td th:text="${member.koreanName}"></td>
 											<td th:text="${member.memberNo}"></td>
 											<td th:text="${member.memberId}"></td>
+											<td th:text="${member.departmentName}"></td>
 											<td th:text="${member.empUpdateDate}"></td>
 										</tr>
 									</tbody>
@@ -62,5 +64,25 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+<script type="text/javascript">
+
+
+
+ function test(e){
+       console.log($(e))
+       console.log("!:",$(e).text());
+	   console.log("@:",$(e).html());
+	   console.log("#:",$(e).children(":first").text());
+	   
+	   const idNo = $(e).children(":first").text();
+	   
+	 location.href="/mngHumanResource/memberHistoryDetail?idNo="+idNo;
+	   
+	   
+    }
+    
+    
+</script>
+	
 </body>
 </html>

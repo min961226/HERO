@@ -5,12 +5,12 @@ public class FindPwdDTO {
 	private String userId;
 	private String username;
 	private String email;
-	private String idNo;
+	private int idNo;
 	private String userPwd;
 	
 	public FindPwdDTO() {}
 
-	public FindPwdDTO(String userId, String username, String email, String idNo, String userPwd) {
+	public FindPwdDTO(String userId, String username, String email, int idNo, String userPwd) {
 		super();
 		this.userId = userId;
 		this.username = username;
@@ -43,11 +43,11 @@ public class FindPwdDTO {
 		this.email = email;
 	}
 
-	public String getIdNo() {
+	public int getIdNo() {
 		return idNo;
 	}
 
-	public void setIdNo(String idNo) {
+	public void setIdNo(int idNo) {
 		this.idNo = idNo;
 	}
 

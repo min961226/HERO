@@ -40,11 +40,12 @@
 											<th>아이디</th>
 											<th>부서명</th>											
 											<th>부서 연락처</th>											
+																						
 										</tr>
 									</thead>
 										
 									<tbody>
-										<tr th:each="dept : ${ memberList }">
+										<tr th:each="dept : ${ memberList }" onClick="test( this  );">
 											<td th:text="${dept.idNo}"></td>
 											<td th:text="${dept.memberName}"></td>
 											<td th:text="${dept.memberNo}"></td>
@@ -63,5 +64,25 @@
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+
+function test(e){
+       console.log($(e))
+       console.log("!:",$(e).text());
+	   console.log("@:",$(e).html());
+	   console.log("#:",$(e).children(":first").text());
+	   
+	   const idNo = $(e).children(":first").text();
+	   
+	 location.href="/mngHumanResource/memberDetail?idNo="+idNo;
+	   
+	   
+    }
+   
+    
+    
+    
+</script>
 </body>
 </html>

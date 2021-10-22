@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.nextLevel.hero.humanResource.model.dao.HumanResourceMapper;
 import com.nextLevel.hero.humanResource.model.dto.MyPageDTO;
+import com.nextLevel.hero.member.model.dto.FindPwdDTO;
 
 @Service("humanResourceService")
 public class HumanResourceServiceImpl implements HumanResourceService {
@@ -50,6 +51,19 @@ public class HumanResourceServiceImpl implements HumanResourceService {
 		int MypageResult = humanResourceMapper.updateMypage(companyNo, idNo, myPageDTO);
 		return humanResourceMapper.updateMypage(companyNo, idNo, myPageDTO);
 	}
+
+
+
+
+	@Override
+	public int updatePassword(int companyNo, FindPwdDTO findPwdDTO) {
+		int updatePasswordResult = humanResourceMapper.updatePassword( companyNo, findPwdDTO);
+		return humanResourceMapper.updatePassword( companyNo, findPwdDTO);
+	}
+
+
+
+
 
 
 

@@ -23,4 +23,10 @@ public interface MngHumanResourceService {
 	List<MngHumanResourceDTO> selectMemberHistoryList(int companyNo, int idNo);
 
 
+	MngHumanResourceDTO selectMemberDetailList(int companyNo, int idNo);
+
+	MngHumanResourceDTO selectmemberHistoryDetailList(int companyNo, int idNo);
+
+	int memberDetailUpdate(int companyNo, MngHumanResourceDTO mngHumanResourceDTO, int idNo);
+
 }

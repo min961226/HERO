@@ -50,7 +50,6 @@ public class MngHumanResourceDTO implements Serializable{
 	private java.sql.Date appointmentDate;              //TBL_APPOINTMENT 발령 테이블 
 	private String personalAppointmentCategory; 
 
-	private String graduatedDate;       					//TBL_GRADUATED 학력 테이블
 	private java.sql.Date graduatedDateStart;       
 	private java.sql.Date graduatedDateEnd;      	 
 	private String nativeSchool;
@@ -58,7 +57,6 @@ public class MngHumanResourceDTO implements Serializable{
 	
 	private int salaryStepByRank;							//TBL_EMP_SALARY_STEP 호봉 테이블
 	
-	private String employeementPeriod;      				//TBL_CAREER 경력 테이블
 	private java.sql.Date employeementPeriodStart;      
 	private java.sql.Date employeementPeriodEnd;      
 	private String position;
@@ -84,11 +82,11 @@ public class MngHumanResourceDTO implements Serializable{
 			java.sql.Date empUpdateDate, int idNo, String memberId, String memberPassword, char tempPwdYn,
 			Date hireDate, char accSecessionYn, String militaryServiceStatus, String militaryKind, String rankIng,
 			java.sql.Date militaryStartDate, java.sql.Date militaryEndDate, String veteranStatus, String relationship,
-			int veteranNo, java.sql.Date appointmentDate, String personalAppointmentCategory, String graduatedDate,
+			int veteranNo, java.sql.Date appointmentDate, String personalAppointmentCategory,
 			java.sql.Date graduatedDateStart, java.sql.Date graduatedDateEnd, String nativeSchool, char graduatedStatus,
-			int salaryStepByRank, String employeementPeriod, java.sql.Date employeementPeriodStart,
-			java.sql.Date employeementPeriodEnd, String position, String companyName, String department,
-			String familyRelationShip, char familyGender, int familyAge, String familyJob) {
+			int salaryStepByRank, java.sql.Date employeementPeriodStart, java.sql.Date employeementPeriodEnd,
+			String position, String companyName, String department, String familyRelationShip, char familyGender,
+			int familyAge, String familyJob) {
 		super();
 		this.companyNo = companyNo;
 		this.memberNo = memberNo;
@@ -129,13 +127,11 @@ public class MngHumanResourceDTO implements Serializable{
 		this.veteranNo = veteranNo;
 		this.appointmentDate = appointmentDate;
 		this.personalAppointmentCategory = personalAppointmentCategory;
-		this.graduatedDate = graduatedDate;
 		this.graduatedDateStart = graduatedDateStart;
 		this.graduatedDateEnd = graduatedDateEnd;
 		this.nativeSchool = nativeSchool;
 		this.graduatedStatus = graduatedStatus;
 		this.salaryStepByRank = salaryStepByRank;
-		this.employeementPeriod = employeementPeriod;
 		this.employeementPeriodStart = employeementPeriodStart;
 		this.employeementPeriodEnd = employeementPeriodEnd;
 		this.position = position;
@@ -459,14 +455,6 @@ public class MngHumanResourceDTO implements Serializable{
 		this.personalAppointmentCategory = personalAppointmentCategory;
 	}
 
-	public String getGraduatedDate() {
-		return graduatedDate;
-	}
-
-	public void setGraduatedDate(String graduatedDate) {
-		this.graduatedDate = graduatedDate;
-	}
-
 	public java.sql.Date getGraduatedDateStart() {
 		return graduatedDateStart;
 	}
@@ -505,14 +493,6 @@ public class MngHumanResourceDTO implements Serializable{
 
 	public void setSalaryStepByRank(int salaryStepByRank) {
 		this.salaryStepByRank = salaryStepByRank;
-	}
-
-	public String getEmployeementPeriod() {
-		return employeementPeriod;
-	}
-
-	public void setEmployeementPeriod(String employeementPeriod) {
-		this.employeementPeriod = employeementPeriod;
 	}
 
 	public java.sql.Date getEmployeementPeriodStart() {
@@ -602,10 +582,9 @@ public class MngHumanResourceDTO implements Serializable{
 				+ ", rankIng=" + rankIng + ", militaryStartDate=" + militaryStartDate + ", militaryEndDate="
 				+ militaryEndDate + ", veteranStatus=" + veteranStatus + ", relationship=" + relationship
 				+ ", veteranNo=" + veteranNo + ", appointmentDate=" + appointmentDate + ", personalAppointmentCategory="
-				+ personalAppointmentCategory + ", graduatedDate=" + graduatedDate + ", graduatedDateStart="
-				+ graduatedDateStart + ", graduatedDateEnd=" + graduatedDateEnd + ", nativeSchool=" + nativeSchool
-				+ ", graduatedStatus=" + graduatedStatus + ", salaryStepByRank=" + salaryStepByRank
-				+ ", employeementPeriod=" + employeementPeriod + ", employeementPeriodStart=" + employeementPeriodStart
+				+ personalAppointmentCategory + ", graduatedDateStart=" + graduatedDateStart + ", graduatedDateEnd="
+				+ graduatedDateEnd + ", nativeSchool=" + nativeSchool + ", graduatedStatus=" + graduatedStatus
+				+ ", salaryStepByRank=" + salaryStepByRank + ", employeementPeriodStart=" + employeementPeriodStart
 				+ ", employeementPeriodEnd=" + employeementPeriodEnd + ", position=" + position + ", companyName="
 				+ companyName + ", department=" + department + ", familyRelationShip=" + familyRelationShip
 				+ ", familyGender=" + familyGender + ", familyAge=" + familyAge + ", familyJob=" + familyJob + "]";

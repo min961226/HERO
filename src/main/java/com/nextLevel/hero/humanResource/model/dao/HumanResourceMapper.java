@@ -3,6 +3,7 @@ package com.nextLevel.hero.humanResource.model.dao;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.nextLevel.hero.humanResource.model.dto.MyPageDTO;
+import com.nextLevel.hero.member.model.dto.FindPwdDTO;
 
 @Mapper
 public interface HumanResourceMapper {
@@ -16,6 +17,8 @@ public interface HumanResourceMapper {
 	int updateEmp(int companyNo, int idNo, MyPageDTO myPageDTO);
 
 	int updateMypage(int companyNo, int idNo, MyPageDTO myPageDTO);
+
+	int updatePassword(int companyNo, FindPwdDTO findPwdDTO);
 
 
 }
