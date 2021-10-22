@@ -49,6 +49,7 @@ public class MngHumanResourceServiceImpl implements MngHumanResourceService {
 		int insertEmpUpdateResult = 0;
 		int selectEmpSalaryStepResult = 0;
 		java.sql.Date startDate = null;
+		MngHumanResourceDTO selectRankResult;
 		
 		
 		int insertMemberResult = mngHumanResourceMapper.insertMember(mngHumanResourceDTO, companyNo);           		//Member 테이블 인서트
@@ -91,23 +92,24 @@ public class MngHumanResourceServiceImpl implements MngHumanResourceService {
 			insertFamilyUpdateResult = mngHumanResourceMapper.insertFamilyUpdate(mngHumanResourceDTO, companyNo, familyNo);	
 		} 
 		if (insertFamilyUpdateResult > 0) {
-			int salaryStepByRank = mngHumanResourceDTO.getSalaryStepByRank();
-			selectRankSalaryStepResult = mngHumanResourceMapper.selectRankSalaryStep(companyNo, salaryStepByRank);
-			System.out.print("selectRankSalaryStepResult : " + selectRankSalaryStepResult);
+			selectRankSalaryStepResult = mngHumanResourceMapper.selectRankSalaryStep(companyNo,  mngHumanResourceDTO);
 			startDate = selectRankSalaryStepResult;
-			System.out.print("startDate : " + startDate);
-			insertEmpSalaryStepResult  = mngHumanResourceMapper.insertEmpSalaryStep(mngHumanResourceDTO, companyNo, startDate);	
+			selectRankResult = mngHumanResourceMapper.selectRank(companyNo, mngHumanResourceDTO);
+			mngHumanResourceDTO.setSalaryStepByRank(selectRankResult.getSalaryStepByRank());
+			insertEmpSalaryStepResult  = mngHumanResourceMapper.insertEmpSalaryStep(mngHumanResourceDTO, companyNo, startDate );	
 		} if (insertEmpSalaryStepResult > 0) {
 			selectEmpSalaryStepResult = mngHumanResourceMapper.selectEmpSalaryStep(mngHumanResourceDTO ,companyNo);
 			int divNo = selectEmpSalaryStepResult;
 			System.out.print("startDate2 : " + startDate);
 			insertEmpSalaryStepUpdateResult  = mngHumanResourceMapper.insertEmpSalaryStepUpdate(mngHumanResourceDTO, companyNo, startDate, divNo);	
 		} if (insertEmpSalaryStepUpdateResult > 0) {
+			System.out.print("mngHumanResourceDTO123123 : " + mngHumanResourceDTO.getIdNo());
 			insertFourInsuranceDeductResult  = mngHumanResourceMapper.insertFourInsuranceDeduct(mngHumanResourceDTO, companyNo);	
+			int deductDivNo = mngHumanResourceMapper.selectFourInsuranceDeduct(mngHumanResourceDTO, companyNo);
+			insertEmpUpdateResult  = mngHumanResourceMapper.insertFourInsHistory(mngHumanResourceDTO, companyNo, deductDivNo);
 		} if (insertFourInsuranceDeductResult > 0) {
 			insertEmpUpdateResult  = mngHumanResourceMapper.insertEmpUpdate(mngHumanResourceDTO, companyNo);	
-		}
-		
+		} 
 		return insertEmpUpdateResult;
 	}
 

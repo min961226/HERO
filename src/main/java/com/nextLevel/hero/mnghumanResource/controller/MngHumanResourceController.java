@@ -67,12 +67,20 @@ public class MngHumanResourceController {
 	public ModelAndView mngMember(ModelAndView mv, RedirectAttributes rttr, MngHumanResourceDTO mngHumanResourceDTO ,@AuthenticationPrincipal UserImpl user 
 			,@RequestParam String memberPasswordCheck, @RequestParam String memberId, @RequestParam String familyOriginAddressDetail, @RequestParam String addressDetail
 			,@RequestParam String ssn1, @RequestParam String ssn2) {
-		
 		int companyNo = user.getCompanyNo();
 		mngHumanResourceDTO.setSsn(ssn1 + "-" + ssn2);
 		String familyOriginAddress = mngHumanResourceDTO.getFamilyOriginAddress();
 		System.out.println("familyOriginAddress + familyOriginAddress2 : " + familyOriginAddress + familyOriginAddressDetail);
 		mngHumanResourceDTO.setFamilyOriginAddress(familyOriginAddress + familyOriginAddressDetail);
+		
+		if (mngHumanResourceDTO.getMilitaryStartDate().equals("")) {
+//			mngHumanResourceDTO.setMilitaryStartDate(00/00/00);
+		}
+		
+		mngHumanResourceDTO.getMilitaryEndDate();
+		
+		
+		
 		
 		String Password = mngHumanResourceDTO.getMemberPassword(); //입력 받은 패스워드를 불러온다.
 		if (Password.equals(memberPasswordCheck)) {

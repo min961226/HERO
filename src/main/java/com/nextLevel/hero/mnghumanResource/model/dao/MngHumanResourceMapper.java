@@ -54,7 +54,9 @@ public interface MngHumanResourceMapper {
 
 	int insertEmpSalaryStepUpdate(MngHumanResourceDTO mngHumanResourceDTO, int companyNo, java.sql.Date startDate, int divNo);
 
-	Date selectRankSalaryStep(int companyNo, int salaryStepByRank);
+	Date selectRankSalaryStep(int companyNo,  MngHumanResourceDTO mngHumanResourceDTO);
+	
+	MngHumanResourceDTO selectRank(int companyNo,  MngHumanResourceDTO mngHumanResourceDTO );
 
 	int selectEmpSalaryStep(MngHumanResourceDTO mngHumanResourceDTO, int companyNo);
 
@@ -95,6 +97,10 @@ public interface MngHumanResourceMapper {
 	int selectFamilyNo(int companyNo, int idNo);
 
 	int selectSalaryStepNo(int companyNo, int idNo);
+
+	int insertFourInsHistory(MngHumanResourceDTO mngHumanResourceDTO, int companyNo, int deductDivNo);
+
+	int selectFourInsuranceDeduct(MngHumanResourceDTO mngHumanResourceDTO, int companyNo);
 
 	
 

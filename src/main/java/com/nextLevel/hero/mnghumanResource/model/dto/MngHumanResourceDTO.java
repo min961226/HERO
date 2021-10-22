@@ -56,6 +56,8 @@ public class MngHumanResourceDTO implements Serializable{
 	private char graduatedStatus;
 	
 	private int salaryStepByRank;							//TBL_EMP_SALARY_STEP 호봉 테이블
+	private int salaryStep;							//TBL_EMP_SALARY_STEP 호봉 테이블
+	private String rank;							//TBL_EMP_SALARY_STEP 호봉 테이블
 	
 	private java.sql.Date employeementPeriodStart;      
 	private java.sql.Date employeementPeriodEnd;      
@@ -84,9 +86,9 @@ public class MngHumanResourceDTO implements Serializable{
 			java.sql.Date militaryStartDate, java.sql.Date militaryEndDate, String veteranStatus, String relationship,
 			int veteranNo, java.sql.Date appointmentDate, String personalAppointmentCategory,
 			java.sql.Date graduatedDateStart, java.sql.Date graduatedDateEnd, String nativeSchool, char graduatedStatus,
-			int salaryStepByRank, java.sql.Date employeementPeriodStart, java.sql.Date employeementPeriodEnd,
-			String position, String companyName, String department, String familyRelationShip, char familyGender,
-			int familyAge, String familyJob) {
+			int salaryStepByRank, int salaryStep, String rank, java.sql.Date employeementPeriodStart,
+			java.sql.Date employeementPeriodEnd, String position, String companyName, String department,
+			String familyRelationShip, char familyGender, int familyAge, String familyJob) {
 		super();
 		this.companyNo = companyNo;
 		this.memberNo = memberNo;
@@ -132,6 +134,8 @@ public class MngHumanResourceDTO implements Serializable{
 		this.nativeSchool = nativeSchool;
 		this.graduatedStatus = graduatedStatus;
 		this.salaryStepByRank = salaryStepByRank;
+		this.salaryStep = salaryStep;
+		this.rank = rank;
 		this.employeementPeriodStart = employeementPeriodStart;
 		this.employeementPeriodEnd = employeementPeriodEnd;
 		this.position = position;
@@ -495,6 +499,22 @@ public class MngHumanResourceDTO implements Serializable{
 		this.salaryStepByRank = salaryStepByRank;
 	}
 
+	public int getSalaryStep() {
+		return salaryStep;
+	}
+
+	public void setSalaryStep(int salaryStep) {
+		this.salaryStep = salaryStep;
+	}
+
+	public String getRank() {
+		return rank;
+	}
+
+	public void setRank(String rank) {
+		this.rank = rank;
+	}
+
 	public java.sql.Date getEmployeementPeriodStart() {
 		return employeementPeriodStart;
 	}
@@ -584,10 +604,11 @@ public class MngHumanResourceDTO implements Serializable{
 				+ ", veteranNo=" + veteranNo + ", appointmentDate=" + appointmentDate + ", personalAppointmentCategory="
 				+ personalAppointmentCategory + ", graduatedDateStart=" + graduatedDateStart + ", graduatedDateEnd="
 				+ graduatedDateEnd + ", nativeSchool=" + nativeSchool + ", graduatedStatus=" + graduatedStatus
-				+ ", salaryStepByRank=" + salaryStepByRank + ", employeementPeriodStart=" + employeementPeriodStart
-				+ ", employeementPeriodEnd=" + employeementPeriodEnd + ", position=" + position + ", companyName="
-				+ companyName + ", department=" + department + ", familyRelationShip=" + familyRelationShip
-				+ ", familyGender=" + familyGender + ", familyAge=" + familyAge + ", familyJob=" + familyJob + "]";
+				+ ", salaryStepByRank=" + salaryStepByRank + ", salaryStep=" + salaryStep + ", rank=" + rank
+				+ ", employeementPeriodStart=" + employeementPeriodStart + ", employeementPeriodEnd="
+				+ employeementPeriodEnd + ", position=" + position + ", companyName=" + companyName + ", department="
+				+ department + ", familyRelationShip=" + familyRelationShip + ", familyGender=" + familyGender
+				+ ", familyAge=" + familyAge + ", familyJob=" + familyJob + "]";
 	}
 
 }
