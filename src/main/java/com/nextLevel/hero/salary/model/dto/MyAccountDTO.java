@@ -5,10 +5,11 @@ import java.sql.Date;
 public class MyAccountDTO {
 	
 	private int companyNo;
-	private int bankCode;
+	private String bankCode;
 	private String bankName;
 	private String accountNo;
 	private int memberNo;
+	private int idNo;
 	private String memberName;
 	private String departmentName;
 	private java.sql.Date enrollDate;
@@ -16,14 +17,15 @@ public class MyAccountDTO {
 	
 	public MyAccountDTO() {}
 
-	public MyAccountDTO(int companyNo, int bankCode, String bankName, String accountNo, int memberNo, String memberName,
-			String departmentName, Date enrollDate, String accountFileUrl) {
+	public MyAccountDTO(int companyNo, String bankCode, String bankName, String accountNo, int memberNo, int idNo,
+			String memberName, String departmentName, Date enrollDate, String accountFileUrl) {
 		super();
 		this.companyNo = companyNo;
 		this.bankCode = bankCode;
 		this.bankName = bankName;
 		this.accountNo = accountNo;
 		this.memberNo = memberNo;
+		this.idNo = idNo;
 		this.memberName = memberName;
 		this.departmentName = departmentName;
 		this.enrollDate = enrollDate;
@@ -38,11 +40,11 @@ public class MyAccountDTO {
 		this.companyNo = companyNo;
 	}
 
-	public int getBankCode() {
+	public String getBankCode() {
 		return bankCode;
 	}
 
-	public void setBankCode(int bankCode) {
+	public void setBankCode(String bankCode) {
 		this.bankCode = bankCode;
 	}
 
@@ -68,6 +70,14 @@ public class MyAccountDTO {
 
 	public void setMemberNo(int memberNo) {
 		this.memberNo = memberNo;
+	}
+
+	public int getIdNo() {
+		return idNo;
+	}
+
+	public void setIdNo(int idNo) {
+		this.idNo = idNo;
 	}
 
 	public String getMemberName() {
@@ -105,13 +115,11 @@ public class MyAccountDTO {
 	@Override
 	public String toString() {
 		return "MyAccountDTO [companyNo=" + companyNo + ", bankCode=" + bankCode + ", bankName=" + bankName
-				+ ", accountNo=" + accountNo + ", memberNo=" + memberNo + ", memberName=" + memberName
-				+ ", departmentName=" + departmentName + ", enrollDate=" + enrollDate + ", accountFileUrl="
+				+ ", accountNo=" + accountNo + ", memberNo=" + memberNo + ", idNo=" + idNo + ", memberName="
+				+ memberName + ", departmentName=" + departmentName + ", enrollDate=" + enrollDate + ", accountFileUrl="
 				+ accountFileUrl + "]";
 	}
 
 	
-	
-
 	
 }

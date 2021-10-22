@@ -72,8 +72,7 @@
 											<td th:text="${#numbers.formatInteger(annual.annualSal, 3, 'COMMA')}"></td>
 											<td th:id="'monDetail' + ${num.count}"><button type="button" class="btn btn-soft-success width-xs" 
 												data-bs-toggle="modal" data-bs-target="#monthlyPay">지급항목</button></td>
-											<td th:id="'historyDetail' + ${num.count}"><button type="button" class="btn btn-soft-success width-xs"
-												data-bs-toggle="modal" data-bs-target="#updateHistory">변경내역</button></td>
+											<td th:id="'historyDetail' + ${num.count}"><button type="button" class="btn btn-soft-success width-xs">변경내역</button></td>
 										</tr>
 									</tbody>
 								</table>
@@ -306,6 +305,16 @@
 		const memName = $("#memName2").text(memberName);
 		const rank = $("#rank2").text(salRank);
 		const step = $("#step2").text(salStep);
+		
+		Swal.fire({
+ 			  position: 'center',
+ 			  icon: 'success',
+ 			  title: '업데이트 중입니다.',
+ 			  showConfirmButton: false,
+ 			  timer: 1500,
+ 			  width: 600
+ 		})
+		
 	});
 	
 	$("#add").click(function() {
@@ -351,7 +360,6 @@
 	
 	$(document).on("click", "[id^=plusbtn]", function() {
 		
-		console.log($(this).val());
 		
 		let salName = $(this).text();
 		let splt = $(this).val().split("-");
@@ -395,7 +403,6 @@
 				update.deductionYn = $(this).find("td").eq(4).text();
 				
 				monthlyNewList.push(update);
-				console.log(monthlyNewList);	
 			}
 		});
 		

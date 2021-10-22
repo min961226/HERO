@@ -113,8 +113,7 @@
 	</div>
 	<script>
 		$("[id^=detail]").click(function() {
-			console.log("정상작동");
-			
+
 			const memberName = $(this).parent().siblings(".myName").text();
 			const memberRank = $(this).parent().siblings(".myRank").text();
 			const memberSalaryStep = $(this).parent().siblings(".mySalaryStep").text();
@@ -127,7 +126,6 @@
 			const yearNmonth = $(this).parent().siblings(".yearNMon").text();
 			const payDate = $(this).parent().siblings(".payDate").text();
 			
-			console.log(yearNmonth);
 			$("#modalyearAndMonth").text(yearNmonth);
 			
 			$.ajax({

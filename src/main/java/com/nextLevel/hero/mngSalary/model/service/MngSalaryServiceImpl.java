@@ -41,7 +41,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		this.mngSalaryMapper = mngSalaryMapper;
 	}
 
-	/* 연봉 조회 - 검색 시 오류 제외 */
+	/* 연봉 조회 */
 	@Override
 	public List<MngSalaryDTO> listMngAnnualSalary(MngSalaryDTO search) {
 	
@@ -49,7 +49,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		List<MemberMonthlyPayDTO> monthlyList = mngSalaryMapper.listMonthlyPay(search);
 		
 				
-		// 호봉 정보와 월 지급항목 합산 후 연 환산 
+		/* 호봉 정보와 월 지급항목 합산 후 연 환산 */ 
 		for(int i = 0; i < salStepList.size(); i++) {
 			
 			int memberNum = salStepList.get(i).getMemberInfo().getMemberNo();
@@ -182,14 +182,11 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 	}
 
 	
-
-	
-	
 	/* 4대보험 개인별 공제항목 조회*/
 	@Override
-	public List<MngDeductFourInsDTO> listMngFourInsuranceList(int companyNo) {
+	public List<MngDeductFourInsDTO> listMngFourInsuranceList(MngDeductFourInsDTO search) {
 		
-		return mngSalaryMapper.listMngFourInsuranceList(companyNo);
+		return mngSalaryMapper.listMngFourInsuranceList(search);
 	}
 	
 	
@@ -200,7 +197,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 	public int updateFourInsuranceList(int companyNo, fourInsuranceList deductList) {
 		
 		
-		List<MngDeductFourInsDTO> beforeList = listMngFourInsuranceList(companyNo);
+		List<MngDeductFourInsDTO> beforeList = mngSalaryMapper.listMngFourInsList(companyNo);
 		List<MngDeductFourInsDTO> afterList = deductList.getFourInsuranceList();
 		
 		List<MngDeductFourInsDTO> updateList = new ArrayList<>();
@@ -293,7 +290,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		return finalResult;
 	} // 4대보험 개인별 공제항목 수정 종료
 
-	
+
 
 	/* 건강, 국민연금 보수월액 및 공제금액 조회 */
 	@Override
@@ -333,12 +330,10 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		List<MemberInsFeeDTO> afterList = insFeeList.getMemInsFeeList();
 		List<MemberInsFeeDTO> updateList = new ArrayList<>();
 		
-		System.out.println("서비스 폼 개수 : " + insFeeList.getMemInsFeeList().size());
 		
 		/* 이번 리스트와 비교 */
 		for(int j = 0; j < insFeeList.getMemInsFeeList().size(); j++) {
 			
-			System.out.println("서비스 비교대상 리스트 : " + insFeeList.getMemInsFeeList().get(j));
 			
 			int afterMemNo = afterList.get(j).getMemberNo();
 			int afterDivNo = Integer.parseInt(afterList.get(j).getDivNo());
@@ -614,9 +609,6 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 				} //월 지급액 계산 종료
 					
 				
-		System.out.println("정기급여 지급리스트 : " + personalPay);
-		System.out.println("salStep 체크 : " + salStepList);
-				
 		/* 개인별 지급금액 리스트 insert */
 		int insertPayResult = 0;
 		for(DetailPayDTO personalPaydetail : personalPay) {
@@ -644,15 +636,13 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 			calc.setCategory(search.getCategory());
 			calc.setYear(search.getYear());
 			calc.setMonth(search.getMonth());
-					
-			System.out.println("넘기기전 체크 : " + calc);
+			
 				
 			calcDeductAndTotalSal(calc);						
 					
 			salList.add(calc);
 		}
 			
-		System.out.println("인서트 전 체크 : " + salList);
 		
 		int lastResult = 0;
 				
@@ -672,7 +662,6 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 			rollbackFor = {Exception.class})
 	public SalaryAndBonusDTO calcDeductAndTotalSal(SalaryAndBonusDTO search) {
 		
-		System.out.println("calc로 넘어옴 : " + search);
 		
 		int companyNo = search.getCompanyNo();
 		int memberNo = search.getMemberNo();
@@ -683,7 +672,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		int totalPay = 0;
 		int calcTaxSalary = 0;																
 		int totalDeduct = 0;
-		System.out.println("calc 지급총액 체크 : " + payList);
+		
 		/* 개인별 총 지급금액과 과세금액 산출 */
 		for(int i = 0; i < payList.size(); i++) {
 			if(((payList.get(i).getSalaryName()).equals("기본급")) || ((payList.get(i).getDeductYn()).equals("Y"))) {
@@ -918,12 +907,10 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 	/* 과거 지급 이력 조회 */
 	@Override
 	public List<SalaryAndBonusDTO> selectSalOrBonusList(SalaryAndBonusDTO search) {
-		
-		System.out.println(search);
+
 		String yearAndMonth = search.getYear() + "-" + search.getMonth();
 		search.setYearAndMonth(yearAndMonth);
-		
-		
+			
 		return mngSalaryMapper.selectSalOrBonusList(search);
 	}
 
@@ -934,9 +921,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		List<DetailPayDTO> payList = mngSalaryMapper.listPayDetail(search);
 		List<DetailPayDTO> deductList = mngSalaryMapper.listDeductDetail(search);
 		String confirmYn = mngSalaryMapper.checkConfirm(search);
-		
-		System.out.println("서비스 : " + payList);
-		System.out.println("서비스 : " + deductList);
+
 		
 		List<DetailPayDTO> personalList = new ArrayList<>();
 		
@@ -964,9 +949,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 			
 			personalList.add(deduct);
 		}
-		
-		System.out.println("서비스 결과 : " + personalList);
-		
+				
 		return personalList;
 	}
 
@@ -1036,10 +1019,6 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		return result;
 	}
 
-	
-	
-	
-	
 	
 	
 	/* 공제 예수금 조회 */

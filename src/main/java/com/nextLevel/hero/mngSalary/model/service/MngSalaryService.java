@@ -23,7 +23,7 @@ public interface MngSalaryService {
 
 	List<MngSalaryDTO> listMngAnnualSalary(MngSalaryDTO search);
 
-	List<MngDeductFourInsDTO> listMngFourInsuranceList(int companyNo);
+	List<MngDeductFourInsDTO> listMngFourInsuranceList(MngDeductFourInsDTO search);
 
 	List<MemberInsFeeDTO> listMngNationalHealthInsurancePension(MemberInsFeeDTO search);
 

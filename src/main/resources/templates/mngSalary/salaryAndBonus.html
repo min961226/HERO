@@ -253,7 +253,6 @@
 				$bonusCategory.html("");
 				
 				for(let index in data) {
-					console.log(data);
 					$bonusCategory.append($("<option>").val(data[index].bonusNo).text(data[index].bonusName));
 				}
 			},
@@ -334,7 +333,7 @@
 	});
 	
 	$("#totalList tbody tr").click(function() {
-		console.log("tr 클릭됨");
+
 		const memNo = $(this).find("input[id^=memberNo]").val();
 		
 		$("#personalmemNo").val(memNo);
@@ -450,7 +449,6 @@
 		rows.not(":last").each(function() {
 			
 			totalSum += parseInt($(this).find("input").val());
-			console.log(totalSum);
 		});
 		
 		tbody.find("input:last").val(totalSum);
@@ -515,11 +513,10 @@
 			
 			deductList.push(update);
 			
-			console.log(update);
 		});
 		
 		let updateList = JSON.stringify(deductList);
-		console.log(updateList);
+
 		$.ajax({
 			url: "personalUpdate",
 			method: "POST",

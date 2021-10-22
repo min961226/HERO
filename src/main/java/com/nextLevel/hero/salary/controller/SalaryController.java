@@ -55,12 +55,17 @@ public class SalaryController {
 	
 	
 	/* 직원 본인 계좌 등록 */
-	@PostMapping("/applyAccount")
-	public ModelAndView applyAccount(@AuthenticationPrincipal UserImpl user, MyAccountDTO add) {
+	@PostMapping(value="applyAccount", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String applyAccount(@AuthenticationPrincipal UserImpl user, MyAccountDTO add) {
+		
+		add.setCompanyNo(user.getCompanyNo());
+		add.setIdNo(user.getNo());
+		
+		String result = salaryService.applyAccount(add);
 		
 		
-		
-		return null;
+		return result;
 	}
 	
 	/* 은행 목록 조회 */
