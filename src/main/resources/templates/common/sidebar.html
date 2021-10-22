@@ -465,16 +465,7 @@
 										<li><a href="/salary/list">급여 내역 조회</a></li>
 									</ul>
 								</div></li>
-							<li><a href="#sidebarExpages" data-bs-toggle="collapse">
-									<i data-feather="file-text"></i> <span> 증명서 </span> <span
-									class="menu-arrow"></span>
-							</a>
-								<div class="collapse" id="sidebarExpages">
-									<ul class="nav-second-level">
-										<li><a href="/certificate/employment">재직증명서 신청</a></li>
-										<li><a href="/certificate/list">증명서 신청 내역</a></li>
-									</ul>
-								</div></li>
+							
 						</th:block>
 						<th:block
 							sec:authorize="hasRole('HR') || hasRole('ADMIN') || hasRole('ATTITUDE')
@@ -580,25 +571,11 @@
 												/ 승인</a></li>
 										</th:block>
 										<li><a href="/mngSalary/deposit">예수금</a></li>
-										<li><a href="/mngSalary/severancePay">퇴직금</a></li>
 									</ul>
 								</div></li>
 							</th:block>
 							
-							<th:block sec:authorize="hasRole('APPROVAL') || hasRole('ADMIN')">
-							<li><a href="#sidebarDashboard" data-bs-toggle="collapse">
-									<i data-feather="layers"></i> <span> 증명서 관리 </span> <span
-									class="menu-arrow"></span>
-							</a>
-								<div class="collapse" id="sidebarDashboard">
-									<ul class="nav-second-level">
-										<li><a href="/mngCertificate/printList">출력 대상 목록</a></li>
-										<li><a href="/mngCertificate/requestList">요청 목록</a></li>
-										<li><a href="/mngCertificate/certificateHistory">증명서
-												발급 내역</a></li>
-									</ul>
-								</div></li>
-							</th:block>
+							
 					</ul>
 
 				</div>

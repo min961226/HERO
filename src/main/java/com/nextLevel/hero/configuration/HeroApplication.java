@@ -9,7 +9,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 @SpringBootApplication
 @ComponentScan("com.nextLevel.hero")
-public class HeroApplication {
+public class HeroApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(HeroApplication.class, args);
@@ -24,5 +24,6 @@ public class HeroApplication {
 		
 		return messageSource;
 	}
+
 
 }
