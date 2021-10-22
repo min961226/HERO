@@ -5,16 +5,15 @@ import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class MngHolidayDTO {
-
 	
 	// 휴일여부 스트링으로 받아오는거 YN아님
-	private int companyNo;
-	private int holidayNo;
-	private String calendar;
+	private int companyNo;													//회사번호
+	private int holidayNo;													//휴일번호
+	private String calendar;												//양력
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	private java.sql.Date holidayDate;
-	private String title;
-	private String holidayStatus;
+	private java.sql.Date holidayDate;										//휴일날짜
+	private String title;													//휴일제목
+	private String holidayStatus;											//휴일상태
 	
 	
 		

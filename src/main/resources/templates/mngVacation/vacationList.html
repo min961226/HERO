@@ -22,45 +22,53 @@
 							<div class="card">
 								<div class="card-body">
 									<form action="/mngVacation/updateVacation" method="post">
-									<table
-										class="table table-striped dt-responsive nowrap w-100 text-center">
-										<thead>
-											<tr>
-												<th>번호</th>
-												<th>사번</th>
-												<th>이름</th>
-												<th>부서명</th>
-												<th>휴가종류</th>
-												<th>휴가시작일</th>
-												<th>휴가종료일</th>
-												<th>휴가일수</th>
-												<th>휴가내용</th>
-												<th>처리상태</th>
-												<th>승인 처리</th>
-												<th>반려 처리</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr th:each="emp,num:${employeeVacationList}">
-											<td th:text="${emp.resquestNo}" ></td>
-											<td th:text="${emp.memberNo}"></td>
-											<td th:text="${emp.koreanName}" ></td>
-											<td th:text="${emp.departmentName}" class="title"></td>
-											<td th:text="${emp.vacationCategory}" class="title"></td>
-											<td th:text="${emp.startDate}" class="holidayStatus"></td>
-											<td th:text="${emp.endDate}" class="holidayStatus"></td>
-											<td th:text="${emp.vacationDate}" class="holidayStatus"></td>
-											<td th:text="${emp.vacationContents}" class="holidayStatus"></td>
-											<td th:text="${emp.confirmedYn}" class="holidayStatus"></td>
-											<td th:if="${emp.confirmedYn}=='대기'"><button type="button" class="btn btn-soft-success"
-														id="confirmY+ ${num.count}"><input th:value="${emp.resquestNo}" id="requestNo"hidden=""></input>승인</button></td>
-											<td th:if="${emp.confirmedYn}=='대기'"><button type="button" class="btn btn-soft-danger"
-														id="confirmN+ ${num.count}"><input th:value="${emp.resquestNo}" id="requestNo1"hidden=""></input>반려</button></td>
-											<td th:if="${emp.confirmedYn}!='대기'" >처리완료</td>
-											<td th:if="${emp.confirmedYn}!='대기'">처리완료</td>
-											</tr>
-										</tbody>
-									</table>
+										<table
+											class="table table-striped dt-responsive nowrap w-100 text-center">
+											<thead>
+												<tr>
+													<th>번호</th>
+													<th>사번</th>
+													<th>이름</th>
+													<th>부서명</th>
+													<th>휴가종류</th>
+													<th>휴가시작일</th>
+													<th>휴가종료일</th>
+													<th>휴가일수</th>
+													<th>휴가내용</th>
+													<th>처리상태</th>
+													<th>승인 처리</th>
+													<th>반려 처리</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="emp,num:${employeeVacationList}">
+													<td th:text="${emp.resquestNo}"></td>
+													<td th:text="${emp.memberNo}"></td>
+													<td th:text="${emp.koreanName}"></td>
+													<td th:text="${emp.departmentName}" class="title"></td>
+													<td th:text="${emp.vacationCategory}" class="title"></td>
+													<td th:text="${emp.startDate}" class="holidayStatus"></td>
+													<td th:text="${emp.endDate}" class="holidayStatus"></td>
+													<td th:text="${emp.vacationDate}" class="holidayStatus"></td>
+													<td th:text="${emp.vacationContents}" class="holidayStatus"></td>
+													<td th:text="${emp.confirmedYn}" class="holidayStatus"></td>
+													<td th:if="${emp.confirmedYn}=='대기'"><button
+															type="button" class="btn btn-soft-success"
+															id="confirmY+ ${num.count}">
+															<input th:value="${emp.resquestNo}" id="requestNo"
+																hidden=""></input>승인
+														</button></td>
+													<td th:if="${emp.confirmedYn}=='대기'"><button
+															type="button" class="btn btn-soft-danger"
+															id="confirmN+ ${num.count}">
+															<input th:value="${emp.resquestNo}" id="requestNo1"
+																hidden=""></input>반려
+														</button></td>
+													<td th:if="${emp.confirmedYn}!='대기'">처리완료</td>
+													<td th:if="${emp.confirmedYn}!='대기'">처리완료</td>
+												</tr>
+											</tbody>
+										</table>
 									</form>
 								</div>
 							</div>
@@ -71,21 +79,9 @@
 			</div>
 		</div>
 	</div>
-
-
-
-
 	<div th:include="common/footer.html"></div>
 
-	<!-- 휴가 신청 리스 -->
-
-
-
-	<!-- <script type="text/javascript">
-				
-	</script> -->
-
-<script type="text/javascript">
+	<script type="text/javascript">
 $("[id^=confirmY]").click(function(){
 	const val = $(this).find("#requestNo").val();
 	console.log(val);

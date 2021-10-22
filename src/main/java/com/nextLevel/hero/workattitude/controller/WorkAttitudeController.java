@@ -60,37 +60,34 @@ public class WorkAttitudeController {
 	public ModelAndView vacation(ModelAndView mv, @AuthenticationPrincipal UserImpl user) {
 		
 		// 연차 받아오는걸로 생성하기
-
 		EmployeeAnnualVacationDTO employeeAnnualVacationList = workAttitudeService.listEmployeeAnnualVacation(user.getCompanyNo(),user.getNo());
 		List<EmployeeVacationDTO> employeeVacationList = workAttitudeService.listEmployeeVacation(user.getCompanyNo(), user.getNo());
 		List<MngVacationTypeDTO> vacationTypeList = mngBasicInformationService.selectVacationTypeList(user.getCompanyNo());
 		
-		mv.addObject("employeeAnnualVacationList", employeeAnnualVacationList);	// 값셋팅
-		mv.addObject("employeeVacationList", employeeVacationList);	// 값셋팅
-		mv.addObject("vacationTypeList", vacationTypeList);	// 값셋팅
-		mv.setViewName("/workattitude/vacation");	// 폴더/html명// 보여질 페이지를 띄워줌
-		
-		System.out.println(employeeAnnualVacationList);
-		System.out.println(employeeVacationList);
+		mv.addObject("employeeAnnualVacationList", employeeAnnualVacationList);		// 값셋팅
+		mv.addObject("employeeVacationList", employeeVacationList);					// 값셋팅
+		mv.addObject("vacationTypeList", vacationTypeList);							// 값셋팅
+		mv.setViewName("/workattitude/vacation");									// 폴더/html명 -> 보여질 페이지를 띄워줌
 		
 		return mv; // 연차
 	}
+	
+	/* 직원의 휴가 신청 */
 	@PostMapping("/vacationInsert")
 	public ModelAndView vacationInsert(EmployeeVacationDTO employeeVacationDTO,ModelAndView mv, @AuthenticationPrincipal UserImpl user, RedirectAttributes rttr) {
 		
-		// 연차 받아오는걸로 생성하기
 		employeeVacationDTO.setCompanyNo(user.getCompanyNo());
+		
 		int result = workAttitudeService.insertVacation(employeeVacationDTO);
+		
 		if (result > 0) {
 			rttr.addFlashAttribute("successMessage","휴가 신청이 완료되었습니다.");
 		}else {
 			rttr.addFlashAttribute("failedMessage","휴가 신청에 실패하였습니다.");
 		}
 		
-		System.out.println(employeeVacationDTO);
 		mv.setViewName("redirect:/workattitude/vacation");
 	
-		
 		return mv; // 연차
 	}
 	

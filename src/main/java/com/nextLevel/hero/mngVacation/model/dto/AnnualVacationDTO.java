@@ -16,8 +16,8 @@ public class AnnualVacationDTO implements Serializable{
 	private int leaveVacation;				// 잔여연차
 	private int idNo;						// 계정번호
 	private int vacationCode;				// 조정연차코드
-	private String departmentName;
-	private String koreanName;
+	private String departmentName;			// 부서명
+	private String koreanName;				// 사원이름
 	
 	public AnnualVacationDTO() {}
 

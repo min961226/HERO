@@ -6,14 +6,14 @@ import com.nextLevel.hero.mngBasicInformation.model.dto.MngMemberDepartmentDTO;
 
 public class EmployeeAnnualVacationDTO implements Serializable{
 
-	private int companyNo;					// 회사번호
-	private int memberNo;					// 사번
-	private int createdMonthlyVacation;		// 발생월차
-	private int totalVacation;				// 총연차
-	private int usedVacation;				// 사용연차
-	private int leaveVacation;				// 잔여연차
-	private int idNo;						// 계정번호
-	private int vacationCode;				// 조정연차코드
+	private int companyNo;								// 회사번호
+	private int memberNo;								// 사번
+	private int createdMonthlyVacation;					// 발생월차
+	private int totalVacation;							// 총연차
+	private int usedVacation;							// 사용연차
+	private int leaveVacation;							// 잔여연차
+	private int idNo;									// 계정번호
+	private int vacationCode;							// 조정연차코드
 	private MngMemberDepartmentDTO mngMemberDepartment; //mngBasicInformation에 있음	// 직원의 이름&부서를 받아오려고 -> mapper.xml에서 Association 해야함
 	
 	public EmployeeAnnualVacationDTO() {}

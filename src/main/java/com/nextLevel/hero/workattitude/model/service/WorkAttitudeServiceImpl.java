@@ -29,19 +29,22 @@ public class WorkAttitudeServiceImpl implements WorkAttitudeService{
 	      this.workAttitudeMapper = workAttitudeMapper;
 	   }
 
-
+	   
+	/* 직원의 휴가내역 조회 */   
 	@Override
 	public List<EmployeeVacationDTO> listEmployeeVacation(int companyNo, int no) {
+		
 		return workAttitudeMapper.listEmployeeVacation(companyNo,no);
 	}
 
-
+	/* 직원의 연차 조회 */
 	@Override
 	public EmployeeAnnualVacationDTO listEmployeeAnnualVacation(int companyNo, int idNo) {
+		
 		return workAttitudeMapper.listEmployeeAnnualVacation(companyNo,idNo);
 	}
 
-
+	/* 직원의 휴가 신청 */
 	@Override
 	@Transactional
 	public int insertVacation(EmployeeVacationDTO employeeVacationDTO) {

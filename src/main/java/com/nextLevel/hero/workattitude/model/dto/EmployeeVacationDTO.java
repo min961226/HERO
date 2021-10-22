@@ -14,9 +14,9 @@ public class EmployeeVacationDTO implements Serializable {
 	private String vacationContents;		//휴가내용
 	private String confirmedYn;				//승인여부
 	private int idNo;						//계정번호
-	private int vacationDate;
-	private String koreanName;
-	private String departmentName;
+	private int vacationDate;				//휴가일수
+	private String koreanName;				//사원이름
+	private String departmentName;			//부서명
 	
 	public EmployeeVacationDTO() {}
 

@@ -17,11 +17,13 @@ import com.nextLevel.hero.workattitude.model.dto.WorkCommuteDTO;
 @Mapper
 public interface WorkAttitudeMapper {
 
-
+	/* 직원의 휴가내역 조회 */
 	List<EmployeeVacationDTO> listEmployeeVacation(int companyNo, int no);
 
+	/* 직원의 연차휴가 조회 */
 	EmployeeAnnualVacationDTO listEmployeeAnnualVacation(int companyNo, int idNo);
 
+	/* 직원의 휴가 신청 */
 	int insertVacation(EmployeeVacationDTO employeeVacationDTO);
 
 	

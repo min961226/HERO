@@ -24,9 +24,9 @@
 		<result property="vacationCode" column="VACATION_CODE"/>
 		<result property="departmentName" column="DEPARTMENT_NAME"/>
 		<result property="koreanName" column="KOREAN_NAME"/>
-		
 	</resultMap>
 	
+	<!-- 직원의 이름, 부서명을 조회해 올 resultMap -->
 	<resultMap type="com.nextLevel.hero.mngBasicInformation.model.dto.MngMemberDepartmentDTO" id="mngMemberDepartmentResult">
 		<id property="companyNo" column="COMPANY_NO"/>
 		<result property="departmentNo" column="DEPARTMENT_NO"/>
@@ -36,6 +36,7 @@
 		<result property="jobName" column="JOB_NAME"/>
 	</resultMap>
 	
+	<!-- 인사관리자가 직원의 휴가신청 조회 -->
 	<resultMap type="com.nextLevel.hero.workattitude.model.dto.EmployeeVacationDTO" id="employeeVacationResultMap">
 		<id property="companyNo" column="COMPANY_NO"/>
 		<result property="resquestNo" column="REQUEST_NO"/>
@@ -49,7 +50,6 @@
 		<result property="idNo" column="ID_NO"/>
 		<result property="koreanName" column="KOREAN_NAME"/>
 		<result property="departmentName" column="DEPARTMENT_NAME"/>
-		
 	</resultMap>
 		
 	<!-- 연차일괄조정 -->
@@ -110,7 +110,6 @@
 		 WHERE A.COMPANY_NO = #{ companyNo }     
 	</select>
 	
-	
 	<!-- 연차일괄조정표 조회 -->
 	<select id="listAnnualVacationControl" resultMap="listAnnualResultMap">
 		SELECT 
@@ -118,8 +117,7 @@
 		  FROM TBL_VACATION_CONTROL A
 	</select>   
 	
-	
-	
+	<!-- 연차 지급 -->
 	<update id="updateAnnualVacationDate">
 		UPDATE TBL_VACATION
 		   SET TOTAL_VACATION = TOTAL_VACATION + #{ selectedVacationType }
@@ -127,6 +125,7 @@
 	 	 WHERE ID_NO = #{ idNo }
 	</update>
 	
+	<!-- 직원 휴가 -->
 	<select id="selectVacationList" resultMap="employeeVacationResultMap">
 		SELECT
 			   A.*
@@ -139,29 +138,19 @@
 		 ORDER BY A.REQUEST_NO
 	</select>
 	
+	<!-- 직원 휴가 신청 승인 -->
 	<update id="confirmVacationY">
 		UPDATE TBL_REQUEST_VACATION
 		   SET CONFIRMED_YN = '승인'
 		 WHERE REQUEST_NO = #{ requestNo }  
 	</update>
 	
+	<!-- 직원 휴가 신청 반려 -->
 	<update id="confirmVacationN">
 		UPDATE TBL_REQUEST_VACATION
 		   SET CONFIRMED_YN = '반려'
 		 WHERE REQUEST_NO = #{ requestNo }  
-	</update>
-	
-<!-- 	<update id="updateControl" parameterType="hashMap"> -->
-<!-- 		UPDATE TBL_VACATION_CONTROL -->
-<!-- 		   SET VACATION_DAYS =  -->
-<!-- 		  CASE -->
-<!-- 		       <foreach index="vacationCode" item="vacationDays" collection="map"> -->
-<!-- 		           WHEN VACATION_CODE = #{ vacationCode } THEN #{ vacationDays } -->
-<!-- 		       </foreach>  -->
-<!-- 		   END -->
-<!-- 		 WHERE VACATION_CODE = #{ vacationCode }       -->
-<!-- 	</update> -->
-	
+	</update>	
 	
 </mapper>
 

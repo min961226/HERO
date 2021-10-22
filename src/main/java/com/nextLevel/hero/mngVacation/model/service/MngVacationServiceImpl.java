@@ -46,23 +46,29 @@ public class MngVacationServiceImpl implements MngVacationService {
 		return mngVacationMapper.holidayDelete(companyNo, holidayNo);
 	}
 
+	/* 인사관리자가 직원의 연차 조회 */
 	@Override
 	public List<AnnualVacationDTO> listAnnualVacation(int companyNo) {
 		
 		return mngVacationMapper.listAnnualVacation(companyNo);
 	}
 
+	/* 연차 지급 */
 	@Override
 	@Transactional
 	public int updateAnnualVacationDate(String idNo, String selectedVacationType) {
+		
 		return mngVacationMapper.updateAnnualVacationDate(idNo,selectedVacationType);
 	}
 
+	/* 직원 휴가 */
 	@Override
 	public List<EmployeeVacationDTO> selectVacationList(int companyNo) {
+		
 		return mngVacationMapper.selectVacationList(companyNo);
 	}
 
+	/* 직원 휴가 신청 승인 */
 	@Override
 	@Transactional
 	public int confirmVacationY(String requestNo) {
@@ -70,18 +76,21 @@ public class MngVacationServiceImpl implements MngVacationService {
 		return mngVacationMapper.confirmVacationY(requestNo);
 	}
 
+	/* 직원 휴가 신청 반려 */
 	@Override
 	public int confirmVacationN(String requestNo) {
 		
 		return mngVacationMapper.confirmVacationN(requestNo);
 	}
 
+	/* 연차 일괄조정 */
 	@Override
 	public List<AnnualVacationControlDTO> listAnnualVacationControl() {
 		
 		return mngVacationMapper.listAnnualVacationControl();
 	}
 
+	/* 연차 일괄조정 수정 */
 	@Override
 	public int updateControl(Map<String, String> map) {
 		
@@ -90,31 +99,5 @@ public class MngVacationServiceImpl implements MngVacationService {
 		
 		return mngVacationMapper.updateControl(map);
 	}
-
-//	@Override
-//	public List<AnnualVacationControlDTO> annualList(int vacationCode) {
-//		
-//		return mngVacationMapper.annualList(vacationCode);
-//	}
-
-	
-	  
-	  
-	/*
-	 * @Override public int holidayModalInsert(MngHolidayDTO mngHolidayDTO) {
-	 * 
-	 * return mngVacationMapper.holidayModalInsert(mngHolidayDTO); }
-	 */
-	 
-
-	// 이거 다시 확인해야됌
-	/*
-	 * @Override public List<MngHolidayDTO> insertPublicHoliday(int companyNo1) { //
-	 * TODO Auto-generated method stub
-	 * 
-	 * //null 말고 확인해보고 리턴값 받아오게 return null; }
-	 */
-
-	// 조회하는거 다시 만들기
 
 }
