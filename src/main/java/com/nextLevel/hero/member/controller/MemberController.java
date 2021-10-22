@@ -67,7 +67,11 @@ public class MemberController {
 		
 		System.out.println("findIdDTO : " + findIdDTO.getId());
 		
-		rttr.addFlashAttribute("successMessage","귀하의 ID는 " + findIdDTO.getId()+ " 입니다.");
+		if (findIdDTO != null) {
+			rttr.addFlashAttribute("successMessage","귀하의 ID는 " + findIdDTO.getId()+ " 입니다.");
+			
+		} 
+		
 		
 		mv.setViewName("redirect:/member/login");
 		
@@ -152,7 +156,7 @@ public class MemberController {
 			System.out.println("에러 메세지 출력해주기");
 		}
 		
-//		FindPwdDTO findPwdDTO = memberService.selectFindPwd(userId, username, email);
+		FindPwdDTO findPwdDTO = memberService.selectFindPwd(userId, username, email);
 		
 
 		rttr.addFlashAttribute("successMessage"," 이메일을 통해 임시 비밀번호를 발급하였습니다. 로그인 즉시 비밀번호를 변경해주시길 바랍니다.");

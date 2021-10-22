@@ -25,9 +25,8 @@ public class MngHumanResourceServiceImpl implements MngHumanResourceService {
 	      this.mngHumanResourceMapper = mngHumanResourceMapper;
 	   }
 
-
 	@Override
-	public int insertMember(MngHumanResourceDTO humanResourceDTO, int companyNo) {
+	public int insertMember(MngHumanResourceDTO mngHumanResourceDTO, int companyNo) {
 		RankSalaryStepDTO rankSalaryStepDTO = new RankSalaryStepDTO();
 		VacationControlDTO vacationControlDTO = new VacationControlDTO();
 		int insertEmployeeResult = 0;
@@ -52,31 +51,31 @@ public class MngHumanResourceServiceImpl implements MngHumanResourceService {
 		java.sql.Date startDate = null;
 		
 		
-		int insertMemberResult = mngHumanResourceMapper.insertMember(humanResourceDTO, companyNo);           		//Member 테이블 인서트
+		int insertMemberResult = mngHumanResourceMapper.insertMember(mngHumanResourceDTO, companyNo);           		//Member 테이블 인서트
 		int idNo = 0;
 		if (insertMemberResult > 0 ) {
 			
 			idNo = mngHumanResourceMapper.selectNewMemberNumber();											//맴버 번호(사번)를 조회
-			humanResourceDTO.setIdNo(idNo);
+			mngHumanResourceDTO.setIdNo(idNo);
 			System.out.println("idNo : " + idNo);
-			insertEmployeeResult = mngHumanResourceMapper.insertEmployee(humanResourceDTO, companyNo);				//Employee테이블 인서트
+			insertEmployeeResult = mngHumanResourceMapper.insertEmployee(mngHumanResourceDTO, companyNo);				//Employee테이블 인서트
 		}
 		if (insertEmployeeResult > 0 ) {
-			insertMemberCompanyResult = mngHumanResourceMapper.insertMemberCompany(humanResourceDTO, companyNo);			//MemberCompany테이블 인서트
+			insertMemberCompanyResult = mngHumanResourceMapper.insertMemberCompany(mngHumanResourceDTO, companyNo);			//MemberCompany테이블 인서트
 		} if (insertMemberCompanyResult > 0) {
-			insertMilitaryResult  = mngHumanResourceMapper.insertMilitary(humanResourceDTO, companyNo);					//Military테이블 인서트
+			insertMilitaryResult  = mngHumanResourceMapper.insertMilitary(mngHumanResourceDTO, companyNo);					//Military테이블 인서트
 		} if (insertMilitaryResult > 0) {
-			insertVeteranResult  = mngHumanResourceMapper.insertVeteran(humanResourceDTO, companyNo);	
+			insertVeteranResult  = mngHumanResourceMapper.insertVeteran(mngHumanResourceDTO, companyNo);	
 		} if (insertVeteranResult > 0) {
-			insertAppointmentResult  = mngHumanResourceMapper.insertAppointment(humanResourceDTO, companyNo);	
+			insertAppointmentResult  = mngHumanResourceMapper.insertAppointment(mngHumanResourceDTO, companyNo);	
 		} if (insertAppointmentResult > 0) {
-			insertGraduatedResult  = mngHumanResourceMapper.insertGraduated(humanResourceDTO, companyNo);	
+			insertGraduatedResult  = mngHumanResourceMapper.insertGraduated(mngHumanResourceDTO, companyNo);	
 		} if (insertGraduatedResult > 0) {
-			insertCareerResult  = mngHumanResourceMapper.insertCareer(humanResourceDTO, companyNo);	
+			insertCareerResult  = mngHumanResourceMapper.insertCareer(mngHumanResourceDTO, companyNo);	
 		} if (insertCareerResult > 0) {
-			insertFamilyResult  = mngHumanResourceMapper.insertFamily(humanResourceDTO, companyNo);	
+			insertFamilyResult  = mngHumanResourceMapper.insertFamily(mngHumanResourceDTO, companyNo);	
 		} if (insertFamilyResult > 0) {
-			insertUserAuthResult  = mngHumanResourceMapper.insertUserAuth(humanResourceDTO, companyNo);	
+			insertUserAuthResult  = mngHumanResourceMapper.insertUserAuth(mngHumanResourceDTO, companyNo);	
 		} if (insertUserAuthResult > 0) {
 			selectVacationControlResult  = mngHumanResourceMapper.selectVacationControl();
 			System.out.print("selectVacationControlResult : " + selectVacationControlResult);
@@ -84,32 +83,29 @@ public class MngHumanResourceServiceImpl implements MngHumanResourceService {
 			int vacationCode = vacationControlDTO.getVacationCode();
 			int vacationDays = vacationControlDTO.getVacationDays();
 
-			System.out.print("vacationCode : " + vacationCode);
-			System.out.print("vacationDays : " + vacationDays);
-	
-			insertVacationControlResult = mngHumanResourceMapper.insertVacation(humanResourceDTO, companyNo, vacationCode, vacationDays);	
+			insertVacationControlResult = mngHumanResourceMapper.insertVacation(mngHumanResourceDTO, companyNo, vacationCode, vacationDays);	
 		 
 		}if (insertVacationControlResult > 0) {
-			selectFamilyUpdateResult = mngHumanResourceMapper.selectFamilyUpdate(humanResourceDTO, companyNo);
+			selectFamilyUpdateResult = mngHumanResourceMapper.selectFamilyUpdate(mngHumanResourceDTO, companyNo);
 			int familyNo = selectFamilyUpdateResult;
-			insertFamilyUpdateResult = mngHumanResourceMapper.insertFamilyUpdate(humanResourceDTO, companyNo, familyNo);	
+			insertFamilyUpdateResult = mngHumanResourceMapper.insertFamilyUpdate(mngHumanResourceDTO, companyNo, familyNo);	
 		} 
 		if (insertFamilyUpdateResult > 0) {
-			int salaryStepByRank = humanResourceDTO.getSalaryStepByRank();
+			int salaryStepByRank = mngHumanResourceDTO.getSalaryStepByRank();
 			selectRankSalaryStepResult = mngHumanResourceMapper.selectRankSalaryStep(companyNo, salaryStepByRank);
 			System.out.print("selectRankSalaryStepResult : " + selectRankSalaryStepResult);
 			startDate = selectRankSalaryStepResult;
 			System.out.print("startDate : " + startDate);
-			insertEmpSalaryStepResult  = mngHumanResourceMapper.insertEmpSalaryStep(humanResourceDTO, companyNo, startDate);	
+			insertEmpSalaryStepResult  = mngHumanResourceMapper.insertEmpSalaryStep(mngHumanResourceDTO, companyNo, startDate);	
 		} if (insertEmpSalaryStepResult > 0) {
-			selectEmpSalaryStepResult = mngHumanResourceMapper.selectEmpSalaryStep(humanResourceDTO ,companyNo);
+			selectEmpSalaryStepResult = mngHumanResourceMapper.selectEmpSalaryStep(mngHumanResourceDTO ,companyNo);
 			int divNo = selectEmpSalaryStepResult;
 			System.out.print("startDate2 : " + startDate);
-			insertEmpSalaryStepUpdateResult  = mngHumanResourceMapper.insertEmpSalaryStepUpdate(humanResourceDTO, companyNo, startDate, divNo);	
+			insertEmpSalaryStepUpdateResult  = mngHumanResourceMapper.insertEmpSalaryStepUpdate(mngHumanResourceDTO, companyNo, startDate, divNo);	
 		} if (insertEmpSalaryStepUpdateResult > 0) {
-			insertFourInsuranceDeductResult  = mngHumanResourceMapper.insertFourInsuranceDeduct(humanResourceDTO, companyNo);	
+			insertFourInsuranceDeductResult  = mngHumanResourceMapper.insertFourInsuranceDeduct(mngHumanResourceDTO, companyNo);	
 		} if (insertFourInsuranceDeductResult > 0) {
-			insertEmpUpdateResult  = mngHumanResourceMapper.insertEmpUpdate(humanResourceDTO, companyNo);	
+			insertEmpUpdateResult  = mngHumanResourceMapper.insertEmpUpdate(mngHumanResourceDTO, companyNo);	
 		}
 		
 		return insertEmpUpdateResult;
@@ -137,6 +133,40 @@ public class MngHumanResourceServiceImpl implements MngHumanResourceService {
 	@Override
 	public List<MngHumanResourceDTO> selectMemberHistoryList(int companyNo, int idNo) {
 		return  mngHumanResourceMapper.selectMemberHistoryList(companyNo, idNo);
+	}
+
+
+	@Override
+	public MngHumanResourceDTO selectMemberDetailList(int companyNo, int idNo) {
+		
+		
+		return mngHumanResourceMapper.selectMemberDetailList(companyNo, idNo);
+	}
+
+	@Override
+	public MngHumanResourceDTO selectmemberHistoryDetailList(int companyNo, int idNo) {
+		
+		return mngHumanResourceMapper.selectmemberHistoryDetailList(companyNo, idNo);
+	}
+
+	@Override
+	public int memberDetailUpdate(int companyNo, MngHumanResourceDTO mngHumanResourceDTO, int idNo) {
+		
+		int empResult = mngHumanResourceMapper.updateEmp(companyNo, idNo, mngHumanResourceDTO);
+		int empUpdateResult = mngHumanResourceMapper.updateEmpUpdate(companyNo, idNo, mngHumanResourceDTO);
+		int miltaryResult = mngHumanResourceMapper.updateMilitary(companyNo, idNo, mngHumanResourceDTO);
+		int veteranResult = mngHumanResourceMapper.updateVeteran(companyNo, idNo, mngHumanResourceDTO);
+		int appointmentResult = mngHumanResourceMapper.updateAppointment(companyNo, idNo, mngHumanResourceDTO);
+		int graduatedResult = mngHumanResourceMapper.updateGraduated(companyNo, idNo, mngHumanResourceDTO);
+		int careerResult = mngHumanResourceMapper.updateCareer(companyNo, idNo, mngHumanResourceDTO);
+		int familyResult = mngHumanResourceMapper.updateFamily(companyNo, idNo, mngHumanResourceDTO);
+		int familyNo = mngHumanResourceMapper.selectFamilyNo(companyNo, idNo);
+		int familyUpdateResult = mngHumanResourceMapper.updateFamilyUpdate(companyNo, idNo, mngHumanResourceDTO,familyNo);
+		int salaryStepResult = mngHumanResourceMapper.updateSalaryStep(companyNo, idNo, mngHumanResourceDTO);
+		int salaryStepNo = mngHumanResourceMapper.selectSalaryStepNo(companyNo, idNo);
+		int salaryStepUpdateResult = mngHumanResourceMapper.updateSalaryStepUpdate(companyNo, idNo, mngHumanResourceDTO, salaryStepNo);
+		return salaryStepUpdateResult;
+	
 	}
 
 

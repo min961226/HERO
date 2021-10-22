@@ -27,6 +27,8 @@
 		<result property="addressDetail" column="ADDRESS_DETAIL"/>
 		<result property="familyOriginAddressDetail" column="FAMILY_ORIGIN_ADDRESS_DETAIL"/>
 		<result property="empUpdateDate" column="UPDATE_DATE"/>
+
+		<result property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
 		
 		<result property="idNo" column="ID_NO"/>
 		<result property="memberId" column="MEMBER_ID"/>
@@ -49,12 +51,14 @@
 		<result property="militaryStartDate" column="MILITARY_START_DATE"/>
 		<result property="militaryEndDate" column="MILITYRY_END_DATE"/>
 		
-		<result property="graduatedDate" column="GRADUATED_DATE"/>
+		<result property="graduatedDateStart" column="GRADUATED_START_DATE"/>
+		<result property="graduatedDateEnd" column="GRADUATED_END_DATE"/>
 		<result property="nativeSchool" column="NATIVE_SCHOOL"/>
 		<result property="graduatedStatus" column="GRADUATED_STATUS"/>
 		
 		
-		<result property="employeementPeriod" column="EMPLOYEEMENT_PERIOD"/>
+		<result property="employeementPeriodStart" column="EMPLOYEEMENT_PERIOD_START"/>
+		<result property="employeementPeriodEnd" column="EMPLOYEEMENT_PERIOD_END"/>
 		<result property="position" column="POSITION"/>
 		<result property="companyName" column="COMPANY_NAME"/>
 		<result property="department" column="DEPARTMENT"/>
@@ -112,10 +116,10 @@
 			VALUES
 			(
 			  SEQ_ID_NO.NEXTVAL
-			, #{ humanResourceDTO.memberId }
-			, #{ humanResourceDTO.memberPassword } 
+			, #{ mngHumanResourceDTO.memberId }
+			, #{ mngHumanResourceDTO.memberPassword } 
 			, DEFAULT 
-			, #{ humanResourceDTO.koreanName } 
+			, #{ mngHumanResourceDTO.koreanName } 
 			, SYSDATE 
 			, DEFAULT 
 			) 
@@ -157,24 +161,24 @@
 			VALUES
 			(
   			  #{ companyNo }
-			, #{ humanResourceDTO.idNo }
-			, #{ humanResourceDTO.memberNo } 
-			, #{ humanResourceDTO.jobNo } 
-			, #{ humanResourceDTO.departmentNo } 
-			, #{ humanResourceDTO.koreanName } 
-			, #{ humanResourceDTO.ssn } 
-			, #{ humanResourceDTO.englishName } 
-			, #{ humanResourceDTO.speciality } 
-			, #{ humanResourceDTO.familyOriginAddress } 
-			, #{ humanResourceDTO.address } 
-			, #{ humanResourceDTO.phone } 
-			, #{ humanResourceDTO.tel } 
-			, #{ humanResourceDTO.departmentPhone } 
-			, #{ humanResourceDTO.email } 
-			, #{ humanResourceDTO.gender } 
-			, #{ humanResourceDTO.national } 
-			, #{ humanResourceDTO.addressDetail } 
-			, #{ humanResourceDTO.familyOriginAddressDetail } 
+			, #{ mngHumanResourceDTO.idNo }
+			, #{ mngHumanResourceDTO.memberNo } 
+			, #{ mngHumanResourceDTO.jobNo } 
+			, #{ mngHumanResourceDTO.departmentNo } 
+			, #{ mngHumanResourceDTO.koreanName } 
+			, #{ mngHumanResourceDTO.ssn } 
+			, #{ mngHumanResourceDTO.englishName } 
+			, #{ mngHumanResourceDTO.speciality } 
+			, #{ mngHumanResourceDTO.familyOriginAddress } 
+			, #{ mngHumanResourceDTO.address } 
+			, #{ mngHumanResourceDTO.phone } 
+			, #{ mngHumanResourceDTO.tel } 
+			, #{ mngHumanResourceDTO.departmentPhone } 
+			, #{ mngHumanResourceDTO.email } 
+			, #{ mngHumanResourceDTO.gender } 
+			, #{ mngHumanResourceDTO.national } 
+			, #{ mngHumanResourceDTO.addressDetail } 
+			, #{ mngHumanResourceDTO.familyOriginAddressDetail } 
 			, SYSDATE 
 			, DEFAULT
 			) 
@@ -189,7 +193,7 @@
 			VALUES
 			(
 			  #{ companyNo }
-			, #{ humanResourceDTO.idNo }
+			, #{ mngHumanResourceDTO.idNo }
 			) 
 </insert>
 
@@ -208,13 +212,13 @@
 			VALUES
 			(
 			  #{ companyNo }
-			, #{ humanResourceDTO.memberNo }
-			, #{ humanResourceDTO.militaryServiceStatus }
-			, #{ humanResourceDTO.militaryKind }
-			, #{ humanResourceDTO.rankIng }
-			, #{ humanResourceDTO.militaryStartDate }
-			, #{ humanResourceDTO.militaryEndDate }
-			, #{ humanResourceDTO.idNo }
+			, #{ mngHumanResourceDTO.memberNo }
+			, #{ mngHumanResourceDTO.militaryServiceStatus }
+			, #{ mngHumanResourceDTO.militaryKind }
+			, #{ mngHumanResourceDTO.rankIng }
+			, #{ mngHumanResourceDTO.militaryStartDate }
+			, #{ mngHumanResourceDTO.militaryEndDate }
+			, #{ mngHumanResourceDTO.idNo }
 			) 
 </insert>
 
@@ -232,10 +236,10 @@
 			(
 			  #{ companyNo }
 			, SEQ_VETERAN_NO.NEXTVAL
-			, #{ humanResourceDTO.idNo }
-			, #{ humanResourceDTO.memberNo }
-			, #{ humanResourceDTO.veteranStatus }
-			, #{ humanResourceDTO.relationship}
+			, #{ mngHumanResourceDTO.idNo }
+			, #{ mngHumanResourceDTO.memberNo }
+			, #{ mngHumanResourceDTO.veteranStatus }
+			, #{ mngHumanResourceDTO.relationship}
 			) 
 </insert>
 
@@ -252,10 +256,10 @@
 			VALUES
 			(
 			  #{ companyNo }
-			, #{ humanResourceDTO.memberNo }
-			, #{ humanResourceDTO.appointmentDate }
-			, #{ humanResourceDTO.personalAppointmentCategory }
-			, #{ humanResourceDTO.idNo }
+			, #{ mngHumanResourceDTO.memberNo }
+			, #{ mngHumanResourceDTO.appointmentDate }
+			, #{ mngHumanResourceDTO.personalAppointmentCategory }
+			, #{ mngHumanResourceDTO.idNo }
 			, SEQ_APPOINTMENT_NO.NEXTVAL
 			) 
 </insert>
@@ -265,22 +269,24 @@
 			(
               G.COMPANY_NO
             , G.MEMBER_NO
-            , G.GRADUATED_DATE
+            , G.GRADUATED_START_DATE
             , G.NATIVE_SCHOOL
             , G.GRADUATED_STATUS
             , G.ID_NO
             , G.GRADUATED_NO
+            , G.GRADUATED_END_DATE
         
 			)
 			VALUES
 			(
 			  #{ companyNo }
-			, #{ humanResourceDTO.memberNo }
-			, #{ humanResourceDTO.graduatedDate }
-			, #{ humanResourceDTO.nativeSchool }
-			, #{ humanResourceDTO.graduatedStatus }
-			, #{ humanResourceDTO.idNo }
+			, #{ mngHumanResourceDTO.memberNo }
+			, #{ mngHumanResourceDTO.graduatedDateStart }
+			, #{ mngHumanResourceDTO.nativeSchool }
+			, #{ mngHumanResourceDTO.graduatedStatus }
+			, #{ mngHumanResourceDTO.idNo }
 			, SEQ_GRADUATED_NO.NEXTVAL
+			, #{ mngHumanResourceDTO.graduatedDateEnd }
 			) 
 </insert>
 
@@ -291,21 +297,23 @@
             , C.ID_NO
             , C.MEMBER_NO
             , C.CAREER_NO
-            , C.EMPLOYEEMENT_PERIOD
+            , C.EMPLOYEEMENT_PERIOD_START
             , C.POSITION
             , C.COMPANY_NAME
             , C.DEPARTMENT
+            , C.EMPLOYEEMENT_PERIOD_END
 			)
 			VALUES
 			(
 			  #{ companyNo }
-			, #{ humanResourceDTO.idNo }
-			, #{ humanResourceDTO.memberNo }
+			, #{ mngHumanResourceDTO.idNo }
+			, #{ mngHumanResourceDTO.memberNo }
 			, SEQ_CAREER_NO.NEXTVAL
-			, #{ humanResourceDTO.employeementPeriod }
-			, #{ humanResourceDTO.position }
-			, #{ humanResourceDTO.companyName }
-			, #{ humanResourceDTO.department }
+			, #{ mngHumanResourceDTO.employeementPeriodStart }
+			, #{ mngHumanResourceDTO.position }
+			, #{ mngHumanResourceDTO.companyName }
+			, #{ mngHumanResourceDTO.department }
+			, #{ mngHumanResourceDTO.employeementPeriodEnd }
 			) 
 </insert>
 
@@ -325,12 +333,12 @@
 			(
 			  #{ companyNo }
 			, SEQ_FAMILY_NO.NEXTVAL
-			, #{ humanResourceDTO.memberNo }
-			, #{ humanResourceDTO.familyRelationShip }
-			, #{ humanResourceDTO.familyGender }
-			, #{ humanResourceDTO.familyAge }
-			, #{ humanResourceDTO.familyJob }
-			, #{ humanResourceDTO.idNo }
+			, #{ mngHumanResourceDTO.memberNo }
+			, #{ mngHumanResourceDTO.familyRelationShip }
+			, #{ mngHumanResourceDTO.familyGender }
+			, #{ mngHumanResourceDTO.familyAge }
+			, #{ mngHumanResourceDTO.familyJob }
+			, #{ mngHumanResourceDTO.idNo }
 			) 
 </insert>
 
@@ -342,7 +350,7 @@
 			)
 			VALUES
 			(
-			  #{ humanResourceDTO.idNo }
+			  #{ mngHumanResourceDTO.idNo }
 			, 1
 			) 
 </insert>
@@ -370,12 +378,12 @@
     VALUES
         (
 		  #{ companyNo }
-		, #{ humanResourceDTO.memberNo }
+		, #{ mngHumanResourceDTO.memberNo }
 		, 0
 		, #{ vacationDays }
 		, 0
 		, #{ vacationDays }
-		, #{ humanResourceDTO.idNo }
+		, #{ mngHumanResourceDTO.idNo }
 		, #{ vacationCode }
 		)
 </insert>
@@ -398,10 +406,10 @@
 			, SEQ_UPDATE_NO.NEXTVAL
 			, #{ familyNo }
 			, SYSDATE
-			, #{ humanResourceDTO.familyRelationShip }
-			, #{ humanResourceDTO.familyGender }
-			, #{ humanResourceDTO.familyAge }
-			, #{ humanResourceDTO.familyJob }
+			, #{ mngHumanResourceDTO.familyRelationShip }
+			, #{ mngHumanResourceDTO.familyGender }
+			, #{ mngHumanResourceDTO.familyAge }
+			, #{ mngHumanResourceDTO.familyJob }
 			) 
 </insert>
 
@@ -419,11 +427,11 @@
 			VALUES
 			(
 			  #{ companyNo }
-			, #{ humanResourceDTO.memberNo }
-			, #{ humanResourceDTO.idNo}
+			, #{ mngHumanResourceDTO.memberNo }
+			, #{ mngHumanResourceDTO.idNo}
 			, #{ startDate }
 			, SEQ_DIV_NO.NEXTVAL
-			, #{ humanResourceDTO.salaryStepByRank }
+			, #{ mngHumanResourceDTO.salaryStepByRank }
 			, DEFAULT
 			) 
 </insert>
@@ -440,7 +448,7 @@
 		SELECT
 			 DIV_NO
 		FROM TBL_EMP_SALARY_STEP
-	   WHERE ID_NO =#{ humanResourceDTO.idNo }
+	   WHERE ID_NO =#{ mngHumanResourceDTO.idNo }
 </select>
 
 <select id="selectFamilyUpdate" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" resultType="_int">
@@ -448,11 +456,11 @@
 			 FAMILY_NO
 		FROM TBL_FAMILY
 	   WHERE COMPANY_NO =#{ companyNo }
-         AND ID_NO =#{ humanResourceDTO.idNo }
+         AND ID_NO =#{ mngHumanResourceDTO.idNo }
 </select>
 
 <select id="selectMemberHistoryList"  resultMap="MngHumanResourceResultMap">
-        SELECT  
+              SELECT  
               E.COMPANY_NO 
             , E.UPDATE_NO 
             , E.MEMBER_NO
@@ -473,11 +481,235 @@
             , E.ID_NO
             , E.ADDRESS_DETAIL
             , E.FAMILY_ORIGIN_ADDRESS_DETAIL
+            , D.DEPARTMENT_NAME
             , M.MEMBER_ID
             FROM TBL_EMP_UPDATE E
-            JOIN TBL_MEMBER M ON M.ID_NO = E.ID_NO
-		 WHERE E.COMPANY_NO = #{ companyNo }
-		   AND M.ID_NO = #{ idNo }         
+            JOIN TBL_EMPLOYEE EM ON EM.MEMBER_NO = E.MEMBER_NO
+            JOIN TBL_MEMBER M ON M.ID_NO = EM.ID_NO
+            JOIN TBL_DEPARTMENT D ON D.DEPARTMENT_NO = EM.DEPARTMENT_NO
+		 WHERE D.COMPANY_NO = #{ companyNo }
+         ORDER BY E.UPDATE_NO ASC
+</select>
+
+<select id="selectmemberHistoryDetailList"  resultMap="MngHumanResourceResultMap">
+         SELECT  
+              E.COMPANY_NO 
+            , E.UPDATE_NO 
+            , E.MEMBER_NO
+            , E.KOREAN_NAME
+            , E.SSN
+            , E.ENGLISH_NAME
+            , E.SPECIALITY
+            , E.FAMILY_ORIGIN_ADDRESS
+            , E.ADDRESS
+            , E.PHONE
+            , E.TEL
+            , E.DEPARTMENT_PHONE
+            , E.EMAIL
+            , E.GENDER
+            , E.NATIONAL
+            , E.HIRE_DATE
+            , E.UPDATE_DATE
+            , E.ID_NO
+            , E.ADDRESS_DETAIL
+            , E.FAMILY_ORIGIN_ADDRESS_DETAIL
+            , D.DEPARTMENT_NAME
+            , M.MEMBER_ID
+            , M1.MILITARY_SERVICE_STATUS
+            , M1.MILITARY_KIND
+            , M1.RANKING
+            , M1.MILITARY_START_DATE
+            , M1.MILITYRY_END_DATE
+            , V.VETERAN_STATUS
+            , V.RELATIONSHIP
+            , A.PERSONAL_APPOINTMENT_DATE
+            , A.PERSONAL_APPOINTMENT_CATEGORY
+            , G.GRADUATED_START_DATE
+            , G.GRADUATED_END_DATE
+            , G.NATIVE_SCHOOL
+            , G.GRADUATED_STATUS
+            , C.EMPLOYEEMENT_PERIOD_START
+            , C.EMPLOYEEMENT_PERIOD_END
+            , C.POSITION
+            , C.COMPANY_NAME
+            , C.DEPARTMENT
+            , F.FAMILY_RELATIONSHIP
+            , F.FAMILY_GENDER
+            , F.FAMILY_AGE
+            , F.FAMILY_JOB
+            , J.JOB_NAME
+            , S.SALARY_STEP_BY_RANK
+            FROM TBL_EMP_UPDATE E, TBL_EMPLOYEE EM, TBL_MEMBER M, TBL_DEPARTMENT D,TBL_MILITARY_SERVICE M1, TBL_VETERAN V, TBL_APPOINTMENT A, TBL_GRADUATED G,TBL_CAREER C,TBL_FAMILY F, TBL_JOB J, TBL_EMP_SALARY_STEP S
+            WHERE EM.MEMBER_NO = E.MEMBER_NO
+         AND M1.ID_NO = EM.ID_NO
+         AND D.DEPARTMENT_NO = EM.DEPARTMENT_NO
+         AND C.ID_NO = EM.ID_NO
+         AND A.ID_NO = EM.ID_NO
+         AND V.ID_NO = EM.ID_NO
+         AND G.ID_NO = EM.ID_NO
+         AND  F.ID_NO = EM.ID_NO
+         AND M.ID_NO = EM.ID_NO
+         AND J.JOB_NO = EM.JOB_NO
+         AND S.ID_NO = EM.ID_NO
+         GROUP BY    E.COMPANY_NO 
+            , E.UPDATE_NO 
+            , E.MEMBER_NO
+            , E.KOREAN_NAME
+            , E.SSN
+            , E.ENGLISH_NAME
+            , E.SPECIALITY
+            , E.FAMILY_ORIGIN_ADDRESS
+            , E.ADDRESS
+            , E.PHONE
+            , E.TEL
+            , E.DEPARTMENT_PHONE
+            , E.EMAIL
+            , E.GENDER
+            , E.NATIONAL
+            , E.HIRE_DATE
+            , E.UPDATE_DATE
+            , E.ID_NO
+            , E.ADDRESS_DETAIL
+            , E.FAMILY_ORIGIN_ADDRESS_DETAIL
+            , D.DEPARTMENT_NAME
+            , M.MEMBER_ID
+            , M1.MILITARY_SERVICE_STATUS
+            , M1.MILITARY_KIND
+            , M1.RANKING
+            , M1.MILITARY_START_DATE
+            , M1.MILITYRY_END_DATE
+            , V.VETERAN_STATUS
+            , V.RELATIONSHIP
+            , A.PERSONAL_APPOINTMENT_DATE
+            , A.PERSONAL_APPOINTMENT_CATEGORY
+            , G.GRADUATED_START_DATE
+            , G.GRADUATED_END_DATE
+            , G.NATIVE_SCHOOL
+            , G.GRADUATED_STATUS
+            , C.EMPLOYEEMENT_PERIOD_START
+            , C.EMPLOYEEMENT_PERIOD_END
+            , C.POSITION
+            , C.COMPANY_NAME
+            , C.DEPARTMENT
+            , F.FAMILY_RELATIONSHIP
+            , F.FAMILY_GENDER
+            , F.FAMILY_AGE
+            , F.FAMILY_JOB
+            , EM.COMPANY_NO
+            , EM.ID_NO
+            , J.JOB_NAME
+            , S.SALARY_STEP_BY_RANK
+         HAVING  em.COMPANY_NO = #{ companyNo }
+         AND em.ID_NO = #{ idNo }
+       
+         ORDER BY E.UPDATE_NO ASC
+</select>
+
+<select id="selectMemberDetailList"  resultMap="MngHumanResourceResultMap">
+                  SELECT  
+              E.COMPANY_NO 
+            , E.MEMBER_NO
+            , E.KOREAN_NAME
+            , E.SSN
+            , E.ENGLISH_NAME
+            , E.SPECIALITY
+            , E.FAMILY_ORIGIN_ADDRESS
+            , E.ADDRESS
+            , E.PHONE
+            , E.TEL
+            , E.DEPARTMENT_PHONE
+            , E.EMAIL
+            , E.GENDER
+            , E.NATIONAL
+            , E.HIRE_DATE
+            , E.ID_NO
+            , E.ADDRESS_DETAIL
+            , E.FAMILY_ORIGIN_ADDRESS_DETAIL
+            , D.DEPARTMENT_NAME
+            , M.MEMBER_ID
+            , M1.MILITARY_SERVICE_STATUS
+            , M1.MILITARY_KIND
+            , M1.RANKING
+            , M1.MILITARY_START_DATE
+            , M1.MILITYRY_END_DATE
+            , V.VETERAN_STATUS
+            , V.RELATIONSHIP
+            , A.PERSONAL_APPOINTMENT_DATE
+            , A.PERSONAL_APPOINTMENT_CATEGORY
+            , G.GRADUATED_START_DATE
+            , G.GRADUATED_END_DATE
+            , G.NATIVE_SCHOOL
+            , G.GRADUATED_STATUS
+            , C.EMPLOYEEMENT_PERIOD_START
+            , C.EMPLOYEEMENT_PERIOD_END
+            , C.POSITION
+            , C.COMPANY_NAME
+            , C.DEPARTMENT
+            , F.FAMILY_RELATIONSHIP
+            , F.FAMILY_GENDER
+            , F.FAMILY_AGE
+            , F.FAMILY_JOB
+            , J.JOB_NAME
+            , S.SALARY_STEP_BY_RANK
+            FROM TBL_EMPLOYEE E, TBL_MEMBER M, TBL_DEPARTMENT D,TBL_MILITARY_SERVICE M1, TBL_VETERAN V, TBL_APPOINTMENT A, TBL_GRADUATED G,TBL_CAREER C,TBL_FAMILY F, TBL_JOB J ,TBL_EMP_SALARY_STEP S
+       WHERE M1.ID_NO = E.ID_NO
+         AND D.DEPARTMENT_NO = E.DEPARTMENT_NO
+         AND C.ID_NO = E.ID_NO
+         AND A.ID_NO = E.ID_NO
+         AND V.ID_NO = E.ID_NO
+         AND G.ID_NO = E.ID_NO
+         AND F.ID_NO = E.ID_NO
+         AND M.ID_NO = E.ID_NO
+         AND J.JOB_NO = E.JOB_NO
+         AND S.ID_NO = E.ID_NO
+         GROUP BY   E.COMPANY_NO 
+            , E.MEMBER_NO
+            , E.KOREAN_NAME
+            , E.SSN
+            , E.ENGLISH_NAME
+            , E.SPECIALITY
+            , E.FAMILY_ORIGIN_ADDRESS
+            , E.ADDRESS
+            , E.PHONE
+            , E.TEL
+            , E.DEPARTMENT_PHONE
+            , E.EMAIL
+            , E.GENDER
+            , E.NATIONAL
+            , E.HIRE_DATE
+            , E.ID_NO
+            , E.ADDRESS_DETAIL
+            , E.FAMILY_ORIGIN_ADDRESS_DETAIL
+            , D.DEPARTMENT_NAME
+            , M.MEMBER_ID
+            , M1.MILITARY_SERVICE_STATUS
+            , M1.MILITARY_KIND
+            , M1.RANKING
+            , M1.MILITARY_START_DATE
+            , M1.MILITYRY_END_DATE
+            , V.VETERAN_STATUS
+            , V.RELATIONSHIP
+            , A.PERSONAL_APPOINTMENT_DATE
+            , A.PERSONAL_APPOINTMENT_CATEGORY
+            , G.GRADUATED_START_DATE
+            , G.GRADUATED_END_DATE
+            , G.NATIVE_SCHOOL
+            , G.GRADUATED_STATUS
+            , C.EMPLOYEEMENT_PERIOD_START
+            , C.EMPLOYEEMENT_PERIOD_END
+            , C.POSITION
+            , C.COMPANY_NAME
+            , C.DEPARTMENT
+            , F.FAMILY_RELATIONSHIP
+            , F.FAMILY_GENDER
+            , F.FAMILY_AGE
+            , F.FAMILY_JOB
+            , J.JOB_NAME
+            , S.SALARY_STEP_BY_RANK
+         HAVING  E.COMPANY_NO = #{ companyNo }
+         AND E.ID_NO = #{ idNo }
+       
+         ORDER BY E.ID_NO ASC
 </select>
 
 <insert id="insertEmpSalaryStepUpdate" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO">
@@ -495,11 +727,11 @@
 			(
 			  SEQ_EMP_SALARY_STEP_UPDATE_NO.NEXTVAL
 			, #{ companyNo }
-			, #{ humanResourceDTO.memberNo }
+			, #{ mngHumanResourceDTO.memberNo }
 			, SYSDATE
 			, #{ startDate }
 			, #{ divNo }
-			, #{ humanResourceDTO.salaryStepByRank }
+			, #{ mngHumanResourceDTO.salaryStepByRank }
 			) 
 </insert>
 
@@ -529,13 +761,13 @@
 			(
 			  #{ companyNo }
 			, SEQ_DIV_NO.NEXTVAL
-			, #{ humanResourceDTO.memberNo }
+			, #{ mngHumanResourceDTO.memberNo }
 			, SYSDATE
 			, 'Y'
 			, 'Y'
 			, 'Y'
 			, 'Y'
-			, #{ humanResourceDTO.idNo }
+			, #{ mngHumanResourceDTO.idNo }
 			) 
 </insert>
 
@@ -568,25 +800,25 @@
 			(
 			  #{ companyNo }
 			, SEQ_EMP_UPDATE_NO.NEXTVAL
-			, #{ humanResourceDTO.memberNo } 
-			, #{ humanResourceDTO.koreanName } 
-			, #{ humanResourceDTO.ssn } 
-			, #{ humanResourceDTO.englishName } 
-			, #{ humanResourceDTO.speciality } 
-			, #{ humanResourceDTO.familyOriginAddress } 
-			, #{ humanResourceDTO.address } 
-			, #{ humanResourceDTO.phone } 
-			, #{ humanResourceDTO.tel } 
-			, #{ humanResourceDTO.departmentPhone } 
-			, #{ humanResourceDTO.email } 
-			, #{ humanResourceDTO.memberPassword } 
-			, #{ humanResourceDTO.gender } 
-			, #{ humanResourceDTO.national } 
+			, #{ mngHumanResourceDTO.memberNo } 
+			, #{ mngHumanResourceDTO.koreanName } 
+			, #{ mngHumanResourceDTO.ssn } 
+			, #{ mngHumanResourceDTO.englishName } 
+			, #{ mngHumanResourceDTO.speciality } 
+			, #{ mngHumanResourceDTO.familyOriginAddress } 
+			, #{ mngHumanResourceDTO.address } 
+			, #{ mngHumanResourceDTO.phone } 
+			, #{ mngHumanResourceDTO.tel } 
+			, #{ mngHumanResourceDTO.departmentPhone } 
+			, #{ mngHumanResourceDTO.email } 
+			, #{ mngHumanResourceDTO.memberPassword } 
+			, #{ mngHumanResourceDTO.gender } 
+			, #{ mngHumanResourceDTO.national } 
 			, SYSDATE
 			, SYSDATE
-			, #{ humanResourceDTO.idNo } 
-			, #{ humanResourceDTO.addressDetail } 
-			, #{ humanResourceDTO.familyOriginAddressDetail } 
+			, #{ mngHumanResourceDTO.idNo } 
+			, #{ mngHumanResourceDTO.addressDetail } 
+			, #{ mngHumanResourceDTO.familyOriginAddressDetail } 
 			) 
 </insert>
 
@@ -616,8 +848,159 @@
        ORDER BY ID_NO ASC
 </select>
 
+<update id="updateEmp" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
+        UPDATE  TBL_EMPLOYEE E
+           SET 
+              E.SPECIALITY = #{ mngHumanResourceDTO.speciality }
+            , E.FAMILY_ORIGIN_ADDRESS = #{ mngHumanResourceDTO.familyOriginAddress }
+            , E.FAMILY_ORIGIN_ADDRESS_DETAIL = #{ mngHumanResourceDTO.familyOriginAddressDetail }
+            , E.ADDRESS = #{ mngHumanResourceDTO.address }
+            , E.ADDRESS_DETAIL = #{ mngHumanResourceDTO.addressDetail }
+            , E.PHONE = #{ mngHumanResourceDTO.phone }
+            , E.TEL = #{ mngHumanResourceDTO.tel }
+            , E.DEPARTMENT_PHONE = #{ mngHumanResourceDTO.departmentPhone }
+            , E.EMAIL = #{ mngHumanResourceDTO.email }
+		 WHERE COMPANY_NO = #{ companyNo }
+		   AND ID_NO =#{ idNo }
+</update>
 
+<update id="updateEmpUpdate" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
+        UPDATE  TBL_EMP_UPDATE E
+           SET 
+              E.COMPANY_NO = #{ companyNo }
+            , E.MEMBER_NO = #{ mngHumanResourceDTO.memberNo }
+            , E.KOREAN_NAME = #{ mngHumanResourceDTO.koreanName }
+            , E.ENGLISH_NAME = #{ mngHumanResourceDTO.englishName }
+            , E.SPECIALITY = #{ mngHumanResourceDTO.speciality }
+            , E.FAMILY_ORIGIN_ADDRESS = #{ mngHumanResourceDTO.familyOriginAddress }
+            , E.ADDRESS = #{ mngHumanResourceDTO.address }
+            , E.PHONE = #{ mngHumanResourceDTO.phone }
+            , E.TEL = #{ mngHumanResourceDTO.tel }
+            , E.DEPARTMENT_PHONE = #{ mngHumanResourceDTO.departmentPhone }
+            , E.EMAIL = #{ mngHumanResourceDTO.email }
+            , E.GENDER = #{ mngHumanResourceDTO.gender }
+            , E.NATIONAL = #{ mngHumanResourceDTO.national }
+            , E.UPDATE_DATE = SYSDATE
+            , E.ID_NO = #{ idNo }
+            , E.ADDRESS_DETAIL = #{ mngHumanResourceDTO.addressDetail }
+            , E.FAMILY_ORIGIN_ADDRESS_DETAIL = #{ mngHumanResourceDTO.familyOriginAddressDetail }
+		 WHERE COMPANY_NO =#{ companyNo }
+		   AND ID_NO =#{ idNo }
+</update>
 
+<update id="updateMilitary" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
+        UPDATE  TBL_MILITARY_SERVICE M
+           SET 
+              M.MILITARY_SERVICE_STATUS =#{ mngHumanResourceDTO.militaryServiceStatus }
+            , M.MILITARY_KIND =#{ mngHumanResourceDTO.militaryKind }
+            , M.RANKING =#{ mngHumanResourceDTO.rankIng }
+            , M.MILITARY_START_DATE =#{ mngHumanResourceDTO.militaryStartDate }
+            , M.MILITYRY_END_DATE =#{ mngHumanResourceDTO.militaryEndDate }
+          WHERE COMPANY_NO =#{ companyNo }
+		   AND ID_NO =#{ idNo }
+</update>
 
+<update id="updateVeteran" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
+        UPDATE  TBL_VETERAN V
+           SET 
+              V.VETERAN_STATUS =#{ mngHumanResourceDTO.veteranStatus }
+            , V.RELATIONSHIP =#{ mngHumanResourceDTO.relationship }
+            , V.VETERAN_NO = SEQ_VETERAN_NO.NEXTVAL
+          WHERE COMPANY_NO =#{ companyNo }
+		   AND ID_NO =#{ idNo }
+		   
+</update>
 
+<update id="updateAppointment" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
+        UPDATE  TBL_APPOINTMENT A
+           SET 
+              A.PERSONAL_APPOINTMENT_DATE =#{ mngHumanResourceDTO.appointmentDate }
+            , A.PERSONAL_APPOINTMENT_CATEGORY =#{ mngHumanResourceDTO.personalAppointmentCategory }
+            , A.APPOINTMENT_NO = SEQ_APPOINTMENT_NO.NEXTVAL
+          WHERE COMPANY_NO =#{ companyNo }
+		   AND ID_NO =#{ idNo }
+		   
+</update>
+
+<update id="updateGraduated" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
+        UPDATE  TBL_GRADUATED G
+           SET 
+              G.GRADUATED_START_DATE =#{ mngHumanResourceDTO.graduatedDateStart }
+            , G.GRADUATED_END_DATE =#{ mngHumanResourceDTO.graduatedDateEnd }
+            , G.NATIVE_SCHOOL =#{ mngHumanResourceDTO.nativeSchool }
+            , G.GRADUATED_STATUS =#{ mngHumanResourceDTO.graduatedStatus }
+            , G.GRADUATED_NO =SEQ_GRADUATED_NO.NEXTVAL
+          WHERE COMPANY_NO =#{ companyNo }
+		   AND ID_NO =#{ idNo }
+</update>
+
+<update id="updateCareer" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
+        UPDATE  TBL_CAREER C
+           SET 
+              C.EMPLOYEEMENT_PERIOD_START =#{ mngHumanResourceDTO.employeementPeriodStart }
+            , C.EMPLOYEEMENT_PERIOD_END =#{ mngHumanResourceDTO.employeementPeriodEnd }
+            , C.POSITION =#{ mngHumanResourceDTO.position }
+            , C.COMPANY_NAME =#{ mngHumanResourceDTO.companyName }
+            , C.DEPARTMENT =#{ mngHumanResourceDTO.department }
+          WHERE COMPANY_NO =#{ companyNo }
+		   AND ID_NO =#{ idNo }
+</update>
+
+<update id="updateFamily" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
+        UPDATE  TBL_FAMILY F
+           SET 
+              F.FAMILY_RELATIONSHIP =#{ mngHumanResourceDTO.familyRelationShip }
+            , F.FAMILY_GENDER =#{ mngHumanResourceDTO.familyGender }
+            , F.FAMILY_AGE =#{ mngHumanResourceDTO.familyAge }
+            , F.FAMILY_JOB =#{ mngHumanResourceDTO.familyJob }
+          WHERE COMPANY_NO =#{ companyNo }
+		   AND ID_NO =#{ idNo }
+</update>
+
+<update id="updateFamilyUpdate" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
+        UPDATE  TBL_FAMILY_UPDATE F
+           SET 
+			  F.UPDATE_DATE =SYSDATE
+			, F.FAMILY_RELATIONSHIP =#{ mngHumanResourceDTO.familyRelationShip }
+			, F.FAMILY_GENDER =#{ mngHumanResourceDTO.familyGender }
+			, F.FAMILY_AGE =#{ mngHumanResourceDTO.familyAge }
+			, F.FAMILY_JOB =#{ mngHumanResourceDTO.familyJob }
+          WHERE COMPANY_NO =#{ companyNo }
+            AND FAMILY_NO =#{ familyNo }
+</update>
+
+<update id="updateSalaryStep" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
+        UPDATE  TBL_EMP_SALARY_STEP S
+           SET 
+			  	S.SALARY_STEP_BY_RANK =#{ mngHumanResourceDTO.salaryStepByRank }
+          WHERE COMPANY_NO =#{ companyNo }
+		   AND ID_NO =#{ idNo }
+</update>
+
+<update id="updateSalaryStepUpdate" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
+        UPDATE  TBL_EMP_SALARY_STEP_UPDATE S
+           SET 
+                S.EMP_SALARY_STEP_UPDATE_NO =SEQ_EMP_SALARY_STEP_UPDATE_NO.NEXTVAL
+			  ,	S.UPDATED_DATE =SYSDATE
+			  ,	S.SALARY_STEP_BY_RANK =#{ mngHumanResourceDTO.salaryStepByRank }
+          WHERE COMPANY_NO =#{ companyNo }
+            AND DIV_NO =#{ salaryStepNo }
+</update>
+
+<select id="selectFamilyNo"  resultType="_int">
+		SELECT
+			    F.FAMILY_NO
+        FROM TBL_FAMILY F
+       WHERE COMPANY_NO =#{ companyNo }
+         AND ID_NO =#{ idNo }
+         
+</select>
+
+<select id="selectSalaryStepNo"  resultType="_int">
+		SELECT
+			    S.DIV_NO
+        FROM TBL_EMP_SALARY_STEP S
+       WHERE COMPANY_NO =#{ companyNo }
+         AND ID_NO =#{ idNo }
+</select>
 </mapper>
