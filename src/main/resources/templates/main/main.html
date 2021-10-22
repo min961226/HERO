@@ -8,7 +8,7 @@
 
 
 </head>
-<body>
+<body onload="printClock()">
 	<div id="wrapper">
 		<div th:include="common/sidebar.html"></div>
 		<div class="content-page">
@@ -18,10 +18,15 @@
 				<h1 align="center">HERO 메인 화면입니다.</h1>
 				<div class="container-fluid">
 					<!-- start page title -->
+					<!-- 시계 -->
+					<div style="border:1px solid #dedede; width:600px; height:250px; line-height:250px; color:#666;font-size:100px; text-align:center;" id="clock"></div>
+
+
 					<div class="row">
 						<div class="col-12">
 							<div class="page-title-box">
 								<h4 class="page-title">Dashboard</h4>
+								
 								<div class="page-title-right">
 									<form class="float-sm-end mt-3 mt-sm-0">
 										<div class="row g-2">
@@ -62,7 +67,31 @@
 						</div>
 					</div>
 					<!-- end page title -->
-
+					<div class="card">
+						<div class="card-body">
+					<br><br>
+							<table class="table table-striped dt-responsive nowrap w-80 text-center" th:each="item: ${ workList }" >
+										
+								<tr>
+									<td width="8%"  th:text="${ item.yearMonth+'월' }"></td>
+									<td th:each="list : ${ item.workCoList }" th:text="${ list.yearAndMonth}"></td> 
+								</tr>
+								<tr>
+									<td th:text="${ item.koreanName }" ></td>
+									<td th:each="list : ${ item.workCoList }" th:text="${ list.workStartTime }"></td> 
+								</tr>
+										<tr>
+											<td th:text="${ '사번   '+item.memberNo }"  style="text-align: left;"></td>
+											<td th:each="list : ${ item.workCoList }" th:text="${ list.workEndTime }"></td> 
+										</tr>
+										<tr>
+											<td th:text="${ '지각 ' + item.todayCount + '회 결근 ' + item.absentCount + '회 조퇴 ' + item.earlyCount +'회' } "  
+											style="text-align: left; float:center;" colspan=50></td>
+										</tr>
+				
+									</table>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-md-6 col-xl-3">
 							<div class="card">
@@ -756,6 +785,43 @@
 
 		</div>
 	</div>
+	<script>
+	function printClock() {
+		
+   		var clock = document.getElementById("clock");            // 출력할 장소 선택
+   	 	var currentDate = new Date();                                     // 현재시간
+   	 	var calendar = currentDate.getFullYear() + "-" + (currentDate.getMonth()+1) + "-" + currentDate.getDate() // 현재 날짜
+   	 	var amPm = 'AM'; // 초기값 AM
+    	var currentHours = addZeros(currentDate.getHours(),2); 
+    	var currentMinute = addZeros(currentDate.getMinutes() ,2);
+    	var currentSeconds =  addZeros(currentDate.getSeconds(),2);
+    
+    	if(currentHours >= 12){ // 시간이 12보다 클 때 PM으로 세팅, 12를 빼줌
+    		amPm = 'PM';
+    		currentHours = addZeros(currentHours - 12,2);
+    	}
+
+    	if(currentSeconds >= 50){// 50초 이상일 때 색을 변환해 준다.
+       	currentSeconds = '<span style="color:#de1951;">'+currentSeconds+'</span>'
+    	}
+    	clock.innerHTML = currentHours+":"+currentMinute+":"+currentSeconds +" <span style='font-size:50px;'>"+ amPm+"</span>"; //날짜를 출력해 줌
+    
+    	setTimeout("printClock()",1000);         // 1초마다 printClock() 함수 호출
+	}
+
+	function addZeros(num, digit) { // 자릿수 맞춰주기
+		
+	  	var zero = '';
+	  	num = num.toString();
+	  	if (num.length < digit) {
+	    for (i = 0; i < digit - num.length; i++) {
+	      zero += '0';
+	    }
+	  }
+	  return zero + num;
+	}
+
+</script>
 </body>
 </html>
 

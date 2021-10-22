@@ -24,7 +24,6 @@ public interface WorkAttitudeMapper {
 
 	int insertVacation(EmployeeVacationDTO employeeVacationDTO);
 
-	
 	int selectMemberCount(Map<String, String> searchMap,int idNo, int companyNo);
 	
 	List<WorkAttitudeDTO> selectMemberList(Map<String, String> searchMap, int companyNo, int idNo, SelectCriteria selectCriteria);

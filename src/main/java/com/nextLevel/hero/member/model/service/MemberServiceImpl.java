@@ -19,6 +19,7 @@ import com.nextLevel.hero.member.model.dto.MailDTO;
 import com.nextLevel.hero.member.model.dto.MemberDTO;
 import com.nextLevel.hero.member.model.dto.MemberRoleDTO;
 import com.nextLevel.hero.member.model.dto.UserImpl;
+import com.zaxxer.hikari.util.SuspendResumeLock;
 
 
 @Service("memberService")
@@ -56,7 +57,6 @@ public class MemberServiceImpl implements MemberService{
          
          for(int i = 0; i <roleList.size(); i++) {
             AuthorityDTO authority = roleList.get(i).getAuthority();
-            System.out.println(authority.getName());
             if(authority != null) {
                authorities.add(new SimpleGrantedAuthority(authority.getName()));   //지금은 두 개가 들어간다. member와 admin
             }
@@ -68,7 +68,6 @@ public class MemberServiceImpl implements MemberService{
     	  if(rankRole != null) {
     		  authorities.add(new SimpleGrantedAuthority(rankRole));
     	  }
-    	  System.out.println(rankRole);
       }
       
       //아이디 pwd 권한을 타입 객체로 만들어 반환

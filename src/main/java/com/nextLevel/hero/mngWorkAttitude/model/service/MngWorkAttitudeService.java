@@ -13,11 +13,11 @@ public interface MngWorkAttitudeService {
 
 	List<MngWorkAttitudeDTO> selectAllWorkAttitudeList(int companyNo, Map searchMap, SelectCriteria selectCriteria);
 
-	List<MngAttitudeUpdateDTO> selectAllWorkAttitudeUpdate(int companyNo, Map searchMap);
+	List<MngAttitudeUpdateDTO> selectAllWorkAttitudeUpdate(int companyNo, Map searchMap, SelectCriteria selectCriteria);
 
 	int updateWorkAttitude(MngUpdateDTO updateDTO);
 
-	List<MngAttitudeUpdateDTO> selectUpdateAttitudeList(int companyNo, Map searchMap);
+	List<MngAttitudeUpdateDTO> selectUpdateAttitudeList(int companyNo, Map searchMap, SelectCriteria selectCriteria);
 
 	List<MngAttitudeUpdateViewDTO> selectAllUpdateAttitudeList(int companyNo, int memberNo);
 

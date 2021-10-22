@@ -20,15 +20,14 @@
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
-						<div class="card">
+							<div class="card">
 								<div class="card-body">
-									<!-- <div align="center">
+									<div align="center">
 									<form action="/workattitude/list" method="post">
 									<label style="margin:10px;" align="center">대상기간</label>
 									<input type="month" style="margin:10px; height:30px;" id="searchDate" name="searchDate">
 									<button type="submit" class="btn btn-outline-primary" id="searchBtn">검 색</button>
 									</form>
-									<button type="submit" class="btn btn-primary btn-lg" style="float: right; margin:10px;">&emsp;다운로드&emsp;</button>
 										
 									</div>
 								<br><br>
@@ -42,7 +41,6 @@
 										<tr>
 											<td th:text="${ item.koreanName }" ></td>
 											<td th:each="list : ${ item.workCoList }" th:text="${ list.workStartTime }"></td> 
-											<td ></td>
 										</tr>
 										<tr>
 											<td th:text="${ '사번   '+item.memberNo }"  style="text-align: left;"></td>
@@ -53,7 +51,7 @@
 											style="text-align: left; float:center;" colspan=50></td>
 										</tr>
 				
-									</table> -->
+									</table>
 			
 
 								</div>

@@ -126,7 +126,7 @@ public class WorkAttitudeServiceImpl implements WorkAttitudeService{
 					
 					WorkCommuteDTO workViewDTO = new WorkCommuteDTO();
 
-					workViewDTO.setYearAndMonth(workSpList.get(i).getYearAndMonth().substring(8, 10));
+					workViewDTO.setYearAndMonth(workSpList.get(i).getYearAndMonth().substring(6, 8));
 					workViewDTO.setWorkStartTime(workSpList.get(i).getWorkStartTime());
 					workViewDTO.setWorkEndTime(workSpList.get(i).getWorkEndTime());
 					

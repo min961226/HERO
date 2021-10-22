@@ -15,9 +15,9 @@ import com.nextLevel.hero.mngWorkAttitude.model.dto.MngWorkCommuteDTO;
 @Mapper
 public interface MngWorkAttitudeMapper {
 
-	int selectMemberCount(Map<String, String> searchMap, int companyNo);
+	int selectMemberCount(Map searchMap, int companyNo);
 	
-	List<MngWorkAttitudeDTO> selectMemberList(Map<String, String> searchMap, int companyNo,SelectCriteria selectCriteria );
+	List<MngWorkAttitudeDTO> selectMemberList(Map searchMap, int companyNo,SelectCriteria selectCriteria );
 	
 	List<MngWorkCommuteDTO> selectWorkAttitudeList(MngWorkAttitudeDTO memberInfo, String formatedNow);
 

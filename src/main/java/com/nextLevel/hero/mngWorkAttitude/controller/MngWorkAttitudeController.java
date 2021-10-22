@@ -43,7 +43,6 @@ public class MngWorkAttitudeController {
 	public ModelAndView mngWorkSelectAttitudeList(ModelAndView mv, @AuthenticationPrincipal UserImpl user, @RequestParam Map searchMap) {
 		
 		int companyNo = user.getCompanyNo();
-		System.out.println("버튼 값 : " + searchMap.get("currentPage"));
 		
 		/* 페이징 */
 		String currentPage = (String) searchMap.get("currentPage");
@@ -96,8 +95,40 @@ public class MngWorkAttitudeController {
 		
 		int companyNo = user.getCompanyNo();
 		
-		List<MngAttitudeUpdateDTO> updateList = mngWorkAttitudeService.selectAllWorkAttitudeUpdate(companyNo, searchMap);
+		/* 페이징 */
+		String currentPage = (String) searchMap.get("currentPage");
+		String searchCondition = (String) searchMap.get("searchCondition");
+		String searchValue = (String) searchMap.get("searchValue");
 		
+		int pageNo = 1;
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		/* 0보다 작은 숫자값을 입력해도 1페이지를 보여준다 */
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		/* 사원수 검색 */
+		int totalCount = mngWorkAttitudeService.selectMemberCount(companyNo, searchMap);
+		/* 한 페이지에 보여 줄 게시물 수 */
+		int limit = 8;		
+		/* 한 번에 보여질 페이징 버튼의 갯수 */
+		int buttonAmount = 5;
+		
+		/* 페이징 처리를 위한 로직 호출 후 페이징 처리에 관한 정보를 담고 있는 인스턴스를 반환받는다. */
+		SelectCriteria selectCriteria = null;
+
+		if(searchCondition != null && !"".equals(searchCondition)) {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		List<MngAttitudeUpdateDTO> updateList = mngWorkAttitudeService.selectAllWorkAttitudeUpdate(companyNo, searchMap, selectCriteria);
+		
+		mv.addObject("selectCriteria", selectCriteria);
 		mv.addObject("updateList", updateList);
 		mv.setViewName("/mngWorkAttitude/workAttitudeUpdate");
 		
@@ -111,9 +142,6 @@ public class MngWorkAttitudeController {
 		
 		updateDTO.setCompanyNo(user.getCompanyNo());
 		updateDTO.setName(user.getName());
-		
-		System.out.println("===========");
-		System.out.println(updateDTO);
 		
 		int result =  mngWorkAttitudeService.updateWorkAttitude(updateDTO);
 		
@@ -131,12 +159,44 @@ public class MngWorkAttitudeController {
 	/* 근태 기록 수정 내역 */
 	@ResponseBody
 	@RequestMapping(value="/workAttitudeHistory", method = {RequestMethod.GET, RequestMethod.POST})
-	public /* 근태 수정 */ ModelAndView mngWorkAttitudeHistory(ModelAndView mv, @AuthenticationPrincipal UserImpl user, @RequestParam Map searchMap) {
+	public  ModelAndView mngWorkAttitudeHistory(ModelAndView mv, @AuthenticationPrincipal UserImpl user, @RequestParam Map searchMap) {
 		
 		int companyNo = user.getCompanyNo();
 		
-		List<MngAttitudeUpdateDTO> workList = mngWorkAttitudeService.selectUpdateAttitudeList(companyNo, searchMap);
+		/* 페이징 */
+		String currentPage = (String) searchMap.get("currentPage");
+		String searchCondition = (String) searchMap.get("searchCondition");
+		String searchValue = (String) searchMap.get("searchValue");
 		
+		int pageNo = 1;
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		/* 0보다 작은 숫자값을 입력해도 1페이지를 보여준다 */
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		/* 사원수 검색 */
+		int totalCount = mngWorkAttitudeService.selectMemberCount(companyNo, searchMap);
+		/* 한 페이지에 보여 줄 게시물 수 */
+		int limit = 8;		
+		/* 한 번에 보여질 페이징 버튼의 갯수 */
+		int buttonAmount = 5;
+		
+		/* 페이징 처리를 위한 로직 호출 후 페이징 처리에 관한 정보를 담고 있는 인스턴스를 반환받는다. */
+		SelectCriteria selectCriteria = null;
+
+		if(searchCondition != null && !"".equals(searchCondition)) {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		List<MngAttitudeUpdateDTO> workList = mngWorkAttitudeService.selectUpdateAttitudeList(companyNo, searchMap, selectCriteria);
+		
+		mv.addObject("selectCriteria", selectCriteria);
 		mv.addObject("workList", workList);
 		mv.setViewName("mngWorkAttitude/workAttitudeHistory");
 		

@@ -7,7 +7,7 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style>
-.head-role {
+	.head-role {
 	width: 30%;
 	float: left;
 }
@@ -27,10 +27,6 @@
 .role-down {
 	bottom: 0px;
 	position: relative;
-}
-
-.NoRoleImg {
-	width: 400px;
 }
 
 .noRole {
@@ -94,6 +90,9 @@ input[type=radio] {
 	position: relative;
 	left: 45px;
 }
+.dropButton {
+	font-size: 21px;
+}
 </style>
 </head>
 <body>
@@ -111,6 +110,15 @@ input[type=radio] {
 							</div>
 							<hr>
 							<!-- 여기서부터 본문 생성 -->
+							<form action="/mngRole/roleUser" method="post">
+							<select style="width:155px; height:30px;" id="searchCondition" name="searchCondition">
+								<option value="searchMemberName">이름</option>
+								<option value="searchMemberNo">사번</option>
+								<option value="searchDeptName">부서</option>
+							</select>
+							<input type="text" style="margin:10px; height:30px;" id="searchValue" name="searchValue">
+							<button type="submit" class="btn btn-outline-primary" id="searchBtn">검 색</button><br><br>
+							</form>
 							<div class="card">
 								<div class="card-body">
 									<div class="head-role">
@@ -128,45 +136,45 @@ input[type=radio] {
 												<td th:text="${ user.departmentName }" align="center" class="td"></td>
 											</tr>
 										</table>
-
-										<div class="role-down">
-											<ul class="pagination pagination-rounded">
-												<li class="paginate_button page-item previous disabled"
-													id="basic-datatable_previous"><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="0"
-													tabindex="0" class="page-link"> <i
-														class="uil uil-angle-left"></i></a></li>
-												<li class="paginate_button page-item active"><a
-													href="#" aria-controls="basic-datatable" data-dt-idx="1"
-													tabindex="0" class="page-link">1</a></li>
-												<li class="paginate_button page-item "><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="2"
-													tabindex="0" class="page-link">2</a></li>
-												<li class="paginate_button page-item "><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="3"
-													tabindex="0" class="page-link">3</a></li>
-												<li class="paginate_button page-item "><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="4"
-													tabindex="0" class="page-link">4</a></li>
-												<li class="paginate_button page-item "><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="5"
-													tabindex="0" class="page-link">5</a></li>
-												<li class="paginate_button page-item "><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="6"
-													tabindex="0" class="page-link">6</a></li>
-												<li class="paginate_button page-item next"
-													id="basic-datatable_next"><a href="#"
-													aria-controls="basic-datatable" data-dt-idx="7"
-													tabindex="0" class="page-link"> <i
-														class="uil uil-angle-right"></i></a></li>
-											</ul>
+										<br>
+										<div class="pagesButton" style="margin:0 auto; width: 250px;">
+										<!-- 이전 페이지 버튼 -->
+										<div th:if="${ selectCriteria.pageNo <= 1 }" style="float:left;">
+										<button disabled class="dropButton"><</button>
+										</div>
+										<div th:if="${ selectCriteria.pageNo > 1 }"  style="float:left;" >
+										<button id="prevPage" class="dropButton"><</button>
+										</div>
+										 <!-- 숫자 버튼 -->
+										 <th:block th:with="start = ${selectCriteria.startPage}, end = ${selectCriteria.endPage}">
+	   										<div class="page-item" th:with="start = ${selectCriteria.startPage}, end = ${selectCriteria.endPage}"
+	    							 	    th:each="pageButton : ${#numbers.sequence(start, end)}" style="float: left">
+	    							 		  <button class="page-link" th:href="@{'/page=' + ${pageButton}}" th:text=${pageButton}
+											   th:onclick="pageButtonAction(this.innerText);">
+	    									  </button>
+	   						 				</div>
+    									 </th:block>
+    									 <!-- 다음 페이지 버튼 -->
+    									 <div th:if="${ selectCriteria.pageNo >= selectCriteria.maxPage }" style="float:left;">
+										 <button disabled class="dropButton">></button>
+										 </div>
+										 <div th:if="${ selectCriteria.pageNo < selectCriteria.maxPage }" style="float:left;">
+										 <button id="nextPage" class="dropButton">></button>
+										 </div>
 										</div>
 									</div>
 									<div class="body-role">
 										<div class="noRole" align="center" style="display: none">
 											<form action="/mngRole/updateUserRoleAuth" method="post">
-												<img src="/images/mngRole/NoRole.jpg" class="NoRoleImg">
+												<svg xmlns="http://www.w3.org/2000/svg" width="350"  viewBox="0 0 24 24"
+												 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+												 class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 
+												 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13">
+												 </line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
 												<h2>생성된 권한이 없습니다. 권한을 부여하시겠습니까?</h2>
+												<div class="col-xl-3 col-lg-4 col-sm-6">
+                                            </div>
+												
 												<input type="hidden" name="name" id="name" />
 												<input type="hidden" name="memberNo" id="memberNo" />
 												<div class="right" align="right">
@@ -224,7 +232,7 @@ input[type=radio] {
 			<div th:include="common/footer.html"></div>
 		</div>
 	</div>
-	<script type="text/javascript">
+	<script th:inline="javascript">
 		/* 전체선택, 전체해제 */
 		$(document).ready(function() {
 			$(".cbx_chkAll").click(function() {
@@ -306,6 +314,28 @@ input[type=radio] {
 
 			}
 		}
+		
+		 const link = "/mngRole/roleUser";
+			let searchText = "";
+			var pageNo = [[${selectCriteria.pageNo}]];
+			
+			function pageButtonAction(text) {
+				location.href = link + "?currentPage=" + text + searchText ;
+			}
+			
+			if(document.getElementById("prevPage")) {
+				const $prevPage = document.getElementById("prevPage");
+				$prevPage.onclick = function() {
+					location.href = link + "?currentPage="+ (pageNo - 1) + searchText;
+				}
+			}
+			
+			if(document.getElementById("nextPage")) {
+				const $nextPage = document.getElementById("nextPage");
+				$nextPage.onclick = function() {
+					location.href = link + "?currentPage="+ (pageNo + 1) + searchText;
+				}
+			}		
 	</script>
 </body>
 </html>

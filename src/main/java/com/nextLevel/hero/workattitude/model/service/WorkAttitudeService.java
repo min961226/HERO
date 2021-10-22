@@ -15,6 +15,6 @@ public interface WorkAttitudeService {
 
 	int insertVacation(EmployeeVacationDTO employeeVacationDTO);
 
-	List<WorkAttitudeDTO> selectAllWorkAttitudeList(int companyNo,int idNo, Map<String, String> searchMap);
+	List<WorkAttitudeDTO> selectAllWorkAttitudeList(int companyNo,int idNo, Map searchMap);
 
 }
