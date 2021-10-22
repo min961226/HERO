@@ -65,10 +65,11 @@ public class MngHumanResourceController {
 
 	@PostMapping(value = "/memberInsert" , produces = "application/json; chartset=UTF-8")
 	public ModelAndView mngMember(ModelAndView mv, RedirectAttributes rttr, MngHumanResourceDTO mngHumanResourceDTO ,@AuthenticationPrincipal UserImpl user 
-			,@RequestParam String memberPasswordCheck, @RequestParam String memberId, @RequestParam String familyOriginAddressDetail, @RequestParam String addressDetail) {
+			,@RequestParam String memberPasswordCheck, @RequestParam String memberId, @RequestParam String familyOriginAddressDetail, @RequestParam String addressDetail
+			,@RequestParam String ssn1, @RequestParam String ssn2) {
 		
 		int companyNo = user.getCompanyNo();
-		
+		mngHumanResourceDTO.setSsn(ssn1 + "+" + ssn2);
 		String familyOriginAddress = mngHumanResourceDTO.getFamilyOriginAddress();
 		System.out.println("familyOriginAddress + familyOriginAddress2 : " + familyOriginAddress + familyOriginAddressDetail);
 		mngHumanResourceDTO.setFamilyOriginAddress(familyOriginAddress + familyOriginAddressDetail);
