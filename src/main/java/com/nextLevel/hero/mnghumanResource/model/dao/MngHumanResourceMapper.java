@@ -90,9 +90,9 @@ public interface MngHumanResourceMapper {
 
 	int updateFamilyUpdate(int companyNo, int idNo, MngHumanResourceDTO mngHumanResourceDTO,int familyNo);
 
-	int updateSalaryStep(int companyNo, int idNo, MngHumanResourceDTO mngHumanResourceDTO);
+	int updateSalaryStep(int companyNo, int idNo, MngHumanResourceDTO mngHumanResourceDTO, int salaryStepByRank);
 
-	int updateSalaryStepUpdate(int companyNo, int idNo, MngHumanResourceDTO mngHumanResourceDTO, int salaryStepNo);
+	int updateSalaryStepUpdate(int companyNo, int idNo, int salaryStepByRank, int salaryStepNo);
 
 	int selectFamilyNo(int companyNo, int idNo);
 
@@ -101,6 +101,13 @@ public interface MngHumanResourceMapper {
 	int insertFourInsHistory(MngHumanResourceDTO mngHumanResourceDTO, int companyNo, int deductDivNo);
 
 	int selectFourInsuranceDeduct(MngHumanResourceDTO mngHumanResourceDTO, int companyNo);
+
+	int selectSalaryStepByRank(int companyNo, int idNo);
+	
+	MngHumanResourceDTO selectMemberRankList(int companyNo, int idNo, MngHumanResourceDTO mngHumanResourceDTO, int salaryStepByRank);
+
+	int selectMemberIdNo(int companyNo, MngHumanResourceDTO mngHumanResourceDTO);
+
 
 	
 

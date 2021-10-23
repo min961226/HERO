@@ -29,4 +29,8 @@ public interface MngHumanResourceService {
 
 	int memberDetailUpdate(int companyNo, MngHumanResourceDTO mngHumanResourceDTO, int idNo);
 
+	MngHumanResourceDTO selectMemberRankList(int companyNo, int idNo, MngHumanResourceDTO mngHumanResourceDTO);
+
+	int memberIdNo(int companyNo, MngHumanResourceDTO mngHumanResourceDTO);
+
 }

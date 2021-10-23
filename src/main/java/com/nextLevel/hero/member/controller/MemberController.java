@@ -25,8 +25,8 @@ import com.nextLevel.hero.member.model.service.MemberService;
 @RequestMapping("/member")
 public class MemberController {
 	
-	private final MemberService memberService;
-	private final PasswordEncoder passwordEncoder;
+	private final MemberService memberService;                                    							//서비스
+	private final PasswordEncoder passwordEncoder;                               						    //비밀번호 암호화
 	
 	@Autowired
 	public MemberController(MemberService memberService, PasswordEncoder passwordEncoder) {
@@ -45,35 +45,26 @@ public class MemberController {
 
 	@GetMapping("/findIdForm")
 	public String memberFindIdForm() {
-		return "member/findIdForm";
+		return "member/findIdForm";                           											   //아이디 찾기 폼으로 이동
 	}
 
-	@PostMapping("/findId")
+	@PostMapping("/findId")                                 											   //findId 맵핑 주소를 받아온다
 	public ModelAndView memberFindId(@RequestParam String username
 			, @RequestParam String phone
 			, ModelAndView mv
 			, RedirectAttributes rttr) {
 		
-		System.out.println("username : " + username);
-		System.out.println("phone : " + phone);
+		String phone2 = "";                                          
 		
-		String phone2 = "";
+		phone2 = phone.substring(0, 3) + "-" +phone.substring(3, 7) + "-" + phone.substring(7, 11);			//핸드폰 번호를 @RequestParam 사용하여 findIdForm 값을 가져와 subString으로 값을 쪼개서 넣어준다.
 		
-		phone2 = phone.substring(0, 3) + "-" +phone.substring(3, 7) + "-" + phone.substring(7, 11);
+		FindIdDTO findIdDTO = memberService.selectFindId(username, phone2);									//아이디 찾기를 하기 위해 맴버서비스로 값이 가져간다.
 		
-		System.out.println("phone2 : " + phone2);
-		
-		FindIdDTO findIdDTO = memberService.selectFindId(username, phone2);
-		
-		System.out.println("findIdDTO : " + findIdDTO.getId());
-		
-		if (findIdDTO != null) {
+		if (findIdDTO != null) {																			//아이디 값이 있을경우 실행한다.
 			rttr.addFlashAttribute("successMessage","귀하의 ID는 " + findIdDTO.getId()+ " 입니다.");
-			
 		} 
 		
-		
-		mv.setViewName("redirect:/member/login");
+		mv.setViewName("redirect:/member/login");															//ModelandView.setViewName redirect로 화면을 이동한다.
 		
 	return mv;
 	
@@ -98,13 +89,7 @@ public class MemberController {
 			,ModelAndView mv ,RedirectAttributes rttr, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		
-		String AuthenticationKey = (String) session.getAttribute("AuthenticationKey");
-		
-		System.out.println("AuthenticationKey : " + AuthenticationKey);
-		System.out.println("userId : " + userId);
-		System.out.println("username : " + username);
-		System.out.println("email : " + email);
-		System.out.println("emailCode : " + emailCode);
+		String AuthenticationKey = (String) session.getAttribute("AuthenticationKey");		//인증 번호
 		
 		if (AuthenticationKey.equals(emailCode)) {
 			
@@ -131,37 +116,31 @@ public class MemberController {
 			
 			FindPwdDTO findPwdDTO = new FindPwdDTO();
 			
+			String userPwd = temp.toString();				
+			userPwd = passwordEncoder.encode(userPwd);							//비밀번호를 암호화 걸어준다.
 			
-			String userPwd = temp.toString();
-			userPwd = passwordEncoder.encode(userPwd);
+			findPwdDTO.setEmail(email);											//findPwdDTO에 이메일 값을 담아준다
+			findPwdDTO.setUserId(userId);										//findPwdDTO에 유저 아이디 값을 담아준다
+			findPwdDTO.setUsername(username);									//findPwdDTO에 유저이름 값을 담아준다
+			findPwdDTO.setUserPwd(userPwd);										//findPwdDTO에 유저 비밀번호 값을 담아준다
 			
-			System.out.println("암호화 인코딩 잘되었니? : " + userPwd);
-			
-			findPwdDTO.setEmail(email);
-			findPwdDTO.setUserId(userId);
-			findPwdDTO.setUsername(username);
-			findPwdDTO.setUserPwd(userPwd);
-			
-			
-			 int result = memberService.updatePwd(findPwdDTO);
+			 int result = memberService.updatePwd(findPwdDTO);					//비밀번호를 변경하는 서비스로 이동한다
 			 
 			 if (result > 0) {
 				 
-				 
 				 MailPwdController mailPwdController = new MailPwdController(findPwdDTO, temp);
-				 
 			}
 			
 		}else {
-			System.out.println("에러 메세지 출력해주기");
+			rttr.addFlashAttribute("failedMessage"," 비밀번호 변경이 실패하였습니다. 다시 입력해 주시기 바랍니다.");			//비밀번호 변경 실패시 메세지 출력	
 		}
 		
 		FindPwdDTO findPwdDTO = memberService.selectFindPwd(userId, username, email);
 		
 
-		rttr.addFlashAttribute("successMessage"," 이메일을 통해 임시 비밀번호를 발급하였습니다. 로그인 즉시 비밀번호를 변경해주시길 바랍니다.");
+		rttr.addFlashAttribute("successMessage"," 이메일을 통해 임시 비밀번호를 발급하였습니다. 로그인 즉시 비밀번호를 변경해주시길 바랍니다.");			//비밀번호 변경 성공시 메세지 출력	
 		
-		mv.setViewName("redirect:/member/login");
+		mv.setViewName("redirect:/member/login");																				//redirect를 통해 화면 이동
 		
 		return mv;
 	}

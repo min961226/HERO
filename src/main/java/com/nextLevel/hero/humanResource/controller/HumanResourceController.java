@@ -80,7 +80,7 @@ public class HumanResourceController {
 		myPageList = humanResourceService.selectMypage(user.getCompanyNo(), idNo, memberNo, jobNo);
 		System.out.println("myPageList : " + myPageList);
 		mv.addObject("myPageList", myPageList);
-		mv.setViewName("redirect:/humanResource/myPage");
+		mv.setViewName("humanResource/myPage");
 		return mv;
 	}
 	@PostMapping("/myPageUpdate")
@@ -94,11 +94,9 @@ public class HumanResourceController {
 		int myPageUpdate = humanResourceService.updateMyPage(user.getCompanyNo(), idNo, myPageDTO);
 		System.out.println("myPageUpdate : " + myPageUpdate);
 	
-		if (myPageUpdate > 0) {
-			rttr.addFlashAttribute("successMessage" , "개인정보 수정에 성공하셨습니다.");
-		}else {
-			rttr.addFlashAttribute("failedMessage" , "개인정보 수정에 실패하셨습니다." );
-		}
+		
+	    rttr.addFlashAttribute("successMessage" , "개인정보 수정에 성공하셨습니다.");
+		
 		mv.setViewName("redirect:/humanResource/myPage");
 		return mv;
 	}

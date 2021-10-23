@@ -12,10 +12,8 @@
 		<result property="accSecessionDatetime" column="ACC_SECESSION_DATETIME"/>
 		<result property="accSecessionYn" column="ACC_SECESSION_YN"/>
 		<result property="salaryStepByRank" column="SALARY_STEP_BY_RANK"/>
-		
 		<collection property="memberRoleList" resultMap="memberRoleResultMap"/>
 	</resultMap>
-	
 	
 	<resultMap type="com.nextLevel.hero.member.model.dto.FindIdDTO" id="memberFindIdMap">
 	<id property="username" column="MEMBER_NAME"/>
@@ -53,6 +51,7 @@
 		<result property="desc" column="AUTHORITY_DESCRIPTION"/>
 	</resultMap>
 	
+	<!-- 로그인시 유저정보 가져가기 -->
 	<select id="findMemberById" resultMap="loginMemberResultMap">
         SELECT
                A.ID_NO
@@ -76,6 +75,7 @@
          WHERE A.MEMBER_ID = #{ username }
 	</select>
 
+	<!-- 로그인시 회사번호 가져가기 -->
 	<select id="findCompanyNoByUserNo" resultType="_int">
 		SELECT
 			   COMPANY_NO
@@ -83,6 +83,7 @@
 		 WHERE ID_NO = #{ no }
 	</select>
 	
+	<!-- 로그인시 권한 가져가기 -->
 	<select id="findRankAuth" resultMap="authorityResultMap">
         SELECT
                B.AUTHORITY_NAME
@@ -92,7 +93,7 @@
            AND SALARY_STEP_BY_RANK = #{ member.salaryStepByRank }		
 	</select>
 	
-	
+	<!-- 아이디 찾기 정보  -->
 	<select id="selectFindId" resultMap="memberFindIdMap">
         SELECT
             M.MEMBER_ID
@@ -102,6 +103,7 @@
       AND PHONE = #{ phone2 }
 	</select>
 	
+	<!-- 비밀번호 찾기 정보  -->
 	<select id="selectFindPwd" resultMap="memberFindPwdMap">
         SELECT
             M.MEMBER_PASSWORD
@@ -112,7 +114,7 @@
        AND EMAIL = #{ email } 
 	</select>
 	
-	
+	<!-- 비밀번호 찾기후 비밀번호 변경 -->
 	<update id="updatePwd" parameterType="com.nextLevel.hero.member.model.dto.FindPwdDTO">
        UPDATE 
           TBL_MEMBER M

@@ -119,38 +119,42 @@ public class MngHumanResourceController {
 
 	
 	@GetMapping("/memberHistoryDetail")
-	public ModelAndView memberHistoryDetail(HttpServletRequest request, ModelAndView mv, @AuthenticationPrincipal UserImpl user ) {
-		
-		System.out.println("get방식 parameter 값:"+request.getParameter("idNo"));
+	public ModelAndView memberHistoryDetail(HttpServletRequest request, ModelAndView mv, @AuthenticationPrincipal UserImpl user, MngHumanResourceDTO mngHumanResourceDTO) {
+		System.out.println("get방식 parameter 값 :"+request.getParameter("idNo"));
 		int idNo = Integer.parseInt(request.getParameter("idNo"));
-		MngHumanResourceDTO memberHistoryDetail = mngHumanResourceService.selectmemberHistoryDetailList(user.getCompanyNo(), idNo);
-		System.out.println("memberHistoryDetail : " + memberHistoryDetail);
-		mv.addObject("memberHistoryDetail", memberHistoryDetail);
-		mv.setViewName("redirect:/mngHumanResource/memberHistoryDetail");
+		
+		MngHumanResourceDTO memberHistoryDetailList = mngHumanResourceService.selectmemberHistoryDetailList(user.getCompanyNo(), idNo);
+		MngHumanResourceDTO memberRankList = mngHumanResourceService.selectMemberRankList(user.getCompanyNo(), idNo, mngHumanResourceDTO);
+		System.out.println("memberHistoryDetailList : " + memberHistoryDetailList);
+		mv.addObject("memberHistoryDetailList", memberHistoryDetailList);
+		mv.addObject("memberRankList", memberRankList);
+		mv.setViewName("mngHumanResource/memberHistoryDetail");
 		return mv;
 	}
 	
 	@GetMapping("/memberDetail")
-	public ModelAndView mngMemberDetail(HttpServletRequest request, ModelAndView mv, @AuthenticationPrincipal UserImpl user ) {
+	public ModelAndView mngMemberDetail(HttpServletRequest request, ModelAndView mv, @AuthenticationPrincipal UserImpl user, MngHumanResourceDTO mngHumanResourceDTO) {
 		
 		System.out.println("get방식 parameter 값:"+request.getParameter("idNo"));
 		int idNo = Integer.parseInt(request.getParameter("idNo"));
 		MngHumanResourceDTO memberDetailList = mngHumanResourceService.selectMemberDetailList(user.getCompanyNo(), idNo);
+		MngHumanResourceDTO memberRankList = mngHumanResourceService.selectMemberRankList(user.getCompanyNo(), idNo, mngHumanResourceDTO);
 		List<MngDepartmentHistoryDTO>departmentList = mngBasicInformationService.selectDepartment(user.getCompanyNo());
 		List<JobDTO> JobList = mngHumanResourceService.selectJobList(user.getCompanyNo());
 		mv.addObject("departmentList", departmentList);
+		mv.addObject("memberRankList", memberRankList);
 		mv.addObject("JobList", JobList);
 		mv.addObject("memberDetailList", memberDetailList);
 		mv.setViewName("mngHumanResource/memberDetail");
-		System.out.println("mv : " + mv);
 		return mv;
 	}
 	@PostMapping("/memberDetailUpdate")
-	public ModelAndView mngMemberDetailUpdate(RedirectAttributes rttr, ModelAndView mv, @AuthenticationPrincipal UserImpl user ,MngHumanResourceDTO mngHumanResourceDTO) {
+	public ModelAndView mngMemberDetailUpdate(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv, @AuthenticationPrincipal UserImpl user ,MngHumanResourceDTO mngHumanResourceDTO) {
 		
+		int idNo = mngHumanResourceService.memberIdNo(user.getCompanyNo(),mngHumanResourceDTO);
+		System.out.println("get방식 parameter 값:"+request.getParameter("idNo"));
 		System.out.println("mngHumanResourceDTO : " + mngHumanResourceDTO);
-		
-		int resultMemberDetailUpdate = mngHumanResourceService.memberDetailUpdate(user.getCompanyNo(),mngHumanResourceDTO, user.getNo());
+		int resultMemberDetailUpdate = mngHumanResourceService.memberDetailUpdate(user.getCompanyNo(),mngHumanResourceDTO, idNo);
 		
 		System.out.println("resultMemberDetailUpdate :" + resultMemberDetailUpdate);
 		

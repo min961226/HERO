@@ -25,9 +25,6 @@ public class MailCheckController {
 	@ResponseBody
 	public void mail(HttpServletResponse response, HttpServletRequest request , @RequestParam String email, @RequestParam String username ) {
 
-		System.out.println("email : " + email);
-		System.out.println("username : " + username);
-		
 		StringBuffer temp = new StringBuffer();											/* 인증 번호 생성기 랜덤 메소드*/
 		Random rnd = new Random();
 		for (int i = 0; i < 10; i++) {
@@ -48,20 +45,20 @@ public class MailCheckController {
 			}
 		}
 		
-		String AuthenticationKey = temp.toString();
+		String AuthenticationKey = temp.toString();									//인증 번호 값을 toStrung으로 변경하기							
 		
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out=null;
 		
-		SimpleEmail email1 = new SimpleEmail();
-		email1.setHostName("smtp.naver.com");
-		email1.setSmtpPort(465);
-		email1.setAuthentication("rpaxk2", "dkfvl123");
+		SimpleEmail email1 = new SimpleEmail();										//SimpleEmail 클래스 생성
+		email1.setHostName("smtp.naver.com");										//호스트 네임
+		email1.setSmtpPort(465);													//포트 번호
+		email1.setAuthentication("rpaxk2", "dkfvl123");								//아이디 비밀번호
 		
-		email1.setSSLOnConnect(true);
-		email1.setStartTLSEnabled(true);
+		email1.setSSLOnConnect(true);												// SSL 접속 활성화.
+		email1.setStartTLSEnabled(true);											// TLS 접속 활성화
 		
-		String response1 = "fail";
+		String response1 = "fail";													
 		
 		try {
 			//보내는 사람 설정 (SMTP 서비스 로그인 계정 아이디와 동일하게 해야함 주의!)

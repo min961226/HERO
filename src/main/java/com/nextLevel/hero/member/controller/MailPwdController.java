@@ -11,17 +11,16 @@ public class MailPwdController {
 
 	public MailPwdController(FindPwdDTO findPwdDTO, StringBuffer temp) {
 		
-		String email =  findPwdDTO.getEmail();
-		String username =  findPwdDTO.getUsername();
-		
-		String AuthenticationKey = temp.toString();
+		String email =  findPwdDTO.getEmail();									//폼에서 전달 받은 보낼 이메일 값을 가져온다
+		String username =  findPwdDTO.getUsername();							//폼에서 전달 받은 유저 이름
+		String AuthenticationKey = temp.toString();								//랜덤 인증번호 값
 		
 		PrintWriter out=null;
 		
-		SimpleEmail email1 = new SimpleEmail();
-		email1.setHostName("smtp.naver.com");
-		email1.setSmtpPort(465);
-		email1.setAuthentication("rpaxk2", "dkfvl123");
+		SimpleEmail email1 = new SimpleEmail();									//SimpleEmail 클래스 생성
+		email1.setHostName("smtp.naver.com");									//호스트 네임
+		email1.setSmtpPort(465);												//포트 번호
+		email1.setAuthentication("rpaxk2", "dkfvl123");							//아이디 비밀번호	
 		
 		email1.setSSLOnConnect(true);
 		email1.setStartTLSEnabled(true);

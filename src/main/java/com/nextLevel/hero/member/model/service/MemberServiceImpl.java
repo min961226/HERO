@@ -32,7 +32,6 @@ public class MemberServiceImpl implements MemberService{
       this.memberMapper = memberMapper;
    }
    
-   
    @Override
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {   //시큐리티가 username을 호출
       
@@ -80,37 +79,34 @@ public class MemberServiceImpl implements MemberService{
 
 
 @Override
-public FindIdDTO selectFindId(String username, String phone2) {
+public FindIdDTO selectFindId(String username, String phone2) {									//아이디 찾기				
 
 	return memberMapper.selectFindId(username, phone2);
 }
 
 
 @Override
-public FindPwdDTO selectFindPwd(String userId, String username, String email) {
+public FindPwdDTO selectFindPwd(String userId, String username, String email) {					//비밀번호 찾기
 	return memberMapper.selectFindPwd(userId, username, email);
 }
 
 
 @Override
-public int updatePwd(FindPwdDTO findPwdDTO) {
+public int updatePwd(FindPwdDTO findPwdDTO) {													//비밀번호 찾기후 비밀번호 변경
 	return memberMapper.updatePwd(findPwdDTO);
 }
 
 
 @Override
-public MailDTO emailCheck(MailDTO mailDTO) {
+public MailDTO emailCheck(MailDTO mailDTO) {													//이메일 체크
 
 	SimpleMailMessage message = new SimpleMailMessage();
     
 	message.setTo(mailDTO.getAddress());
     message.setSubject(mailDTO.getTitle());
     message.setText(mailDTO.getMessage());
-	
     
     return mailDTO;
-
-	
 	
 }
 

@@ -985,7 +985,7 @@
 <update id="updateSalaryStep" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
         UPDATE  TBL_EMP_SALARY_STEP S
            SET 
-			  	S.SALARY_STEP_BY_RANK =#{ mngHumanResourceDTO.salaryStepByRank }
+			  	S.SALARY_STEP_BY_RANK =#{ salaryStepByRank }
           WHERE COMPANY_NO =#{ companyNo }
 		   AND ID_NO =#{ idNo }
 </update>
@@ -993,9 +993,8 @@
 <update id="updateSalaryStepUpdate" parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" >
         UPDATE  TBL_EMP_SALARY_STEP_UPDATE S
            SET 
-                S.EMP_SALARY_STEP_UPDATE_NO =SEQ_EMP_SALARY_STEP_UPDATE_NO.NEXTVAL
-			  ,	S.UPDATED_DATE =SYSDATE
-			  ,	S.SALARY_STEP_BY_RANK =#{ mngHumanResourceDTO.salaryStepByRank }
+			  	S.UPDATED_DATE =SYSDATE
+			  ,	S.SALARY_STEP_BY_RANK =#{ salaryStepByRank }
           WHERE COMPANY_NO =#{ companyNo }
             AND DIV_NO =#{ salaryStepNo }
 </update>
@@ -1052,6 +1051,34 @@
         FROM TBL_FOUR_INSURANCE_DEDUCT F
        WHERE COMPANY_NO =#{ companyNo }
          AND ID_NO =#{ mngHumanResourceDTO.idNo }
+</select>
+
+<select id="selectSalaryStepByRank"  resultType="_int">
+     	SELECT
+			  E.SALARY_STEP_BY_RANK
+		FROM TBL_EMP_SALARY_STEP E
+	    WHERE E.COMPANY_NO = #{ companyNo }
+         AND E.ID_NO = #{ idNo }
+</select>
+
+<select id="selectMemberRankList"  resultMap="MngHumanResourceResultMap">
+        SELECT
+			  R.SALARY_STEP_BY_RANK
+			, R.RANK
+            , R.SALARY_STEP
+		FROM TBL_RANK_SALARY_STEP R, TBL_EMP_SALARY_STEP E
+	    WHERE R.COMPANY_NO = #{ companyNo }
+        AND R.SALARY_STEP_BY_RANK = #{ salaryStepByRank }
+        AND E.ID_NO = #{ idNo }
+</select>
+
+
+<select id="selectMemberIdNo"  parameterType="com.nextLevel.hero.mnghumanResource.model.dto.MngHumanResourceDTO" resultType="_int">
+              	SELECT
+			  E.ID_NO
+		FROM TBL_EMPLOYEE E
+	    WHERE E.COMPANY_NO = #{ companyNo }
+         AND E.MEMBER_NO = #{ mngHumanResourceDTO.memberNo }
 </select>
 
 </mapper>

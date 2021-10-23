@@ -147,8 +147,8 @@ public class MngHumanResourceServiceImpl implements MngHumanResourceService {
 
 	@Override
 	public MngHumanResourceDTO selectmemberHistoryDetailList(int companyNo, int idNo) {
-		
-		return mngHumanResourceMapper.selectmemberHistoryDetailList(companyNo, idNo);
+		MngHumanResourceDTO resultMemberHistoryDetailList= mngHumanResourceMapper.selectmemberHistoryDetailList(companyNo, idNo);
+		return resultMemberHistoryDetailList;
 	}
 
 	@Override
@@ -164,11 +164,27 @@ public class MngHumanResourceServiceImpl implements MngHumanResourceService {
 		int familyResult = mngHumanResourceMapper.updateFamily(companyNo, idNo, mngHumanResourceDTO);
 		int familyNo = mngHumanResourceMapper.selectFamilyNo(companyNo, idNo);
 		int familyUpdateResult = mngHumanResourceMapper.updateFamilyUpdate(companyNo, idNo, mngHumanResourceDTO,familyNo);
-		int salaryStepResult = mngHumanResourceMapper.updateSalaryStep(companyNo, idNo, mngHumanResourceDTO);
+		int salaryStepByRank = mngHumanResourceMapper.selectSalaryStepByRank(companyNo, idNo);
+		int salaryStepResult = mngHumanResourceMapper.updateSalaryStep(companyNo, idNo, mngHumanResourceDTO, salaryStepByRank);
 		int salaryStepNo = mngHumanResourceMapper.selectSalaryStepNo(companyNo, idNo);
-		int salaryStepUpdateResult = mngHumanResourceMapper.updateSalaryStepUpdate(companyNo, idNo, mngHumanResourceDTO, salaryStepNo);
+		int salaryStepUpdateResult = mngHumanResourceMapper.updateSalaryStepUpdate(companyNo, idNo, salaryStepByRank, salaryStepNo);
 		return salaryStepUpdateResult;
 	
+	}
+
+	@Override
+	public MngHumanResourceDTO selectMemberRankList(int companyNo, int idNo ,MngHumanResourceDTO mngHumanResourceDTO) {
+		
+		int salaryStepByRank = mngHumanResourceMapper.selectSalaryStepByRank(companyNo, idNo);
+		
+		return mngHumanResourceMapper.selectMemberRankList(companyNo, idNo, mngHumanResourceDTO, salaryStepByRank);
+	}
+
+	@Override
+	public int memberIdNo(int companyNo, MngHumanResourceDTO mngHumanResourceDTO) {
+		
+		int resultMemberIdNo = mngHumanResourceMapper.selectMemberIdNo(companyNo, mngHumanResourceDTO);
+		return resultMemberIdNo;
 	}
 
 

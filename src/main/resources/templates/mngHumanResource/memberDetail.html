@@ -169,8 +169,13 @@
                                                       </div>
                                                       <label class="col-lg-2 col-form-label" align="center">직 급</label>
                                                       <div class="col-lg-4">
-                                                         <select class="form-select" name="jobNo" th:value="${memberDetailList.jobName}">
-                                                            <option th:each="job:${ JobList }" th:text="${ job.jobName }" th:value="${ job.jobNo }"></option>
+                                                         <select class="form-select" name="rank" th:value="${memberRankList.rank}">
+                                                            <option value="대표이사">대표이사</option>
+															<option value="부장">부장</option>
+															<option value="차장">차장</option>
+															<option value="과장">과장</option>
+															<option value="대리">대리</option>
+															<option value="사원">사원</option>
                                                          </select>
                                                       </div>
                                                    </div>
@@ -181,14 +186,17 @@
                                                    <label class="col-lg-2 col-form-label" align="center">호 봉</label>
                                                       
                                                    <div class="col-lg-4">
-                                                      <input type="text" class="form-control" id="simpleinput" name="salaryStepByRank" th:value="${memberDetailList.salaryStepByRank}">
+                                                      <input type="text" class="form-control" id="simpleinput" name="salaryStep" th:value="${memberRankList.salaryStep}">
                                                          
                                                    </div>
 
                                                    <label class="col-lg-2 col-form-label" align="center">직 책</label>
                                                       
                                                    <div class="col-lg-4">
-                                                      <input type="text" class="form-control" id="simpleinput" name="jobNo" th:value="${memberDetailList.jobNo}">
+														 <select class="form-select" name="jobNo" th:value="${memberDetailList.jobNo}">
+                                                            <option th:each="job:${ JobList }" th:text="${ job.jobName }" th:value="${ job.jobNo }"></option>
+                                                         </select>
+
                                                    </div>
                                                 </div>
                                                 <div class="mb-3 row">
