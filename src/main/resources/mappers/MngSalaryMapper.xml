@@ -242,7 +242,7 @@
              , D.AMOUNT
              , C.START_DATE
              , B.DEPARTMENT_NO  
-         ORDER BY B.DEPARTMENT_NO  	
+         ORDER BY A.MEMBER_NO	
 	</select>
 	
 	<select id="listMonthlyPay" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngSalaryDTO" resultMap="latestMonthlyResult">
@@ -401,7 +401,7 @@
 		                                         GROUP BY A1.MEMBER_NO
 		                                            )
 		 
-		 ORDER BY B.DEPARTMENT_NO			
+		 ORDER BY A.MEMBER_NO			
 	</select>
 	
 	<select id="listMngFourInsList" parameterType="_int" resultMap="fourInsResultMap">
@@ -421,7 +421,7 @@
 		  JOIN TBL_DEPARTMENT B ON (A.DEPARTMENT_NO = B.DEPARTMENT_NO)
 		  JOIN TBL_FOUR_INSURANCE_DEDUCT C ON (A.MEMBER_NO = C.MEMBER_NO)
 		 WHERE A.COMPANY_NO = #{ companyNo }
-		 ORDER BY B.DEPARTMENT_NO			
+		 ORDER BY A.MEMBER_NO			
 	</select>
 	
 	<update id="updateFourInsuranceList" parameterType="com.nextLevel.hero.mngSalary.model.dto.MngDeductFourInsDTO">
@@ -497,7 +497,8 @@
          </if>
          <if test = "searchCondition == 'searchMemberName'">
            AND A.KOREAN_NAME = #{ searchValue }
-         </if>                                                                                              
+         </if>
+         ORDER BY A.MEMBER_NO                                                                                              
 	</select>
 	
 	<select id="selectNewMemberInsFee" resultMap="memberInsFeeResult">
