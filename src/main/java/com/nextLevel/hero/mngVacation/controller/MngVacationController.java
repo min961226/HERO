@@ -125,14 +125,9 @@ public class MngVacationController {
 		mngHolidayDTO.setCompanyNo(user.getCompanyNo());
 
 		mngVacationService.insertPublicHoliday(mngHolidayDTO);
-
+		
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss:SSS").setPrettyPrinting()
 				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).serializeNulls().disableHtmlEscaping().create();
-
-		/* 확인용 */
-		System.out.println(mngHolidayDTO);
-
-//		return gson.toJson(mngHolidayDTO); 
 
 	}
 

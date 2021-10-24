@@ -65,7 +65,8 @@
 		SELECT 
 		       A.*
 		  FROM TBL_HOLIDAY A
-		 WHERE A.COMPANY_NO = #{ companyNo }      
+		 WHERE A.COMPANY_NO = #{ companyNo } 
+		 ORDER BY A.HOLIDAY_NO DESC     
 	</select>
 	
 	<!-- 휴일 생성 -->
