@@ -23,7 +23,8 @@ public class MailCheckController {
 
 	@PostMapping(value="checkMail", produces ="application/json; charset=UTF-8")
 	@ResponseBody
-	public void mail(HttpServletResponse response, HttpServletRequest request , @RequestParam String email, @RequestParam String username ) {
+	public void mail(HttpServletResponse response, HttpServletRequest request , @RequestParam String email
+			, @RequestParam String username ) {
 
 		StringBuffer temp = new StringBuffer();											/* 인증 번호 생성기 랜덤 메소드*/
 		Random rnd = new Random();
@@ -95,45 +96,3 @@ public class MailCheckController {
 	
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//@RestController
-//@RequestMapping("/mail")
-//public class MailController {
-//
-//    @Autowired
-//    private MailService mailService;
-//
-//    @PostMapping("/checkMail")
-//    public MailDTO sendTestMail(String email) {
-//    	
-//    	System.out.println("email : " + email);
-//    	
-//    	MailDTO mailDTO = new MailDTO();
-//
-//    	mailDTO.setAddress(email);
-//    	mailDTO.setTitle("밤둘레 님이 발송한 이메일입니다.");
-//    	mailDTO.setMessage("안녕하세요. 반가워요!");
-//
-//        mailService.sendMail(mailDTO);
-//
-//        return mailDTO;
-//    }
-//}

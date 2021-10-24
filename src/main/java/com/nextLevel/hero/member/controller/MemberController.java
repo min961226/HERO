@@ -62,19 +62,15 @@ public class MemberController {
 		
 		if (findIdDTO != null) {																			//아이디 값이 있을경우 실행한다.
 			rttr.addFlashAttribute("successMessage","귀하의 ID는 " + findIdDTO.getId()+ " 입니다.");
-		} 
+		} else {
+			rttr.addFlashAttribute("failedMessage","아이디 찾기가 실패하였습니다. 다시 입력해 주시기 바랍니다.");
+		}
 		
 		mv.setViewName("redirect:/member/login");															//ModelandView.setViewName redirect로 화면을 이동한다.
-		
+	
 	return mv;
 	
 	}
-			
-			
-			
-			
-			
-			
 			
 	
 	@GetMapping("/findPasswordForm")

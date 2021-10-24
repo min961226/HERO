@@ -8,17 +8,18 @@ import com.nextLevel.hero.member.model.dto.FindPwdDTO;
 @Mapper
 public interface HumanResourceMapper {
 
-	int selectMemberNo(int companyNo, int idNo);
+	int updatePassword(int companyNo, FindPwdDTO findPwdDTO);							//비밀번호 변경
+	
+	int selectMemberNo(int companyNo, int idNo);										//memberNo 조회
+	
+	int selectjobNo(int companyNo, int idNo);											//jobNo 조회
 
-	int selectjobNo(int companyNo, int idNo);
+	MyPageDTO selectMypage(int companyNo, int idNo, int memberNo, int jobNo);			//mypage 유저 정보 조회
 
-	MyPageDTO selectMypage(int companyNo, int idNo, int memberNo, int jobNo);
+	int updateEmp(int companyNo, int idNo, MyPageDTO myPageDTO);						//mypage 유저 정보 수정
 
-	int updateEmp(int companyNo, int idNo, MyPageDTO myPageDTO);
+	int updateMypage(int companyNo, int idNo, MyPageDTO myPageDTO);						//mypage 유저 정보 수정
 
-	int updateMypage(int companyNo, int idNo, MyPageDTO myPageDTO);
-
-	int updatePassword(int companyNo, FindPwdDTO findPwdDTO);
 
 
 }

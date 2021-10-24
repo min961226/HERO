@@ -32,7 +32,16 @@
 		<result property="addressDetail" column="ADDRESS_DETAIL"/>
 		<result property="familyOriginAddressDetail" column="FAMILY_ORIGIN_ADDRESS_DETAIL"/>
 </resultMap>	
-	
+
+<!-- 비밀번호 변경 -->
+<update id="updatePassword" parameterType="com.nextLevel.hero.member.model.dto.FindPwdDTO">
+		UPDATE TBL_MEMBER
+           SET
+        MEMBER_PASSWORD =#{ findPwdDTO.userPwd }
+         WHERE ID_NO =#{ findPwdDTO.idNo }
+</update>
+
+<!-- memberNo 조회 -->
 <select id="selectMemberNo" resultType="_int">
         SELECT
                 MEMBER_NO
@@ -41,6 +50,7 @@
            AND COMPANY_NO = #{ companyNo }
 </select>
 
+<!-- jobNo 조회 -->
 <select id="selectjobNo" resultType="_int">
         SELECT
                 JOB_NO
@@ -49,6 +59,7 @@
            AND COMPANY_NO = #{ companyNo }
 </select>
 
+<!-- mypage 유저 정보 조회 -->
 <select id="selectMypage" resultMap="selectMypageMap">
          SELECT
               E.MEMBER_NO
@@ -82,6 +93,7 @@
          AND R.MEMBER_NO = #{ memberNo }
 </select>
 
+<!-- mypage 유저 정보 수정 -->
 <update id="updateEmp" parameterType="com.nextLevel.hero.humanResource.model.dto.MyPageDTO" >
         UPDATE  TBL_EMPLOYEE E
            SET 
@@ -98,6 +110,7 @@
 		   AND ID_NO =#{ idNo }
 </update>
 
+<!-- mypage 유저 정보 수정 -->
 <update id="updateMypage" parameterType="com.nextLevel.hero.humanResource.model.dto.MyPageDTO" >
         UPDATE  TBL_EMP_UPDATE E
            SET 
@@ -125,10 +138,4 @@
 		   AND ID_NO =#{ idNo }
 </update>
 
-<update id="updatePassword" parameterType="com.nextLevel.hero.member.model.dto.FindPwdDTO">
-		UPDATE TBL_MEMBER
-           SET
-        MEMBER_PASSWORD =#{ findPwdDTO.userPwd }
-         WHERE ID_NO =#{ findPwdDTO.idNo }
-</update>
 </mapper>
