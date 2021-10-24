@@ -150,7 +150,7 @@
 		  JOIN TBL_EMPLOYEE B ON (A.ID_NO = B.ID_NO)
 		 WHERE A.COMPANY_NO = #{ companyNo }
 		   AND A.ID_NO = #{ idNo }
-		  
+		   AND A.CONFIRM_YN = 'Y'
 		 <if test="searchDate != null and '' != searchDate">
 		   AND A.PAY_DATE = #{ searchDate }
 		 </if>		  

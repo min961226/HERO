@@ -900,7 +900,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 	/* 상여 생성 */
 	@Override
 	public List<SalaryAndBonusDTO> insertBonus(SalaryAndBonusDTO search) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
@@ -930,8 +930,7 @@ public class MngSalaryServiceImpl implements MngSalaryService {
 		LocalDate searchDay = LocalDate.parse(search.getSearchPayDate());
 		String editable = "";
 		
-		//(todayDate.isAfter(searchDay)) || 
-		if((confirmYn.equals("Y"))) {
+		if((todayDate.isAfter(searchDay)) || (confirmYn.equals("Y"))) {
 			editable = "N";
 		} else {
 			editable = "Y";
